@@ -24,7 +24,7 @@ This is your project if you are an environmentally conscious person, you 3D prin
 	 
 ## Bottle cutter
  - STL files will be available soon
-![Bottle cutter](https://github.com/function3d/petalot/raw/master/STLs/cutter/bottlecutter.jpg)
+![Bottle cutter](https://github.com/function3d/petalot/raw/master/STLs/Cutter/bottlecutter.jpg)
 
 ## Donation
   [![Paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif)](https://www.paypal.com/donate/?hosted_button_id=CESEXLEFEU65Q)
