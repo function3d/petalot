@@ -23,7 +23,8 @@ This is your project if you are an environmentally conscious person, you 3D prin
 ![petalot](https://github.com/function3d/petalot/raw/master/STLs/petalot.jpg)
 	 
 ## Bottle cutter
- - STL files will be available soon
+ - STL files will be available soon in this repository
+   [Youtube video how to make it](https://www.youtube.com/watch?v=eTBnhKWMYQk)
 ![Bottle cutter](https://github.com/function3d/petalot/raw/master/STLs/Cutter/bottlecutter.jpg)
 
 ## Donation
