@@ -4,7 +4,7 @@
 
 ### **This machine** is only one third of what is needed to produce functional filament, the other two parts needed are **the skill** and **the time** it takes to develop that skill. 
 
-## My digital files are exclusively reserved for private and personal use. It means not selling the model or any derivative of the model for economic or financial gain.
+#### My digital files are exclusively reserved for private and personal use. It means not selling the model or any derivative of the model for economic or financial gain.
 
 ![Petalot](https://github.com/function3d/petalot/raw/master/Media/IMG_20220818_113135.jpg)
 
