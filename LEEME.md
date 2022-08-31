@@ -2,7 +2,7 @@
 
 ## De botella de plástico PET a filamento 3D
 
-### **Esta "maquina"** es solo un tercio de lo que necesitas, las otras dos partes igual de importantes son la "habilidad" y el "tiempo" que se necesita para desarrollar dicha habilidad. **Si necesitas ayuda con la habilidad y el tiempo** te ofrezco mi saber hacer y tiempo [aqui](https://www.paypal.com/webapps/billing/plans/subscribe?plan_id=P-9EK04761B8230384RMLJ5KFI)(https://www.patreon.com/function3d) (subscripciones iguales o superiores a 9€)
+### **Esta "maquina"** es solo un tercio de lo que necesitas, las otras dos partes igual de importantes son la "habilidad" y el "tiempo" que se necesita para desarrollar dicha habilidad. **Si necesitas ayuda con la habilidad y el tiempo** te ofrezco mi saber hacer y tiempo [aqui](https://www.patreon.com/function3d) (subscripciones iguales o superiores a 9€)
 
 ![Petalot](https://github.com/function3d/petalot/raw/master/Media/IMG_20220818_113135.jpg)
 
