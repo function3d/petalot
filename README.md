@@ -1,6 +1,6 @@
 # Petalot
 
-[en Español](https://github.com/function3d/petalot/raw/master/LEEME.md)
+[en Español](https://github.com/function3d/petalot/blob/master/LEEME.md)
 
 ## From PET Bottle To 3D Filament
 
