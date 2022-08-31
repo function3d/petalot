@@ -19,17 +19,16 @@ This is your project if you are an environmentally conscious person, you 3D prin
  - [Schematic](https://github.com/function3d/petalot/raw/master/Schematic/Schematic_petalot_2022-08-18.png)
 
 ## STLs
- - STLs folder
+ - [STLs folder](https://github.com/function3d/petalot/tree/master/STLs)
 ![petalot](https://github.com/function3d/petalot/raw/master/STLs/petalot.jpg)
 	 
 ## Bottle cutter
- - STLs folder
-   [Youtube video how to make it](https://www.youtube.com/watch?v=eTBnhKWMYQk)
+ - [STLs folder](https://github.com/function3d/petalot/tree/master/STLs/Cutter)
+ - [Youtube video how to make it](https://www.youtube.com/watch?v=eTBnhKWMYQk)
 ![Bottle cutter](https://github.com/function3d/petalot/raw/master/STLs/Cutter/bottlecutter.jpg)
 
 ## Donation
   [![Paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif)](https://www.paypal.com/donate/?hosted_button_id=CESEXLEFEU65Q)
-  
   [![Paypal](https://i.imgur.com/SEshqeh.png)](https://www.paypal.com/donate/?hosted_button_id=CESEXLEFEU65Q)
 
 ## Social
