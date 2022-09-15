@@ -6,7 +6,7 @@
 
 ### **This "machine"** is only one third of what is needed to produce functional filament, the other two parts needed are **the skill** and **the time** it takes to develop that skill. 
 
-Start from here: [FAQs](https://function3d.xyz/)
+Start here: [FAQs](https://function3d.xyz/)
 
 ![Petalot](https://github.com/function3d/petalot/raw/master/Media/IMG_20220818_113135.jpg)
 
