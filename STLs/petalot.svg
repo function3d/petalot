@@ -8,7 +8,7 @@
    version="1.1"
    id="svg5"
    inkscape:version="1.1 (c68e22c387, 2021-05-23)"
-   sodipodi:docname="petalot v1.svg"
+   sodipodi:docname="petalot.svg"
    inkscape:export-filename="/home/raul/Downloads/petalot/petalot.png"
    inkscape:export-xdpi="383.63901"
    inkscape:export-ydpi="383.63901"
@@ -27,15 +27,15 @@
      inkscape:pagecheckerboard="0"
      inkscape:document-units="mm"
      showgrid="false"
-     inkscape:zoom="0.70710678"
-     inkscape:cx="405.87929"
-     inkscape:cy="485.78236"
+     inkscape:zoom="0.5"
+     inkscape:cx="322"
+     inkscape:cy="539"
      inkscape:window-width="1920"
      inkscape:window-height="1013"
      inkscape:window-x="0"
      inkscape:window-y="42"
      inkscape:window-maximized="1"
-     inkscape:current-layer="layer1"
+     inkscape:current-layer="g148858"
      inkscape:snap-global="false" />
   <defs
      id="defs2">
@@ -370,7 +370,7 @@
              id="tspan131014"
              style="font-style:normal;font-variant:normal;font-weight:600;font-stretch:normal;font-family:Montserrat;-inkscape-font-specification:'Montserrat Semi-Bold';fill:#1a1a1a;stroke-width:0.074425"
              x="109.28236"
-             y="168.83694">~75cm</tspan></text>
+             y="168.83694">~7.5cm</tspan></text>
         <path
            style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
            d="m 104.41475,168.4054 -0.91994,0.65029 0.82651,0.75192"
@@ -401,7 +401,7 @@
              id="tspan137098"
              style="font-style:normal;font-variant:normal;font-weight:600;font-stretch:normal;font-family:Montserrat;-inkscape-font-specification:'Montserrat Semi-Bold';fill:#1a1a1a;stroke-width:0.074425"
              x="131.73344"
-             y="186.15813">~65cm</tspan></text>
+             y="186.15813">~6.5cm</tspan></text>
         <path
            style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
            d="m 106.88984,168.84381 -1.08031,0.3509 0.584,0.94813"
@@ -424,15 +424,15 @@
         <text
            xml:space="preserve"
            style="font-style:normal;font-weight:normal;font-size:2.977px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.074425"
-           x="133.34023"
-           y="186.37263"
+           x="131.78894"
+           y="186.30557"
            id="text140743"
            transform="matrix(1.1393506,0.05538607,-0.22379006,0.86681408,0,0)"><tspan
              sodipodi:role="line"
              id="tspan140741"
              style="font-style:normal;font-variant:normal;font-weight:600;font-stretch:normal;font-family:Montserrat;-inkscape-font-specification:'Montserrat Semi-Bold';fill:#1a1a1a;stroke-width:0.074425"
-             x="133.34023"
-             y="186.37263">75cm</tspan></text>
+             x="131.78894"
+             y="186.30557">~7.5cm</tspan></text>
         <path
            style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
            d="m 106.88984,168.84381 -1.08031,0.3509 0.584,0.94813"

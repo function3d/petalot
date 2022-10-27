@@ -175,7 +175,7 @@ void set() {
     //if (To!=0) Tco = To;
   }
   String VoChange = server.arg(String("Vo"));
-  if (VoChange != "" && VoChange.toFloat() <= 20 && VoChange.toFloat() >= 10) {
+  if (VoChange != "" && VoChange.toFloat() <= 20 && VoChange.toFloat() >= 5) {
     save = true;
     Vo = VoChange.toInt()*2;
     //if (Vo!=0) Vco = Vo;
