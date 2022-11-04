@@ -16,9 +16,9 @@ You have to adjust it to supply 1A to the motor, this way the motor will hardly 
 - Turn on the electronics
 - Stop from the web interface so that the hotend is not heating up
 - Measure the voltage between the small potentiometer on the driver and ground
-- Turn the potentiometer so that the value is about 0.4V
+- Turn the potentiometer until you measure is about 0.4V (0.4*2.5=1A)
 - Once adjusted, turn off the electronics
 - Connect the motor
 - Turn on the electronics again
 
-Never connect/disconnect the motor with the electronic  on
+Never connect/disconnect the motor with the electronic on
