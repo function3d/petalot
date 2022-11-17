@@ -13,7 +13,7 @@ Start here: [FAQs](https://function3d.xyz/)
 This is your project if you are an environmentally conscious person, you 3D print for hobby, you have basic notions of electronics and you like to make things.
 
 ## Bill of material
- - [BOM](https://docs.google.com/spreadsheets/d/1Pbo5h8JskjI6m1uH4NZ2JOgRXYX2zOXm9W2migb8n0c/edit?usp=sharing)
+ - [BOM](https://docs.google.com/spreadsheets/d/1QrsbV1TAUxwC-E0CKtm_DCh9_VTj5VazpKik1_OQ4T8/edit?usp=sharing)
 
 ## Electronics
 
