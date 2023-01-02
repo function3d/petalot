@@ -23,7 +23,7 @@ This is your project if you are an environmentally conscious person, you 3D prin
  - [Before switching on the electronics for the first time](https://github.com/function3d/petalot/blob/5b1d409dda7f66e7040381943212c45b0bf8b62b/before%20you%20switching%20on%20the%20electronics.md)
 ## STLs
  - [STLs folder](https://github.com/function3d/petalot/tree/master/STLs)
-![petalot](https://github.com/function3d/petalot/raw/master/STLs/petalot.jpg)
+![petalot](https://github.com/function3d/petalot/raw/master/STLs/petalot_v1.1.png)
 	 
 ## Bottle cutter
  - [STLs folder](https://github.com/function3d/petalot/tree/master/STLs/Cutter)

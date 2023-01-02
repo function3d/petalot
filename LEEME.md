@@ -23,7 +23,7 @@ Este es tu projecto si eres una persona concienciada por el medio ambiente, impr
 
 ## STLs
  - [carpeta con los STLs](https://github.com/function3d/petalot/tree/master/STLs)
-![petalot](https://github.com/function3d/petalot/raw/master/STLs/petalot v1.1.png)
+![petalot](https://github.com/function3d/petalot/raw/master/STLs/petalot_v1.1.png)
 	 
 ## Cortador de botellas
  - [carpeta con los STLs](https://github.com/function3d/petalot/tree/master/STLs/Cutter)
