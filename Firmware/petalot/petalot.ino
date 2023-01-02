@@ -1,5 +1,5 @@
-#include "conf.hpp"
 #include "pins.hpp"
+#include "conf.hpp"
 #include "wifi.hpp"
 #include "stepper.hpp"
 #include "hotend.hpp"
@@ -21,10 +21,11 @@ void setup() {
 
 void loop() {
   server.handleClient();
-  if (!apmode) {
+  //if (!apmode) {
     hotendReadTempTask();
     stepperRunTask();
-  }
+  //}
   ArduinoOTA.handle();
+  readConfigurationSerial();
 
 }

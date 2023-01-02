@@ -73,7 +73,6 @@ void hotendReadTempTask() {
     } else {
       myPID.Compute();
     }
-    
     if (status == "working"){
       start();
       if (T > 150 || T > To + 20 ) {

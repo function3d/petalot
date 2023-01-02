@@ -17,11 +17,18 @@ String IpAddress2String(const IPAddress& ipAddress)
 
 void AP(){
   apmode = true;
+  WiFi.disconnect(true);
   IPAddress local_IP(192,168,4,1);
   IPAddress gateway(192,168,4,1);
   IPAddress subnet(255,255,255,0);
   WiFi.softAPConfig(local_IP, gateway, subnet);
-  if (WiFi.softAP("petalot")) {
+  
+  unsigned char mac[6];
+  char APNAME[40];
+  WiFi.macAddress(mac);
+
+  sprintf(APNAME, "PETALOT-%02X%02X%02X", mac[3], mac[4], mac[5]);
+  if (WiFi.softAP(APNAME)) {
     Serial.println("AP Ready");
     apmode = true;
   }else{
@@ -30,13 +37,11 @@ void AP(){
 }
 
 void initWiFi()
-{
-
+{     
       
-
      if (!ssid){
         AP();
-        status = "stopped";
+        //status = "stopped";
         return;
      } else {
       IPAddress localip;
@@ -44,8 +49,8 @@ void initWiFi()
       IPAddress subnet;
       subnet.fromString(Subnet.c_str());
       IPAddress gatewayip;
-      gatewayip.fromString(gateway.c_str());
-      
+      gatewayip.fromString(Gateway.c_str());
+
      WiFi.begin(ssid, password); //Conexión a la red
      if (!WiFi.config(localip, gatewayip, subnet,IPAddress(8, 8, 8, 8))) {
       Serial.println("config wifi ips failed");
@@ -54,24 +59,26 @@ void initWiFi()
     while (WiFi.status() != WL_CONNECTED) {
       if (WiFi.status() == WL_CONNECT_FAILED) {
         AP();
-        status = "stopped";
+        //status = "stopped";
+        Serial.println("Error conectado a la  wifi");
         return;
       }
       if (millis() - wifiConnectStart > 10000) {
         AP();
-        status = "stopped";
+        //status = "stopped";
         return;
       }
-      delay(100);
+      delay(500);
       Serial.print(".");
     }
-    if (!MDNS.begin("petalot")) 
+    if (!MDNS.begin("Petalot")) 
    {             
      Serial.println("Error iniciando mDNS");
    }
-   Serial.println("mDNS iniciado");
+   //Serial.println("mDNS iniciado");
+   Serial.println();
    Serial.println(WiFi.localIP());
-     }
+   }
 }
 
 int ifttt(String value_1="", String value_2="", String value_3="")

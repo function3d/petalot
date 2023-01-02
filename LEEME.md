@@ -11,7 +11,7 @@ Empieza aqui: [Preguntas frecuentes](https://function3d.xyz/)
 Este es tu projecto si eres una persona concienciada por el medio ambiente, imprimes en 3D por hobby, tienes conocimientos basicos de electronica y te gusta hacer cosas.
 
 ## Lista de materiales necesarios
- - [BOM](https://docs.google.com/spreadsheets/d/1Pbo5h8JskjI6m1uH4NZ2JOgRXYX2zOXm9W2migb8n0c/edit?usp=sharing)
+ - [BOM](https://docs.google.com/spreadsheets/d/1QrsbV1TAUxwC-E0CKtm_DCh9_VTj5VazpKik1_OQ4T8/edit?usp=sharing)
 
 ## Electronica
 
@@ -23,7 +23,7 @@ Este es tu projecto si eres una persona concienciada por el medio ambiente, impr
 
 ## STLs
  - [carpeta con los STLs](https://github.com/function3d/petalot/tree/master/STLs)
-![petalot](https://github.com/function3d/petalot/raw/master/STLs/petalot.jpg)
+![petalot](https://github.com/function3d/petalot/raw/master/STLs/petalot v1.1.png)
 	 
 ## Cortador de botellas
  - [carpeta con los STLs](https://github.com/function3d/petalot/tree/master/STLs/Cutter)
