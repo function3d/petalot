@@ -7,6 +7,7 @@
 Start here: [FAQs](https://function3d.xyz/)
 
 ![Petalot](https://github.com/function3d/petalot/raw/master/Media/petalot_v1.1.jpg)
+![Petalot](https://github.com/function3d/petalot/raw/master/Media/petalot_v1.1_2.jpg)
 
 This is your project if you are an environmentally conscious person, you 3D print for hobby, you have basic notions of electronics and you like to make things.
 
