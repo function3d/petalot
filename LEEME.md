@@ -6,7 +6,7 @@
 
 Empieza aqui: [Preguntas frecuentes](https://function3d.xyz/)
 
-![Petalot](https://github.com/function3d/petalot/raw/master/Media/IMG_20220818_113135.jpg)
+![Petalot](https://github.com/function3d/petalot/raw/master/Media/petalot _v1.1.jpg)
 
 Este es tu projecto si eres una persona concienciada por el medio ambiente, imprimes en 3D por hobby, tienes conocimientos basicos de electronica y te gusta hacer cosas.
 
