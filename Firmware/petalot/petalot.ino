@@ -7,8 +7,6 @@
 #include "ota.hpp"
 
 void setup() {
-  
-  
   Serial.begin(115200);
   delay(1000);
   initConf();
@@ -20,12 +18,10 @@ void setup() {
 }
 
 void loop() {
+  wifiTask();
   server.handleClient();
-  //if (!apmode) {
-    hotendReadTempTask();
-    stepperRunTask();
-  //}
+  hotendReadTempTask();
+  stepperRunTask();
   ArduinoOTA.handle();
   readConfigurationSerial();
-
 }

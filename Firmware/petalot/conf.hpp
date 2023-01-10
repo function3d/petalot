@@ -33,7 +33,7 @@ String printConf() {
 }
 
 void saveConfiguration() {
-
+  SPIFFS.remove("/config.json");
   File file = SPIFFS.open("/config.json", "w");
   if (!file) {
     msg = "Failed to create file";
@@ -57,7 +57,7 @@ void saveConfiguration() {
   if (serializeJson(doc, file) == 0) {
     msg = "Failed to write to file";
   }
-
+  Serial.println(printConf());
   file.close();
   analogWrite(PIN_HEATER, 0);
   ESP.restart();
@@ -65,15 +65,16 @@ void saveConfiguration() {
 }
 
 void  resetConfiguration(){
+    Serial.println("reset");
     strcpy(ssid, "");         
     strcpy(password, "");
     To = 220;
     Vo = 40;
-    Tm = 250;
+    Tm = 230;
     Kp = 23.0;
     Ki = 0.043;
     Kd = 160.0;
-    Max = 210;
+    Max = 200;
     LocalIP = "";
     Subnet = "255.255.255.0";
     Gateway = "";
@@ -146,11 +147,11 @@ void loadConfiguration(bool reset=false) {
   //To = Tco;
   Vo = doc["Vo"] | 40;
   //Vo = Vco;
-  Tm = doc["Tm"] | 250;
+  Tm = doc["Tm"] | 230;
   Kp = doc["Kp"]?doc["Kp"].as<double>():23.0;
   Ki = doc["Ki"]?doc["Ki"].as<double>():0.043;
   Kd = doc["Kd"]?doc["Kd"].as<double>():160.0;
-  Max = doc["Max"]?doc["Max"].as<double>():210;
+  Max = doc["Max"]?doc["Max"].as<double>():200;
   LocalIP = doc["LocalIP"] | "";
   Subnet = doc["Subnet"] | "255.255.255.0";
   Gateway = doc["Gateway"] | "";
