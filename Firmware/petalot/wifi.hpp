@@ -5,8 +5,9 @@
 bool apmode = false;
 IPAddress local_ip;
 
-
-
+double tempLastWifiTask;
+double tempStartWifiTask;
+bool wifiReady  =  false;
 String IpAddress2String(const IPAddress& ipAddress)
 {
   return String(ipAddress[0]) + String(".") +\
@@ -36,48 +37,54 @@ void AP(){
   }
 }
 
+void wifiTask(){
+  if  (!wifiReady){
+    if (millis() >= tempLastWifiTask + 500){
+      if (WiFi.status() == WL_CONNECTED) {
+        MDNS.begin("Petalot");
+        Serial.println();
+        Serial.println(WiFi.localIP());
+        wifiReady=true;
+        return;
+      }
+      if (WiFi.status() == WL_CONNECT_FAILED) {
+        AP();
+        wifiReady=true;
+        return;
+      }
+      if (millis() >= tempStartWifiTask + 10000){
+        AP();
+        wifiReady=true;
+        return;
+      }
+      Serial.print(".");
+      tempLastWifiTask = millis();
+      
+    }
+  }
+}
+
 void initWiFi()
-{     
+{
       
      if (!ssid){
         AP();
-        //status = "stopped";
+        wifiReady=true;
         return;
      } else {
-      IPAddress localip;
-      localip.fromString(LocalIP.c_str());
-      IPAddress subnet;
-      subnet.fromString(Subnet.c_str());
-      IPAddress gatewayip;
-      gatewayip.fromString(Gateway.c_str());
-
-     WiFi.begin(ssid, password); //Conexión a la red
-     if (!WiFi.config(localip, gatewayip, subnet,IPAddress(8, 8, 8, 8))) {
-      Serial.println("config wifi ips failed");
-     }
-     unsigned long wifiConnectStart = millis();
-    while (WiFi.status() != WL_CONNECTED) {
-      if (WiFi.status() == WL_CONNECT_FAILED) {
-        AP();
-        //status = "stopped";
-        Serial.println("Error conectado a la  wifi");
-        return;
-      }
-      if (millis() - wifiConnectStart > 10000) {
-        AP();
-        //status = "stopped";
-        return;
-      }
-      delay(500);
-      Serial.print(".");
-    }
-    if (!MDNS.begin("Petalot")) 
-   {             
-     Serial.println("Error iniciando mDNS");
-   }
-   //Serial.println("mDNS iniciado");
-   Serial.println();
-   Serial.println(WiFi.localIP());
+       IPAddress localip;
+       localip.fromString(LocalIP.c_str());
+       IPAddress subnet;
+       subnet.fromString(Subnet.c_str());
+       IPAddress gatewayip;
+       gatewayip.fromString(Gateway.c_str());
+       Serial.print("Connecting to ");
+       Serial.print(ssid);
+       WiFi.begin(ssid, password); //Conexión a la red
+       if (!WiFi.config(localip, gatewayip, subnet,IPAddress(8, 8, 8, 8))) {
+        Serial.println("config wifi ips failed");
+       }
+       tempStartWifiTask = millis();
    }
 }
 

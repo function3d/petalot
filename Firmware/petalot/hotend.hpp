@@ -55,8 +55,6 @@ void initHotend(){
 }
 
 
-
-
 void hotendReadTempTask() {
   if (status == "stopped" && myPID.GetMode() == AUTOMATIC){
     myPID.SetMode(MANUAL);
