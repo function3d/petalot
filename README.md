@@ -18,7 +18,7 @@ This is your project if you are an environmentally conscious person, you 3D prin
 
 ![electronics](https://github.com/function3d/petalot/raw/master/Schematic/electronics.jpg)
  - [See BOM](https://docs.google.com/spreadsheets/d/1Pbo5h8JskjI6m1uH4NZ2JOgRXYX2zOXm9W2migb8n0c/edit?usp=sharing) for electronics parts.
- - [Gerber for PCB fabrication](https://github.com/function3d/petalot/raw/master/Schematic/Gerber_v1.1_2022-08-18.zip)
+ - [Gerber for PCB fabrication](https://github.com/function3d/petalot/raw/master/Schematic/Gerber_v1.1_2023-01-02.zip)
  - [Schematic](https://github.com/function3d/petalot/tree/master/Schematic)
  - [Firmware](https://github.com/function3d/petalot/tree/master/Firmware)
  - [Before switching on the electronics for the first time](https://github.com/function3d/petalot/blob/5b1d409dda7f66e7040381943212c45b0bf8b62b/before%20you%20switching%20on%20the%20electronics.md)

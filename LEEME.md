@@ -18,7 +18,7 @@ Este es tu projecto si eres una persona concienciada por el medio ambiente, impr
 
 ![electronics](https://github.com/function3d/petalot/raw/master/Schematic/electronics.jpg)
  - [BOM](https://docs.google.com/spreadsheets/d/1Pbo5h8JskjI6m1uH4NZ2JOgRXYX2zOXm9W2migb8n0c/edit?usp=sharing) for electronics parts.
- - [Gerber para la fabricacion de la PCB](https://github.com/function3d/petalot/raw/master/Schematic/Gerber_v1.1_2022-08-18.zip)
+ - [Gerber para la fabricacion de la PCB](https://github.com/function3d/petalot/raw/master/Schematic/Gerber_v1.1_2023-01-02.zip)
  - [Esquema electrónico](https://github.com/function3d/petalot/tree/master/Schematic)
  - [Firmware](https://github.com/function3d/petalot/tree/master/Firmware)
 
