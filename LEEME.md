@@ -12,12 +12,12 @@ Empieza aqui: [Preguntas frecuentes](https://function3d.xyz/)
 Este es tu projecto si eres una persona concienciada por el medio ambiente, imprimes en 3D por hobby, tienes conocimientos basicos de electronica y te gusta hacer cosas.
 
 ## Lista de materiales necesarios
- - [BOM](https://docs.google.com/spreadsheets/d/1QrsbV1TAUxwC-E0CKtm_DCh9_VTj5VazpKik1_OQ4T8/edit?usp=sharing)
+ - [BOM](https://github.com/function3d/petalot/blob/master/BOM.md)
 
 ## Electronica
 
 ![electronics](https://github.com/function3d/petalot/raw/master/Schematic/electronics.jpg)
- - [BOM](https://docs.google.com/spreadsheets/d/1QrsbV1TAUxwC-E0CKtm_DCh9_VTj5VazpKik1_OQ4T8/edit?usp=sharing) for electronics parts.
+ - [BOM](https://github.com/function3d/petalot/blob/master/BOM.md) for electronics parts.
  - [Gerber para la fabricacion de la PCB](https://github.com/function3d/petalot/raw/master/Schematic/Gerber_v1.1_2023-01-02.zip)
  - [Esquema electrónico](https://github.com/function3d/petalot/tree/master/Schematic)
  - [Firmware](https://github.com/function3d/petalot/tree/master/Firmware)
