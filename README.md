@@ -4,7 +4,7 @@
 
 ## From PET Bottle To 3D Filament
 
-### If you prefer that I manufacture the machine and the cutter send me an email with the country of shipment and I will be happy to respond with a quote. ###
+### If you prefer that I make and send you the machine and the cutter send me an email with the shipping country and I will be happy to reply with a quote. ###
 
 Start here: [FAQs](https://function3d.xyz/)
 
