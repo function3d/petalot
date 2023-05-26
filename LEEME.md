@@ -2,7 +2,7 @@
 
 ## De botella de plástico PET a filamento 3D
 
-###Si prefieres que yo te fabrique la maquina y el cortador enviame un email con el pais de envio y encantado te responderé con un presupuesto.###
+### Si prefieres que yo te fabrique la maquina y el cortador enviame un email con el pais de envio y encantado te responderé con un presupuesto. ###
 
 Empieza aqui: [Preguntas frecuentes](https://function3d.xyz/)
 
