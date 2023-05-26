@@ -2,7 +2,7 @@
 
 ## De botella de plástico PET a filamento 3D
 
-### **Esta "maquina"** es solo un tercio de lo que necesitas, las otras dos partes igual de importantes son la "habilidad" y el "tiempo" que se necesita para desarrollar dicha habilidad.
+###Si prefieres que yo te fabrique la maquina y el cortador enviame un email con el pais de envio y encantado te responderé con un presupuesto.###
 
 Empieza aqui: [Preguntas frecuentes](https://function3d.xyz/)
 
@@ -21,6 +21,7 @@ Este es tu projecto si eres una persona concienciada por el medio ambiente, impr
  - [Gerber para la fabricacion de la PCB](https://github.com/function3d/petalot/raw/master/Schematic/Gerber_v1.1_2023-01-02.zip)
  - [Esquema electrónico](https://github.com/function3d/petalot/tree/master/Schematic)
  - [Firmware](https://github.com/function3d/petalot/tree/master/Firmware)
+ - [Before switching on the electronics for the first time](https://github.com/function3d/petalot/blob/5b1d409dda7f66e7040381943212c45b0bf8b62b/before%20you%20switching%20on%20the%20electronics.md)
 
 ## STLs
  - [carpeta con los STLs](https://github.com/function3d/petalot/tree/master/STLs)

@@ -4,6 +4,8 @@
 
 ## From PET Bottle To 3D Filament
 
+###If you prefer that I manufacture the machine and the cutter send me an email with the country of shipment and I will be happy to respond with a quote.###
+
 Start here: [FAQs](https://function3d.xyz/)
 
 ![Petalot](https://github.com/function3d/petalot/raw/master/Media/petalot_v1.1.jpg)
