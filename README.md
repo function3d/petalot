@@ -20,16 +20,16 @@ This is your project if you are an environmentally conscious person, you 3D prin
 
 ![electronics](https://github.com/function3d/petalot/raw/master/Schematic/electronics.jpg)
  - [See BOM](https://github.com/function3d/petalot/blob/master/BOM.md) for electronics parts.
- - [Gerber for PCB fabrication](https://github.com/function3d/petalot/raw/master/Schematic/Gerber_v1.1_2023-01-02.zip)
+ - [Gerber for PCB fabrication, just upload this zip file to jlcpcb.com and order your PCBs](https://github.com/function3d/petalot/raw/master/Schematic/Gerber_v1.1_2023-01-02.zip)
  - [Schematic](https://github.com/function3d/petalot/tree/master/Schematic)
  - [Firmware](https://github.com/function3d/petalot/tree/master/Firmware)
  - [Before switching on the electronics for the first time](https://github.com/function3d/petalot/blob/5b1d409dda7f66e7040381943212c45b0bf8b62b/before%20you%20switching%20on%20the%20electronics.md)
 ## STLs
- - [STLs folder](https://github.com/function3d/petalot/tree/master/STLs)
+ - [STLs folder and Print Guide](https://github.com/function3d/petalot/tree/master/STLs)
 ![petalot](https://github.com/function3d/petalot/raw/master/STLs/petalot_v1.1.png)
 	 
 ## Bottle cutter
- - [STLs folder](https://github.com/function3d/petalot/tree/master/STLs/Cutter)
+ - [STLs folder](https://github.com/function3d/petalot/tree/master/STLs) Two versions are available for 608zz and 6200zz bearings
  - [Youtube video how to make it](https://www.youtube.com/watch?v=eTBnhKWMYQk)
 ![Bottle cutter](https://github.com/function3d/petalot/raw/master/STLs/Cutter/bottlecutter.jpg)
 
