@@ -2,6 +2,8 @@ STLs are exclusively reserved for private and personal use. It means not selling
 
 [License](https://creativecommons.org/licenses/by-nc-sa/4.0/)
 
+![petalot](https://github.com/function3d/petalot/raw/master/STLs/petalot_v1.1.png)
+
 # Print Guide
 
 Material Usage: 425g.
