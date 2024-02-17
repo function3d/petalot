@@ -3,6 +3,7 @@
 
 double T;          //current temp
 
+
 bool F = false;
 bool Fc = false;
 bool Fi = false; 
@@ -32,16 +33,17 @@ double Thermistor(float Volts) {
 
 void start(){
     if (tempLastStart==0){
+      Fs = 0;
+      Ts = 0;
       status = "working";
-      V = Vo;
       tempLastStart = millis();
       if (tempLastStart==0) tempLastStart = 1;
     }
 }
 
 void stop(){
+    
     status = "stopped";
-    V = 0;
     tempLastStart = 0;
     ifttt();
 }
@@ -97,20 +99,23 @@ void hotendReadTempTask() {
     }
 
     F = Fc;
+    if (Fe) {
+      if (Fc && tempLastFilament > 0 && millis() >= tempLastFilament + 3*1000){
+        Fi = true;
+      }
+      
+      if (!Fc && Fi && tempLastNoFilament > 0 && millis() >= tempLastNoFilament + 500) { // no filament
+        stop();
+        tempLastNoFilament = 0;
+        Fi = false;
+      }
+      
+      if (!Fc && !Fi && tempLastStart > 0 && millis() >= tempLastStart + 5*60*1000) { // no filament for 5 min
+        stop();
+      }
+    }
 
-    if (Fc && tempLastFilament > 0 && millis() >= tempLastFilament + 3*1000){
-      Fi = true;
-    }
     
-    if (!Fc && Fi && tempLastNoFilament > 0 && millis() >= tempLastNoFilament + 500) { // no filament
-      stop();
-      tempLastNoFilament = 0;
-      Fi = false;
-    }
-    
-    if (!Fc && !Fi && tempLastStart > 0 && millis() >= tempLastStart + 5*60*1000) { // no filament for 5 min
-      stop();
-    }
 
     tempLastSample = millis();
     

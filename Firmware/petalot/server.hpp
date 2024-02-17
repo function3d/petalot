@@ -80,36 +80,68 @@ Check your Browserslist config to be sure that your targets are set up correctly
         @apply mx-2 px-4 relative flex flex-col min-w-0 grow break-words bg-white rounded mt-4 xl:mb-0 shadow-lg p-4;
       }
         .card .title{
-        @apply text-slate-400 font-bold text-xs;
+        @apply text-zinc-400 font-bold text-xs;
         }
         .card .value{
-        @apply font-semibold text-xl text-slate-700 inline;
+        @apply font-semibold text-xl text-zinc-700 inline;
         }
+        .card .msg{
+        @apply  text-xs inline text-zinc-400;
+        }
+        .card .msg.off{
+        @apply  text-red-400;
+        }
+        .card button{
+            @apply  bg-zinc-300 hover:bg-zinc-400 text-zinc-800 font-bold py-1 px-3        
+        } 
+        .card button.prev{
+            @apply   rounded-l        
+        } 
+        .card button.next{
+            @apply  rounded-r        
+        } 
 
     }
   </style>
 </head>
-<body class="bg-slate-600" x-data="petalot()"
+<body class="bg-zinc-600" x-data="petalot()"
      x-init="
     fetchConf('get')
     fetchTele('tele')
-    setInterval(function(){ fetchTele('tele') }, 1000)
+    setInterval(function(){ fetchTele('tele') }, 2000)
     ">
     <div class="w-11/12 lg:w-1/2 mx-auto">
-        <div class="card font-bold text-xl flex-row" href="#pablo">PETALOT <span class="text-slate-400 text-sm m-1.5">by @function.3d</span></div>
+        <div class="card font-bold text-xl flex-row  justify-between">
+        <div>
+PETALOT <span class="text-zinc-500 text-sm"><br><a class="underline" href="https://linktr.ee/function.3d">function.3d </a></span>
+</div>
+<div class="text-zinc-400 text-sm align-middle text-right"><span class="text-zinc-600">≈<span x-text="Math.round(tele['Fs'])/100"></span>m</span> (<span x-text="tele['Ts']"></span>) session<br><span class="text-zinc-600">≈<span x-text="Math.round(tele['Ft'])/100"></span>m</span> (<span x-text="tele['Tt']"></span>) always</div>
+</div>
+
         <div class="flex flex-col sm:flex-row mx-auto items-stretch">
           
             <template x-for="el in ui">
-                <div :class="el.type">
-                    <div class="title" x-text="el.title"></div>
+                <div :class="el.type" class="sm:w-1/4" >
+                    <div class="title" x-text="el.title + (el.number && el.valueAlt!=el.value?'(' + tele[el.valueAlt] + ')':'')"></div>
 
                     <div><div class="value" x-text="(el.value_type=='bool')?tele[el.value]?el.true:el.false:tele[el.value]"></div> <span x-text="el.unit"></span>
                         <label x-show="el.toggle" :for="'toggle-'+el.title" class="float-right inline-flex relative items-center cursor-pointer">
-                      <input @click="fetchTele('set?'+el.value+'='+($event.target.checked?1:0))" x-model="tele[el.value]" type="checkbox" :id="'toggle-'+el.title" class="sr-only peer" >
-                      <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-slate-300 dark:peer-focus:ring-slate-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-slate-600"></div>
+                      <input @click="fetchTele('set?'+el.valueAlt+'='+($event.target.checked?1:0))" x-model="tele[el.valueAlt]" type="checkbox" :id="'toggle-'+el.title" class="sr-only peer" >
+                      <div class="w-11 h-6 bg-gray-100 peer-focus:outline-none dark:peer-focus:ring-zinc-800 rounded-full peer dark:bg-zinc-400 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-zinc-600"></div>
+
                     
                     </label>
+                    <label x-show="el.number" :for="'toggle-'+el.title" class="float-right inline-flex relative items-center cursor-pointer">
+                                            <button class="prev" @click="fetchTele('set?'+el.valueAlt+'='+(tele[el.valueAlt]-el.inc))" x-model="tele[el.valueAlt]" :id="'toggle-'+el.title"  >-</button>
+                                          <button class="next" @click="fetchTele('set?'+el.valueAlt+'='+(tele[el.valueAlt]+el.inc))" x-model="tele[el.valueAlt]" :id="'toggle-'+el.title"  >+</button>
+                                          
+                                          
+
+                                        
+                    </label>
                     </div>
+                    <div class="msg off" x-show="el.msgOff && !tele[el.valueAlt]" x-text="el.msgOff""></div>
+                    <div class="msg" x-show="el.msg" x-text="el.msg"></div>
                     
                 </div>
             </template>
@@ -119,23 +151,33 @@ Check your Browserslist config to be sure that your targets are set up correctly
             <div x-show="show">
             <div class="flex flex-col">
             <template x-for="[entry,value] in Object.entries(conf)" >
-                <div   :style="'order:'+ fields[entry]['order']">
+                <div   :style="'order:'+ fields[entry]['order']" x-show="!fields[entry]['hide']">
                     <div class="title" x-text="fields[entry]['title']"></div>
-                    <input :tabindex="fields[entry]['order']"  class="shadow appearance-none border mb-4 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" x-model="conf[entry]">
+                    <input :tabindex="fields[entry]['order']"  class="shadow appearance-none border mb-4 rounded w-full py-2 px-1 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" x-model="conf[entry]">
                     
                 </div>        
             </template>
             </div>
-            <button x-text="save" class="bg-slate-500 hover:bg-slate-700 text-white font-bold py-2 px-4 rounded float-right" @click="fetchConf('set?'+ new URLSearchParams(conf));save='Saved!';setInterval(function(){ save='Save' }, 3000) ">
-              Save
+            <button class="bg-zinc-500 hover:bg-zinc-700 text-white m-2 font-bold py-2 px-4 rounded float-right" @click="window.confirm('Are you sure?')?fetchConf('set?'+ new URLSearchParams(conf)):false">
+              Update
             </button>
-            <button class="bg-red-500 hover:bg-red-700 text-white mr-2 font-bold py-2 px-4 rounded float-right" @click="fetchConf('reset')">
-              Reset
+            <button class="!bg-red-500 hover:!bg-red-700 !text-white m-2 font-bold py-2 px-4 rounded float-right " @click="window.confirm('Are you sure?')?fetchConf('reset'):false">
+              Factory default
             </button>
             </div>
         </div>
     </div>
 <script>
+function toHHMMSS(sec_num) {
+    var hours   = Math.floor(sec_num / 3600);
+    var minutes = Math.floor((sec_num - (hours * 3600)) / 60);
+    var seconds = sec_num - (hours * 3600) - (minutes * 60);
+
+    //if (hours   < 10) {hours   = "0"+hours;}
+    //if (minutes < 10) {minutes = "0"+minutes;}
+    //if (seconds < 10) {seconds = "0"+seconds;}
+    return hours+'h'+minutes+'m';
+}
 function petalot() {
     return {
         tele : {
@@ -154,13 +196,16 @@ function petalot() {
                 })
                 .then((data) => {
                     this.conf = data;
-                    this.conf.Vo = this.conf.Vo/2;
+                    delete this.conf.Vo;
+                    delete this.conf.To;
+                    delete this.conf.Tm;
+                    delete this.conf.Fe;
                  })
         },
         fields:{
-          To:{order:"1",title:"Temperature"},
-          Vo:{order:"2",title:"Speed"},
-          Tm:{order:"3",title:"Maximum Temperature"},
+          To:{order:"1",title:"Temperature", hide:true},
+          Vo:{order:"2",title:"Speed", hide:true},
+          Tm:{order:"3",title:"Maximum Temperature", hide:true},
           Kp:{order:"4",title:"Kp"},
           Ki:{order:"5",title:"Ki"},
           Kd:{order:"6",title:"Kd"},
@@ -183,14 +228,21 @@ function petalot() {
                     this.tele.V = data.V/2,
                     this.tele.T= Math.round(data.T),
                     this.tele.F= data.F,
+                    this.tele.Fe= data.Fe,
+                    this.tele.Ft= data.Ft,
+                    this.tele.Fs= data.Fs,
+                    this.tele.Ts= toHHMMSS(data.Ts),
+                    this.tele.Tt= toHHMMSS(data.Tt),
+                    this.tele.To= data.To,
+                    this.tele.Vo= data.Vo/2,
                     this.tele.status = data.status
                  })
         },
         ui : [
-            { type: 'card', title: 'Status', value: 'status', unit:'', value_type:'bool', toggle:true, true:'working', false:'stopped' },
-            { type: 'card', title: 'Temperature', value: 'T', unit:'°C' },
-            { type: 'card', title: 'Speed', value: 'V', unit:'cm/min' },
-            { type: 'card', title: 'Filament', value: 'F' , unit:'', value_type:'bool', true:'detected', false:'no detected' }
+            { type: 'card', title: 'Status', value: 'status', valueAlt: 'status', unit:'', value_type:'bool', toggle:true, true:'working', false:'stopped' },
+            { type: 'card', title: 'Temperature', value: 'T', valueAlt: 'To', unit:'°C', number:true, msg:'min:150, max:240', inc:5 },
+            { type: 'card', title: 'Speed', value: 'Vo', valueAlt: 'Vo',  unit:'cm/min', number:true, msg:'min:5, max:20', inc:1 },
+            { type: 'card', title: 'Filament', value: 'F' , unit:'', valueAlt: 'Fe', value_type:'bool', toggle:true, true:'detected', false:'no detected',msgOff:'When the bottle is finished the filament will get stuck in the gears and the gears will break.' }
 
 
 
@@ -210,26 +262,6 @@ ${r?'Expression: "'+r+`"
 </html>
 )rawliteral";
 
-static const char PROGMEM INDEX_HTML_APMODE[] = R"rawliteral(
-<html>
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-</head>
-<body>
-    <form style="width: 50%; min-width:250px;margin:0 auto;display:flex; flex-direction:column" action="set">
-<h2>Wifi parameters</h2>
-    <div>ssid</div><input id="ssid" name="ssid">
-    <br><div>password</div><input id="password" name="password">
-    <br><div>ip</div><input id="LocalIP" name="LocalIP">
-    <br><div>Gateway</div><input id="Gateway" name="Gateway">
-    <br><div>subnet</div><input id="Subnet" name="Subnet">
-    <br><input type="submit" value="Save">
-    </form>        
-</body>
-</html>
-)rawliteral";
-
 
 void handleNotFound() {
   server.send(404, "text/plain", "Not found");
@@ -238,17 +270,21 @@ void handleNotFound() {
 void tele() {
   String r;
   r = String("{") +
-      "\"time\":" + String(millis()) +
-      ",\"status\":" + (status=="working"?"true":"false") +
+      //"\"time\":" + String(millis()) +
+      "\"status\":" + (status=="working"?"true":"false") +
       ",\"T\":" + String(T) +
-      //",\"To\":" + String(To) +
-      ",\"V\":" + String(V) +
+      ",\"To\":" + String(To) +
+      ",\"Vo\":" + String(Vo) +
       ",\"F\":" + String(F) +
-      //",\"Fc\":" + String(Fc) +
+      ",\"Fe\":" + (Fe?"true":"false") +
+      ",\"Ft\":" + String(Ft) +
+      ",\"Fs\":" + String(Fs) +
+      ",\"Tt\":" + String(Tt) +
+      ",\"Ts\":" + String(Ts) +
       //",\"Fi\":" + String(Fi) +
       //",\"tempLastStart\":" + String(tempLastStart) +
       //",\"tempLastFilament\":" + String(tempLastFilament) +
-      ",\"Output\":" + Output +  //String(map(Output, 0, 255, 0, 100))
+      //",\"Output\":" + Output +  //String(map(Output, 0, 255, 0, 100))
       //",\"msg\":\"" + msg + "\"" +
       //",\"config\":"+ printConf() +
       "}";
@@ -258,52 +294,27 @@ void get(){
   server.send(200, "text/html", printConf());
 }
 void reset(){
-  resetConfiguration();
+  factoryReset();
 }
 void set() {
-  bool save = false;
-  bool reboot = false;
-  
   String ToChange = server.arg(String("To"));
-  if (ToChange != "" && ToChange.toFloat() <= Tm && ToChange.toFloat() >= 120) {
-    save = true;
-    To = ToChange.toInt();
-    //if (To!=0) Tco = To;
+  if (ToChange != ""){
+    if (ToChange.toFloat() <= 240 && ToChange.toFloat() >= 150) {
+      To = ToChange.toInt();
+      Tm= To;
+      saveConfiguration(false);
+    }
+    tele();
+    return;   
   }
   String VoChange = server.arg(String("Vo"));
-  if (VoChange != "" && VoChange.toFloat() <= 20 && VoChange.toFloat() >= 5) {
-    save = true;
-    Vo = VoChange.toInt()*2;
-    //if (Vo!=0) Vco = Vo;
-  }
-  String KpChange = server.arg(String("Kp"));
-  if (KpChange != "") {
-    save = true;
-    Kp = KpChange.toDouble();
-    myPID.SetTunings(Kp, Ki, Kd);
-  }
-  String KiChange = server.arg(String("Ki"));
-  if (KiChange != "") {
-    save = true;
-    Ki = KiChange.toDouble();
-    myPID.SetTunings(Kp, Ki, Kd);
-  }
-  String KdChange = server.arg(String("Kd"));
-  if (KdChange != "") {
-    save = true;
-    Kd = KdChange.toDouble();
-    myPID.SetTunings(Kp, Ki, Kd);
-  }
-  String MaxChange = server.arg(String("Max"));
-  if (MaxChange != "") {
-    save = true;
-    Max = MaxChange.toDouble();
-    myPID.SetOutputLimits(0,Max);
-  }
-  String TmChange = server.arg(String("Tm"));
-  if (TmChange != "" && TmChange.toFloat() <= 270 && TmChange.toFloat() >= 150) {
-    save = true;
-    Tm = TmChange.toFloat();
+  if (VoChange != "") {
+    if (VoChange.toFloat() <= 20 && VoChange.toFloat() >= 5) {
+      Vo = VoChange.toInt()*2;
+      saveConfiguration(false);
+    }
+    tele();
+    return;   
   }
   String statusChange = server.arg(String("status"));
   if (statusChange != "") {
@@ -311,66 +322,78 @@ void set() {
       start();
      else
       stop();
+    saveConfiguration(false);
+    tele();
+    return;    
+  }
+  String FeChange = server.arg(String("Fe"));
+  if (FeChange != "") {
+    if (FeChange.toFloat() || FeChange=="true")
+      Fe = true;
+     else
+      Fe = false;
+    saveConfiguration(false);
+    tele();
+    return;   
+  }
+  String KpChange = server.arg(String("Kp"));
+  if (KpChange != "") {
+    Kp = KpChange.toDouble();
+    myPID.SetTunings(Kp, Ki, Kd);
+  }
+  String KiChange = server.arg(String("Ki"));
+  if (KiChange != "") {
+    Ki = KiChange.toDouble();
+    myPID.SetTunings(Kp, Ki, Kd);
+  }
+  String KdChange = server.arg(String("Kd"));
+  if (KdChange != "") {
+    Kd = KdChange.toDouble();
+    myPID.SetTunings(Kp, Ki, Kd);
+  }
+  String MaxChange = server.arg(String("Max"));
+  if (MaxChange != "") {
+    Max = MaxChange.toDouble();
+    myPID.SetOutputLimits(0,Max);
   }
   String R1Change = server.arg(String("R1"));
   if (R1Change != "") {
-    save = true;
     R1 = R1Change.toInt();
   }
   String ssidChange = server.arg(String("ssid"));
   if (ssidChange != "") {
-    save = true;
     ssidChange.toCharArray(ssid, sizeof(ssid)); 
   }
   String passwordChange = server.arg(String("password"));
   if (passwordChange != "") {
-    save = true;
     passwordChange.toCharArray(password, sizeof(password)); 
   }
   String _ifttt_event_name = server.arg(String("ifttt_event_name"));
   if (_ifttt_event_name!="") {
-    save = true;
     ifttt_event_name = _ifttt_event_name;
   }
   String _ifttt_api_key = server.arg(String("ifttt_api_key"));
   if (_ifttt_api_key!="") {
-    save = true;
     ifttt_api_key = _ifttt_api_key;
   }
   String LocalIPChange = server.arg(String("LocalIP"));
   if (LocalIPChange!="") {
-    save = true;
-    reboot = true;
     LocalIP = LocalIPChange;
   }
   String SubnetChange = server.arg(String("Subnet"));
   if (SubnetChange!="") {
-    save = true;
-    reboot = true;
     Subnet = SubnetChange;
   }
   String gatewayChange = server.arg(String("Gateway"));
   if (gatewayChange!="") {
-    save = true;
-    reboot = true;
     Gateway = gatewayChange;
   }
-  
-  
-  if (save) {
-     saveConfiguration();
-     return;
-  }
-
-  tele();
-  
+  server.send(200, "text/html", printConf());
+  saveConfiguration(true);
 }
 
 void handleRoot()
 {
-  //if (apmode)
-  //  server.send_P(200, "text/html", INDEX_HTML_APMODE);
-  //else
     server.send_P(200, "text/html", INDEX_HTML);
 }
 
@@ -380,12 +403,13 @@ void InitServer()
 {
   server.on("/", handleRoot);
   server.on("/get", get);
-  server.on("/tele", set);
+  server.on("/tele", tele);
   server.on("/set", set);
   server.on("/reset", reset);
   server.onNotFound([]() {
       handleNotFound();             
   });
   server.enableCORS(true);
+  httpUpdater.setup(&server);
   server.begin();
 }

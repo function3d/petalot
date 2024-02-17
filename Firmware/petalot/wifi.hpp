@@ -1,6 +1,9 @@
 #include <ESP8266WiFi.h>
 #include <ESP8266HTTPClient.h>
 #include <ESP8266mDNS.h>
+#include <ESP8266HTTPUpdateServer.h>
+
+ESP8266HTTPUpdateServer httpUpdater;
 
 bool apmode = false;
 IPAddress local_ip;
@@ -66,7 +69,7 @@ void wifiTask(){
 
 void initWiFi()
 {
-      
+    
      if (!ssid){
         AP();
         wifiReady=true;
