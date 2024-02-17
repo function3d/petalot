@@ -1,5 +1,5 @@
 # How to flash the firmware
- - Install this https://github.com/esphome/esphome-flasher
+ - Install this [esphome-flasher](https://github.com/esphome/esphome-flasher/releases)
  - Open esphome-flasher
  - Select your serial port where you have connected the wemos
  - Go to browser and search and open petalot.ino.d1_mini.bin
