@@ -5,6 +5,7 @@
   String status;
   double To;
   int Vo = 0;
+  bool Fe = true; //filament sensor enabled
   int Tm;
   double Kp;
   double Ki;
@@ -18,6 +19,8 @@
   char password[64];
   String ifttt_event_name = "petalot_stopped";
   String ifttt_api_key = "";
+
+  
   
   StaticJsonDocument<512> doc;
 
@@ -32,7 +35,7 @@ String printConf() {
   
 }
 
-void saveConfiguration() {
+void saveConfiguration(bool reset=true) {
   SPIFFS.remove("/config.json");
   File file = SPIFFS.open("/config.json", "w");
   if (!file) {
@@ -41,6 +44,7 @@ void saveConfiguration() {
   }
   doc["To"] = To;
   doc["Vo"] = Vo;
+  doc["Fe"] = Fe;
   doc["Tm"] = Tm;
   doc["Kp"] = Kp;
   doc["Ki"] = Ki;
@@ -59,18 +63,28 @@ void saveConfiguration() {
   }
   Serial.println(printConf());
   file.close();
+  if (reset) {
+    analogWrite(PIN_HEATER, 0);
+    ESP.restart();
+  }
+}
+
+ void factoryReset() {
+  SPIFFS.remove("/config.json");
+  SPIFFS.remove("/stats.json");
   analogWrite(PIN_HEATER, 0);
   ESP.restart();
-  
-}
+  } 	
+
 
 void  resetConfiguration(){
     Serial.println("reset");
     strcpy(ssid, "");         
     strcpy(password, "");
-    To = 220;
+    To = 230;
     Vo = 40;
-    Tm = 230;
+    Fe = true;
+    Tm = 240;
     Kp = 23.0;
     Ki = 0.043;
     Kd = 160.0;
@@ -81,7 +95,7 @@ void  resetConfiguration(){
     R1 = 10000;
     ifttt_event_name = "";
     ifttt_api_key = "";
-    saveConfiguration();
+    saveConfiguration(true);
 }
 
 void readConfigurationSerial(){
@@ -123,8 +137,6 @@ void loadConfiguration(bool reset=false) {
       msg = "Failed to open /config.json";
       Serial.println("Failed to open /config.json");
       resetConfiguration();
-      analogWrite(PIN_HEATER, 0);
-      ESP.restart();
     }
     DeserializationError error = deserializeJson(doc, file);
     if (error) {
@@ -147,6 +159,7 @@ void loadConfiguration(bool reset=false) {
   //To = Tco;
   Vo = doc["Vo"] | 40;
   //Vo = Vco;
+  Fe = doc["Fe"];
   Tm = doc["Tm"] | 230;
   Kp = doc["Kp"]?doc["Kp"].as<double>():23.0;
   Ki = doc["Ki"]?doc["Ki"].as<double>():0.043;
@@ -162,6 +175,7 @@ void loadConfiguration(bool reset=false) {
   Serial.println();
   Serial.println("To:Temperature");
   Serial.println("Vo:Speed");
+  Serial.println("Fe:Filament enabled");
   Serial.println("Tm:Maximum Temperature");
   Serial.println("Kp:Kp");
   Serial.println("Ki:Ki");

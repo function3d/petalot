@@ -1,7 +1,5 @@
 #include <AccelStepper.h>
 
-int V;
-
 AccelStepper stepper(AccelStepper::FULL2WIRE,PIN_STEP,PIN_DIR);
 
 int stepsPerRevolution = 200;  
@@ -27,5 +25,6 @@ void stepperRunTask(){
   if (status == "working") {
     stepper.setSpeed(Vo*stepsPerRevolution);
     stepper.runSpeed();
+    
   }
 }
