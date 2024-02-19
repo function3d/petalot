@@ -12,7 +12,7 @@
 | 1      | Power Supply 12v 5A                                                                           | https://s.click.aliexpress.com/e/_Dd9tuCD  |
 | 1      | Wemos D1 MINI V4.0                                                                            | https://s.click.aliexpress.com/e/_DCS2eTP  |
 | 1      | Mini DC-DC 12-24V To 5V 3A Step Down                                                          | https://s.click.aliexpress.com/e/_DDFlE5x  |
-| 1      | Mini Micro Limit Switch Roller Lever Arm  (MS-1A-14.5-P)                                      | https://s.click.aliexpress.com/e/_DDFlE5x  |
+| 1      | Mini Micro Limit Switch Roller Lever Arm  (MS-1A-14.5-P)                                      | https://www.aliexpress.us/item/2251832780304404.html  |
 | 1      | A4988 DRV8825 Stepper Motor Driver With Heat sink                                             | https://s.click.aliexpress.com/e/_DFlq3ud  |
 | 1      | Nema 17 stepper motor 42 motor height 38mm 1.2A D shaped shaft                                | https://s.click.aliexpress.com/e/_DFHxH3L  |
 | 1      | IRLZ44N MOSFET                                                                                | https://s.click.aliexpress.com/e/_DdfBlgH  |
