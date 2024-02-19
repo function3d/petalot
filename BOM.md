@@ -16,7 +16,7 @@
 | 1      | A4988 DRV8825 Stepper Motor Driver With Heat sink                                             | https://s.click.aliexpress.com/e/_DFlq3ud  |
 | 1      | Nema 17 stepper motor 42 motor height 38mm 1.2A D shaped shaft                                | https://s.click.aliexpress.com/e/_DFHxH3L  |
 | 1      | IRLZ44N MOSFET                                                                                | https://s.click.aliexpress.com/e/_DdfBlgH  |
-| 1      | Hotend MK8 2V 40W                                                                             | https://s.click.aliexpress.com/e/_DnlMNy5  |
+| 1      | Hotend MK8 12V 40W                                                                            | https://s.click.aliexpress.com/e/_DnlMNy5  |
 | 1      | capacitor 16V 100uf                                                                           | https://s.click.aliexpress.com/e/_DBG3FJL  |
 | 1      | pin header Male                                                                               | https://s.click.aliexpress.com/e/_Ddfzf6p  |
 | 1      | pin header Female                                                                             | https://s.click.aliexpress.com/e/_Ddfzf6p  |
