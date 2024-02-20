@@ -35,5 +35,5 @@
 | 3      | M3 8mm Bolt for the motor gear, motor mount and electronic box                                | https://s.click.aliexpress.com/e/_DelUMSF  |
 | 2      | M3 OD 4.2mm Insert Nut for motor mount and electronic box                                     | https://s.click.aliexpress.com/e/_DDwB54l  |
 | 2      | M3 14mm Bolt for motor mount                                                                  | https://s.click.aliexpress.com/e/_DelUMSF  |
-| 50cm   | Paracord 2mm(nylon string) (I used polyester thread for kite handles)                         | https://s.click.aliexpress.com/e/_99oV2Hv  |
+| 50cm   | Paracord 2mm(nylon string) (I used polyester thread for kite handles)                         | https://s.click.aliexpress.com/e/_DEO5fqN  |
 | 1      | 1.7mm drill bit                                                                               | https://s.click.aliexpress.com/e/_DD1SYVV  |
