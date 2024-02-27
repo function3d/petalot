@@ -4,14 +4,12 @@
 
 ## From PET Bottle To 3D Filament
 
-### If you prefer that I manufacture the machine and/or the cutter you can see prices and buy in my [online store](https://function3d.xyz/shop/) ###
+### If you prefer that I manufacture and sell you the machine and/or the cutter you can see prices and buy in my [online store](https://function3d.xyz/shop/) ###
 
 Start here: [FAQs](https://function3d.xyz/)
 
 ![Petalot](https://media.printables.com/media/prints/768657/images/5981899_e2213b92-ea05-45aa-b2a0-d09c3b89ab01_5064c29f-d677-434f-a3f0-bcc99cecfa07/thumbs/inside/1920x1440/jpg/img_20230926_111523-scaled.webp)
 ![Petalot](https://media.printables.com/media/prints/768657/images/5981900_c73e3c49-8ff8-4cf6-8fbb-524eb7140379_8f15c03f-d751-4d3e-a7f3-eed43117af80/thumbs/inside/1920x1440/jpg/img_20230926_111511-scaled.webp)
-
-This is your project if you are an environmentally conscious person, you 3D print for hobby, you have basic notions of electronics and you like to make things.
 
 ## Bill of material
  - [BOM](https://github.com/function3d/petalot/blob/master/BOM.md)
