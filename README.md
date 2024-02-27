@@ -18,7 +18,7 @@ Start here: [FAQs](https://function3d.xyz/)
 
 ![electronics](https://function3d.xyz/wp-content/uploads/2023/08/IMG20230803213235.jpg)
  - [See BOM](https://github.com/function3d/petalot/blob/master/BOM.md) for electronics parts.
- - [Gerber](https://github.com/function3d/petalot/raw/master/Schematic/Gerber_v1.1_2023-01-02.zip) for PCB fabrication, just upload this zip file to [jlcpcb.com](https://jlcpcb.com/?from=FUNC) and order your PCBs
+ - [Gerber](https://github.com/function3d/petalot/raw/master/Schematic/Gerber_v1.1_2023-01-02.zip) for PCB fabrication, just upload this zip file to [jlcpcb.com](https://jlcpcb.com/?from=FUNC) and order your PCB.
  - [Schematic](https://github.com/function3d/petalot/tree/master/Schematic)
  - [Firmware](https://github.com/function3d/petalot/tree/master/Firmware)
  - [Before switching on the electronics for the first time](https://github.com/function3d/petalot/blob/5b1d409dda7f66e7040381943212c45b0bf8b62b/before%20you%20switching%20on%20the%20electronics.md)
