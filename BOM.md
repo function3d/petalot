@@ -18,8 +18,7 @@
 | 1      | IRLZ44N MOSFET                                                                                | https://s.click.aliexpress.com/e/_DdfBlgH  |
 | 1      | Hotend MK8 12V 40W                                                                            | https://s.click.aliexpress.com/e/_DnlMNy5  |
 | 1      | capacitor 16V 100uf                                                                           | https://s.click.aliexpress.com/e/_DBG3FJL  |
-| 1      | pin header Male                                                                               | https://s.click.aliexpress.com/e/_Ddfzf6p  |
-| 1      | pin header Female                                                                             | https://s.click.aliexpress.com/e/_Ddfzf6p  |
+| 1      | pin header Male and Female                                                                    | https://s.click.aliexpress.com/e/_DcGRnY9  |
 | 3      | Terminal Block Connector 2P                                                                   | https://s.click.aliexpress.com/e/_DkqRgFn  |
 | 2      | 10K ohms resistors                                                                            | https://s.click.aliexpress.com/e/_DeT9AAz  |
 | 50cm   | 2 wire cable for limit switch, digital signal                                                 | https://s.click.aliexpress.com/e/_Dlnn1bd  |
