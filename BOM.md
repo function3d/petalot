@@ -7,7 +7,7 @@
 | 2      | M8 Hex Nylon Insert Lock Nut Self-locking Locknut                                             | https://s.click.aliexpress.com/e/_DeFb56h  |
 | 2      | M8x50mm Threaded Rod                                                                          | https://s.click.aliexpress.com/e/_DeTWIUt  |
 | 1      | M8x30mm Threaded Rod                                                                          | https://s.click.aliexpress.com/e/_DeTWIUt  |
-| 1      | 48mm M6 Rod
+| 1      | 48cm M6 Rod
 |        | ----------- **Electronics** -------------- |  |
 | 1      | Power Supply 12v 5A                                                                           | https://s.click.aliexpress.com/e/_Dd9tuCD  |
 | 1      | Wemos D1 MINI V4.0                                                                            | https://s.click.aliexpress.com/e/_DCS2eTP  |
