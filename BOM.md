@@ -21,8 +21,8 @@
 | 1      | pin header Male and Female                                                                    | https://s.click.aliexpress.com/e/_DcGRnY9  |
 | 3      | Terminal Block Connector 2P                                                                   | https://s.click.aliexpress.com/e/_DkqRgFn  |
 | 2      | 10K ohms resistors                                                                            | https://s.click.aliexpress.com/e/_DeT9AAz  |
-| 50cm   | 2 wire cable for limit switch, digital signal                                                 | https://s.click.aliexpress.com/e/_Dlnn1bd  |
-| 50cm   | 2 wire cable for 5A+                                                                          | https://s.click.aliexpress.com/e/_Dlnn1bd |
+| 30cm   | 2 wire cable for limit switch, digital signal                                                 | https://s.click.aliexpress.com/e/_Dlnn1bd  |
+| 25cm   | 2 wire cable for 5A+ (I use the leftover cable from the hotend heater.)                       | https://s.click.aliexpress.com/e/_Dlnn1bd |
 | 1      | 10A 250V Inlet Module Plug Rocker Switch Male Power Socket 3 Pin IEC320 C14 switch + Fuse New | https://s.click.aliexpress.com/e/_DmuNpxf  |
 |        | ----------- **Hardware** ---------------- |  |
 | 18     | Screw M2 x 16mm (100pcs) (union between large gears and pulley)                               | https://s.click.aliexpress.com/e/_Dcg0sln  |
