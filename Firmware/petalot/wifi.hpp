@@ -5,8 +5,9 @@
 
 ESP8266HTTPUpdateServer httpUpdater;
 
-bool apmode = false;
 IPAddress local_ip;
+
+bool apmode = false;
 
 double tempLastWifiTask;
 double tempStartWifiTask;
@@ -69,8 +70,8 @@ void wifiTask(){
 
 void initWiFi()
 {
-    
-     if (!ssid){
+
+     if (strlen(ssid) == 0){
         AP();
         wifiReady=true;
         return;
@@ -81,8 +82,9 @@ void initWiFi()
        subnet.fromString(Subnet.c_str());
        IPAddress gatewayip;
        gatewayip.fromString(Gateway.c_str());
-       Serial.print("Connecting to ");
+       Serial.println("Connecting to ");
        Serial.print(ssid);
+       WiFi.mode(WIFI_STA);
        WiFi.begin(ssid, password); //Conexión a la red
        if (!WiFi.config(localip, gatewayip, subnet,IPAddress(8, 8, 8, 8))) {
         Serial.println("config wifi ips failed");
