@@ -6,7 +6,9 @@
   double To;
   int Vo = 0;
   bool Fe = true; //filament sensor enabled
+  double T;          //current temp
   int Tm;
+  int Tmi = 150;
   double Kp;
   double Ki;
   double Kd;
@@ -46,9 +48,9 @@ void saveConfiguration(bool reset=true) {
   doc["Vo"] = Vo;
   doc["Fe"] = Fe;
   doc["Tm"] = Tm;
-  doc["Kp"] = Kp;
-  doc["Ki"] = Ki;
-  doc["Kd"] = Kd;
+  //doc["Kp"] = Kp;
+  //doc["Ki"] = Ki;
+  //doc["Kd"] = Kd;
   doc["Max"] = Max;
   doc["ssid"] = ssid;
   doc["password"] = password;
@@ -56,8 +58,8 @@ void saveConfiguration(bool reset=true) {
   doc["Subnet"] = Subnet;
   doc["Gateway"] = Gateway;
   doc["R1"] = R1;
-  doc["ifttt_event_name"] = ifttt_event_name;
-  doc["ifttt_api_key"] = ifttt_api_key;
+  //doc["ifttt_event_name"] = ifttt_event_name;
+  //doc["ifttt_api_key"] = ifttt_api_key;
   if (serializeJson(doc, file) == 0) {
     msg = "Failed to write to file";
   }
@@ -84,17 +86,17 @@ void  resetConfiguration(){
     To = 230;
     Vo = 40;
     Fe = true;
-    Tm = 240;
-    Kp = 23.0;
-    Ki = 0.043;
-    Kd = 160.0;
+    Tm = 250;
+    //Kp = 23.0;
+    //Ki = 0.043;
+    //Kd = 160.0;
     Max = 200;
     LocalIP = "";
     Subnet = "255.255.255.0";
     Gateway = "";
     R1 = 10000;
-    ifttt_event_name = "";
-    ifttt_api_key = "";
+    //ifttt_event_name = "";
+    //ifttt_api_key = "";
     saveConfiguration(true);
 }
 
@@ -108,8 +110,8 @@ void readConfigurationSerial(){
     DeserializationError error = deserializeJson(docInput, Serial);
     if (error)
     {
-      Serial.println(F("deserializeJson() failed: "));
-      Serial.println(error.c_str());
+      //Serial.println(F("deserializeJson() failed: "));
+      //Serial.println(error.c_str());
       return;
     } else {
       //Serial.println("json ok");
@@ -148,47 +150,47 @@ void loadConfiguration(bool reset=false) {
     file.close();
 
   strlcpy(ssid,                  
-          doc["ssid"] | "",  
+          doc["ssid"],  
           sizeof(ssid));         
 
   strlcpy(password,                  
-          doc["password"] | "",  
+          doc["password"],  
           sizeof(password));         
 
-  To = doc["To"] | 220;
+  To = doc["To"] | 230;
   //To = Tco;
   Vo = doc["Vo"] | 40;
   //Vo = Vco;
   Fe = doc["Fe"];
-  Tm = doc["Tm"] | 230;
-  Kp = doc["Kp"]?doc["Kp"].as<double>():23.0;
-  Ki = doc["Ki"]?doc["Ki"].as<double>():0.043;
-  Kd = doc["Kd"]?doc["Kd"].as<double>():160.0;
+  Tm = doc["Tm"] | 250;
+  //Kp = doc["Kp"]?doc["Kp"].as<double>():23.0;
+  //Ki = doc["Ki"]?doc["Ki"].as<double>():0.043;
+  //Kd = doc["Kd"]?doc["Kd"].as<double>():160.0;
   Max = doc["Max"]?doc["Max"].as<double>():200;
   LocalIP = doc["LocalIP"] | "";
   Subnet = doc["Subnet"] | "255.255.255.0";
   Gateway = doc["Gateway"] | "";
   R1 = doc["R1"] | 10000;
-  ifttt_event_name = doc["ifttt_event_name"] | "";
-  ifttt_api_key = doc["ifttt_api_key"] | "";
+  //ifttt_event_name = doc["ifttt_event_name"] | "";
+  //ifttt_api_key = doc["ifttt_api_key"] | "";
 
   Serial.println();
   Serial.println("To:Temperature");
   Serial.println("Vo:Speed");
   Serial.println("Fe:Filament enabled");
   Serial.println("Tm:Maximum Temperature");
-  Serial.println("Kp:Kp");
-  Serial.println("Ki:Ki");
-  Serial.println("Kd:Kd");
+  //Serial.println("Kp:Kp");
+  //Serial.println("Ki:Ki");
+  //Serial.println("Kd:Kd");
   Serial.println("R1:R1");
   Serial.println("Max:Maximum value for MOSFET (0-255)");
   Serial.println("ssid:SSID");
   Serial.println("password:SSID Password");
   Serial.println("LocalIP:IP address");
-  Serial.println("Subnet:Subnet");
-  Serial.println("Gateway:Gateway");
-  Serial.println("ifttt_event_name:IFTTT Event Name");
-  Serial.println("ifttt_api_key:IFTTT API Key");
+  //Serial.println("Subnet:Subnet");
+  //Serial.println("Gateway:Gateway");
+  //Serial.println("ifttt_event_name:IFTTT Event Name");
+  //Serial.println("ifttt_api_key:IFTTT API Key");
   Serial.println(printConf());
 
 }

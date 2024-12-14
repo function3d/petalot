@@ -2,6 +2,7 @@
 
 
 ESP8266WebServer server(80);
+double tempLastServer;
 
 
 static const char PROGMEM INDEX_HTML[] = R"rawliteral(
@@ -113,7 +114,7 @@ Check your Browserslist config to be sure that your targets are set up correctly
     <div class="w-11/12 lg:w-1/2 mx-auto">
         <div class="card font-bold text-xl flex-row  justify-between">
         <div>
-PETALOT <span class="text-zinc-500 text-sm"><br><a class="underline" href="https://linktr.ee/function.3d">function.3d </a></span>
+PETALOT <span class="msg">v1.3</span><span class="text-zinc-500 text-sm"><br><a class="underline" href="https://linktr.ee/function.3d">function.3d </a></span>
 </div>
 <div class="text-zinc-400 text-sm align-middle text-right"><span class="text-zinc-600">≈<span x-text="Math.round(tele['Fs'])/100"></span>m</span> (<span x-text="tele['Ts']"></span>) session<br><span class="text-zinc-600">≈<span x-text="Math.round(tele['Ft'])/100"></span>m</span> (<span x-text="tele['Tt']"></span>) always</div>
 </div>
@@ -122,9 +123,9 @@ PETALOT <span class="text-zinc-500 text-sm"><br><a class="underline" href="https
           
             <template x-for="el in ui">
                 <div :class="el.type" class="sm:w-1/4" >
-                    <div class="title" x-text="el.title + (el.number && el.valueAlt!=el.value?'(' + tele[el.valueAlt] + ')':'')"></div>
+                    <div class="title" x-text="el.title + (el.number && el.valueAlt!=el.value?' (' + tele[el.valueAlt] + ')':'')"></div>
 
-                    <div><div class="value" x-text="(el.value_type=='bool')?tele[el.value]?el.true:el.false:tele[el.value]"></div> <span x-text="el.unit"></span>
+                    <div><div class="value" x-text="((el.value_type=='bool')?tele[el.value]?el.true:el.false:tele[el.value])"></div> <span x-text="el.unit"></span> <span class="msg" x-show="el.working" x-text="'('+tele[el.working]+')'"></span>
                         <label x-show="el.toggle" :for="'toggle-'+el.title" class="float-right inline-flex relative items-center cursor-pointer">
                       <input @click="fetchTele('set?'+el.valueAlt+'='+($event.target.checked?1:0))" x-model="tele[el.valueAlt]" type="checkbox" :id="'toggle-'+el.title" class="sr-only peer" >
                       <div class="w-11 h-6 bg-gray-100 peer-focus:outline-none dark:peer-focus:ring-zinc-800 rounded-full peer dark:bg-zinc-400 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-zinc-600"></div>
@@ -157,9 +158,10 @@ PETALOT <span class="text-zinc-500 text-sm"><br><a class="underline" href="https
                     
                 </div>        
             </template>
+            
             </div>
             <button class="bg-zinc-500 hover:bg-zinc-700 text-white m-2 font-bold py-2 px-4 rounded float-right" @click="window.confirm('Are you sure?')?fetchConf('set?'+ new URLSearchParams(conf)):false">
-              Update
+              Save
             </button>
             <button class="!bg-red-500 hover:!bg-red-700 !text-white m-2 font-bold py-2 px-4 rounded float-right " @click="window.confirm('Are you sure?')?fetchConf('reset'):false">
               Factory default
@@ -198,26 +200,26 @@ function petalot() {
                     this.conf = data;
                     delete this.conf.Vo;
                     delete this.conf.To;
-                    delete this.conf.Tm;
+                    //delete this.conf.Tm;
                     delete this.conf.Fe;
                  })
         },
         fields:{
-          To:{order:"1",title:"Temperature", hide:true},
-          Vo:{order:"2",title:"Speed", hide:true},
-          Tm:{order:"3",title:"Maximum Temperature", hide:true},
-          Kp:{order:"4",title:"Kp"},
-          Ki:{order:"5",title:"Ki"},
-          Kd:{order:"6",title:"Kd"},
-          R1:{order:"7",title:"R1"},
+          //To:{order:"1",title:"Temperature", hide:true},
+          //Vo:{order:"2",title:"Speed", hide:true},
+          Tm:{order:"3",title:"Maximum Temperature",hide:false},
+          //Kp:{order:"4",title:"Kp", hide:true},
+          //Ki:{order:"5",title:"Ki", hide:true},
+          //Kd:{order:"6",title:"Kd", hide:true},
+          //R1:{order:"7",title:"R1", hide:true},
           Max:{order:"8",title:"Maximum value for MOSFET (0-255)"},
           ssid:{order:"9",title:"SSID"},
           password:{order:"10",title:"SSID Password"},
-          LocalIP:{order:"11",title:"IP address"},
-          Subnet:{order:"12",title:"Subnet"},
-          Gateway:{order:"13",title:"Gateway"},
-          ifttt_event_name:{order:"14",title:"IFTTT Event Name"},
-          ifttt_api_key:{order:"15",title:"IFTTT API Key"},
+          LocalIP:{order:"11",title:"IP address",hide:false},
+          Subnet:{order:"12",title:"Subnet", hide:false},
+          Gateway:{order:"13",title:"Gateway", hide:false},
+          //ifttt_event_name:{order:"14",title:"IFTTT Event Name"},
+          //ifttt_api_key:{order:"15",title:"IFTTT API Key"},
         },
         fetchTele(url){
             fetch(url)
@@ -226,7 +228,7 @@ function petalot() {
                 })
                 .then((data) => {
                     this.tele.V = data.V/2,
-                    this.tele.T= Math.round(data.T),
+                    this.tele.T= (this.tele.T>200)?Math.round((this.tele.T + Math.round(data.T))/2):Math.round(data.T),
                     this.tele.F= data.F,
                     this.tele.Fe= data.Fe,
                     this.tele.Ft= data.Ft,
@@ -236,12 +238,13 @@ function petalot() {
                     this.tele.To= data.To,
                     this.tele.Vo= data.Vo/2,
                     this.tele.status = data.status
+                    this.tele.Output = data.Output
                  })
         },
         ui : [
             { type: 'card', title: 'Status', value: 'status', valueAlt: 'status', unit:'', value_type:'bool', toggle:true, true:'working', false:'stopped' },
-            { type: 'card', title: 'Temperature', value: 'T', valueAlt: 'To', unit:'°C', number:true, msg:'min:150, max:240', inc:5 },
-            { type: 'card', title: 'Speed', value: 'Vo', valueAlt: 'Vo',  unit:'cm/min', number:true, msg:'min:5, max:20', inc:1 },
+            { type: 'card', title: 'Temperature', value: 'T', valueAlt: 'To', working: 'Output', unit:'°C', number:true, msg:'min:150, max:250', inc:5 },
+            { type: 'card', title: 'Speed', value: 'Vo', valueAlt: 'Vo', unit:'cm/min', number:true, msg:'min:5, max:25', inc:1 },
             { type: 'card', title: 'Filament', value: 'F' , unit:'', valueAlt: 'Fe', value_type:'bool', toggle:true, true:'detected', false:'no detected',msgOff:'When the bottle is finished the filament will get stuck in the gears and the gears will break.' }
 
 
@@ -284,7 +287,7 @@ void tele() {
       //",\"Fi\":" + String(Fi) +
       //",\"tempLastStart\":" + String(tempLastStart) +
       //",\"tempLastFilament\":" + String(tempLastFilament) +
-      //",\"Output\":" + Output +  //String(map(Output, 0, 255, 0, 100))
+      ",\"Output\":\"" + String(map(Output, 0, Max, 0, 100)) + "%\""
       //",\"msg\":\"" + msg + "\"" +
       //",\"config\":"+ printConf() +
       "}";
@@ -299,9 +302,8 @@ void reset(){
 void set() {
   String ToChange = server.arg(String("To"));
   if (ToChange != ""){
-    if (ToChange.toFloat() <= 240 && ToChange.toFloat() >= 150) {
+    if (ToChange.toFloat() <= Tm && ToChange.toFloat() >= Tmi) {
       To = ToChange.toInt();
-      Tm= To;
       saveConfiguration(false);
     }
     tele();
@@ -309,8 +311,9 @@ void set() {
   }
   String VoChange = server.arg(String("Vo"));
   if (VoChange != "") {
-    if (VoChange.toFloat() <= 20 && VoChange.toFloat() >= 5) {
+    if (VoChange.toFloat() <= 25 && VoChange.toFloat() >= 5) {
       Vo = VoChange.toInt()*2;
+      stepper.setSpeed(Vo*stepsPerRevolution);
       saveConfiguration(false);
     }
     tele();
@@ -336,25 +339,26 @@ void set() {
     tele();
     return;   
   }
-  String KpChange = server.arg(String("Kp"));
+  /*String KpChange = server.arg(String("Kp"));
   if (KpChange != "") {
     Kp = KpChange.toDouble();
-    myPID.SetTunings(Kp, Ki, Kd);
+    //myPID.SetTunings(Kp, Ki, Kd);
   }
   String KiChange = server.arg(String("Ki"));
   if (KiChange != "") {
     Ki = KiChange.toDouble();
-    myPID.SetTunings(Kp, Ki, Kd);
+    //myPID.SetTunings(Kp, Ki, Kd);
   }
   String KdChange = server.arg(String("Kd"));
   if (KdChange != "") {
     Kd = KdChange.toDouble();
-    myPID.SetTunings(Kp, Ki, Kd);
+    //myPID.SetTunings(Kp, Ki, Kd);
   }
+  */
   String MaxChange = server.arg(String("Max"));
   if (MaxChange != "") {
     Max = MaxChange.toDouble();
-    myPID.SetOutputLimits(0,Max);
+    //myPID.SetOutputLimits(0,Max);
   }
   String R1Change = server.arg(String("R1"));
   if (R1Change != "") {
@@ -394,6 +398,7 @@ void set() {
 
 void handleRoot()
 {
+    analogWrite(PIN_HEATER, 0);
     server.send_P(200, "text/html", INDEX_HTML);
 }
 
@@ -412,4 +417,11 @@ void InitServer()
   server.enableCORS(true);
   httpUpdater.setup(&server);
   server.begin();
+}
+
+void serverTask(){
+  //if (millis() >= tempLastServer + 100){
+    server.handleClient();
+  //  tempLastServer = millis();
+  //}
 }

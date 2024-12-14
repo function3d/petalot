@@ -1,16 +1,11 @@
-#include <PID_v1.h>
 
-
-double T;          //current temp
-
+#define T_THRESHOLD 50
 
 bool F = false;
 bool Fc = false;
 bool Fi = false; 
 
 double Output;  //pid output
-
-PID myPID(&T, &Output, &To, Kp, Ki, Kd, DIRECT);
 
 double tempLastSample;
 double tempLastFilament;
@@ -44,38 +39,49 @@ void start(){
 void stop(){
     
     status = "stopped";
+    analogWrite(PIN_HEATER, 0);
+    digitalWrite(LED_BUILTIN , HIGH);
     tempLastStart = 0;
     ifttt();
 }
 
 void initHotend(){
-  myPID.SetTunings(Kp, Ki, Kd);
-  myPID.SetOutputLimits(0,Max);
   pinMode(LED_BUILTIN , OUTPUT);
   pinMode(PIN_FILAMENT , INPUT);
   if (status=="") start();
 }
 
+double control(){
+
+  if (status == "stopped"){
+    return 0;
+  }
+  if (T > Tm || isnan(T)){
+    return 0;
+  }
+  if (T < 0){
+    stop();
+    return 0;
+  }
+  if(T > To){
+    return 0;
+  }
+   if(T < To - T_THRESHOLD){
+    return Max;
+  }
+  return Max/2;
+}
 
 void hotendReadTempTask() {
-  if (status == "stopped" && myPID.GetMode() == AUTOMATIC){
-    myPID.SetMode(MANUAL);
-    Output = 0;
-  }
-  if (status == "working" && myPID.GetMode() != AUTOMATIC){
-    myPID.SetMode(AUTOMATIC);
-  }
-  if (millis() >= tempLastSample + 100)
+  
+  if (millis() >= tempLastSample + 250)
   {
     Thermistor(analogRead(PIN_THERMISTOR)); //Volt to temp, update T
-    if (T > Tm || isnan(T)){
-      Output = 0;
-    } else {
-      myPID.Compute();
-    }
+    Output = control();
+    analogWrite(PIN_HEATER, Output);
     if (status == "working"){
       start();
-      if (T > 150 || T > To + 20 ) {
+      if (T > Tmi && T < Tm + 30) {
         digitalWrite(LED_BUILTIN , LOW);// target temperature ready
       } else {
         digitalWrite(LED_BUILTIN , !digitalRead(LED_BUILTIN));//reaching tarjet temp
@@ -84,7 +90,7 @@ void hotendReadTempTask() {
         digitalWrite(LED_BUILTIN , HIGH);
     }
 
-    analogWrite(PIN_HEATER, Output);
+    
     
     Fc = digitalRead(PIN_FILAMENT);
     

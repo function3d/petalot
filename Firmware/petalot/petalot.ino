@@ -29,8 +29,8 @@ void setup() {
   DeserializationError error = deserializeJson(stats, file);
   if (error)
   {
-      Serial.println(F("deserializeJson() failed: "));
-      Serial.println(error.c_str());
+      //Serial.println(F("deserializeJson() failed: "));
+      //Serial.println(error.c_str());
   } else {
     Ft  = stats["Ft"]?stats["Ft"].as<double>():0.0;
     Tt  = stats["Tt"]?stats["Tt"].as<double>():0.0;
@@ -40,7 +40,7 @@ void setup() {
 
 void loop() {
   wifiTask();
-  server.handleClient();
+  serverTask();
   hotendReadTempTask();
   stepperRunTask();
   ArduinoOTA.handle();
