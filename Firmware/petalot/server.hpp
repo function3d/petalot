@@ -2,7 +2,6 @@
 
 
 ESP8266WebServer server(80);
-double tempLastServer;
 
 
 static const char PROGMEM INDEX_HTML[] = R"rawliteral(
@@ -78,22 +77,22 @@ Check your Browserslist config to be sure that your targets are set up correctly
     <style type="text/tailwindcss">
     @layer components {
       .card {
-        @apply mx-2 px-4 relative flex flex-col min-w-0 grow break-words bg-white rounded mt-4 xl:mb-0 shadow-lg p-4;
+        @apply mx-2 px-4 relative flex flex-col min-w-0 grow break-words bg-white text-zinc-700 rounded mt-4 xl:mb-0 shadow-lg p-4;
       }
         .card .title{
-        @apply text-zinc-400 font-bold text-xs;
+        @apply text-blue-400 font-bold text-xs;
         }
         .card .value{
         @apply font-semibold text-xl text-zinc-700 inline;
         }
         .card .msg{
-        @apply  text-xs inline text-zinc-400;
+        @apply  text-xs inline text-blue-400;
         }
         .card .msg.off{
         @apply  text-red-400;
         }
         .card button{
-            @apply  bg-zinc-300 hover:bg-zinc-400 text-zinc-800 font-bold py-1 px-3        
+            @apply  bg-blue-300 hover:bg-blue-400 text-blue-800 font-bold py-1 px-3        
         } 
         .card button.prev{
             @apply   rounded-l        
@@ -105,7 +104,7 @@ Check your Browserslist config to be sure that your targets are set up correctly
     }
   </style>
 </head>
-<body class="bg-zinc-600" x-data="petalot()"
+<body class="bg-blue-600" x-data="petalot()"
      x-init="
     fetchConf('get')
     fetchTele('tele')
@@ -114,21 +113,21 @@ Check your Browserslist config to be sure that your targets are set up correctly
     <div class="w-11/12 lg:w-1/2 mx-auto">
         <div class="card font-bold text-xl flex-row  justify-between">
         <div>
-PETALOT <span class="msg">v1.3</span><span class="text-zinc-500 text-sm"><br><a class="underline" href="https://linktr.ee/function.3d">function.3d </a></span>
+PETALOT <span class="msg">v1.3</span><span class="text-blue-400 text-sm"><br><a class="underline" href="https://linktr.ee/function.3d">function.3d </a></span>
 </div>
-<div class="text-zinc-400 text-sm align-middle text-right"><span class="text-zinc-600">≈<span x-text="Math.round(tele['Fs'])/100"></span>m</span> (<span x-text="tele['Ts']"></span>) session<br><span class="text-zinc-600">≈<span x-text="Math.round(tele['Ft'])/100"></span>m</span> (<span x-text="tele['Tt']"></span>) always</div>
+<div class="text-blue-400 text-sm align-middle text-right"><span class="text-zinc-600">≈<span x-text="Math.round(tele['Fs'])/100"></span>m</span> (<span x-text="tele['Ts']"></span>) session<br><span class="text-zinc-600">≈<span x-text="Math.round(tele['Ft'])/100"></span>m</span> (<span x-text="tele['Tt']"></span>) always</div>
 </div>
 
         <div class="flex flex-col sm:flex-row mx-auto items-stretch">
           
             <template x-for="el in ui">
                 <div :class="el.type" class="sm:w-1/4" >
-                    <div class="title" x-text="el.title + (el.number && el.valueAlt!=el.value?' (' + tele[el.valueAlt] + ')':'')"></div>
+                    <div class="title" x-text="el.title + (el.valueAlt && el.valueAlt!=el.value?' (' + tele[el.valueAlt] + ')':'')"></div>
 
                     <div><div class="value" x-text="((el.value_type=='bool')?tele[el.value]?el.true:el.false:tele[el.value])"></div> <span x-text="el.unit"></span> <span class="msg" x-show="el.working" x-text="'('+tele[el.working]+')'"></span>
                         <label x-show="el.toggle" :for="'toggle-'+el.title" class="float-right inline-flex relative items-center cursor-pointer">
                       <input @click="fetchTele('set?'+el.valueAlt+'='+($event.target.checked?1:0))" x-model="tele[el.valueAlt]" type="checkbox" :id="'toggle-'+el.title" class="sr-only peer" >
-                      <div class="w-11 h-6 bg-gray-100 peer-focus:outline-none dark:peer-focus:ring-zinc-800 rounded-full peer dark:bg-zinc-400 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-zinc-600"></div>
+                      <div class="w-11 h-6 bg-gray-100 peer-focus:outline-none dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-blue-400 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
 
                     
                     </label>
@@ -141,8 +140,9 @@ PETALOT <span class="msg">v1.3</span><span class="text-zinc-500 text-sm"><br><a 
                                         
                     </label>
                     </div>
-                    <div class="msg off" x-show="el.msgOff && !tele[el.valueAlt]" x-text="el.msgOff""></div>
                     <div class="msg" x-show="el.msg" x-text="el.msg"></div>
+                    <div class="msg off" x-show="el.warnMsg && !tele[el.warnCond]" x-text="el.warnMsg""></div>
+                    
                     
                 </div>
             </template>
@@ -160,11 +160,14 @@ PETALOT <span class="msg">v1.3</span><span class="text-zinc-500 text-sm"><br><a 
             </template>
             
             </div>
-            <button class="bg-zinc-500 hover:bg-zinc-700 text-white m-2 font-bold py-2 px-4 rounded float-right" @click="window.confirm('Are you sure?')?fetchConf('set?'+ new URLSearchParams(conf)):false">
+            <button class="bg-blue-500 hover:bg-blue-700 text-white m-2 font-bold py-2 px-4 rounded" @click="window.confirm('Are you sure?')?fetchConf('set?'+ new URLSearchParams(conf)):false">
               Save
             </button>
             <button class="!bg-red-500 hover:!bg-red-700 !text-white m-2 font-bold py-2 px-4 rounded float-right " @click="window.confirm('Are you sure?')?fetchConf('reset'):false">
               Factory default
+            </button>
+            <button @click="fetchTele('set?status=0');location.href='/update';" class="!bg-red-500 hover:!bg-red-700 !text-white m-2 font-bold py-2 px-4 rounded float-right ">
+              Firmware update
             </button>
             </div>
         </div>
@@ -200,26 +203,17 @@ function petalot() {
                     this.conf = data;
                     delete this.conf.Vo;
                     delete this.conf.To;
-                    //delete this.conf.Tm;
                     delete this.conf.Fe;
                  })
         },
         fields:{
-          //To:{order:"1",title:"Temperature", hide:true},
-          //Vo:{order:"2",title:"Speed", hide:true},
           Tm:{order:"3",title:"Maximum Temperature",hide:false},
-          //Kp:{order:"4",title:"Kp", hide:true},
-          //Ki:{order:"5",title:"Ki", hide:true},
-          //Kd:{order:"6",title:"Kd", hide:true},
-          //R1:{order:"7",title:"R1", hide:true},
           Max:{order:"8",title:"Maximum value for MOSFET (0-255)"},
           ssid:{order:"9",title:"SSID"},
           password:{order:"10",title:"SSID Password"},
           LocalIP:{order:"11",title:"IP address",hide:false},
           Subnet:{order:"12",title:"Subnet", hide:false},
           Gateway:{order:"13",title:"Gateway", hide:false},
-          //ifttt_event_name:{order:"14",title:"IFTTT Event Name"},
-          //ifttt_api_key:{order:"15",title:"IFTTT API Key"},
         },
         fetchTele(url){
             fetch(url)
@@ -231,11 +225,14 @@ function petalot() {
                     this.tele.T= (this.tele.T>200)?Math.round((this.tele.T + Math.round(data.T))/2):Math.round(data.T),
                     this.tele.F= data.F,
                     this.tele.Fe= data.Fe,
+                    this.tele.Te= data.Te,
                     this.tele.Ft= data.Ft,
                     this.tele.Fs= data.Fs,
                     this.tele.Ts= toHHMMSS(data.Ts),
                     this.tele.Tt= toHHMMSS(data.Tt),
                     this.tele.To= data.To,
+                    this.tele.Tm= data.Tm,
+                    this.tele.Tmi= data.Tmi,
                     this.tele.Vo= data.Vo/2,
                     this.tele.status = data.status
                     this.tele.Output = data.Output
@@ -243,9 +240,9 @@ function petalot() {
         },
         ui : [
             { type: 'card', title: 'Status', value: 'status', valueAlt: 'status', unit:'', value_type:'bool', toggle:true, true:'working', false:'stopped' },
-            { type: 'card', title: 'Temperature', value: 'T', valueAlt: 'To', working: 'Output', unit:'°C', number:true, msg:'min:150, max:250', inc:5 },
+            { type: 'card', title: 'Temperature', value: 'T', valueAlt: 'To', warnCond:'Te', working: 'Output', unit:'°C', number:true, msg:'min:200, max:250', inc:5, warnMsg:'Neither the motor nor the hotend will run without proper temperature readings, check thermistor'},
             { type: 'card', title: 'Speed', value: 'Vo', valueAlt: 'Vo', unit:'cm/min', number:true, msg:'min:5, max:25', inc:1 },
-            { type: 'card', title: 'Filament', value: 'F' , unit:'', valueAlt: 'Fe', value_type:'bool', toggle:true, true:'detected', false:'no detected',msgOff:'When the bottle is finished the filament will get stuck in the gears and the gears will break.' }
+            { type: 'card', title: 'Filament', value: 'F' , unit:'', valueAlt: 'Fe', warnCond: 'Fe', value_type:'bool', toggle:true, true:'detected', false:'no detected', warnMsg:'When the bottle is finished the filament will get stuck in the gears and the gears will break.' }
 
 
 
@@ -277,9 +274,12 @@ void tele() {
       "\"status\":" + (status=="working"?"true":"false") +
       ",\"T\":" + String(T) +
       ",\"To\":" + String(To) +
+      ",\"Tm\":" + String(Tm) +
+      ",\"Tmi\":" + String(Tmi) +
       ",\"Vo\":" + String(Vo) +
       ",\"F\":" + String(F) +
       ",\"Fe\":" + (Fe?"true":"false") +
+      ",\"Te\":" + (T>0?"true":"false") +
       ",\"Ft\":" + String(Ft) +
       ",\"Fs\":" + String(Fs) +
       ",\"Tt\":" + String(Tt) +
@@ -300,6 +300,7 @@ void reset(){
   factoryReset();
 }
 void set() {
+  
   String ToChange = server.arg(String("To"));
   if (ToChange != ""){
     if (ToChange.toFloat() <= Tm && ToChange.toFloat() >= Tmi) {
@@ -313,7 +314,6 @@ void set() {
   if (VoChange != "") {
     if (VoChange.toFloat() <= 25 && VoChange.toFloat() >= 5) {
       Vo = VoChange.toInt()*2;
-      stepper.setSpeed(Vo*stepsPerRevolution);
       saveConfiguration(false);
     }
     tele();
@@ -339,22 +339,16 @@ void set() {
     tele();
     return;   
   }
-  /*String KpChange = server.arg(String("Kp"));
-  if (KpChange != "") {
-    Kp = KpChange.toDouble();
-    //myPID.SetTunings(Kp, Ki, Kd);
+
+  /*******/
+  
+  String TmChange = server.arg(String("Tm"));
+  if (TmChange != ""){
+    if (TmChange.toFloat() <= 250 && TmChange.toFloat() >= Tmi) {
+      Tm = TmChange.toInt();
+    }  
   }
-  String KiChange = server.arg(String("Ki"));
-  if (KiChange != "") {
-    Ki = KiChange.toDouble();
-    //myPID.SetTunings(Kp, Ki, Kd);
-  }
-  String KdChange = server.arg(String("Kd"));
-  if (KdChange != "") {
-    Kd = KdChange.toDouble();
-    //myPID.SetTunings(Kp, Ki, Kd);
-  }
-  */
+
   String MaxChange = server.arg(String("Max"));
   if (MaxChange != "") {
     Max = MaxChange.toDouble();
@@ -372,14 +366,6 @@ void set() {
   if (passwordChange != "") {
     passwordChange.toCharArray(password, sizeof(password)); 
   }
-  String _ifttt_event_name = server.arg(String("ifttt_event_name"));
-  if (_ifttt_event_name!="") {
-    ifttt_event_name = _ifttt_event_name;
-  }
-  String _ifttt_api_key = server.arg(String("ifttt_api_key"));
-  if (_ifttt_api_key!="") {
-    ifttt_api_key = _ifttt_api_key;
-  }
   String LocalIPChange = server.arg(String("LocalIP"));
   if (LocalIPChange!="") {
     LocalIP = LocalIPChange;
@@ -393,7 +379,7 @@ void set() {
     Gateway = gatewayChange;
   }
   server.send(200, "text/html", printConf());
-  saveConfiguration(true);
+  saveConfiguration(false);
 }
 
 void handleRoot()
@@ -420,8 +406,5 @@ void InitServer()
 }
 
 void serverTask(){
-  //if (millis() >= tempLastServer + 100){
     server.handleClient();
-  //  tempLastServer = millis();
-  //}
 }

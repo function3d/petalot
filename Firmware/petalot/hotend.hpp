@@ -1,9 +1,8 @@
-
-#define T_THRESHOLD 50
-
 bool F = false;
 bool Fc = false;
-bool Fi = false; 
+bool Fi = false;
+
+#define T_THRESHOLD 50
 
 double Output;  //pid output
 
@@ -42,7 +41,6 @@ void stop(){
     analogWrite(PIN_HEATER, 0);
     digitalWrite(LED_BUILTIN , HIGH);
     tempLastStart = 0;
-    ifttt();
 }
 
 void initHotend(){
@@ -56,10 +54,10 @@ double control(){
   if (status == "stopped"){
     return 0;
   }
-  if (T > Tm || isnan(T)){
+  if (isnan(T)){
     return 0;
   }
-  if (T < 0){
+  if (T < -5){
     stop();
     return 0;
   }
@@ -69,18 +67,20 @@ double control(){
    if(T < To - T_THRESHOLD){
     return Max;
   }
-  return Max/2;
+  return Max/3;
+
+  
 }
+
 
 void hotendReadTempTask() {
   
-  if (millis() >= tempLastSample + 250)
+  if (millis() >= tempLastSample + 250) //250 is 4 times per second
   {
     Thermistor(analogRead(PIN_THERMISTOR)); //Volt to temp, update T
     Output = control();
     analogWrite(PIN_HEATER, Output);
     if (status == "working"){
-      start();
       if (T > Tmi && T < Tm + 30) {
         digitalWrite(LED_BUILTIN , LOW);// target temperature ready
       } else {
@@ -90,13 +90,11 @@ void hotendReadTempTask() {
         digitalWrite(LED_BUILTIN , HIGH);
     }
 
-    
-    
     Fc = digitalRead(PIN_FILAMENT);
     
     if (Fc && !F) {
       tempLastFilament = millis();
-      start();
+      start(); //start the machine with the filament sensor
     }
     
     if (!Fc && F) {

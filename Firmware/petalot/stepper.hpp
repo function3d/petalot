@@ -26,6 +26,7 @@ void stepperRunTask(){
       stepperEnable = true;
     }
     if (status == "working" && T > Tmi) {
+      stepper.setSpeed(Vo*stepsPerRevolution);
       stepper.runSpeed();
       
     }

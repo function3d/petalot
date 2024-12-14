@@ -92,16 +92,3 @@ void initWiFi()
        tempStartWifiTask = millis();
    }
 }
-
-int ifttt(String value_1="", String value_2="", String value_3="")
-{
-  if (ifttt_event_name=="" || ifttt_api_key=="") return 0;
-  WiFiClient client;
-  HTTPClient http;
-  http.begin(client, "http://maker.ifttt.com/trigger/" +
-              ifttt_event_name+"/with/key/"+ifttt_api_key+
-              "?value1="+value_1+"&value2="+value_2+"&value3="+value_3);
-  int httpCode = http.GET();
-  http.end();
-  return httpCode;
-}
