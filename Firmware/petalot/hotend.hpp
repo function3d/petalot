@@ -1,8 +1,6 @@
 bool F = false;
-bool Fc = false;
-bool Fi = false;
-
-#define T_THRESHOLD 50
+bool Fcurrent = false;
+bool Finsert = false;
 
 double Output;  //pid output
 
@@ -10,6 +8,7 @@ double tempLastSample;
 double tempLastFilament;
 double tempLastNoFilament;
 double tempLastStart;
+double tempLastFilamentCheck;
 
 //thermistor
 float logR2, R2;
@@ -64,7 +63,10 @@ double control(){
   if(T > To){
     return 0;
   }
-   if(T < To - T_THRESHOLD){
+  if(T < 100){
+    return 255;
+  }
+  if(T < 150){
     return Max;
   }
   return Max/3;
@@ -74,54 +76,54 @@ double control(){
 
 
 void hotendReadTempTask() {
-  
+
   if (millis() >= tempLastSample + 250) //250 is 4 times per second
   {
     Thermistor(analogRead(PIN_THERMISTOR)); //Volt to temp, update T
     Output = control();
     analogWrite(PIN_HEATER, Output);
     if (status == "working"){
-      if (T > Tmi && T < Tm + 30) {
+      if (T > Tmi) {
         digitalWrite(LED_BUILTIN , LOW);// target temperature ready
       } else {
         digitalWrite(LED_BUILTIN , !digitalRead(LED_BUILTIN));//reaching tarjet temp
       }
     } else {
         digitalWrite(LED_BUILTIN , HIGH);
-    }
+    }  
 
-    Fc = digitalRead(PIN_FILAMENT);
+    tempLastSample = millis();
     
-    if (Fc && !F) {
+    //filament
+    Fcurrent = digitalRead(PIN_FILAMENT);
+      
+    if (Fcurrent && !F) {
       tempLastFilament = millis();
       start(); //start the machine with the filament sensor
     }
-    
-    if (!Fc && F) {
+      
+    if (!Fcurrent && F) {
       tempLastFilament = 0;
       tempLastNoFilament = millis();
     }
 
-    F = Fc;
-    if (Fe) {
-      if (Fc && tempLastFilament > 0 && millis() >= tempLastFilament + 3*1000){
-        Fi = true;
+    F = Fcurrent;
+
+    if (Fenable) {
+      if (Fcurrent && tempLastFilament > 0 && millis() >= tempLastFilament + 3*1000){
+        Finsert = true;
       }
       
-      if (!Fc && Fi && tempLastNoFilament > 0 && millis() >= tempLastNoFilament + 500) { // no filament
+      if (!Fcurrent && Finsert && tempLastNoFilament > 0 && millis() >= tempLastNoFilament + 500) { // no filament
         stop();
         tempLastNoFilament = 0;
-        Fi = false;
+        Finsert = false;
       }
       
-      if (!Fc && !Fi && tempLastStart > 0 && millis() >= tempLastStart + 5*60*1000) { // no filament for 5 min
+      if (!Fcurrent && !Finsert && tempLastStart > 0 && millis() >= tempLastStart + 5*60*1000) { // no filament for 5 min
         stop();
       }
     }
 
-    
-
-    tempLastSample = millis();
-    
   }
 }

@@ -113,7 +113,7 @@ Check your Browserslist config to be sure that your targets are set up correctly
     <div class="w-11/12 lg:w-1/2 mx-auto">
         <div class="card font-bold text-xl flex-row  justify-between">
         <div>
-PETALOT <span class="msg">v1.3</span><span class="text-blue-400 text-sm"><br><a class="underline" href="https://linktr.ee/function.3d">function.3d </a></span>
+PETALOT<br><span class="msg">v1.3.0</span><span class="text-blue-400 text-sm"><br><a class="underline" href="https://linktr.ee/function.3d">function.3d </a></span>
 </div>
 <div class="text-blue-400 text-sm align-middle text-right"><span class="text-zinc-600">≈<span x-text="Math.round(tele['Fs'])/100"></span>m</span> (<span x-text="tele['Ts']"></span>) session<br><span class="text-zinc-600">≈<span x-text="Math.round(tele['Ft'])/100"></span>m</span> (<span x-text="tele['Tt']"></span>) always</div>
 </div>
@@ -160,7 +160,7 @@ PETALOT <span class="msg">v1.3</span><span class="text-blue-400 text-sm"><br><a 
             </template>
             
             </div>
-            <button class="bg-blue-500 hover:bg-blue-700 text-white m-2 font-bold py-2 px-4 rounded" @click="window.confirm('Are you sure?')?fetchConf('set?'+ new URLSearchParams(conf)):false">
+            <button class="bg-blue-500 hover:bg-blue-700 text-white m-2 font-bold py-2 px-4 rounded" @click="window.confirm('Are you sure?')?fetchConf('set?'+ new URLSearchParams(conf)):false;window.location.reload();">
               Save
             </button>
             <button class="!bg-red-500 hover:!bg-red-700 !text-white m-2 font-bold py-2 px-4 rounded float-right " @click="window.confirm('Are you sure?')?fetchConf('reset'):false">
@@ -203,11 +203,10 @@ function petalot() {
                     this.conf = data;
                     delete this.conf.Vo;
                     delete this.conf.To;
-                    delete this.conf.Fe;
+                    delete this.conf.Fenable;
                  })
         },
         fields:{
-          Tm:{order:"3",title:"Maximum Temperature",hide:false},
           Max:{order:"8",title:"Maximum value for MOSFET (0-255)"},
           ssid:{order:"9",title:"SSID"},
           password:{order:"10",title:"SSID Password"},
@@ -224,14 +223,13 @@ function petalot() {
                     this.tele.V = data.V/2,
                     this.tele.T= (this.tele.T>200)?Math.round((this.tele.T + Math.round(data.T))/2):Math.round(data.T),
                     this.tele.F= data.F,
-                    this.tele.Fe= data.Fe,
+                    this.tele.Fenable= data.Fenable,
                     this.tele.Te= data.Te,
                     this.tele.Ft= data.Ft,
                     this.tele.Fs= data.Fs,
                     this.tele.Ts= toHHMMSS(data.Ts),
                     this.tele.Tt= toHHMMSS(data.Tt),
                     this.tele.To= data.To,
-                    this.tele.Tm= data.Tm,
                     this.tele.Tmi= data.Tmi,
                     this.tele.Vo= data.Vo/2,
                     this.tele.status = data.status
@@ -240,9 +238,9 @@ function petalot() {
         },
         ui : [
             { type: 'card', title: 'Status', value: 'status', valueAlt: 'status', unit:'', value_type:'bool', toggle:true, true:'working', false:'stopped' },
-            { type: 'card', title: 'Temperature', value: 'T', valueAlt: 'To', warnCond:'Te', working: 'Output', unit:'°C', number:true, msg:'min:200, max:250', inc:5, warnMsg:'Neither the motor nor the hotend will run without proper temperature readings, check thermistor'},
+            { type: 'card', title: 'Temperature', value: 'T', valueAlt: 'To', warnCond:'Te', working: 'Output', unit:'°C', number:true, msg:'min:200, max:300', inc:5, warnMsg:'Neither the motor nor the hotend will run without proper temperature readings, check thermistor'},
             { type: 'card', title: 'Speed', value: 'Vo', valueAlt: 'Vo', unit:'cm/min', number:true, msg:'min:5, max:25', inc:1 },
-            { type: 'card', title: 'Filament', value: 'F' , unit:'', valueAlt: 'Fe', warnCond: 'Fe', value_type:'bool', toggle:true, true:'detected', false:'no detected', warnMsg:'When the bottle is finished the filament will get stuck in the gears and the gears will break.' }
+            { type: 'card', title: 'Filament', value: 'F' , unit:'', valueAlt: 'Fenable', warnCond: 'Fenable', value_type:'bool', toggle:true, true:'detected', false:'no detected', warnMsg:'If you disable the filament sensor then it is likely that when the bottle runs out the filament will get stuck in the gears and break.' }
 
 
 
@@ -274,22 +272,16 @@ void tele() {
       "\"status\":" + (status=="working"?"true":"false") +
       ",\"T\":" + String(T) +
       ",\"To\":" + String(To) +
-      ",\"Tm\":" + String(Tm) +
       ",\"Tmi\":" + String(Tmi) +
       ",\"Vo\":" + String(Vo) +
       ",\"F\":" + String(F) +
-      ",\"Fe\":" + (Fe?"true":"false") +
+      ",\"Fenable\":" + (Fenable?"true":"false") +
       ",\"Te\":" + (T>0?"true":"false") +
       ",\"Ft\":" + String(Ft) +
       ",\"Fs\":" + String(Fs) +
       ",\"Tt\":" + String(Tt) +
       ",\"Ts\":" + String(Ts) +
-      //",\"Fi\":" + String(Fi) +
-      //",\"tempLastStart\":" + String(tempLastStart) +
-      //",\"tempLastFilament\":" + String(tempLastFilament) +
       ",\"Output\":\"" + String(map(Output, 0, Max, 0, 100)) + "%\""
-      //",\"msg\":\"" + msg + "\"" +
-      //",\"config\":"+ printConf() +
       "}";
   server.send(200, "text/html", r);
 }
@@ -329,25 +321,18 @@ void set() {
     tele();
     return;    
   }
-  String FeChange = server.arg(String("Fe"));
+  String FeChange = server.arg(String("Fenable"));
   if (FeChange != "") {
     if (FeChange.toFloat() || FeChange=="true")
-      Fe = true;
+      Fenable = true;
      else
-      Fe = false;
+      Fenable = false;
     saveConfiguration(false);
     tele();
     return;   
   }
 
   /*******/
-  
-  String TmChange = server.arg(String("Tm"));
-  if (TmChange != ""){
-    if (TmChange.toFloat() <= 250 && TmChange.toFloat() >= Tmi) {
-      Tm = TmChange.toInt();
-    }  
-  }
 
   String MaxChange = server.arg(String("Max"));
   if (MaxChange != "") {
@@ -379,7 +364,7 @@ void set() {
     Gateway = gatewayChange;
   }
   server.send(200, "text/html", printConf());
-  saveConfiguration(false);
+  saveConfiguration(true);
 }
 
 void handleRoot()

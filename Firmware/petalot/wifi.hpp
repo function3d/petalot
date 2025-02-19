@@ -88,6 +88,9 @@ void initWiFi()
        WiFi.begin(ssid, password); //Conexión a la red
        if (!WiFi.config(localip, gatewayip, subnet,IPAddress(8, 8, 8, 8))) {
         Serial.println("config wifi ips failed");
+        AP();
+        wifiReady=true;
+        return;
        }
        tempStartWifiTask = millis();
    }

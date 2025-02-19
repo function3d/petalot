@@ -5,9 +5,9 @@
   String status;
   double To;
   int Vo = 0;
-  bool Fe = true; //filament sensor enabled
+  bool Fenable = true; //filament sensor enabled
   double T;          //current temp
-  int Tm;
+  int Tm = 300;
   int Tmi = 200;
   double Max;
   String LocalIP;
@@ -39,8 +39,7 @@ void saveConfiguration(bool reset=true) {
   }
   doc["To"] = To;
   doc["Vo"] = Vo;
-  doc["Fe"] = Fe;
-  doc["Tm"] = Tm;
+  doc["Fenable"] = Fenable;
   doc["Max"] = Max;
   doc["ssid"] = ssid;
   doc["password"] = password;
@@ -72,9 +71,8 @@ void  resetConfiguration(){
     strcpy(ssid, "");         
     strcpy(password, "");
     To = 240;
-    Vo = 40;
-    Fe = true;
-    Tm = 250;
+    Vo = 50;
+    Fenable = true;
     Max = 225;
     LocalIP = "";
     Subnet = "255.255.255.0";
@@ -137,8 +135,7 @@ void loadConfiguration(bool reset=false) {
 
   To = doc["To"] | 240;
   Vo = doc["Vo"] | 40;
-  Fe = doc["Fe"];
-  Tm = doc["Tm"] | 250;
+  Fenable = doc["Fenable"];
   Max = doc["Max"]?doc["Max"].as<double>():200;
   LocalIP = doc["LocalIP"] | "";
   Subnet = doc["Subnet"] | "255.255.255.0";
@@ -147,8 +144,7 @@ void loadConfiguration(bool reset=false) {
   Serial.println();
   Serial.println("To:Temperature");
   Serial.println("Vo:Speed");
-  Serial.println("Fe:Filament enabled");
-  Serial.println("Tm:Maximum Temperature");
+  Serial.println("Fenable:Filament enabled");
   Serial.println("R1:R1");
   Serial.println("Max:Maximum value for MOSFET (0-255)");
   Serial.println("ssid:SSID");
