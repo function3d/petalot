@@ -1,3 +1,5 @@
+const char *version = "1.3.0";
+
 double Ft = 0; //filament total
 double Tt = 0; //filament total
 double Fs = 0; //filament total session
@@ -45,9 +47,9 @@ void loop() {
   stepperRunTask();
   ArduinoOTA.handle();
   readConfigurationSerial();
-  if ((F || !Fe) && status=="working" && millis() >= tempLastStats + 5000) {
-    Fs = Fs + (float)Vo/2/62*5;
-    Ft = Ft + (float)Vo/2/62*5; // centimetros hechos cada 5000 milisegundos
+  if ((F || !Fenable) && status=="working" && millis() >= tempLastStats + 5000) {
+    Fs = Fs + (float)Vo/2/65*5;
+    Ft = Ft + (float)Vo/2/65*5; // centimetros hechos cada 5000 milisegundos
     Tt = Tt + 5;
     Ts = Ts + 5;
     File file = SPIFFS.open("/stats.json", "w");
