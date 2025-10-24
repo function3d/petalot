@@ -1,7 +1,5 @@
 # Petalot
 
-[en Español](https://github.com/function3d/petalot/blob/master/LEEME.md)
-
 ## From PET Bottle To 3D Filament
 
 ### If you prefer that I manufacture and sell you the machine and/or the cutter you can see prices and buy in my [online store](https://function3d.xyz/shop/) ###
