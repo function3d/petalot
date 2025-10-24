@@ -1,8 +1,5 @@
 # Petalot
 
-[en Español](/LEEME.md)
-[em Portugês](/LEIAME.md)
-
 ## From PET Bottle To 3D Filament
 
 ### If you prefer that I manufacture and sell you the machine and/or the cutter you can see prices and buy in my [online store](https://function3d.xyz/shop/) ###
@@ -32,8 +29,7 @@ Start here: [FAQs](https://function3d.xyz/)
 ![Bottle cutter](https://media.printables.com/media/prints/724421/images/5749242_074b26ee-33c9-40a0-9510-5339837a0272_5f533519-88cf-4d6f-8295-58a2367b1ab2/thumbs/inside/1280x960/jpg/img_20240116_132113_crop.webp)
 
 ## Donation
-  [![Paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif)](https://www.paypal.com/donate/?hosted_button_id=CESEXLEFEU65Q)
-  [![Paypal](https://i.imgur.com/SEshqeh.png)](https://www.paypal.com/donate/?hosted_button_id=CESEXLEFEU65Q)
+  [![Buy Me a Coffee at ko-fi.com](https://storage.ko-fi.com/cdn/kofi6.png?v=6)](https://ko-fi.com/X7X6EH3YA)
 
 ## Social
   Follow me on [Youtube](https://www.youtube.com/channel/UC4UBuZ5YRTo5XYFUxdkmqkg), [Tiktok](https://www.tiktok.com/@function.3d) and [Instagram](https://www.instagram.com/function.3d/) for more tutorials and information.
