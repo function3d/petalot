@@ -1,33 +1,94 @@
-#include <PID_v1.h>
-
-
-double T;          //current temp
-
+#include <math.h>
 
 bool F = false;
-bool Fc = false;
-bool Fi = false; 
+bool Fcurrent = false;
+bool Finsert = false;
 
 double Output;  //pid output
-
-PID myPID(&T, &Output, &To, Kp, Ki, Kd, DIRECT);
 
 double tempLastSample;
 double tempLastFilament;
 double tempLastNoFilament;
 double tempLastStart;
+double tempLastFilamentCheck;
+double temperatureStart;
 
-//thermistor
-float logR2, R2;
-//steinhart-hart coeficients for thermistor
-float c1 = 0.8438162826e-03, c2 = 2.059601750e-04, c3 = 0.8615484887e-07;
 
-double Thermistor(float Volts) {
-  R2 = R1 * (1023.0 / (float)Volts - 1.0); //calculate resistance on thermistor
+short AR;
 
-  logR2 = log(R2);
-  T = (1.0 / (c1 + c2 * logR2 + c3 * logR2 * logR2 * logR2)); // temperature in Kelvin
-  T = T - 273.15; //convert Kelvin to Celcius
+int temptable[52][2] = {
+{ 1010, 255 },
+{ 1005, 250 },
+{ 996,  245 },
+{ 991,  240 },
+{ 982,  235 },
+{ 973,  230 },
+{ 961,  225 },
+{ 950,  220 },
+{ 934,  215 },
+{ 923,  210 },
+{ 911,  205 },
+{ 895,  200 },
+{ 879,  195 },
+{ 858,  190 },
+{ 840,  185 },
+{ 815,  180 },
+{ 794,  175 },
+{ 775,  170 },
+{ 760,  165 },
+{ 735,  160 },
+{ 703,  155 },
+{ 670,  150 },
+{ 642,  145 },
+{ 606,  140 },
+{ 569,  135 },
+{ 541,  130 },
+{ 500,  125 },
+{ 462,  120 },
+{ 423,  115 },
+{ 386,  110 },
+{ 350,  105 },
+{ 310,  100 },
+{ 280,  95 },
+{ 253,  90 },
+{ 219,  85 },
+{ 198,  80 },
+{ 168,  75 },
+{ 144,  70 },
+{ 120,  65 },
+{ 103,  60 },
+{ 87,  55 },
+{ 74,  50 },
+{ 61,  45 },
+{ 51,  40 },
+{ 43,  35 },
+{ 31,  30 },
+{ 29,  25 },
+{ 27,  20 },
+{ 17,  17 },
+{ 14,  17 },
+{ 10,  17 },
+{ 5,   17 }
+};
+
+double Thermister(int Volts) {
+  AR = Volts;
+  int i = 0;
+
+  for (i = 0; i < 52; i++) {
+    if (AR >= temptable[i][0]) {
+      break;
+    }
+  }
+
+  if (i==0)
+    T = temptable[i][1];
+  else
+    T = map(AR, temptable[i-1][0], temptable[i][0], temptable[i-1][1], temptable[i][1]);
+  int toffset = map (T, 0, To, 0, TOffset);
+  T = T + toffset;
+  if (AR == 0)
+    T = -5;
   return T;
 }
 
@@ -37,87 +98,115 @@ void start(){
       Ts = 0;
       status = "working";
       tempLastStart = millis();
+      Thermister(analogRead(PIN_THERMISTER));
+      temperatureStart = T;
       if (tempLastStart==0) tempLastStart = 1;
+      LastStopReason = "";
     }
 }
 
 void stop(){
-    
     status = "stopped";
+    analogWrite(PIN_HEATER, 0);
+    digitalWrite(LED_BUILTIN , HIGH);
     tempLastStart = 0;
-    ifttt();
 }
 
 void initHotend(){
-  myPID.SetTunings(Kp, Ki, Kd);
-  myPID.SetOutputLimits(0,Max);
+  status = "stopped";
   pinMode(LED_BUILTIN , OUTPUT);
   pinMode(PIN_FILAMENT , INPUT);
-  if (status=="") start();
+  if (StartOnPower) start();
+  
+  
+
+  //Tm  = 240; //temptable[0][1];
+  if (To > Tm) To = 185;
+}
+
+double control(){
+
+  if (status == "stopped"){
+    return 0;
+  }
+  if (isnan(T)){
+    return 0;
+  }
+  if (T == -5){
+    LastStopReason = "Anomalous temperature reading, something wrong with termistor.";
+    stop();
+    return 0;
+  }
+  if(T >= To){
+    return 0;
+  }
+  if(T < 100){
+    return 255;
+  }
+  if(T < 150){
+    return Max;
+  }
+  return Max/100*Gate;
+
+  
 }
 
 
 void hotendReadTempTask() {
-  if (status == "stopped" && myPID.GetMode() == AUTOMATIC){
-    myPID.SetMode(MANUAL);
-    Output = 0;
-  }
-  if (status == "working" && myPID.GetMode() != AUTOMATIC){
-    myPID.SetMode(AUTOMATIC);
-  }
-  if (millis() >= tempLastSample + 100)
+
+  if (millis() >= tempLastSample + 250) //250 is 4 times per second
   {
-    Thermistor(analogRead(PIN_THERMISTOR)); //Volt to temp, update T
-    if (T > Tm || isnan(T)){
-      Output = 0;
-    } else {
-      myPID.Compute();
-    }
+    Thermister(analogRead(PIN_THERMISTER)); //Volt to temp, update T
+    Output = control();
+    analogWrite(PIN_HEATER, Output);
     if (status == "working"){
-      start();
-      if (T > 150 || T > To + 20 ) {
+      if (T > Tmi) {
         digitalWrite(LED_BUILTIN , LOW);// target temperature ready
       } else {
         digitalWrite(LED_BUILTIN , !digitalRead(LED_BUILTIN));//reaching tarjet temp
       }
     } else {
         digitalWrite(LED_BUILTIN , HIGH);
-    }
+    }  
 
-    analogWrite(PIN_HEATER, Output);
+    tempLastSample = millis();
     
-    Fc = digitalRead(PIN_FILAMENT);
-    
-    if (Fc && !F) {
+    //filament
+    Fcurrent = digitalRead(PIN_FILAMENT);
+      
+    if (Fcurrent && !F) {
       tempLastFilament = millis();
-      start();
+      start(); //start the machine with the filament sensor
     }
-    
-    if (!Fc && F) {
+      
+    if (!Fcurrent && F) {
       tempLastFilament = 0;
       tempLastNoFilament = millis();
     }
 
-    F = Fc;
-    if (Fe) {
-      if (Fc && tempLastFilament > 0 && millis() >= tempLastFilament + 3*1000){
-        Fi = true;
+    F = Fcurrent;
+
+    if (Fenable) {
+      if (Fcurrent && tempLastFilament > 0 && millis() >= tempLastFilament + 3*1000){
+        Finsert = true;
       }
       
-      if (!Fc && Fi && tempLastNoFilament > 0 && millis() >= tempLastNoFilament + 500) { // no filament
+      if (!Fcurrent && Finsert && tempLastNoFilament > 0 && millis() >= tempLastNoFilament + 500) {
+        LastStopReason = "Filament run out or stop by user.";
         stop();
         tempLastNoFilament = 0;
-        Fi = false;
+        Finsert = false;
       }
       
-      if (!Fc && !Fi && tempLastStart > 0 && millis() >= tempLastStart + 5*60*1000) { // no filament for 5 min
+      if (!Fcurrent && !Finsert && tempLastStart > 0 && millis() >= tempLastStart + 5*60*1000) {
+        LastStopReason = "The filament sensor did not detect filament for 5 minutes.";
         stop();
       }
     }
+    if (tempLastStart > 0 && T < To-10 && T-10 < temperatureStart && millis() >= tempLastStart + 30*1000 ) { 
+        LastStopReason = "30 seconds without temperature increase, something wrong with termistor o heater.";
+        stop();
+    }
 
-    
-
-    tempLastSample = millis();
-    
   }
 }

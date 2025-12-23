@@ -5,8 +5,9 @@
 
 ESP8266HTTPUpdateServer httpUpdater;
 
-bool apmode = false;
 IPAddress local_ip;
+
+bool apmode = false;
 
 double tempLastWifiTask;
 double tempStartWifiTask;
@@ -69,8 +70,8 @@ void wifiTask(){
 
 void initWiFi()
 {
-    
-     if (!ssid){
+
+     if (strlen(ssid) == 0){
         AP();
         wifiReady=true;
         return;
@@ -81,25 +82,16 @@ void initWiFi()
        subnet.fromString(Subnet.c_str());
        IPAddress gatewayip;
        gatewayip.fromString(Gateway.c_str());
-       Serial.print("Connecting to ");
+       Serial.println("Connecting to ");
        Serial.print(ssid);
+       WiFi.mode(WIFI_STA);
        WiFi.begin(ssid, password); //Conexión a la red
        if (!WiFi.config(localip, gatewayip, subnet,IPAddress(8, 8, 8, 8))) {
         Serial.println("config wifi ips failed");
+        AP();
+        wifiReady=true;
+        return;
        }
        tempStartWifiTask = millis();
    }
-}
-
-int ifttt(String value_1="", String value_2="", String value_3="")
-{
-  if (ifttt_event_name=="" || ifttt_api_key=="") return 0;
-  WiFiClient client;
-  HTTPClient http;
-  http.begin(client, "http://maker.ifttt.com/trigger/" +
-              ifttt_event_name+"/with/key/"+ifttt_api_key+
-              "?value1="+value_1+"&value2="+value_2+"&value3="+value_3);
-  int httpCode = http.GET();
-  http.end();
-  return httpCode;
 }
