@@ -1,3 +1,5 @@
+const char *version = "1.4.4";
+
 double Ft = 0; //filament total
 double Tt = 0; //filament total
 double Fs = 0; //filament total session
@@ -29,8 +31,8 @@ void setup() {
   DeserializationError error = deserializeJson(stats, file);
   if (error)
   {
-      Serial.println(F("deserializeJson() failed: "));
-      Serial.println(error.c_str());
+      //Serial.println(F("deserializeJson() failed: "));
+      //Serial.println(error.c_str());
   } else {
     Ft  = stats["Ft"]?stats["Ft"].as<double>():0.0;
     Tt  = stats["Tt"]?stats["Tt"].as<double>():0.0;
@@ -40,14 +42,16 @@ void setup() {
 
 void loop() {
   wifiTask();
-  server.handleClient();
+  serverTask();
   hotendReadTempTask();
   stepperRunTask();
   ArduinoOTA.handle();
   readConfigurationSerial();
-  if ((F || !Fe) && status=="working" && millis() >= tempLastStats + 5000) {
-    Fs = Fs + (float)Vo/2/62*5;
-    Ft = Ft + (float)Vo/2/62*5; // centimetros hechos cada 5000 milisegundos
+  if ((F || !Fenable) && status=="working" && millis() >= tempLastStats + 5000) {
+    //Fs = Fs + (float)Vo/2/65*5;
+    //Ft = Ft + (float)Vo/2/65*5; // centimetros hechos cada 5 segundos
+    Fs = Fs + (float)Vo/2/30*(9.5*100/30/60*5);
+    Ft = Ft + (float)Vo/2/30*(9.5*100/30/60*5); //centrimetros hechos en 5 segundos (medicion: 9.5 metros en 30 minutos)
     Tt = Tt + 5;
     Ts = Ts + 5;
     File file = SPIFFS.open("/stats.json", "w");
