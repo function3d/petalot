@@ -7,15 +7,14 @@
 Start here: [FAQs](https://function3d.xyz/)
 
 ![Petalot](https://media.printables.com/media/prints/768657/images/5981899_e2213b92-ea05-45aa-b2a0-d09c3b89ab01_5064c29f-d677-434f-a3f0-bcc99cecfa07/thumbs/inside/1920x1440/jpg/img_20230926_111523-scaled.webp)
-![Petalot](https://media.printables.com/media/prints/768657/images/5981900_c73e3c49-8ff8-4cf6-8fbb-524eb7140379_8f15c03f-d751-4d3e-a7f3-eed43117af80/thumbs/inside/1920x1440/jpg/img_20230926_111511-scaled.webp)
 
 ## Bill of material
- - [BOM](https://github.com/function3d/petalot/blob/master/BOM.md)
+ - [BOM](https://function3d.xyz/bom/)
 
 ## Electronics
 
 ![electronics](https://function3d.xyz/wp-content/uploads/2023/08/IMG20230803213235.jpg)
- - [See BOM](https://github.com/function3d/petalot/blob/master/BOM.md) for electronics parts.
+ - **UPDATE** firmware v1.4.4 needs R1=2Kohm
  - [Gerber](https://github.com/function3d/petalot/raw/master/Schematic/Gerber_v1.1_2023-01-02.zip) for PCB fabrication, just upload this zip file to [jlcpcb.com](https://jlcpcb.com/?from=FUNC) and order your PCB.
  - [Schematic](https://github.com/function3d/petalot/tree/master/Schematic)
  - [Firmware](https://github.com/function3d/petalot/tree/master/Firmware)
@@ -27,9 +26,6 @@ Start here: [FAQs](https://function3d.xyz/)
  - [STL](https://www.printables.com/model/724421-bottle-cutter-with-variable-cutting-guide-no-blade)
  - [Youtube video how to make it](https://youtu.be/hEdDhRgakms)
 ![Bottle cutter](https://media.printables.com/media/prints/724421/images/5749242_074b26ee-33c9-40a0-9510-5339837a0272_5f533519-88cf-4d6f-8295-58a2367b1ab2/thumbs/inside/1280x960/jpg/img_20240116_132113_crop.webp)
-
-## Donation
-  [![Buy Me a Coffee at ko-fi.com](https://storage.ko-fi.com/cdn/kofi6.png?v=6)](https://ko-fi.com/X7X6EH3YA)
 
 ## Social
   Follow me on [Youtube](https://www.youtube.com/channel/UC4UBuZ5YRTo5XYFUxdkmqkg), [Tiktok](https://www.tiktok.com/@function.3d) and [Instagram](https://www.instagram.com/function.3d/) for more tutorials and information.
