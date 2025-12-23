@@ -142,13 +142,13 @@ void loadConfiguration(bool reset=false) {
     }
     file.close();
 
-  strlcpy(ssid,                  
-          doc["ssid"],  
-          sizeof(ssid));         
+  strlcpy(ssid,
+          doc["ssid"],
+          sizeof(ssid));
 
-  strlcpy(password,                  
-          doc["password"],  
-          sizeof(password));         
+  strlcpy(password,
+          doc["password"],
+          sizeof(password));
 
   To = doc["To"] | 185;
   Vo = doc["Vo"] | 50;
