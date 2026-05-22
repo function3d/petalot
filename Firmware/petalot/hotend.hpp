@@ -3,6 +3,7 @@
 bool F = false;
 bool Fcurrent = false;
 bool Finsert = false;
+bool Fworking = false;
 
 double Output;  //pid output
 
@@ -189,21 +190,40 @@ void hotendReadTempTask() {
     if (Fenable) {
       if (Fcurrent && tempLastFilament > 0 && millis() >= tempLastFilament + 3*1000){
         Finsert = true;
+        Fworking = false;
+      }
+
+      if (Fcurrent && tempLastFilament > 0 && millis() >= tempLastFilament + 30*1000){
+        Fworking = true;
       }
       
-      if (!Fcurrent && Finsert && tempLastNoFilament > 0 && millis() >= tempLastNoFilament + 500) {
-        LastStopReason = "Filament run out or stop by user.";
+      if (!Fcurrent && Finsert && !Fworking && tempLastNoFilament > 0 && millis() >= tempLastNoFilament + 500) {
+        LastStopReason = "Filament stop by user.";
         stop();
         tempLastNoFilament = 0;
+        Fworking = false;
+        Finsert = false;
+      }
+
+      if (!Fcurrent && Fworking && tempLastNoFilament > 0 && millis() >= tempLastNoFilament + Stopdelay * 1000) {
+        LastStopReason = "Filament run out.";
+        stop();
+        tempLastNoFilament = 0;
+        Fworking = false;
         Finsert = false;
       }
       
-      if (!Fcurrent && !Finsert && tempLastStart > 0 && millis() >= tempLastStart + 5*60*1000) {
-        LastStopReason = "The filament sensor did not detect filament for 5 minutes.";
+      if (!Fcurrent && !Finsert && tempLastStart > 0 && millis() >= tempLastStart + NoFilamentTime*60*1000) {
+        LastStopReason = "The filament sensor did not detect filament for " + String(NoFilamentTime) + " minutes.";
+        stop();
+      }
+
+      if (tempLastStart > 0 && millis() >= tempLastStart + Maxtime * 60 * 1000) {
+        LastStopReason = "The machine has been working for " + String(Maxtime) + " minutes (Max Time reached).";
         stop();
       }
     }
-    if (tempLastStart > 0 && T < To-10 && T-10 < temperatureStart && millis() >= tempLastStart + 30*1000 ) { 
+    if (tempLastStart > 0 && T < To-20 && T-10 < temperatureStart && millis() >= tempLastStart + 30*1000 ) { 
         LastStopReason = "30 seconds without temperature increase, something wrong with termistor o heater.";
         stop();
     }
