@@ -388,7 +388,7 @@ void set() {
   String passwordChange = server.arg(String("password"));
   passwordChange.toCharArray(password, sizeof(password)); 
   
-  tring LocalIPChange = server.arg(String("LocalIP"));
+  String LocalIPChange = server.arg(String("LocalIP"));
   LocalIP = LocalIPChange;
   
   String SubnetChange = server.arg(String("Subnet"));
