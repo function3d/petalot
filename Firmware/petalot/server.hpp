@@ -95,10 +95,10 @@ Check your Browserslist config to be sure that your targets are set up correctly
             @apply  bg-blue-300 hover:bg-blue-400 text-blue-800 font-bold py-1 px-3        
         } 
         .card button.prev{
-            @apply   rounded-l        
+            @apply rounded-l pr-6
         } 
         .card button.next{
-            @apply  rounded-r        
+            @apply rounded-r pl-6
         } 
 
     }
@@ -113,7 +113,7 @@ Check your Browserslist config to be sure that your targets are set up correctly
     <div class="w-11/12 lg:w-1/2 mx-auto">
         <div class="card font-bold text-xl flex-row  justify-between">
         <div>
-PETALOT<br><span class="msg">v1.3.0</span><span class="text-blue-400 text-sm"><br><a class="underline" href="https://linktr.ee/function.3d">function.3d </a></span>
+PETALOT<br><span class="msg" x-html="conf.version"></span><span class="text-blue-400 text-sm"><br><a class="underline" href="https://linktr.ee/function.3d">function.3d </a></span>
 </div>
 <div class="text-blue-400 text-sm align-middle text-right"><span class="text-zinc-600">≈<span x-text="Math.round(tele['Fs'])/100"></span>m</span> (<span x-text="tele['Ts']"></span>) session<br><span class="text-zinc-600">≈<span x-text="Math.round(tele['Ft'])/100"></span>m</span> (<span x-text="tele['Tt']"></span>) always</div>
 </div>
@@ -122,9 +122,9 @@ PETALOT<br><span class="msg">v1.3.0</span><span class="text-blue-400 text-sm"><b
           
             <template x-for="el in ui">
                 <div :class="el.type" class="sm:w-1/4" >
-                    <div class="title" x-text="el.title + (el.valueAlt && el.valueAlt!=el.value?' (' + tele[el.valueAlt] + ')':'')"></div>
+                    <div class="title" x-text="el.title + (el.valueAlt && el.valueAlt!=el.value?' (' + ((el.map)?Math.floor(map_range(tele[el.valueAlt], el.map[0], el.map[1], el.map[2], el.map[3])):tele[el.valueAlt]) + ')':'')"></div>
 
-                    <div><div class="value" x-text="((el.value_type=='bool')?tele[el.value]?el.true:el.false:tele[el.value])"></div> <span x-text="el.unit"></span> <span class="msg" x-show="el.working" x-text="'('+tele[el.working]+')'"></span>
+                    <div><div class="value" x-text="((el.value_type=='bool')?tele[el.value]?el.true:el.false:((el.map)?Math.floor(map_range(tele[el.value], el.map[0], el.map[1], el.map[2], el.map[3])):tele[el.value]))"></div> <span x-text="el.unit"></span> <span class="msg" x-show="el.working" x-text="'('+tele[el.working]+')'"></span>
                         <label x-show="el.toggle" :for="'toggle-'+el.title" class="float-right inline-flex relative items-center cursor-pointer">
                       <input @click="fetchTele('set?'+el.valueAlt+'='+($event.target.checked?1:0))" x-model="tele[el.valueAlt]" type="checkbox" :id="'toggle-'+el.title" class="sr-only peer" >
                       <div class="w-11 h-6 bg-gray-100 peer-focus:outline-none dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-blue-400 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
@@ -132,36 +132,42 @@ PETALOT<br><span class="msg">v1.3.0</span><span class="text-blue-400 text-sm"><b
                     
                     </label>
                     <label x-show="el.number" :for="'toggle-'+el.title" class="float-right inline-flex relative items-center cursor-pointer">
-                                            <button class="prev" @click="fetchTele('set?'+el.valueAlt+'='+(tele[el.valueAlt]-el.inc))" x-model="tele[el.valueAlt]" :id="'toggle-'+el.title"  >-</button>
-                                          <button class="next" @click="fetchTele('set?'+el.valueAlt+'='+(tele[el.valueAlt]+el.inc))" x-model="tele[el.valueAlt]" :id="'toggle-'+el.title"  >+</button>
+                                            <button class="prev" @click="fetchTele('set?'+el.valueAlt+'=-'+el.inc)" x-model="tele[el.valueAlt]" :id="'toggle-'+el.title"  >-</button>
+                                          <button class="next" @click="fetchTele('set?'+el.valueAlt+'='+el.inc)" x-model="tele[el.valueAlt]" :id="'toggle-'+el.title"  >+</button>
                                           
                                           
 
                                         
                     </label>
                     </div>
-                    <div class="msg" x-show="el.msg" x-text="el.msg"></div>
-                    <div class="msg off" x-show="el.warnMsg && !tele[el.warnCond]" x-text="el.warnMsg""></div>
+                    <div class="msg" x-show="el.msg" x-html="el.msg"></div>
+                    <div class="msg off" x-show="el.warnMsg && !tele[el.warnCond]" x-text="(el.warnMsg in tele) ? tele[el.warnMsg] : el.warnMsg"></div>
                     
                     
                 </div>
             </template>
         </div>
+        
         <div x-data="{show:false}" class="card">
             <div  class="cursor-pointer hover:opacity-75 font-bold text-xl mb-4" @click="show = !show">Settings</div>
             <div x-show="show">
             <div class="flex flex-col">
-            <template x-for="[entry,value] in Object.entries(conf)" >
-                <div   :style="'order:'+ fields[entry]['order']" x-show="!fields[entry]['hide']">
+            <template x-for="[entry,value] in Object.entries(fields)" >
+                <div :style="'order:'+ fields[entry]['order']" x-show="!fields[entry]['hide']">
                     <div class="title" x-text="fields[entry]['title']"></div>
                     <input :tabindex="fields[entry]['order']"  class="shadow appearance-none border mb-4 rounded w-full py-2 px-1 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" x-model="conf[entry]">
-                    
                 </div>        
             </template>
-            
+            <div style="order:99">
+              <div class="title">Analog Read</div>
+              <input x-model="tele.AR" disabled class="shadow appearance-none border mb-4 rounded w-full py-2 px-1 text-gray-700 leading-tight">
+            </div> 
             </div>
-            <button class="bg-blue-500 hover:bg-blue-700 text-white m-2 font-bold py-2 px-4 rounded" @click="window.confirm('Are you sure?')?fetchConf('set?'+ new URLSearchParams(conf)):false;window.location.reload();">
+            <button class="bg-blue-500 hover:bg-blue-700 text-white m-2 font-bold py-2 px-4 rounded" @click="window.confirm('Are you sure?')?fetchConf('set?'+ new URLSearchParams(conf)):false;">
               Save
+            </button>
+            <button class="bg-blue-500 hover:bg-blue-700 text-white m-2 font-bold py-2 px-4 rounded" @click="window.confirm('Are you sure?')?fetchConf('set?reboot=1&'+ new URLSearchParams(conf)):false;await new Promise(r => setTimeout(r, 9000));window.location.reload();">
+              Save & Reboot
             </button>
             <button class="!bg-red-500 hover:!bg-red-700 !text-white m-2 font-bold py-2 px-4 rounded float-right " @click="window.confirm('Are you sure?')?fetchConf('reset'):false">
               Factory default
@@ -182,6 +188,9 @@ function toHHMMSS(sec_num) {
     //if (minutes < 10) {minutes = "0"+minutes;}
     //if (seconds < 10) {seconds = "0"+seconds;}
     return hours+'h'+minutes+'m';
+}
+function map_range(value, low1, high1, low2, high2) {
+    return low2 + (high2 - low2) * (value - low1) / (high1 - low1);
 }
 function petalot() {
     return {
@@ -207,12 +216,20 @@ function petalot() {
                  })
         },
         fields:{
-          Max:{order:"8",title:"Maximum value for MOSFET (0-255)"},
-          ssid:{order:"9",title:"SSID"},
-          password:{order:"10",title:"SSID Password"},
-          LocalIP:{order:"11",title:"IP address",hide:false},
-          Subnet:{order:"12",title:"Subnet", hide:false},
-          Gateway:{order:"13",title:"Gateway", hide:false},
+          Max:{order:"8",title:"Maximum value for MOSFET (0-255)",hide:true},
+          R1:{order:"9",title:"R1",hide:true},
+          Gate:{order:"10",title:"Gate %"},
+          TOffset:{order:"10",title:"Temperature Offset"},
+          StartOnPower:{order:"10", title:"Start up at power on"},
+          MotorOnTo:{order:"10", title:"Motor starting at target temperature"},
+          Stopdelay:{order:"10",title:"Stop Delay (s)"},
+          Maxtime:{order:"10",title:"Max Time (min)"},
+          NoFilamentTime:{order:"10",title:"Minutes to stop if no filament"},
+          ssid:{order:"11",title:"SSID"},
+          password:{order:"12",title:"SSID Password"},
+          LocalIP:{order:"13",title:"IP address",hide:false},
+          Subnet:{order:"14",title:"Subnet", hide:false},
+          Gateway:{order:"15",title:"Gateway", hide:false},
         },
         fetchTele(url){
             fetch(url)
@@ -223,6 +240,7 @@ function petalot() {
                     this.tele.V = data.V/2,
                     this.tele.T= (this.tele.T>200)?Math.round((this.tele.T + Math.round(data.T))/2):Math.round(data.T),
                     this.tele.F= data.F,
+                    this.tele.AR= data.AR,
                     this.tele.Fenable= data.Fenable,
                     this.tele.Te= data.Te,
                     this.tele.Ft= data.Ft,
@@ -232,14 +250,15 @@ function petalot() {
                     this.tele.To= data.To,
                     this.tele.Tmi= data.Tmi,
                     this.tele.Vo= data.Vo/2,
-                    this.tele.status = data.status
-                    this.tele.Output = data.Output
+                    this.tele.status = data.status,
+                    this.tele.Output = data.Output,
+                    this.tele.LastStopReason = data.LastStopReason
                  })
         },
         ui : [
-            { type: 'card', title: 'Status', value: 'status', valueAlt: 'status', unit:'', value_type:'bool', toggle:true, true:'working', false:'stopped' },
-            { type: 'card', title: 'Temperature', value: 'T', valueAlt: 'To', warnCond:'Te', working: 'Output', unit:'°C', number:true, msg:'min:200, max:300', inc:5, warnMsg:'Neither the motor nor the hotend will run without proper temperature readings, check thermistor'},
-            { type: 'card', title: 'Speed', value: 'Vo', valueAlt: 'Vo', unit:'cm/min', number:true, msg:'min:5, max:25', inc:1 },
+            { type: 'card', title: 'Status', value: 'status', valueAlt: 'status', warnMsg: 'LastStopReason', unit:'', value_type:'bool', toggle:true, true:'working', false:'stopped' },
+            { type: 'card', title: 'Temperature', value: 'T', valueAlt: 'To', warnCond:'Te', working: 'Output', unit:'°C', number:true, inc:5, msg:'min:<span x-text="conf.minT"></span>, max:<span x-text="conf.maxT"></span>',  warnMsg:'Neither the motor nor the hotend will run without proper temperature readings, check thermistor'},
+            { type: 'card', title: 'Speed', value: 'Vo', valueAlt: 'Vo', unit:'cm/min', number:true, msg:'min:5, max:30', inc:5 },
             { type: 'card', title: 'Filament', value: 'F' , unit:'', valueAlt: 'Fenable', warnCond: 'Fenable', value_type:'bool', toggle:true, true:'detected', false:'no detected', warnMsg:'If you disable the filament sensor then it is likely that when the bottle runs out the filament will get stuck in the gears and break.' }
 
 
@@ -271,6 +290,7 @@ void tele() {
       //"\"time\":" + String(millis()) +
       "\"status\":" + (status=="working"?"true":"false") +
       ",\"T\":" + String(T) +
+      ",\"AR\":" + String(AR) +
       ",\"To\":" + String(To) +
       ",\"Tmi\":" + String(Tmi) +
       ",\"Vo\":" + String(Vo) +
@@ -281,7 +301,9 @@ void tele() {
       ",\"Fs\":" + String(Fs) +
       ",\"Tt\":" + String(Tt) +
       ",\"Ts\":" + String(Ts) +
+      ",\"LastStopReason\":\"" + String(LastStopReason) + "\"" +
       ",\"Output\":\"" + String(map(Output, 0, Max, 0, 100)) + "%\""
+      
       "}";
   server.send(200, "text/html", r);
 }
@@ -295,8 +317,9 @@ void set() {
   
   String ToChange = server.arg(String("To"));
   if (ToChange != ""){
-    if (ToChange.toFloat() <= Tm && ToChange.toFloat() >= Tmi) {
-      To = ToChange.toInt();
+    
+    if (ToChange.toInt()+To <= Tm && ToChange.toInt()+To >= Tmi) {
+      To += ToChange.toInt();
       saveConfiguration(false);
     }
     tele();
@@ -304,8 +327,8 @@ void set() {
   }
   String VoChange = server.arg(String("Vo"));
   if (VoChange != "") {
-    if (VoChange.toFloat() <= 25 && VoChange.toFloat() >= 5) {
-      Vo = VoChange.toInt()*2;
+    if (VoChange.toInt()+Vo/2 <= 30 && VoChange.toInt()+Vo/2 >= 5) {
+      Vo += VoChange.toInt()*2;
       saveConfiguration(false);
     }
     tele();
@@ -343,28 +366,58 @@ void set() {
   if (R1Change != "") {
     R1 = R1Change.toInt();
   }
+  String GateChange = server.arg(String("Gate"));
+  if (GateChange != "") {
+    Gate = GateChange.toInt();
+  }
+  String TOffsetChange = server.arg(String("TOffset"));
+  if (TOffsetChange != "") {
+    TOffset = TOffsetChange.toInt();
+  }
+  String StartOnPowerChange = server.arg(String("StartOnPower"));
+  if (StartOnPowerChange != "") {
+    StartOnPower = (StartOnPowerChange == "true");
+  }
+  String MotorOnToChange = server.arg(String("MotorOnTo"));
+  if (MotorOnToChange != "") {
+    MotorOnTo = (MotorOnToChange == "true");
+  }
   String ssidChange = server.arg(String("ssid"));
-  if (ssidChange != "") {
     ssidChange.toCharArray(ssid, sizeof(ssid)); 
-  }
+  
   String passwordChange = server.arg(String("password"));
-  if (passwordChange != "") {
-    passwordChange.toCharArray(password, sizeof(password)); 
-  }
-  String LocalIPChange = server.arg(String("LocalIP"));
-  if (LocalIPChange!="") {
-    LocalIP = LocalIPChange;
-  }
+  passwordChange.toCharArray(password, sizeof(password)); 
+  
+  tring LocalIPChange = server.arg(String("LocalIP"));
+  LocalIP = LocalIPChange;
+  
   String SubnetChange = server.arg(String("Subnet"));
-  if (SubnetChange!="") {
     Subnet = SubnetChange;
-  }
+  
   String gatewayChange = server.arg(String("Gateway"));
-  if (gatewayChange!="") {
     Gateway = gatewayChange;
+  
+  String stopdelayChange = server.arg(String("Stopdelay"));
+  if (stopdelayChange!="") {
+    Stopdelay = stopdelayChange.toInt();
   }
-  server.send(200, "text/html", printConf());
-  saveConfiguration(true);
+  String maxtimeChange = server.arg(String("Maxtime"));
+  if (maxtimeChange!="") {
+    Maxtime = maxtimeChange.toInt();
+  }
+  String NoFilamentTimeChange = server.arg(String("NoFilamentTime"));
+  if (NoFilamentTimeChange!="") {
+    NoFilamentTime = NoFilamentTimeChange.toInt();
+  }
+  
+  String Reboot = server.arg(String("reboot"));
+  if (Reboot.toInt() == 1) {
+    saveConfiguration(true);
+  } else {
+    saveConfiguration(false);
+    loadConfiguration();
+  }
+  get();
 }
 
 void handleRoot()
