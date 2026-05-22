@@ -163,8 +163,11 @@ PETALOT<br><span class="msg" x-html="conf.version"></span><span class="text-blue
               <input x-model="tele.AR" disabled class="shadow appearance-none border mb-4 rounded w-full py-2 px-1 text-gray-700 leading-tight">
             </div> 
             </div>
-            <button class="bg-blue-500 hover:bg-blue-700 text-white m-2 font-bold py-2 px-4 rounded" @click="window.confirm('Are you sure?')?fetchConf('set?'+ new URLSearchParams(conf)):false;await new Promise(r => setTimeout(r, 6000));window.location.reload();">
+            <button class="bg-blue-500 hover:bg-blue-700 text-white m-2 font-bold py-2 px-4 rounded" @click="window.confirm('Are you sure?')?fetchConf('set?'+ new URLSearchParams(conf)):false;">
               Save
+            </button>
+            <button class="bg-blue-500 hover:bg-blue-700 text-white m-2 font-bold py-2 px-4 rounded" @click="window.confirm('Are you sure?')?fetchConf('set?reboot=1&'+ new URLSearchParams(conf)):false;await new Promise(r => setTimeout(r, 9000));window.location.reload();">
+              Save & Reboot
             </button>
             <button class="!bg-red-500 hover:!bg-red-700 !text-white m-2 font-bold py-2 px-4 rounded float-right " @click="window.confirm('Are you sure?')?fetchConf('reset'):false">
               Factory default
@@ -219,6 +222,9 @@ function petalot() {
           TOffset:{order:"10",title:"Temperature Offset"},
           StartOnPower:{order:"10", title:"Start up at power on"},
           MotorOnTo:{order:"10", title:"Motor starting at target temperature"},
+          Stopdelay:{order:"10",title:"Stop Delay (s)"},
+          Maxtime:{order:"10",title:"Max Time (min)"},
+          NoFilamentTime:{order:"10",title:"Minutes to stop if no filament"},
           ssid:{order:"11",title:"SSID"},
           password:{order:"12",title:"SSID Password"},
           LocalIP:{order:"13",title:"IP address",hide:false},
@@ -377,27 +383,41 @@ void set() {
     MotorOnTo = (MotorOnToChange == "true");
   }
   String ssidChange = server.arg(String("ssid"));
-  if (ssidChange != "") {
     ssidChange.toCharArray(ssid, sizeof(ssid)); 
-  }
+  
   String passwordChange = server.arg(String("password"));
-  if (passwordChange != "") {
-    passwordChange.toCharArray(password, sizeof(password)); 
-  }
-  String LocalIPChange = server.arg(String("LocalIP"));
-  if (LocalIPChange!="") {
-    LocalIP = LocalIPChange;
-  }
+  passwordChange.toCharArray(password, sizeof(password)); 
+  
+  tring LocalIPChange = server.arg(String("LocalIP"));
+  LocalIP = LocalIPChange;
+  
   String SubnetChange = server.arg(String("Subnet"));
-  if (SubnetChange!="") {
     Subnet = SubnetChange;
-  }
+  
   String gatewayChange = server.arg(String("Gateway"));
-  if (gatewayChange!="") {
     Gateway = gatewayChange;
+  
+  String stopdelayChange = server.arg(String("Stopdelay"));
+  if (stopdelayChange!="") {
+    Stopdelay = stopdelayChange.toInt();
   }
-  server.send(200, "text/html", printConf());
-  saveConfiguration(true);
+  String maxtimeChange = server.arg(String("Maxtime"));
+  if (maxtimeChange!="") {
+    Maxtime = maxtimeChange.toInt();
+  }
+  String NoFilamentTimeChange = server.arg(String("NoFilamentTime"));
+  if (NoFilamentTimeChange!="") {
+    NoFilamentTime = NoFilamentTimeChange.toInt();
+  }
+  
+  String Reboot = server.arg(String("reboot"));
+  if (Reboot.toInt() == 1) {
+    saveConfiguration(true);
+  } else {
+    saveConfiguration(false);
+    loadConfiguration();
+  }
+  get();
 }
 
 void handleRoot()

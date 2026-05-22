@@ -1,4 +1,4 @@
-const char *version = "1.4.4";
+const char *version = "1.4.5";
 
 double Ft = 0; //filament total
 double Tt = 0; //filament total

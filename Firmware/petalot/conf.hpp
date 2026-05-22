@@ -16,6 +16,9 @@
   double Max;
   String LocalIP;
   String Gateway;
+  int Stopdelay = 14;
+  int Maxtime = 120;
+  int NoFilamentTime = 6;
   String Subnet;
   int R1;
   char ssid[64];
@@ -39,6 +42,8 @@ String printConf() {
   return confString;
 }
 
+
+
 void saveConfiguration(bool reset=true) {
   SPIFFS.remove("/config.json");
   File file = SPIFFS.open("/config.json", "w");
@@ -58,6 +63,9 @@ void saveConfiguration(bool reset=true) {
   doc["R1"] = R1;
   doc["Gate"] = Gate;
   doc["TOffset"] = TOffset;
+  doc["Stopdelay"] = Stopdelay;
+  doc["Maxtime"]  = Maxtime;
+  doc["NoFilamentTime"]  = NoFilamentTime;
   doc["StartOnPower"] = StartOnPower;
   doc["MotorOnTo"] = MotorOnTo;
   if (serializeJson(doc, file) == 0) {
@@ -71,19 +79,11 @@ void saveConfiguration(bool reset=true) {
   }
 }
 
- void factoryReset() {
-  SPIFFS.remove("/config.json");
-  SPIFFS.remove("/stats.json");
-  analogWrite(PIN_HEATER, 0);
-  ESP.restart();
-  } 	
-
-
 void  resetConfiguration(){
     Serial.println("reset");
     strcpy(ssid, "");         
     strcpy(password, "");
-    To = 185;
+    To = 195;
     Vo = 50;
     Fenable = true;
     Max = 255;
@@ -93,10 +93,105 @@ void  resetConfiguration(){
     R1 = 2000;
     Gate = 55;
     //TOffset = -9;
+    Stopdelay = 14;
+    Maxtime = 120;
+    NoFilamentTime = 6;
     StartOnPower = 1;
     MotorOnTo = 0;
     saveConfiguration(true);
 }
+
+void loadConfiguration(bool reset=false) {
+    File file = SPIFFS.open("/config.json", "r");
+     if (!file) {
+      msg = "Failed to open /config.json";
+      Serial.println("Failed to open /config.json");
+      resetConfiguration();
+    }
+    DeserializationError error = deserializeJson(doc, file);
+    if (error) {
+      msg = "Failed to read file, using default configuration";
+      Serial.println("Failed to read file, using default configuration");
+      resetConfiguration();
+      return;
+    }
+    file.close();
+
+  strlcpy(ssid,
+          doc["ssid"],
+          sizeof(ssid));
+
+  strlcpy(password,
+          doc["password"],
+          sizeof(password));
+
+  To = doc["To"] | 195;
+  Vo = doc["Vo"] | 50;
+  Fenable = doc["Fenable"];
+  Max = doc["Max"]?doc["Max"].as<double>():255;
+  LocalIP = doc["LocalIP"] | "";
+  Subnet = doc["Subnet"] | "255.255.255.0";
+  Gateway = doc["Gateway"] | "";
+  R1 = doc["R1"] | 2000;
+  if (doc.containsKey("Gate"))
+    Gate = doc["Gate"];
+  else {
+    Gate = 55;
+    doc["Gate"] = Gate;
+  }
+  if (doc.containsKey("TOffset"))
+    TOffset= doc["TOffset"];
+  else {
+    TOffset = -5;
+    doc["TOffset"] = TOffset;
+  }
+  Stopdelay = doc["Stopdelay"] | 14;
+  Maxtime = doc["Maxtime"] | 120;
+  NoFilamentTime = doc["NoFilamentTime"] | 6;
+  if (doc.containsKey("StartOnPower"))
+    StartOnPower = doc["StartOnPower"];
+  else {
+    StartOnPower = 1;
+    doc["StartOnPower"] = StartOnPower;
+  }
+  if (doc.containsKey("MotorOnTo"))
+    MotorOnTo = doc["MotorOnTo"];
+  else {
+    MotorOnTo = 0;
+    doc["MotorOnTo"] = MotorOnTo;
+  }
+  Serial.println();
+  Serial.println("To:Temperature");
+  Serial.println("Vo:Speed");
+  Serial.println("Fenable:Filament enabled");
+  Serial.println("R1:R1");
+  Serial.println("Gate:Gate %");
+  Serial.println("TOffset:Temperature Offset");
+  Serial.println("Stopdelay:Stop Delay (s)");
+  Serial.println("Maxtime:Max Time (min)");
+  Serial.println("NoFilamentTime:Minutes to stop if no filament is detected");
+  Serial.print("StartOnPower: Start up at power on (");
+  Serial.print(StartOnPower);
+  Serial.print(")");
+  Serial.println();
+  Serial.print("MotorOnTo: Motor starting at target temperature (");
+  Serial.print(MotorOnTo);
+  Serial.print(")");
+  Serial.println();
+  Serial.println("Max:Maximum value for MOSFET (0-255)");
+  Serial.println("ssid:SSID");
+  Serial.println("password:SSID Password");
+  Serial.println("LocalIP:IP address");
+  Serial.println(printConf());
+}
+
+ void factoryReset() {
+  SPIFFS.remove("/config.json");
+  SPIFFS.remove("/stats.json");
+  analogWrite(PIN_HEATER, 0);
+  ESP.restart();
+  } 	
+
 
 void readConfigurationSerial(){
   StaticJsonDocument<512> docInput;
@@ -126,84 +221,6 @@ void readConfigurationSerial(){
   }
 }
 
-void loadConfiguration(bool reset=false) {
-    File file = SPIFFS.open("/config.json", "r");
-     if (!file) {
-      msg = "Failed to open /config.json";
-      Serial.println("Failed to open /config.json");
-      resetConfiguration();
-    }
-    DeserializationError error = deserializeJson(doc, file);
-    if (error) {
-      msg = "Failed to read file, using default configuration";
-      Serial.println("Failed to read file, using default configuration");
-      resetConfiguration();
-      return;
-    }
-    file.close();
-
-  strlcpy(ssid,
-          doc["ssid"],
-          sizeof(ssid));
-
-  strlcpy(password,
-          doc["password"],
-          sizeof(password));
-
-  To = doc["To"] | 185;
-  Vo = doc["Vo"] | 50;
-  Fenable = doc["Fenable"];
-  Max = doc["Max"]?doc["Max"].as<double>():255;
-  LocalIP = doc["LocalIP"] | "";
-  Subnet = doc["Subnet"] | "255.255.255.0";
-  Gateway = doc["Gateway"] | "";
-  R1 = doc["R1"] | 2000;
-  if (doc.containsKey("Gate"))
-    Gate = doc["Gate"];
-  else {
-    Gate = 55;
-    doc["Gate"] = Gate;
-  }
-  if (doc.containsKey("TOffset"))
-    TOffset= doc["TOffset"];
-  else {
-    TOffset = -5;
-    doc["TOffset"] = TOffset;
-  }
-  if (doc.containsKey("StartOnPower"))
-    StartOnPower = doc["StartOnPower"];
-  else {
-    StartOnPower = 1;
-    doc["StartOnPower"] = StartOnPower;
-  }
-  if (doc.containsKey("MotorOnTo"))
-    MotorOnTo = doc["MotorOnTo"];
-  else {
-    MotorOnTo = 0;
-    doc["MotorOnTo"] = MotorOnTo;
-  }
-  Serial.println();
-  Serial.println("To:Temperature");
-  Serial.println("Vo:Speed");
-  Serial.println("Fenable:Filament enabled");
-  Serial.println("R1:R1");
-  Serial.println("Gate:Gate %");
-  Serial.println("TOffset:Temperature Offset");
-  Serial.print("StartOnPower: Start up at power on (");
-  Serial.print(StartOnPower);
-  Serial.print(")");
-  Serial.println();
-  Serial.print("MotorOnTo: Motor starting at target temperature (");
-  Serial.print(MotorOnTo);
-  Serial.print(")");
-  Serial.println();
-  Serial.println("Max:Maximum value for MOSFET (0-255)");
-  Serial.println("ssid:SSID");
-  Serial.println("password:SSID Password");
-  Serial.println("LocalIP:IP address");
-  Serial.println(printConf());
-}
-
 void initConf() {
   
   if (!SPIFFS.begin()) {
@@ -212,6 +229,5 @@ void initConf() {
   }
 
   loadConfiguration();
-  
 
 }
