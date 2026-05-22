@@ -1,4 +1,4 @@
-<img width="300" height="1398" alt="image" src="https://github.com/user-attachments/assets/5ee03bce-7dc0-4dd2-b8da-baeee425e0f6" />
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/5ee03bce-7dc0-4dd2-b8da-baeee425e0f6" />
 
 # How to flash the firmware
  - Connect the Wemos to a PC
