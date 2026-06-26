@@ -11,7 +11,7 @@ void initOTA() {
     } else { 
       type = "filesystem";
     }
-    stop();
+    OTA_update = true;
     Serial.println("Start updating " + type);
   });
   ArduinoOTA.onEnd([]() {

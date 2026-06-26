@@ -1,5 +1,5 @@
 #include <ArduinoJson.h>
-#include "FS.h"
+#include <LittleFS.h> 
 
   String msg;
   String status;
@@ -19,6 +19,7 @@
   int Stopdelay = 14;
   int Maxtime = 120;
   int NoFilamentTime = 6;
+  bool UseDisplay = 0;
   String Subnet;
   int R1;
   char ssid[64];
@@ -45,8 +46,8 @@ String printConf() {
 
 
 void saveConfiguration(bool reset=true) {
-  SPIFFS.remove("/config.json");
-  File file = SPIFFS.open("/config.json", "w");
+  LittleFS.remove("/config.json");
+  File file = LittleFS.open("/config.json", "w");
   if (!file) {
     msg = "Failed to create file";
     return;
@@ -65,7 +66,8 @@ void saveConfiguration(bool reset=true) {
   doc["TOffset"] = TOffset;
   doc["Stopdelay"] = Stopdelay;
   doc["Maxtime"]  = Maxtime;
-  doc["NoFilamentTime"]  = NoFilamentTime;
+  doc["NoFilamentTime"] = NoFilamentTime;
+  doc["UseDisplay"] = UseDisplay;
   doc["StartOnPower"] = StartOnPower;
   doc["MotorOnTo"] = MotorOnTo;
   if (serializeJson(doc, file) == 0) {
@@ -84,25 +86,26 @@ void  resetConfiguration(){
     strcpy(ssid, "");         
     strcpy(password, "");
     To = 195;
-    Vo = 50;
+    Vo = 25;
     Fenable = true;
     Max = 255;
     LocalIP = "";
-    Subnet = "255.255.255.0";
+    Subnet = "";
     Gateway = "";
     R1 = 2000;
     Gate = 55;
-    //TOffset = -9;
+    TOffset = -9;
     Stopdelay = 14;
     Maxtime = 120;
     NoFilamentTime = 6;
+    UseDisplay = 0;
     StartOnPower = 1;
     MotorOnTo = 0;
     saveConfiguration(true);
 }
 
 void loadConfiguration(bool reset=false) {
-    File file = SPIFFS.open("/config.json", "r");
+    File file = LittleFS.open("/config.json", "r");
      if (!file) {
       msg = "Failed to open /config.json";
       Serial.println("Failed to open /config.json");
@@ -126,11 +129,11 @@ void loadConfiguration(bool reset=false) {
           sizeof(password));
 
   To = doc["To"] | 195;
-  Vo = doc["Vo"] | 50;
+  Vo = doc["Vo"] | 25;
   Fenable = doc["Fenable"];
   Max = doc["Max"]?doc["Max"].as<double>():255;
   LocalIP = doc["LocalIP"] | "";
-  Subnet = doc["Subnet"] | "255.255.255.0";
+  Subnet = doc["Subnet"] | "";
   Gateway = doc["Gateway"] | "";
   R1 = doc["R1"] | 2000;
   if (doc.containsKey("Gate"))
@@ -142,12 +145,18 @@ void loadConfiguration(bool reset=false) {
   if (doc.containsKey("TOffset"))
     TOffset= doc["TOffset"];
   else {
-    TOffset = -5;
+    TOffset = -9;
     doc["TOffset"] = TOffset;
   }
   Stopdelay = doc["Stopdelay"] | 14;
   Maxtime = doc["Maxtime"] | 120;
   NoFilamentTime = doc["NoFilamentTime"] | 6;
+  if (doc.containsKey("UseDisplay"))
+    UseDisplay = doc["UseDisplay"];
+  else {
+    UseDisplay = 0;
+    doc["UseDisplay"] = UseDisplay;
+  }
   if (doc.containsKey("StartOnPower"))
     StartOnPower = doc["StartOnPower"];
   else {
@@ -170,6 +179,7 @@ void loadConfiguration(bool reset=false) {
   Serial.println("Stopdelay:Stop Delay (s)");
   Serial.println("Maxtime:Max Time (min)");
   Serial.println("NoFilamentTime:Minutes to stop if no filament is detected");
+  Serial.println("UseDisplay: Use OLED display");
   Serial.print("StartOnPower: Start up at power on (");
   Serial.print(StartOnPower);
   Serial.print(")");
@@ -186,8 +196,8 @@ void loadConfiguration(bool reset=false) {
 }
 
  void factoryReset() {
-  SPIFFS.remove("/config.json");
-  SPIFFS.remove("/stats.json");
+  LittleFS.remove("/config.json");
+  LittleFS.remove("/stats.json");
   analogWrite(PIN_HEATER, 0);
   ESP.restart();
   } 	
@@ -205,7 +215,7 @@ void readConfigurationSerial(){
       return;
     } else {
       doc=docInput;
-      File file = SPIFFS.open("/config.json", "w");
+      File file = LittleFS.open("/config.json", "w");
       if (!file) {
         msg = "Failed to create file";
         return;
@@ -221,13 +231,39 @@ void readConfigurationSerial(){
   }
 }
 
+void listFiles() {
+  Serial.println("------ ARCHIVOS EN SPIFFS ------");
+  File root = LittleFS.open("/","r");
+  File file = root.openNextFile();
+  while (file) {
+    Serial.print("  ");
+    Serial.print(file.name());
+    Serial.print("  -  ");
+    Serial.print(file.size());
+    Serial.println(" bytes");
+    file = root.openNextFile();
+  }
+  Serial.println("--------------------------------");
+}
+
 void initConf() {
   
-  if (!SPIFFS.begin()) {
-    msg = "Error mounting the file system";
-    return;
-  }
+  #if defined(ESP8266)
+    if (!LittleFS.begin()) {
+      Serial.println("Error mounting the file system. Formating...");
+      LittleFS.format(); 
+      if (!LittleFS.begin()) {
+        Serial.println("[ERROR] Error mounting the file system after format");
+        return;
+      }
+    }
+  #elif defined(ESP32)
+    if (!LittleFS.begin(true)) {
+      Serial.println("[Error mounting the file system");
+      return;
+    }
+  #endif
 
   loadConfiguration();
-
+  listFiles();
 }
