@@ -162,7 +162,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
             <button onclick="sendAction('To', 5)">+</button>
           </div>
         </div>
-        <div class="msg" id="msg-temp">min: 160, max: 210</div>
+        <div class="msg" id="msg-temp">min: 160, max: 220</div>
         <div class="msg warn" id="warn-temp"></div>
       </div>
 
@@ -184,7 +184,8 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
             <button onclick="sendAction('Vo', 5)">+</button>
           </div>
         </div>
-        <div class="msg">min: 5, max: 35</div>
+        <div class="msg warn" id="warn-speed"></div>
+        <div class="msg" id="msg-speed">min: 5, max: 35</div>
       </div>
 
       <div class="card ui-card">
@@ -225,12 +226,11 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         <div class="form-group"><label>Subnet</label><input type="text" name="Subnet"><small class="help-text">255.255.255.0 if left blank</small></div>
         <div class="form-group"><label>Gateway</label><input type="text" name="Gateway"><small class="help-text">PETALOT does not require an Internet connection; 0.0.0.0 if left blank</small></div>
 
-        <!--<div class="form-group"><label>Analog Read</label><input type="text" id="tele-AR" disabled></div>-->
+        <div style="display:none" class="form-group"><label>Analog Read</label><input type="text" id="tele-AR" disabled></div>
       </div>
         <div class="actions">
-          <!--<button type="button" class="btn" onclick="saveSettings(false)">Save</button>-->
-          <button type="button" class="btn" onclick="saveSettings(true)">Save & Restart</button>
-          <button type="button" class="btn btn-danger float-right" onclick="factoryReset()">Reset</button>
+          <button type="button" class="btn" onclick="saveSettings()">Save</button>
+          <button type="button" class="btn btn-danger float-right" onclick="factoryReset();">Factory Reset</button>
           <!--<button type="button" class="btn btn-danger" onclick="firmwareUpdate()">Update</button>-->
         </div>
       </form>
@@ -268,12 +268,13 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
           document.getElementById('warn-temp').innerText = (data.T>0) ? '' : 'Check thermistor';
 
           document.getElementById('val-speed').innerText = data.Vo;
+          document.getElementById('warn-speed').innerText = (data.Vo>25) ? 'Speeds >25 cm/s may cause print failures. Test before batch production' : '';
 
           document.getElementById('val-filament').innerText = data.F ? 'detected' : 'no detected';
           document.getElementById('ctrl-filament').checked = data.Fenable;
-          document.getElementById('warn-filament').innerText = (!data.Fenable) ? 'Sensor disabled!' : '';
+          document.getElementById('warn-filament').innerText = (!data.Fenable) ? 'Sensor disabled' : '';
           
-          //document.getElementById('tele-AR').value = data.AR || 0;
+          document.getElementById('tele-AR').value = data.AR || 0;
 
           updateIcons(data);
         
@@ -282,6 +283,12 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         .catch(err => {
           document.getElementById('conn-icon').classList.remove('conn-on');
           document.getElementById('conn-icon').classList.add('conn-off');
+          const fireIcon = document.getElementById('fire-icon');
+          const motorIcon = document.getElementById('motor-icon');
+          fireIcon.classList.remove('fire-on');
+          fireIcon.classList.add('fire-off');
+          motorIcon.classList.remove('motor-on');
+          motorIcon.classList.add('motor-off');
           setTimeout(fetchTele, 2000);
         });
     }
@@ -290,10 +297,13 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
       fetch(`/set?${param}=${value}`).then(res => res.json()).then(() => fetchTele());
     }
 
+    let conf = {};
+
     function fetchConf() {
       fetch('/get')
         .then(res => res.json())
         .then(data => {
+          conf = data;
           if (data.version) {
             // 1. Update the UI text with the full version string ("1.4.5.260624")
             document.getElementById('version').innerText = `v${data.version}`;
@@ -306,7 +316,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
             let semanticVersion = parseInt(versionParts[0] + versionParts[1] + versionParts[2]);
 
             // 4. Run your conditional check exactly as before
-            if (semanticVersion > 145) {
+            if (semanticVersion > 152) {
                 document.getElementById('setting-oled').style.display = 'flex';
                 document.getElementById('setting-oled-help').style.display = 'block';
             } else {
@@ -314,6 +324,9 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
                 document.getElementById('setting-oled-help').style.display = 'none';
             }
           }
+
+          document.getElementById('msg-temp').innerText = `min: ${data.minT}, max: ${data.maxT}`;
+          document.getElementById('msg-speed').innerText = `min: ${data.minV}, max: ${data.maxV}`;
 
           const form = document.getElementById('settings-form');
           
@@ -342,6 +355,21 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
       // Procesamos todos los elementos del formulario manualmente para asegurar booleanos limpios
       Array.from(form.elements).forEach(el => {
         if (!el.name) return;
+        if (el.name === 'ssid' && el.value != conf.ssid) {
+          reboot = true;
+        }
+        if (el.name === 'password' && el.value != conf.password) {
+          reboot = true;
+        }
+        if (el.name === 'LocalIP' && el.value != conf.LocalIP) {
+          reboot = true;
+        }
+        if (el.name === 'Subnet' && el.value != conf.Subnet) {
+          reboot = true;
+        }
+        if (el.name === 'Gateway' && el.value != conf.Gateway) {
+          reboot = true;
+        }
         if (el.type === 'checkbox') {
           params.append(el.name, el.checked ? 'true' : 'false');
         } else {
@@ -363,7 +391,10 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
     }
 
     function factoryReset() {
-      if (confirm('Factory reset?')) fetch('/reset').then(() => alert('Done'));
+      if (confirm('Factory reset? The statistics, temperature and temperature offset will not be reset')) {
+        fetch('/reset').then(() => alert('Done'));
+        //setTimeout(() => window.location.reload(), 1000);
+      }
     }
 
     function firmwareUpdate() {
@@ -439,7 +470,7 @@ void tele(AsyncWebServerRequest *request) {
     r = String("{") +
         "\"status\":" + ((status=="working")?((stepper.motorEnabled)?"2":"1"):"0") +
         ",\"T\":" + String(T) +
-        //",\"AR\":" + String(AR) +
+        ",\"AR\":" + String(AR) +
         ",\"To\":" + String(To) +
         //",\"Tmi\":" + String(Tmi) +
         ",\"Vo\":" + String(Vo) +
@@ -451,7 +482,7 @@ void tele(AsyncWebServerRequest *request) {
         ",\"Tt\":" + String(Tt) +
         ",\"Ts\":" + String(Ts) +
         ",\"LastStopReason\":\"" + String(LastStopReason) + "\"" +
-        ",\"Output\":\"" + String(map(Output, 0, Max, 0, 100)) + "%\""
+        ",\"Output\":\"" + String(map(Output, 0, 255, 0, 100)) + "%\""
         "}";
     request->send(200, "application/json", r);
 }
@@ -461,14 +492,19 @@ void get(AsyncWebServerRequest *request) {
 }
 
 void reset(AsyncWebServerRequest *request) {
-    factoryReset();
-    request->send(200, "text/plain", "Factory reset done");
+    String stats = request->arg("stats");
+    request->redirect("/");
+    if (stats.toInt() == 1)
+      factoryReset(true);
+    else
+      factoryReset();
+    //request->send(200, "text/plain", "Factory reset done");
 }
 
 void set(AsyncWebServerRequest *request) {
     String ToChange = request->arg("To");
     if (ToChange != "") {
-        if (ToChange.toInt() + To <= Tm && ToChange.toInt() + To >= Tmi) {
+        if (ToChange.toInt() + To <= maxT && ToChange.toInt() + To >= minT) {
             To += ToChange.toInt();
             saveConfiguration(false);
         }
@@ -478,7 +514,7 @@ void set(AsyncWebServerRequest *request) {
     
     String VoChange = request->arg("Vo");
     if (VoChange != "") {
-        if (VoChange.toInt() + Vo <= 35 && VoChange.toInt() + Vo >= 5) {
+        if (VoChange.toInt() + Vo <= maxV && VoChange.toInt() + Vo >= minV) {
             Vo += VoChange.toInt();
             saveConfiguration(false);
         }
@@ -509,8 +545,6 @@ void set(AsyncWebServerRequest *request) {
     }
 
     // Actualización masiva de campos desde el formulario
-    if (request->hasArg("Max")) Max = request->arg("Max").toDouble();
-    if (request->hasArg("R1")) R1 = request->arg("R1").toInt();
     if (request->hasArg("Gate")) Gate = request->arg("Gate").toInt();
     if (request->hasArg("TOffset")) TOffset = request->arg("TOffset").toInt();
     

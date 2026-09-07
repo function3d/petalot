@@ -13,6 +13,7 @@ void initOTA() {
     }
     OTA_update = true;
     Serial.println("Start updating " + type);
+    stop();
   });
   ArduinoOTA.onEnd([]() {
     Serial.println("\nEnd");

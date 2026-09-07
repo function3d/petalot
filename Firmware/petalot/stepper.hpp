@@ -2,16 +2,7 @@
 
 #include <Arduino.h>
 
-// ============================================================================
-// PLATFORM-SPECIFIC INCLUDES
-// ============================================================================
-#ifdef ESP32
-    #include <FastAccelStepper.h>
-#elif defined(ESP8266)
-    #include <AccelStepper.h>
-#else
-    #error "Unsupported platform. This code requires ESP32 or ESP8266."
-#endif
+#include <AccelStepper.h>
 
 // ============================================================================
 // MOTOR CONFIGURATION
@@ -31,14 +22,7 @@ class StepperController {
 private:
     uint16_t targetRPM = 0;
     
-    
-    // Platform-specific stepper instances
-    #ifdef ESP32
-        FastAccelStepperEngine engine;
-        FastAccelStepper *fasStepper = nullptr;
-    #elif defined(ESP8266)
-        AccelStepper accelStepper;
-    #endif
+    AccelStepper accelStepper;
     
     uint32_t rpmToHz(uint16_t rpm) const {
         return (uint32_t)((float)rpm * REAL_STEPS_PER_REV / 60.0f);
@@ -46,50 +30,29 @@ private:
     
     void applySpeed() {
         uint32_t hz = rpmToHz(targetRPM);
-        #ifdef ESP32
-            if (fasStepper) {
-                fasStepper->setSpeedInHz(-hz);
-                fasStepper->runForward();
-            }
-        #elif defined(ESP8266)
-            accelStepper.setSpeed(-(float)hz);
-            accelStepper.runSpeed();
-        #endif
+        accelStepper.setSpeed(-(float)hz);
+        accelStepper.runSpeed();
     }
     
 public:
     bool motorEnabled = false;
     
     StepperController() 
-    #ifdef ESP32
-        : engine(FastAccelStepperEngine())
-    #elif defined(ESP8266)
-        : accelStepper(AccelStepper::DRIVER, PIN_STEP, PIN_DIR)
-    #endif
+    : accelStepper(AccelStepper::DRIVER, PIN_STEP, PIN_DIR)
     {}
     
     void init() {
         pinMode(PIN_EN, OUTPUT);
+        #if VERSION == 1502
+            pinMode(PIN_MSI3, OUTPUT);
+            digitalWrite(PIN_MSI3, HIGH);
+        #endif
         digitalWrite(PIN_EN, HIGH); // Disabled at start (active LOW)
         
-        #ifdef ESP32
-            engine.init();
-            fasStepper = engine.stepperConnectToPin(PIN_STEP);
-            if (fasStepper) {
-                fasStepper->setDirectionPin(PIN_DIR);
-                fasStepper->setEnablePin(PIN_EN);
-                fasStepper->setAutoEnable(false); // We control enable manually
-                fasStepper->setAcceleration(10000);
-                fasStepper->setSpeedInHz(0);
-            } else {
-                Serial.println("Error: Could not connect stepper to pin");
-            }
-        #elif defined(ESP8266)
-            accelStepper.setEnablePin(PIN_EN);
-            accelStepper.setPinsInverted(false, false, true); // Enable is active LOW
-            accelStepper.setAcceleration(10000);
-            accelStepper.setMaxSpeed(rpmToHz(60));
-        #endif
+        accelStepper.setEnablePin(PIN_EN);
+        accelStepper.setPinsInverted(false, false, true); // Enable is active LOW
+        accelStepper.setAcceleration(10000);
+        accelStepper.setMaxSpeed(rpmToHz(60));
     }
     
     void setSpeed(float cmPerMin) {
@@ -108,29 +71,26 @@ public:
         digitalWrite(PIN_EN, LOW);
         motorEnabled = true;
         
-        #ifdef ESP32
-            applySpeed();
-            fasStepper->runForward();
-        #elif defined(ESP8266)
-            applySpeed();
-            accelStepper.runSpeed();
-        #endif
+        applySpeed();
+        accelStepper.runSpeed();
     }
     
     void disable() {
         if (!motorEnabled) return;
         
-        #ifdef ESP32
-            fasStepper->stopMove();
-        #elif defined(ESP8266)
-            accelStepper.stop();
-        #endif
+        accelStepper.stop();
         
         digitalWrite(PIN_EN, HIGH);
         motorEnabled = false;
     }
     
     void task() {
+        // Temperature safety: if MotorOnTo is true, wait until T >= To - 6°C
+        if (MotorOnTo && T < To - 6.0f) {
+            disable();
+            return;
+        }
+
         // Sync motor state with global status
         if (status == "working" && !motorEnabled) {
             enable();
@@ -142,21 +102,12 @@ public:
         // Only run if motor is enabled
         if (!motorEnabled) return;
         
-        // Temperature safety: if MotorOnTo is true, wait until T >= To - 6°C
-        if (MotorOnTo && T < To - 6.0f) {
-            disable();
-            return;
-        }
+        
         
         // Update speed from Vo (cm/min)
         setSpeed(Vo);
         
-        // Platform-specific task handling
-        #ifdef ESP32
-            fasStepper->runForward();
-        #elif defined(ESP8266)
-            accelStepper.runSpeed();
-        #endif
+        accelStepper.runSpeed();
     }
     
     bool isEnabled() const { return motorEnabled; }

@@ -14,10 +14,15 @@
 unsigned long lastSelectionMilli = 0;
 bool selectTemp = true; // true = TEMP (To), false = SPEED (Vo)
 
-// Control del Botón (Antirrebote y Pulsación Corta/Larga)
-unsigned long btnPressTime = 0;
-bool btnLastState = HIGH;
-const unsigned long LONG_PRESS_TIME = 600; // ms para considerar pulsación larga
+// Estado del botón de Temperatura
+bool btnTempLastState = HIGH;
+unsigned long btnTempPressTime = 0;
+
+// Estado del botón de Velocidad
+bool btnSpeedLastState = HIGH;
+unsigned long btnSpeedPressTime = 0;
+
+const unsigned long LONG_PRESS_TIME = 500; // ms para considerar pulsación larga
 
 unsigned long lastUpdate = 0;
 const unsigned long UpdateTimeout = 1000;
@@ -33,41 +38,13 @@ bool displayInitialized = false;
 
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 
-void desbloquearLcdI2C() {
-
-  pinMode(PIN_SDA, INPUT_PULLUP);
-  pinMode(PIN_SCL, INPUT_PULLUP);
-  delay(10);
-
-  if (digitalRead(PIN_SDA) == LOW) {
-
-    pinMode(PIN_SCL, OUTPUT);
-    
-    for (int i = 0; i < 9; i++) {
-      digitalWrite(PIN_SCL, LOW);
-      delayMicroseconds(10);
-      digitalWrite(PIN_SCL, HIGH);
-      delayMicroseconds(10);
-    }
-  }
-
-  pinMode(PIN_SDA, INPUT);
-  pinMode(PIN_SCL, INPUT);
-  delay(10);
-}
-
 void initDisplay() {
     if (displayInitialized) {
         return;
     }
-    
-    desbloquearLcdI2C();
+
     Wire.begin(PIN_SDA, PIN_SCL);
 
-    #if defined(ESP32)
-        //pinMode(PIN_UP, INPUT_PULLUP);
-        //pinMode(PIN_DOWN, INPUT_PULLUP);
-    #endif
     if(!display.begin(SSD1306_SWITCHCAPVCC, SCREEN_ADDRESS)) {
         displayInitialized = false;
         while (true);
@@ -93,53 +70,6 @@ String toHHMMSS(unsigned long seconds) {
   return result;
 }
 
-#if VERSION > 1501
-void checkButton() {
-    unsigned long currentMillis = millis();
-
-    // ==========================================
-    // 2. LÓGICA DEL BOTÓN Y LÍMITES
-    // ==========================================
-    bool btnState = digitalRead(PIN_BTN1);
-
-    // Flanco de bajada: cuando presionas el botón
-    if (btnState == LOW && btnLastState == HIGH) {
-        btnPressTime = currentMillis; 
-    }
-    // Flanco de subida: cuando sueltas el botón
-    else if (btnState == HIGH && btnLastState == LOW) {
-        unsigned long pressDuration = currentMillis - btnPressTime;
-
-        if (pressDuration > 50) { // Debounce de 50ms
-            
-            // Al pulsar el botón, reiniciamos el temporizador para congelar la selección
-            lastSelectionMilli = currentMillis;
-
-            if (pressDuration < LONG_PRESS_TIME) {
-                // --- PULSACIÓN CORTA: SUBIR VALOR (+5) ---
-                if (selectTemp) {
-                    To += 5;
-                    if (To > 210) To = 210; // Límite máximo Temp
-                } else {
-                    Vo += 5;
-                    if (Vo > 35) Vo = 35;   // Límite máximo Speed
-                }
-            } else {
-                // --- PULSACIÓN LARGA: BAJAR VALOR (-5) ---
-                if (selectTemp) {
-                    To -= 5;
-                    if (To < 160) To = 160; // Límite mínimo Temp
-                } else {
-                    Vo -= 5;
-                    if (Vo < 5) Vo = 5;     // Límite mínimo Speed
-                }
-            }
-        }
-    }
-    btnLastState = btnState;
-}
-#endif
-
 void drawUI() {
     if (OTA_update) return; 
 
@@ -149,10 +79,10 @@ void drawUI() {
     // ==========================================
     // 1. LÓGICA DE SELECCIÓN AUTOMÁTICA
     // ==========================================
-    if (currentMillis - lastSelectionMilli >= 1000) {
+    /*if (currentMillis - lastSelectionMilli >= 1000) {
         selectTemp = !selectTemp; // Alterna entre TEMP y SPEED
         lastSelectionMilli = currentMillis; // Reinicia el temporizador
-    }
+    }*/
 
     // ==========================================
     // 3. RENDERIZADO DE LA PANTALLA OLED/LCD
@@ -162,7 +92,7 @@ void drawUI() {
 
     // --- SECCIÓN TEMPERATURA ---
     display.setTextSize(1);
-    display.setCursor(8, 0); 
+    display.setCursor(0, 0); 
     display.print("TEMP");
     display.print(" (");
     display.print(To, 0);
@@ -175,7 +105,7 @@ void drawUI() {
     display.print("C");
 
     // --- SECCIÓN VELOCIDAD ---
-    display.setCursor(8, 36);
+    display.setCursor(0, 36);
     display.print("SPEED");
 
     display.setTextSize(2);
@@ -189,13 +119,13 @@ void drawUI() {
     display.print("cm/min");
 
     // --- INDICADOR VISUAL DE SELECCIÓN ---
-    if (selectTemp) {
+    /*if (selectTemp) {
         // Flecha apuntando a la sección de Temperatura
         display.fillTriangle(0, 0, 0, 6, 6, 3, SSD1306_WHITE);
     } else {
         // Flecha apuntando a la sección de Velocidad
         display.fillTriangle(0, 36, 0, 42, 6, 39, SSD1306_WHITE);
-    }
+    }*/
 
     if (status == "working") {
         display.drawBitmap(94, 34, frames_speed[frame], FRAME_WIDTH, FRAME_HEIGHT, 1);
@@ -211,70 +141,71 @@ void drawUI() {
     display.display();
 }
 
-/*void drawUI_() {
-    if (!displayStop){
-        static bool lastState = HIGH;
+#if VERSION > 1501
+void checkButtons() {
+    unsigned long currentMillis = millis();
 
-        display.clearDisplay();
+    // ==========================================
+    // 1. CONTROL DEL BOTÓN DE TEMPERATURA
+    // ==========================================
+    bool btnTempState = digitalRead(PIN_BTN1);
 
-        display.setTextSize(1);
-        display.setTextColor(SSD1306_WHITE);
+    // Flanco de bajada: cuando presionas el botón de temperatura
+    if (btnTempState == LOW && btnTempLastState == HIGH) {
+        btnTempPressTime = currentMillis;
+    }
+    // Flanco de subida: cuando sueltas el botón
+    else if (btnTempState == HIGH && btnTempLastState == LOW) {
+        unsigned long pressDuration = currentMillis - btnTempPressTime;
 
-        display.setCursor(0, 0);
-        display.setTextSize(1);
-        display.print("TEMP");
-        display.print(" (");
-        display.print(To, 0);
-        display.print(")");
-
-        display.setTextSize(2);
-        display.setCursor(4, 14);
-        display.print(T, 0);
-        display.setTextSize(1);
-        display.print("C");
-
-        display.setCursor(0, 38);
-        display.setTextSize(1);
-        display.print("SPEED");
-
-        display.setTextSize(2);
-        display.setCursor(4, 50);
-        display.print(Vo);
-        int x = 4 + String((int)(Vo / 2)).length() * 12;
-        display.setCursor(x, 56);
-        display.setTextSize(1);
-        display.print("cm/min");
-    
-        display.setCursor(84, 0);
-        if (lastState)
-            if (status == "working") 
-                display.print("WORKING");
-
-        if (status != "working")
-            display.print("STOPPED");
-        
-        display.drawBitmap(88, 14, frames[frame], FRAME_WIDTH, FRAME_HEIGHT, 1);
-        if (status == "working"){
-            display.setCursor(92, 52);
-            display.print(toHHMMSS(Ts));
-            frame = (frame + 1) % FRAME_COUNT;
+        if (pressDuration > 50) { // Debounce de 50ms
+            if (pressDuration < LONG_PRESS_TIME) {
+                // --- PULSACIÓN CORTA: SUBIR TEMPERATURA (+5) ---
+                To += 5;
+                if (To > maxT) To = maxT; // Límite máximo Temp
+            } else {
+                // --- PULSACIÓN LARGA: BAJAR TEMPERATURA (-5) ---
+                To -= 5;
+                if (To < minT) To = minT; // Límite mínimo Temp
+            }
         }
+    }
+    btnTempLastState = btnTempState;
 
-        if (lastState) {
-            display.setCursor(122, 58);
-            display.setTextSize(1);
-            display.print(".");
+    // ==========================================
+    // 2. CONTROL DEL BOTÓN DE VELOCIDAD
+    // ==========================================
+    bool btnSpeedState = digitalRead(PIN_BTN2);
+
+    // Flanco de bajada: cuando presionas el botón de velocidad
+    if (btnSpeedState == LOW && btnSpeedLastState == HIGH) {
+        btnSpeedPressTime = currentMillis;
+    }
+    // Flanco de subida: cuando sueltas el botón
+    else if (btnSpeedState == HIGH && btnSpeedLastState == LOW) {
+        unsigned long pressDuration = currentMillis - btnSpeedPressTime;
+
+        if (pressDuration > 50) { // Debounce de 50ms
+            if (pressDuration < LONG_PRESS_TIME) {
+                // --- PULSACIÓN CORTA: SUBIR VELOCIDAD (+5) ---
+                Vo += 5;
+                if (Vo > maxV) Vo = maxV;   // Límite máximo Speed
+            } else {
+                // --- PULSACIÓN LARGA: BAJAR VELOCIDAD (-5) ---
+                Vo -= 5;
+                if (Vo < minV) Vo = minV;     // Límite mínimo Speed
+            }
         }
-
-        lastState =  !lastState;
-        display.display();
-    }  
+        drawUI();
+    }
+    btnSpeedLastState = btnSpeedState;
 }
-*/
+#endif
+
 
 void displayTask() {
     #if VERSION > 1501
-        checkButton();
+        checkButtons();
     #endif
     if (millis() - lastUpdate >= UpdateTimeout) {
         lastUpdate = millis();

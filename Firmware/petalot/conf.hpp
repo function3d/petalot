@@ -1,51 +1,64 @@
 #include <ArduinoJson.h>
-#include <LittleFS.h> 
+#include <LittleFS.h>
 
-  String msg;
-  String status;
-  double To;
-  int Vo = 0;
-  bool Fenable = true; //filament sensor enabled
-  double T;          //current temp
-  int Gate;
-  int TOffset = -9;
-  bool MotorOnTo = 0;
-  bool StartOnPower=1;
-  int Tm = 210;
-  int Tmi = 160;
-  double Max;
-  String LocalIP;
-  String Gateway;
-  int Stopdelay = 14;
-  int Maxtime = 120;
-  int NoFilamentTime = 6;
-  bool UseDisplay = 0;
-  String Subnet;
-  int R1;
-  char ssid[64];
-  char password[64];
-  String LastStopReason = "";
-  
-  StaticJsonDocument<512> doc;
+String msg;
+String status;
+double To;
+int Vo = 0;
+bool Fenable = true;  //filament sensor enabled
+double T;             //current temp
+int Gate;
+int MaxGate;
+int TOffset = 0;
+bool MotorOnTo = 0;
+bool StartOnPower = 1;
+int maxT = 220;
+int minT = 180;
+int workT = 210;
+int maxV = 35;
+int minV = 5;
+int workV = 25;
+String LocalIP;
+String Gateway;
+int Stopdelay = 14;
+int Maxtime = 120;
+int NoFilamentTime = 6;
+bool UseDisplay = 0;
+String Subnet;
+char ssid[64];
+char password[64];
+String LastStopReason = "";
+
+StaticJsonDocument<512> doc;
 
 
 const char *confFile = "/config.json";
 
 
-String printConf() {
+String printConf(bool plus = true) {
   String confString;
   StaticJsonDocument<512> conf;
   conf = doc;
-  conf["version"] = version;
-  conf["minT"] = Tmi;
-  conf["maxT"] = Tm;
+  if (plus) {
+    conf["version"] = version;
+    conf["minT"] = minT;
+    conf["maxT"] = maxT;
+    conf["minV"] = minV;
+    conf["maxV"] = maxV;
+  } else {
+    conf.remove("version");
+    conf.remove("minT");
+    conf.remove("maxT");
+    conf.remove("minV");
+    conf.remove("maxV");
+  }
   serializeJson(conf, confString);
   return confString;
 }
 
 
 
-void saveConfiguration(bool reset=true) {
+void saveConfiguration(bool reset = true) {
   LittleFS.remove("/config.json");
   File file = LittleFS.open("/config.json", "w");
   if (!file) {
@@ -55,17 +68,16 @@ void saveConfiguration(bool reset=true) {
   doc["To"] = To;
   doc["Vo"] = Vo;
   doc["Fenable"] = Fenable;
-  doc["Max"] = Max;
   doc["ssid"] = ssid;
   doc["password"] = password;
   doc["LocalIP"] = LocalIP;
   doc["Subnet"] = Subnet;
   doc["Gateway"] = Gateway;
-  doc["R1"] = R1;
   doc["Gate"] = Gate;
+  doc["MaxGate"] = MaxGate;
   doc["TOffset"] = TOffset;
   doc["Stopdelay"] = Stopdelay;
-  doc["Maxtime"]  = Maxtime;
+  doc["Maxtime"] = Maxtime;
   doc["NoFilamentTime"] = NoFilamentTime;
   doc["UseDisplay"] = UseDisplay;
   doc["StartOnPower"] = StartOnPower;
@@ -73,7 +85,7 @@ void saveConfiguration(bool reset=true) {
   if (serializeJson(doc, file) == 0) {
     msg = "Failed to write to file";
   }
-  Serial.println(printConf());
+  Serial.println(printConf(false));
   file.close();
   if (reset) {
     analogWrite(PIN_HEATER, 0);
@@ -81,44 +93,46 @@ void saveConfiguration(bool reset=true) {
   }
 }
 
-void  resetConfiguration(){
-    Serial.println("reset");
-    strcpy(ssid, "");         
-    strcpy(password, "");
-    To = 195;
-    Vo = 25;
-    Fenable = true;
-    Max = 255;
-    LocalIP = "";
-    Subnet = "";
-    Gateway = "";
-    R1 = 2000;
-    Gate = 55;
-    TOffset = -9;
-    Stopdelay = 14;
-    Maxtime = 120;
-    NoFilamentTime = 6;
-    UseDisplay = 0;
-    StartOnPower = 1;
-    MotorOnTo = 0;
-    saveConfiguration(true);
+void resetConfiguration() {
+  Serial.println("reset");
+  strcpy(ssid, "");
+  strcpy(password, "");
+  To = workT;
+  Vo = workV;
+  Fenable = true;
+  LocalIP = "";
+  Subnet = "";
+  Gateway = "";
+  Gate = 55;
+  MaxGate = 255;
+  TOffset = 0;
+  Stopdelay = 14;
+  Maxtime = 120;
+  NoFilamentTime = 6;
+  UseDisplay = 0;
+  StartOnPower = 1;
+  MotorOnTo = 0;
 }
 
-void loadConfiguration(bool reset=false) {
-    File file = LittleFS.open("/config.json", "r");
-     if (!file) {
-      msg = "Failed to open /config.json";
-      Serial.println("Failed to open /config.json");
-      resetConfiguration();
-    }
-    DeserializationError error = deserializeJson(doc, file);
-    if (error) {
-      msg = "Failed to read file, using default configuration";
-      Serial.println("Failed to read file, using default configuration");
-      resetConfiguration();
-      return;
-    }
-    file.close();
+void loadConfiguration(bool reset = false) {
+  File file = LittleFS.open("/config.json", "r");
+  if (!file) {
+    msg = "Failed to open /config.json";
+    Serial.println("Failed to open /config.json");
+    resetConfiguration();
+    saveConfiguration(false);
+    loadConfiguration();
+  }
+  DeserializationError error = deserializeJson(doc, file);
+  if (error) {
+    msg = "Failed to read file, using default configuration";
+    Serial.println("Failed to read file, using default configuration");
+    resetConfiguration();
+    saveConfiguration(false);
+    loadConfiguration();
+    return;
+  }
+  file.close();
 
   strlcpy(ssid,
           doc["ssid"],
@@ -128,24 +142,29 @@ void loadConfiguration(bool reset=false) {
           doc["password"],
           sizeof(password));
 
-  To = doc["To"] | 195;
-  Vo = doc["Vo"] | 25;
+  To = doc["To"] | workT;
+  Vo = doc["Vo"] | workV;
   Fenable = doc["Fenable"];
-  Max = doc["Max"]?doc["Max"].as<double>():255;
   LocalIP = doc["LocalIP"] | "";
   Subnet = doc["Subnet"] | "";
   Gateway = doc["Gateway"] | "";
-  R1 = doc["R1"] | 2000;
   if (doc.containsKey("Gate"))
     Gate = doc["Gate"];
   else {
     Gate = 55;
     doc["Gate"] = Gate;
   }
-  if (doc.containsKey("TOffset"))
-    TOffset= doc["TOffset"];
+  if (doc.containsKey("MaxGate"))
+    MaxGate = doc["MaxGate"];
   else {
-    TOffset = -9;
+    MaxGate = 255;
+    doc["MaxGate"] = MaxGate;
+  }
+  
+  if (doc.containsKey("TOffset"))
+    TOffset = doc["TOffset"];
+  else {
+    TOffset = 0;
     doc["TOffset"] = TOffset;
   }
   Stopdelay = doc["Stopdelay"] | 14;
@@ -170,51 +189,50 @@ void loadConfiguration(bool reset=false) {
     doc["MotorOnTo"] = MotorOnTo;
   }
   Serial.println();
-  Serial.println("To:Temperature");
-  Serial.println("Vo:Speed");
-  Serial.println("Fenable:Filament enabled");
-  Serial.println("R1:R1");
-  Serial.println("Gate:Gate %");
-  Serial.println("TOffset:Temperature Offset");
+  Serial.println("To: Temperature");
+  Serial.println("Vo: Speed");
+  Serial.println("Fenable: Filament enabled");
+  Serial.println("Gate: Target approach gate drive percentage relative to MaxGate");
+  Serial.println("MaxGate: Maximum MOSFET gate drive limit (0–255)");
+  Serial.println("TOffset: Temperature Offset");
   Serial.println("Stopdelay:Stop Delay (s)");
-  Serial.println("Maxtime:Max Time (min)");
-  Serial.println("NoFilamentTime:Minutes to stop if no filament is detected");
+  Serial.println("Maxtime: Max Time (min)");
+  Serial.println("NoFilamentTime: Minutes to stop if no filament is detected");
   Serial.println("UseDisplay: Use OLED display");
-  Serial.print("StartOnPower: Start up at power on (");
-  Serial.print(StartOnPower);
-  Serial.print(")");
-  Serial.println();
-  Serial.print("MotorOnTo: Motor starting at target temperature (");
-  Serial.print(MotorOnTo);
-  Serial.print(")");
-  Serial.println();
-  Serial.println("Max:Maximum value for MOSFET (0-255)");
-  Serial.println("ssid:SSID");
-  Serial.println("password:SSID Password");
-  Serial.println("LocalIP:IP address");
-  Serial.println(printConf());
+  Serial.println("StartOnPower: Start up at power on");
+  Serial.println("MotorOnTo: Motor starting at target temperature");
+  Serial.println("ssid: SSID");
+  Serial.println("password: SSID Password");
+  Serial.println("LocalIP: IP address");
+  Serial.println("Gateway: Gateway address");
+  Serial.println("Subnet: Subnet mask");
+  Serial.println(printConf(false));
 }
 
- void factoryReset() {
-  LittleFS.remove("/config.json");
-  LittleFS.remove("/stats.json");
+void factoryReset(bool stats = false) {
   analogWrite(PIN_HEATER, 0);
-  ESP.restart();
-  } 	
+  int TOffset_old = TOffset;
+  int workT_old = workT;
+  resetConfiguration();
+  TOffset = TOffset_old;
+  workT = workT_old;
+  saveConfiguration(false);
+  if (stats) {
+    LittleFS.remove("/stats.json");
+    ESP.restart();
+  }
+}
 
-
-void readConfigurationSerial(){
+void readConfigurationSerial() {
   StaticJsonDocument<512> docInput;
-  
-  if (Serial.available() > 0)
-  {
+
+  if (Serial.available() > 0) {
     // Deserialize the JSON document
     DeserializationError error = deserializeJson(docInput, Serial);
-    if (error)
-    {
+    if (error) {
       return;
     } else {
-      doc=docInput;
+      doc = docInput;
       File file = LittleFS.open("/config.json", "w");
       if (!file) {
         msg = "Failed to create file";
@@ -233,7 +251,7 @@ void readConfigurationSerial(){
 
 void listFiles() {
   Serial.println("------ ARCHIVOS EN SPIFFS ------");
-  File root = LittleFS.open("/","r");
+  File root = LittleFS.open("/", "r");
   File file = root.openNextFile();
   while (file) {
     Serial.print("  ");
@@ -247,22 +265,22 @@ void listFiles() {
 }
 
 void initConf() {
-  
-  #if defined(ESP8266)
+
+#if defined(ESP8266)
+  if (!LittleFS.begin()) {
+    Serial.println("Error mounting the file system. Formating...");
+    LittleFS.format();
     if (!LittleFS.begin()) {
-      Serial.println("Error mounting the file system. Formating...");
-      LittleFS.format(); 
-      if (!LittleFS.begin()) {
-        Serial.println("[ERROR] Error mounting the file system after format");
-        return;
-      }
-    }
-  #elif defined(ESP32)
-    if (!LittleFS.begin(true)) {
-      Serial.println("[Error mounting the file system");
+      Serial.println("[ERROR] Error mounting the file system after format");
       return;
     }
-  #endif
+  }
+#elif defined(ESP32)
+  if (!LittleFS.begin(true)) {
+    Serial.println("[Error mounting the file system");
+    return;
+  }
+#endif
 
   loadConfiguration();
   listFiles();

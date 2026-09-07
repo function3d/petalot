@@ -1,4 +1,4 @@
-#define VERSION 1405 // See pins.hpp
+#define VERSION 1502 // See pins.hpp
 
 // Year: Extracts '2' and '6' from '2026'
 #define BUILD_YEAR_DEC __DATE__[9]
@@ -50,7 +50,6 @@ void setup() {
   initHotend();
   stepper.init();
   InitServer();
-  desbloquearLcdI2C();
   if (UseDisplay){
     initDisplay();
   }
@@ -95,9 +94,10 @@ void loop() {
           msg = "Failed to write to file";
         }
         file.close();
+        tempLastStatsSave = millis();
       }
       tempLastStats = millis();
-      tempLastStatsSave = millis();
+      
     }
   }
 }
