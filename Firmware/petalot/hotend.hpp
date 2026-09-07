@@ -1,3 +1,8 @@
+#pragma once
+
+// ============================================================================
+// THERMISTOR + HEATER (HOTEND)
+// ============================================================================
 const float VCC = 3.3;
 
 const int NUM_READINGS = 2;
@@ -6,20 +11,19 @@ int readIndex = 0;
 float total = 0;
 float average = 0;
 
-short AR;
-bool F = false;
-bool Fcurrent = false;
-bool Finsert = false;
-bool Fworking = false;
-double Output;
+short AR;                 // analog read value (0-1023)
+bool F = false;           // filament present
+bool Fcurrent = false;    // current filament pin state
+bool Finsert = false;     // filament inserted & confirmed after 3s
+bool Fworking = false;    // filament running confirmed after 30s
+double Output;            // heater PWM output
 unsigned long tempLastSample;
 unsigned long tempLastFilament;
 unsigned long tempLastNoFilament;
 unsigned long tempLastStart;
-unsigned long tempLastFilamentCheck;
-double temperatureStart;
+double temperatureStart;  // temperature when the run started
 
-//3V3 → NTC → A0 → 2KΩ → GND
+// 3V3 -> NTC -> A0 -> 2KΩ -> GND
 int temptable[8][2] = {
   { 960, 250 },
   { 922, 230 },
@@ -49,32 +53,35 @@ void Thermister_ESP8266() {
   } else {
     T = map(AR, temptable[i - 1][0], temptable[i][0], temptable[i - 1][1], temptable[i][1]);
   }
+
   int toffset = map(T, 0, To, 0, TOffset);
   T = T + toffset;
-  if (AR < temptable[TEMP_TABLE_ROWS - 1][0])
+  if (AR < temptable[TEMP_TABLE_ROWS - 1][0]) {
     T = 0;
+  }
 }
 
-void start(){
-    if (tempLastStart==0){
-      Fs = 0;
-      Ts = 0;
-      status = "working";
-      tempLastStart = millis();
-      AR = analogRead(PIN_THERMISTER);
-      Thermister_ESP8266();
-      temperatureStart = T;
-      if (tempLastStart==0) tempLastStart = 1;
-      LastStopReason = "";
-    }
+void start() {
+  if (tempLastStart == 0) {
+    Fs = 0;
+    Ts = 0;
+    status = "working";
+    tempLastStart = millis();
+    AR = analogRead(PIN_THERMISTER);
+    Thermister_ESP8266();
+    temperatureStart = T;
+    if (tempLastStart == 0) tempLastStart = 1;
+    LastStopReason = "";
+  }
 }
 
-void stop(){
-    status = "stopped";
-    analogWrite(PIN_HEATER, 0);
-    if (!UseDisplay)
-      digitalWrite(LED_BUILTIN , HIGH);
-    tempLastStart = 0;
+void stop() {
+  status = "stopped";
+  analogWrite(PIN_HEATER, 0);
+  if (!UseDisplay) {
+    digitalWrite(LED_BUILTIN, HIGH);
+  }
+  tempLastStart = 0;
 }
 
 float readVoltage() {
@@ -84,7 +91,7 @@ float readVoltage() {
 
 void initHotend() {
   status = "stopped";
-  if (!UseDisplay){
+  if (!UseDisplay) {
     pinMode(LED_BUILTIN, OUTPUT);
   }
   pinMode(PIN_FILAMENT, INPUT);
@@ -97,25 +104,25 @@ void initHotend() {
   for (int i = 0; i < NUM_READINGS; i++) {
     readVoltage();
     delay(10);
-  } 
+  }
 }
 
-double control(){
-  if (status == "stopped"){
+double control() {
+  if (status == "stopped") {
     return 0;
   }
-  if (isnan(T)){
+  if (isnan(T)) {
     return 0;
   }
-  if (T == 0){
-    LastStopReason = "Anomalous temperature reading, something wrong with termistor";
+  if (T == 0) {
+    LastStopReason = "Anomalous temperature reading, something wrong with thermistor";
     stop();
     return 0;
   }
-  if(T >= To){
+  if (T >= To) {
     return 0;
   }
-  if(T < minT){
+  if (T < minT) {
     return MaxGate;
   }
   return (double)MaxGate * Gate / 100.0;
@@ -137,29 +144,32 @@ void hotendReadTempTask() {
     Output = control();
     analogWrite(PIN_HEATER, Output);
 
-    if (status == "working"){
+    if (status == "working") {
       if (T > minT) {
-        if (!UseDisplay)
-          digitalWrite(LED_BUILTIN, LOW);// target temperature ready
+        if (!UseDisplay) {
+          digitalWrite(LED_BUILTIN, LOW); // target temperature ready
+        }
       } else {
-        if (!UseDisplay)
-          digitalWrite(LED_BUILTIN, !digitalRead(LED_BUILTIN));//reaching tarjet temp
+        if (!UseDisplay) {
+          digitalWrite(LED_BUILTIN, !digitalRead(LED_BUILTIN)); // heating up
+        }
       }
     } else {
-        if (!UseDisplay)
-          digitalWrite(LED_BUILTIN, HIGH);
-    }  
+      if (!UseDisplay) {
+        digitalWrite(LED_BUILTIN, HIGH);
+      }
+    }
 
     tempLastSample = millis();
-    
-    //filament
+
+    // Filament sensor
     Fcurrent = digitalRead(PIN_FILAMENT);
-      
+
     if (Fcurrent && !F) {
       tempLastFilament = millis();
-      start(); //start the machine with the filament sensor
+      start(); // start the machine when filament is inserted
     }
-      
+
     if (!Fcurrent && F) {
       tempLastFilament = 0;
       tempLastNoFilament = millis();
@@ -168,15 +178,18 @@ void hotendReadTempTask() {
     F = Fcurrent;
 
     if (Fenable) {
-      if (Fcurrent && tempLastFilament > 0 && millis() >= tempLastFilament + 3*1000){
+      // Filament inserted and kept for 3s: mark as inserted
+      if (Fcurrent && tempLastFilament > 0 && millis() >= tempLastFilament + 3 * 1000) {
         Finsert = true;
         Fworking = false;
       }
 
-      if (Fcurrent && tempLastFilament > 0 && millis() >= tempLastFilament + 30*1000){
+      // Filament running for 30s: consider the job running
+      if (Fcurrent && tempLastFilament > 0 && millis() >= tempLastFilament + 30 * 1000) {
         Fworking = true;
       }
-      
+
+      // Filament removed right after insertion: treat as user stop
       if (!Fcurrent && Finsert && !Fworking && tempLastNoFilament > 0 && millis() >= tempLastNoFilament + 500) {
         LastStopReason = "Stop by user";
         stop();
@@ -185,6 +198,7 @@ void hotendReadTempTask() {
         Finsert = false;
       }
 
+      // Filament removed while running: run out, wait Stopdelay
       if (!Fcurrent && Fworking && tempLastNoFilament > 0 && millis() >= tempLastNoFilament + (Stopdelay + (25 - Vo) / 5 * 1.5) * 1000) {
         LastStopReason = "Run out";
         stop();
@@ -192,19 +206,24 @@ void hotendReadTempTask() {
         Fworking = false;
         Finsert = false;
       }
-      
-      if (!Fcurrent && !Finsert && tempLastStart > 0 && millis() >= tempLastStart + NoFilamentTime*60*1000) {
+
+      // No filament detected for NoFilamentTime while running
+      if (!Fcurrent && !Finsert && tempLastStart > 0 && millis() >= tempLastStart + NoFilamentTime * 60 * 1000) {
         LastStopReason = "No sensor detection for " + String(NoFilamentTime) + " min.";
         stop();
       }
     }
+
+    // Max run time applies regardless of the filament sensor state
     if (tempLastStart > 0 && millis() >= tempLastStart + (unsigned long)Maxtime * 60 * 1000) {
       LastStopReason = "Max time reached: " + String(Maxtime) + " min.";
       stop();
     }
-    if (tempLastStart > 0 && T < To-20 && T-10 < temperatureStart && millis() >= tempLastStart + 30*1000 ) { 
-        LastStopReason = "30s no heat: thermistor/heater issue";
-        stop();
+
+    // Heater failed to reach temperature 30s after start
+    if (tempLastStart > 0 && T < To - 20 && T - 10 < temperatureStart && millis() >= tempLastStart + 30 * 1000) {
+      LastStopReason = "30s no heat: thermistor/heater issue";
+      stop();
     }
   }
 }

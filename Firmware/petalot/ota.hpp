@@ -1,16 +1,10 @@
+#pragma once
+
 #include <ArduinoOTA.h>
 
-bool debugMode = false;
-
 void initOTA() {
-
   ArduinoOTA.onStart([]() {
-    String type;
-    if (ArduinoOTA.getCommand() == U_FLASH) {
-      type = "sketch";
-    } else { 
-      type = "filesystem";
-    }
+    String type = (ArduinoOTA.getCommand() == U_FLASH) ? "sketch" : "filesystem";
     OTA_update = true;
     Serial.println("Start updating " + type);
     stop();

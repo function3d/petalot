@@ -1,3 +1,5 @@
+#pragma once
+
 #if defined(ESP8266) && VERSION == 1405 // D1 mini
 
   #define PIN_EN    D1

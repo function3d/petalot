@@ -1,3 +1,5 @@
+#pragma once
+
 #include <ArduinoJson.h>
 #include <LittleFS.h>
 
@@ -55,8 +57,6 @@ String printConf(bool plus = true) {
   serializeJson(conf, confString);
   return confString;
 }
-
-
 
 void saveConfiguration(bool reset = true) {
   LittleFS.remove("/config.json");
@@ -249,7 +249,7 @@ void readConfigurationSerial() {
 }
 
 void listFiles() {
-  Serial.println("------ ARCHIVOS EN SPIFFS ------");
+  Serial.println("------ FILES IN LITTLEFS ------");
   File root = LittleFS.open("/", "r");
   File file = root.openNextFile();
   while (file) {
