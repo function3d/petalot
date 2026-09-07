@@ -56,7 +56,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
     }
 
     /* Grid Panel */
-    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0.75rem; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; }
     .ui-card .title-wrapper {flex-direction: row-reverse; display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; }
     .ui-card .title { color: var(--muted); font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; }
     .ui-card .row { display: flex; justify-content: space-between; align-items: center; margin-top: 0.45rem; }
@@ -71,9 +71,9 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
     .btn-group button:hover { background: #4a5a6a; }
 
     /* Toggle Switch Simplificado */
-    .switch { position: relative; width: 40px; height: 22px; display: inline-block; }
+    .switch { position: relative; width: 40px; height: 22px; display: inline-block; flex: none;}
     .switch input { opacity: 0; width: 0; height: 0; }
-    .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background: #475569; border-radius: 22px; transition: 0.2s; }
+    .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background: #475569; border-radius: 22px; transition: 0.2s; width: 40px; }
     .slider:before { position: absolute; content: ""; height: 16px; width: 16px; left: 3px; bottom: 3px; background: white; border-radius: 50%; transition: 0.2s; }
     input:checked + .slider { background: var(--accent); }
     input:checked + .slider:before { transform: translateX(18px); }
@@ -87,7 +87,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
     .toggle { float:right; }
 
     .form-group { display: flex; flex-direction: column; gap: 0.15rem; }
-    .form-group.row-layout { flex-direction: row; align-items: center; justify-content: space-between; padding: 0.25rem 0; }
+    .form-group .row-layout { gap:1rem; display: flex; flex-direction: row; align-items: center; justify-content: space-between; padding: 0.25rem 0; }
     .form-group label { font-size: 0.8rem; color: var(--muted); font-weight: 700; margin-top: 5px; }
     .form-group input[type="text"], .form-group input[type="number"], .form-group input[type="password"] { width: 100%; padding: 0.4rem; border: 1px solid #363e46; border-radius: 4px; font-size: 0.85rem; color: var(--text); background: #181c20; }
     .form-group input[type="text"]:focus, .form-group input[type="number"]:focus, .form-group input[type="password"]:focus { border-color: var(--accent); outline-style: none; }
@@ -108,8 +108,6 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
       <div>
           <h1>PETALOT</h1>
           <a href="https://linktr.ee/function.3d" target="_blank">linktr.ee/function.3d</a>
-          <br>
-          <select id="lang-select"></select>
       </div>
       <div class="header-right">
         ≈<span id="tele-Fs">0</span>m (<span id="tele-Ts">0s</span>) <span data-i18n="gs.ses">ses</span><br>
@@ -144,7 +142,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         <div class="row">
           <div>
             <span class="value" id="val-temp">0</span><span class="unit"> °C</span>
-            <small id="val-output"></small>
+            <small class="msg" id="val-output"></small>
           </div>
 
           <div class="btn-group">
@@ -196,12 +194,11 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
       <div class="trigger" onclick="document.getElementById('settings-card').classList.toggle('open')"><span data-i18n="gs.settings">Settings</span><span class="toggle"></span></div>
       <form id="settings-form" class="content" onsubmit="event.preventDefault();">
       <div class="grid">
-        <div class="form-group row-layout"><label data-i18n="st.startOnPower">Start up at power on</label><label class="switch"><input type="checkbox" name="StartOnPower"><span class="slider"></span></label></div>
-        <small class="help-text" data-i18n="st.startOnPowerHelp">If you disable it, you'll only be able to start the machine by pressing the sensor</small>
-        <div class="form-group row-layout"><label data-i18n="st.motorOnTo">Motor starting at target temp</label><label class="switch"><input type="checkbox" name="MotorOnTo"><span class="slider"></span></label></div>
-        <small class="help-text" data-i18n="st.motorOnToHelp">If enabled, the motor will only run once the target temperature is reached</small>
-        <div id="setting-oled" class="form-group row-layout"><label data-i18n="st.display">Use OLED Display</label><label class="switch"><input type="checkbox" name="UseDisplay"><span class="slider"></span></label></div>
-        <small id="setting-oled-help" class="help-text" data-i18n="st.displayHelp">Turn on the display if your machine has one</small>
+        <div class="form-group"><label data-i18n="st.language">Language</label><select id="lang-select"></select></div>
+
+        <div class="form-group"><div class="row-layout"><label data-i18n="st.startOnPower">Start up at power on</label><label class="switch"><input type="checkbox" name="StartOnPower"><span class="slider"></span></label></div><small class="help-text" data-i18n="st.startOnPowerHelp">If you disable it, you'll only be able to start the machine by pressing the sensor</small></div>
+        <div class="form-group"><div class="row-layout"><label data-i18n="st.motorOnTo">Motor starting at target temp</label><label class="switch"><input type="checkbox" name="MotorOnTo"><span class="slider"></span></label></div><small class="help-text" data-i18n="st.motorOnToHelp">If enabled, the motor will only run once the target temperature is reached</small></div>
+        <div id="setting-oled" class="form-group"><div class="row-layout"><label data-i18n="st.display">Use OLED Display</label><label class="switch"><input type="checkbox" name="UseDisplay"><span class="slider"></span></label></div><small id="setting-oled-help" class="help-text" data-i18n="st.displayHelp">Turn on the display if your machine has one</small></div>
 
         <div class="form-group"><label data-i18n="st.toffset">Temperature Offset</label><input type="number" name="TOffset"><small class="help-text" data-i18n="st.toffsetHelp">Adjust the temperature if you notice it's off</small></div>
         <div class="form-group"><label data-i18n="st.stopDelay">Stop Delay (sec)</label><input type="number" name="Stopdelay"><small class="help-text" data-i18n="st.stopDelayHelp">Seconds to finish processing after strip end passes the sensor</small></div>
@@ -241,6 +238,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.motorOnTo': 'Motor starting at target temp',
         'st.motorOnToHelp': 'If enabled, the motor will only run once the target temperature is reached',
         'st.display': 'Use OLED Display',
+        'st.language': 'Language',
         'st.displayHelp': 'Turn on the display if your machine has one',
         'st.toffset': 'Temperature Offset',
         'st.toffsetHelp': "Adjust the temperature if you notice it's off",
@@ -287,6 +285,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.motorOnTo': 'Motor arranca a la temperatura objetivo',
         'st.motorOnToHelp': 'Si está activado, el motor solo funcionará cuando se alcance la temperatura objetivo',
         'st.display': 'Usar pantalla OLED',
+        'st.language': 'Idioma',
         'st.displayHelp': 'Enciende la pantalla si tu máquina tiene una',
         'st.toffset': 'Desplazamiento de temperatura',
         'st.toffsetHelp': 'Ajusta la temperatura si notas que no cuadra',
@@ -333,6 +332,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.motorOnTo': 'Motor inicia na temperatura alvo',
         'st.motorOnToHelp': 'Se ativado, o motor só funcionará quando for atingida a temperatura alvo',
         'st.display': 'Usar display OLED',
+        'st.language': 'Idioma',
         'st.displayHelp': 'Ligue o display se a sua máquina tiver um',
         'st.toffset': 'Deslocamento de temperatura',
         'st.toffsetHelp': 'Ajuste a temperatura se notar que está errada',
@@ -379,6 +379,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.motorOnTo': 'Moteur démarre à la température cible',
         'st.motorOnToHelp': "Si activé, le moteur ne tournera qu'une fois la température cible atteinte",
         'st.display': "Utiliser l'écran OLED",
+        'st.language': 'Langue',
         'st.displayHelp': "Allumez l'écran si votre machine en a un",
         'st.toffset': 'Décalage de température',
         'st.toffsetHelp': "Ajustez la température si elle semble fausse",
@@ -425,6 +426,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.motorOnTo': 'Motor startet bei Zieltemperatur',
         'st.motorOnToHelp': 'Wenn aktiviert, läuft der Motor erst, sobald die Zieltemperatur erreicht ist',
         'st.display': 'OLED-Display verwenden',
+        'st.language': 'Sprache',
         'st.displayHelp': 'Display einschalten, falls die Maschine eines hat',
         'st.toffset': 'Temperaturoffset',
         'st.toffsetHelp': 'Temperatur anpassen, falls sie abweicht',
@@ -471,6 +473,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.motorOnTo': 'Motore avvia alla temperatura target',
         'st.motorOnToHelp': 'Se attivato, il motore gira solo al raggiungimento della temperatura target',
         'st.display': 'Usa display OLED',
+        'st.language': 'Lingua',
         'st.displayHelp': 'Accendi il display se la macchina ne ha uno',
         'st.toffset': 'Offset temperatura',
         'st.toffsetHelp': 'Regola la temperatura se noti uno scostamento',
@@ -517,6 +520,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.motorOnTo': '到达目标温度后启动电机',
         'st.motorOnToHelp': '启用后，电机只有在达到目标温度后才会运行',
         'st.display': '使用 OLED 显示屏',
+        'st.language': '语言',
         'st.displayHelp': '如果机器有显示屏则开启',
         'st.toffset': '温度偏移',
         'st.toffsetHelp': '如果温度偏差，请调整此值',
@@ -609,7 +613,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
           document.getElementById('val-temp').innerText = Math.round(data.T);
           document.getElementById('title-temp').innerText = `${t('gs.temp')} (${data.To})`;
           document.getElementById('warn-temp').innerText = (data.T>0) ? '' : t('t.checkThermistor');
-          document.getElementById('val-output').innerText = (data.Output !== undefined && data.Output !== '') ? data.Output : '';
+          document.getElementById('val-output').innerText = (data.Output !== undefined && data.Output !== '') ? '(' + data.Output + ')' : '';
 
           document.getElementById('val-speed').innerText = data.Vo;
           document.getElementById('warn-speed').innerText = (data.Vo>25) ? t('t.speedWarn') : '';
