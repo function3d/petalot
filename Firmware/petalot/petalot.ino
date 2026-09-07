@@ -27,8 +27,8 @@ double Ts = 0; //time total session
 
 bool OTA_update = false;
 
-double tempLastStats;
-double tempLastStatsSave;
+unsigned long tempLastStats;
+unsigned long tempLastStatsSave;
 
 #include "pins.hpp"
 #include "conf.hpp"

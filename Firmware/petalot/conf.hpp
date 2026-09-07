@@ -121,18 +121,17 @@ void loadConfiguration(bool reset = false) {
     Serial.println("Failed to open /config.json");
     resetConfiguration();
     saveConfiguration(false);
-    loadConfiguration();
+    return;
   }
   DeserializationError error = deserializeJson(doc, file);
+  file.close();
   if (error) {
     msg = "Failed to read file, using default configuration";
     Serial.println("Failed to read file, using default configuration");
     resetConfiguration();
     saveConfiguration(false);
-    loadConfiguration();
     return;
   }
-  file.close();
 
   strlcpy(ssid,
           doc["ssid"],

@@ -12,11 +12,11 @@ bool Fcurrent = false;
 bool Finsert = false;
 bool Fworking = false;
 double Output;
-double tempLastSample;
-double tempLastFilament;
-double tempLastNoFilament;
-double tempLastStart;
-double tempLastFilamentCheck;
+unsigned long tempLastSample;
+unsigned long tempLastFilament;
+unsigned long tempLastNoFilament;
+unsigned long tempLastStart;
+unsigned long tempLastFilamentCheck;
 double temperatureStart;
 
 //3V3 → NTC → A0 → 2KΩ → GND
@@ -30,23 +30,28 @@ int temptable[8][2] = {
   { 31, 30 },
   { 17, 10 }
 };
+const int TEMP_TABLE_ROWS = sizeof(temptable) / sizeof(temptable[0]);
 
 void Thermister_ESP8266() {
   int i = 0;
 
-  for (i = 0; i < 52; i++) {
+  for (i = 0; i < TEMP_TABLE_ROWS; i++) {
     if (AR >= temptable[i][0]) {
       break;
     }
   }
 
-  if (i==0)
-    T = temptable[i][1];
-  else
-    T = map(AR, temptable[i-1][0], temptable[i][0], temptable[i-1][1], temptable[i][1]);
-  int toffset = map (T, 0, To, 0, TOffset);
+  if (i == 0) {
+    T = temptable[0][1];
+  } else if (i == TEMP_TABLE_ROWS) {
+    int last = TEMP_TABLE_ROWS - 1;
+    T = map(AR, temptable[last - 1][0], temptable[last][0], temptable[last - 1][1], temptable[last][1]);
+  } else {
+    T = map(AR, temptable[i - 1][0], temptable[i][0], temptable[i - 1][1], temptable[i][1]);
+  }
+  int toffset = map(T, 0, To, 0, TOffset);
   T = T + toffset;
-  if (AR < temptable[7][0])
+  if (AR < temptable[TEMP_TABLE_ROWS - 1][0])
     T = 0;
 }
 
@@ -113,7 +118,7 @@ double control(){
   if(T < minT){
     return MaxGate;
   }
-  return MaxGate/100*Gate;
+  return (double)MaxGate * Gate / 100.0;
 }
 
 void hotendReadTempTask() {
@@ -192,11 +197,10 @@ void hotendReadTempTask() {
         LastStopReason = "No sensor detection for " + String(NoFilamentTime) + " min.";
         stop();
       }
-
-      if (tempLastStart > 0 && millis() >= tempLastStart + Maxtime * 60 * 1000) {
-        LastStopReason = "Max time reached: " + String(Maxtime) + " min.";
-        stop();
-      }
+    }
+    if (tempLastStart > 0 && millis() >= tempLastStart + (unsigned long)Maxtime * 60 * 1000) {
+      LastStopReason = "Max time reached: " + String(Maxtime) + " min.";
+      stop();
     }
     if (tempLastStart > 0 && T < To-20 && T-10 < temperatureStart && millis() >= tempLastStart + 30*1000 ) { 
         LastStopReason = "30s no heat: thermistor/heater issue";

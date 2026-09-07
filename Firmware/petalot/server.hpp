@@ -15,6 +15,23 @@
 AsyncWebServer server(80);
 ESPAsyncHTTPUpdateServer httpUpdater;
 
+// ============================================================================
+// WEB AUTH (optional)
+// Define WEB_USER/WEB_PASSWORD before including this file to require a login
+// on /set, /reset and /update. Empty password = auth disabled (default).
+// ============================================================================
+#ifndef WEB_USER
+  #define WEB_USER "admin"
+#endif
+#ifndef WEB_PASSWORD
+  #define WEB_PASSWORD ""
+#endif
+
+static bool isAuthorized(AsyncWebServerRequest *request) {
+  if (WEB_PASSWORD[0] == '\0') return true;
+  return request->authenticate(WEB_USER, WEB_PASSWORD);
+}
+
 static const char INDEX_HTML[] PROGMEM = R"rawliteral(
 <!DOCTYPE html>
 <html lang="es">
@@ -466,24 +483,22 @@ void handleNotFound(AsyncWebServerRequest *request) {
 }
 
 void tele(AsyncWebServerRequest *request) {
+    StaticJsonDocument<384> teleData;
+    teleData["status"] = (status == "working") ? ((stepper.motorEnabled) ? 2 : 1) : 0;
+    teleData["T"]    = T;
+    teleData["AR"]   = AR;
+    teleData["To"]   = To;
+    teleData["Vo"]   = Vo;
+    teleData["F"]    = F;
+    teleData["Fenable"] = Fenable;
+    teleData["Ft"]   = Ft;
+    teleData["Fs"]   = Fs;
+    teleData["Tt"]   = Tt;
+    teleData["Ts"]   = Ts;
+    teleData["LastStopReason"] = LastStopReason;
+    teleData["Output"] = String(map((int)Output, 0, 255, 0, 100)) + "%";
     String r;
-    r = String("{") +
-        "\"status\":" + ((status=="working")?((stepper.motorEnabled)?"2":"1"):"0") +
-        ",\"T\":" + String(T) +
-        ",\"AR\":" + String(AR) +
-        ",\"To\":" + String(To) +
-        //",\"Tmi\":" + String(Tmi) +
-        ",\"Vo\":" + String(Vo) +
-        ",\"F\":" + String(F) +
-        ",\"Fenable\":" + (Fenable?"true":"false") +
-        //",\"Te\":" + (T>0?"true":"false") +
-        ",\"Ft\":" + String(Ft) +
-        ",\"Fs\":" + String(Fs) +
-        ",\"Tt\":" + String(Tt) +
-        ",\"Ts\":" + String(Ts) +
-        ",\"LastStopReason\":\"" + String(LastStopReason) + "\"" +
-        ",\"Output\":\"" + String(map(Output, 0, 255, 0, 100)) + "%\""
-        "}";
+    serializeJson(teleData, r);
     request->send(200, "application/json", r);
 }
 
@@ -492,6 +507,10 @@ void get(AsyncWebServerRequest *request) {
 }
 
 void reset(AsyncWebServerRequest *request) {
+    if (!isAuthorized(request)) {
+        request->requestAuthentication();
+        return;
+    }
     String stats = request->arg("stats");
     request->redirect("/");
     if (stats.toInt() == 1)
@@ -502,6 +521,10 @@ void reset(AsyncWebServerRequest *request) {
 }
 
 void set(AsyncWebServerRequest *request) {
+    if (!isAuthorized(request)) {
+        request->requestAuthentication();
+        return;
+    }
     String ToChange = request->arg("To");
     if (ToChange != "") {
         if (ToChange.toInt() + To <= maxT && ToChange.toInt() + To >= minT) {
@@ -574,7 +597,6 @@ void set(AsyncWebServerRequest *request) {
 }
 
 void handleRoot(AsyncWebServerRequest *request) {
-    analogWrite(PIN_HEATER, 0);
     request->send_P(200, "text/html", INDEX_HTML);
 }
 
@@ -596,7 +618,7 @@ void InitServer() {
         handleNotFound(request);
     });
     
-    httpUpdater.setup(&server);
+    httpUpdater.setup(&server, WEB_USER, WEB_PASSWORD);
     server.begin();
 }
 

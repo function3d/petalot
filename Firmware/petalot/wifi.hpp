@@ -11,8 +11,8 @@ IPAddress local_ip;
 
 bool apmode = false;
 
-double tempLastWifiTask;
-double tempStartWifiTask;
+unsigned long tempLastWifiTask;
+unsigned long tempStartWifiTask;
 bool wifiReady  =  false;
 String IpAddress2String(const IPAddress& ipAddress)
 {
