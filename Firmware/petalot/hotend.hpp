@@ -3,15 +3,8 @@
 // ============================================================================
 // THERMISTOR + HEATER (HOTEND)
 // ============================================================================
-const float VCC = 3.3;
-
-const int NUM_READINGS = 2;
-float readings[NUM_READINGS];
-int readIndex = 0;
-float total = 0;
-float average = 0;
-
 short AR;                 // analog read value (0-1023)
+int lastAR = 0;           // previous sample, used for a 2-sample average
 bool F = false;           // filament present
 bool Fcurrent = false;    // current filament pin state
 bool Finsert = false;     // filament inserted & confirmed after 3s
@@ -84,11 +77,6 @@ void stop() {
   tempLastStart = 0;
 }
 
-float readVoltage() {
-  AR = analogRead(PIN_THERMISTER);
-  return (AR * VCC) / 1023.0;
-}
-
 void initHotend() {
   status = "stopped";
   if (!UseDisplay) {
@@ -99,12 +87,8 @@ void initHotend() {
 
   if (To > maxT) To = workT;
 
-  for (int i = 0; i < NUM_READINGS; i++) readings[i] = 0;
-
-  for (int i = 0; i < NUM_READINGS; i++) {
-    readVoltage();
-    delay(10);
-  }
+  AR = analogRead(PIN_THERMISTER);
+  lastAR = AR;
 }
 
 double control() {
@@ -122,7 +106,17 @@ double control() {
   if (T >= To) {
     return 0;
   }
-  if (T < minT) {
+
+  // Hysteresis around minT: use full power until minT is reached, then step
+  // down to the working duty without flapping back and forth at the threshold.
+  const double HYSTERESIS = 3.0;
+  static bool boost = false;
+  if (T >= minT) {
+    boost = false;
+  } else if (T < minT - HYSTERESIS) {
+    boost = true;
+  }
+  if (boost) {
     return MaxGate;
   }
   return (double)MaxGate * Gate / 100.0;
@@ -130,14 +124,13 @@ double control() {
 
 void hotendReadTempTask() {
   if (millis() >= tempLastSample + 250) {
-    total = total - readings[readIndex];
-    float voltage = readVoltage();
-    readings[readIndex] = voltage;
-    total = total + readings[readIndex];
-    readIndex = (readIndex + 1) % NUM_READINGS;
-    average = total / NUM_READINGS;
+    // 2-sample moving average using integer math (no FPU on ESP8266).
+    // The sanity band 15..1007 is equivalent to the original 0.05..3.25 V check.
+    AR = analogRead(PIN_THERMISTER);
+    int avgAR = (AR + lastAR) / 2;
+    lastAR = AR;
 
-    if (average > 0.05 && average < VCC - 0.05) {
+    if (avgAR > 15 && avgAR < 1007) {
       Thermister_ESP8266();
     }
 

@@ -44,7 +44,8 @@ StaticJsonDocument<128> stats;
 
 void setup() {
   Serial.begin(115200);
-  delay(1500);
+  // Small delay so the host can attach to the serial port before boot logs
+  delay(200);
   initConf();
   initWiFi();
   initOTA();
