@@ -20,10 +20,10 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
     }
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, sans-serif; }
     body { background: var(--bg); padding: 1rem; color: var(--text); display: flex; justify-content: center; }
-    
+
     .container { width: 100%; max-width: 500px; display: flex; flex-direction: column; gap: 0.75rem; }
     .card { background: var(--card-bg); padding: 1rem; border:1px solid #363e46; border-radius: 6px; display: flex; flex-direction: column; gap: 0.25rem; }
-    
+
     /* Header */
     .header { flex-direction: row; justify-content: space-between; align-items: center; background:none; border:0; }
     .header h1 { font-size: 1.45rem; font-weight: 800; }
@@ -69,7 +69,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
     .btn-group { display: flex; background: #363e46; border-radius: 4px; overflow: hidden; }
     .btn-group button { background: none; border: none; padding: 0.4rem 0.8rem; font-size: 1rem; font-weight: bold; cursor: pointer; color: var(--text); }
     .btn-group button:hover { background: #4a5a6a; }
-    
+
     /* Toggle Switch Simplificado */
     .switch { position: relative; width: 40px; height: 22px; display: inline-block; }
     .switch input { opacity: 0; width: 0; height: 0; }
@@ -103,7 +103,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
 <body>
 
   <div class="container">
-    
+
     <div class="card header">
       <div>
           <h1>PETALOT</h1>
@@ -118,7 +118,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
     </div>
 
     <div class="grid">
-      
+
       <div class="card ui-card">
         <div class="title-wrapper">
           <div class="title" data-i18n="gs.status">Status</div>
@@ -144,9 +144,9 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         <div class="row">
           <div>
             <span class="value" id="val-temp">0</span><span class="unit"> °C</span>
-            <span class="unit" id="val-output"></span>
+            <small id="val-output"></small>
           </div>
-          
+
           <div class="btn-group">
             <button onclick="sendAction('To', -5)">-</button>
             <button onclick="sendAction('To', 5)">+</button>
@@ -207,10 +207,10 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         <div class="form-group"><label data-i18n="st.stopDelay">Stop Delay (sec)</label><input type="number" name="Stopdelay"><small class="help-text" data-i18n="st.stopDelayHelp">Seconds to finish processing after strip end passes the sensor</small></div>
         <div class="form-group"><label data-i18n="st.maxTime">Max Time (min)</label><input type="number" name="Maxtime"><small class="help-text" data-i18n="st.maxTimeHelp">Maximum machine run time</small></div>
         <div class="form-group"><label data-i18n="st.sensorTimeout">Sensor timeout (min)</label><input type="number" name="NoFilamentTime"><small class="help-text" data-i18n="st.sensorTimeoutHelp">Minutes to run without sensor activity. If disabled, only Max Time applies</small></div>
-        
+
         <div class="form-group"><label data-i18n="st.ssid">SSID</label><input type="text" name="ssid"><small class="help-text" data-i18n="st.ssidHelp">Your home/work Wi-Fi name</small></div>
         <div class="form-group"><label data-i18n="st.password">SSID Password</label><input type="password" name="password"><small class="help-text" data-i18n="st.passwordHelp">Your Wi-Fi password</small></div>
-        
+
         <div class="form-group"><label data-i18n="st.ip">IP Address</label><input type="text" name="LocalIP"><small class="help-text" data-i18n-html="st.ipHelp">DHCP used if blank. Try <a href="http://petalot.local">petalot.local</a> first; check router for IP if inaccessible</small></div>
         <div class="form-group"><label data-i18n="st.subnet">Subnet</label><input type="text" name="Subnet"><small class="help-text" data-i18n="st.subnetHelp">255.255.255.0 if left blank</small></div>
         <div class="form-group"><label data-i18n="st.gateway">Gateway</label><input type="text" name="Gateway"><small class="help-text" data-i18n="st.gatewayHelp">PETALOT does not require an Internet connection; 0.0.0.0 if left blank</small></div>
@@ -265,7 +265,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'btn.factoryReset': 'Factory Reset',
         'msg.minmax': 'min: {min}, max: {max}',
         't.running': 'Running',
-        't.gate': 'Gate',
+
         't.stopped': 'Stopped',
         't.checkThermistor': 'Check thermistor',
         't.speedWarn': 'Speeds >25 cm/s may cause print failures. Test before batch production',
@@ -311,7 +311,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'btn.factoryReset': 'Restablecer de fábrica',
         'msg.minmax': 'mín: {min}, máx: {max}',
         't.running': 'En marcha',
-        't.gate': 'Gate',
+
         't.stopped': 'Parado',
         't.checkThermistor': 'Comprueba el termistor',
         't.speedWarn': 'Velocidades >25 cm/s pueden causar fallos de impresión. Prueba antes de producción',
@@ -357,7 +357,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'btn.factoryReset': 'Restaurar de fábrica',
         'msg.minmax': 'mín: {min}, máx: {max}',
         't.running': 'Em funcionamento',
-        't.gate': 'Gate',
+
         't.stopped': 'Parado',
         't.checkThermistor': 'Verifique o termistor',
         't.speedWarn': 'Velocidades >25 cm/s podem causar falhas de impressão. Teste antes da produção',
@@ -403,7 +403,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'btn.factoryReset': 'Réinitialiser',
         'msg.minmax': 'min : {min}, max : {max}',
         't.running': 'En marche',
-        't.gate': 'Gate',
+
         't.stopped': 'Arrêté',
         't.checkThermistor': 'Vérifiez la thermistance',
         't.speedWarn': 'Des vitesses >25 cm/s peuvent causer des défauts. Testez avant la production',
@@ -449,7 +449,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'btn.factoryReset': 'Zurücksetzen',
         'msg.minmax': 'min: {min}, max: {max}',
         't.running': 'Läuft',
-        't.gate': 'Gate',
+
         't.stopped': 'Gestoppt',
         't.checkThermistor': 'Thermistor prüfen',
         't.speedWarn': 'Geschwindigkeiten >25 cm/s können Druckfehler verursachen. Vor der Produktion testen',
@@ -495,7 +495,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'btn.factoryReset': 'Ripristino',
         'msg.minmax': 'min: {min}, max: {max}',
         't.running': 'In funzione',
-        't.gate': 'Gate',
+
         't.stopped': 'Fermata',
         't.checkThermistor': 'Controlla il termistore',
         't.speedWarn': 'Velocità >25 cm/s possono causare difetti. Test prima della produzione',
@@ -541,7 +541,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'btn.factoryReset': '恢复出厂设置',
         'msg.minmax': '最小：{min}，最大：{max}',
         't.running': '运行中',
-        't.gate': 'Gate',
+
         't.stopped': '已停止',
         't.checkThermistor': '检查热敏电阻',
         't.speedWarn': '超过 25 cm/s 的速度可能导致打印失败。量产前请测试',
@@ -589,7 +589,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
       const horas = Math.floor(segundos / 3600);
       const minutos = Math.floor((segundos % 3600) / 60);
       const segRestantes = segundos % 60;
-      
+
       return `${horas}h${String(minutos)}m${String(segRestantes)}s`;
     }
 
@@ -601,7 +601,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
           document.getElementById('tele-Ft').innerText = Math.round(data.Ft) / 100;
           document.getElementById('tele-Ts').innerText = toHHMMSS(data.Ts);
           document.getElementById('tele-Tt').innerText = toHHMMSS(data.Tt);
-          
+
           document.getElementById('val-status').innerText = data.status ? t('t.running') : t('t.stopped');
           document.getElementById('ctrl-status').checked = data.status;
           document.getElementById('warn-status').innerText = (!data.status && data.LastStopReason) ? data.LastStopReason : '';
@@ -609,7 +609,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
           document.getElementById('val-temp').innerText = Math.round(data.T);
           document.getElementById('title-temp').innerText = `${t('gs.temp')} (${data.To})`;
           document.getElementById('warn-temp').innerText = (data.T>0) ? '' : t('t.checkThermistor');
-          document.getElementById('val-output').innerText = (data.Output !== undefined && data.Output !== '') ? ` ${t('t.gate')}: ${data.Output}` : '';
+          document.getElementById('val-output').innerText = (data.Output !== undefined && data.Output !== '') ? data.Output : '';
 
           document.getElementById('val-speed').innerText = data.Vo;
           document.getElementById('warn-speed').innerText = (data.Vo>25) ? t('t.speedWarn') : '';
@@ -617,11 +617,11 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
           document.getElementById('val-filament').innerText = data.F ? t('t.detected') : t('t.notDetected');
           document.getElementById('ctrl-filament').checked = data.Fenable;
           document.getElementById('warn-filament').innerText = (!data.Fenable) ? t('t.sensorDisabled') : '';
-          
+
           document.getElementById('tele-AR').value = data.AR || 0;
 
           updateIcons(data);
-        
+
           setTimeout(fetchTele, 2000);
         })
         .catch(err => {
@@ -650,7 +650,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
           conf = data;
           if (data.version) {
             document.getElementById('version').innerText = `v${data.version}`;
-            
+
             let versionParts = data.version.split('.');
             let semanticVersion = parseInt(versionParts[0] + versionParts[1] + versionParts[2]);
 
@@ -667,7 +667,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
           document.getElementById('msg-speed').innerText = t('msg.minmax', {min: data.minV, max: data.maxV});
 
           const form = document.getElementById('settings-form');
-          
+
           Object.keys(data).forEach(key => {
             if(form.elements[key]) {
               if(form.elements[key].type === 'checkbox') {
@@ -685,10 +685,10 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
 
     function saveSettings(reboot) {
       if (!confirm(t('t.confirmSave'))) return;
-      
+
       const form = document.getElementById('settings-form');
       const params = new URLSearchParams();
-      
+
       Array.from(form.elements).forEach(el => {
         if (!el.name) return;
         if (el.name === 'ssid' && el.value != conf.ssid) {
@@ -712,7 +712,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
           params.append(el.name, el.value);
         }
       });
-      
+
       if (reboot) params.append('reboot', '1');
 
       fetch(`/set?${params.toString()}`)
