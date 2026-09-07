@@ -144,6 +144,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         <div class="row">
           <div>
             <span class="value" id="val-temp">0</span><span class="unit"> °C</span>
+            <span class="unit" id="val-output"></span>
           </div>
           
           <div class="btn-group">
@@ -264,6 +265,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'btn.factoryReset': 'Factory Reset',
         'msg.minmax': 'min: {min}, max: {max}',
         't.running': 'Running',
+        't.gate': 'Gate',
         't.stopped': 'Stopped',
         't.checkThermistor': 'Check thermistor',
         't.speedWarn': 'Speeds >25 cm/s may cause print failures. Test before batch production',
@@ -309,6 +311,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'btn.factoryReset': 'Restablecer de fábrica',
         'msg.minmax': 'mín: {min}, máx: {max}',
         't.running': 'En marcha',
+        't.gate': 'Gate',
         't.stopped': 'Parado',
         't.checkThermistor': 'Comprueba el termistor',
         't.speedWarn': 'Velocidades >25 cm/s pueden causar fallos de impresión. Prueba antes de producción',
@@ -354,6 +357,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'btn.factoryReset': 'Restaurar de fábrica',
         'msg.minmax': 'mín: {min}, máx: {max}',
         't.running': 'Em funcionamento',
+        't.gate': 'Gate',
         't.stopped': 'Parado',
         't.checkThermistor': 'Verifique o termistor',
         't.speedWarn': 'Velocidades >25 cm/s podem causar falhas de impressão. Teste antes da produção',
@@ -399,6 +403,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'btn.factoryReset': 'Réinitialiser',
         'msg.minmax': 'min : {min}, max : {max}',
         't.running': 'En marche',
+        't.gate': 'Gate',
         't.stopped': 'Arrêté',
         't.checkThermistor': 'Vérifiez la thermistance',
         't.speedWarn': 'Des vitesses >25 cm/s peuvent causer des défauts. Testez avant la production',
@@ -444,6 +449,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'btn.factoryReset': 'Zurücksetzen',
         'msg.minmax': 'min: {min}, max: {max}',
         't.running': 'Läuft',
+        't.gate': 'Gate',
         't.stopped': 'Gestoppt',
         't.checkThermistor': 'Thermistor prüfen',
         't.speedWarn': 'Geschwindigkeiten >25 cm/s können Druckfehler verursachen. Vor der Produktion testen',
@@ -489,6 +495,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'btn.factoryReset': 'Ripristino',
         'msg.minmax': 'min: {min}, max: {max}',
         't.running': 'In funzione',
+        't.gate': 'Gate',
         't.stopped': 'Fermata',
         't.checkThermistor': 'Controlla il termistore',
         't.speedWarn': 'Velocità >25 cm/s possono causare difetti. Test prima della produzione',
@@ -534,6 +541,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'btn.factoryReset': '恢复出厂设置',
         'msg.minmax': '最小：{min}，最大：{max}',
         't.running': '运行中',
+        't.gate': 'Gate',
         't.stopped': '已停止',
         't.checkThermistor': '检查热敏电阻',
         't.speedWarn': '超过 25 cm/s 的速度可能导致打印失败。量产前请测试',
@@ -601,6 +609,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
           document.getElementById('val-temp').innerText = Math.round(data.T);
           document.getElementById('title-temp').innerText = `${t('gs.temp')} (${data.To})`;
           document.getElementById('warn-temp').innerText = (data.T>0) ? '' : t('t.checkThermistor');
+          document.getElementById('val-output').innerText = (data.Output !== undefined && data.Output !== '') ? ` ${t('t.gate')}: ${data.Output}` : '';
 
           document.getElementById('val-speed').innerText = data.Vo;
           document.getElementById('warn-speed').innerText = (data.Vo>25) ? t('t.speedWarn') : '';
