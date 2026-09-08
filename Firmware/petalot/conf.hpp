@@ -102,7 +102,7 @@ void resetConfiguration() {
   LocalIP = "";
   Subnet = "";
   Gateway = "";
-  Gate = 55;
+  Gate = 45;
   MaxGate = 255;
   TOffset = 0;
   Stopdelay = 14;
@@ -149,7 +149,7 @@ void loadConfiguration(bool reset = false) {
   if (doc.containsKey("Gate"))
     Gate = doc["Gate"];
   else {
-    Gate = 55;
+    Gate = 45;
     doc["Gate"] = Gate;
   }
   if (doc.containsKey("MaxGate"))
