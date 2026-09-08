@@ -224,28 +224,42 @@ void factoryReset(bool stats = false) {
 }
 
 void readConfigurationSerial() {
-  StaticJsonDocument<512> docInput;
-
   if (Serial.available() > 0) {
-    // Deserialize the JSON document
-    DeserializationError error = deserializeJson(docInput, Serial);
-    if (error) {
+    String line = Serial.readStringUntil('\n');
+    line.trim();
+    if (line.length() == 0) {
       return;
-    } else {
-      doc = docInput;
-      File file = LittleFS.open("/config.json", "w");
-      if (!file) {
-        msg = "Failed to create file";
-        return;
-      }
-      if (serializeJson(doc, file) == 0) {
-        msg = "Failed to write to file";
-      }
-      file.close();
-      Serial.println("Configuration updated, restarting...");
-      analogWrite(PIN_HEATER, 0);
-      ESP.restart();
     }
+
+    if (line.equalsIgnoreCase("conf")) {
+      Serial.println(printConf(true));
+      return;
+    }
+
+    if (!line.startsWith("{")) {
+      Serial.println("Unknown command. Type 'conf' to dump config or send a JSON config");
+      return;
+    }
+
+    StaticJsonDocument<512> docInput;
+    DeserializationError error = deserializeJson(docInput, line);
+    if (error) {
+      Serial.println("Invalid JSON");
+      return;
+    }
+    doc = docInput;
+    File file = LittleFS.open("/config.json", "w");
+    if (!file) {
+      msg = "Failed to create file";
+      return;
+    }
+    if (serializeJson(doc, file) == 0) {
+      msg = "Failed to write to file";
+    }
+    file.close();
+    Serial.println("Configuration updated, restarting...");
+    analogWrite(PIN_HEATER, 0);
+    ESP.restart();
   }
 }
 
