@@ -89,7 +89,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
 
     .form-group { display: flex; flex-direction: column; gap: 0.15rem; }
     .form-group .row-layout { gap:1rem; display: flex; flex-direction: row; align-items: center; justify-content: space-between; padding: 0.25rem 0; }
-    .form-group label { font-size: 0.8rem; color: var(--muted); font-weight: 700; margin-top: 5px; }
+    .form-group label, .form-group span.label { font-size: 0.8rem; color: var(--muted); font-weight: 700; margin-top: 5px; }
     .form-group input[type="text"], .form-group input[type="number"], .form-group input[type="password"] { width: 100%; padding: 0.4rem; border: 1px solid #363e46; border-radius: 4px; font-size: 0.85rem; color: var(--text); background: #181c20; }
     .form-group input[type="text"]:focus, .form-group input[type="number"]:focus, .form-group input[type="password"]:focus { border-color: var(--accent); outline-style: none; }
     .form-group input:disabled { opacity: .5; }
@@ -107,7 +107,8 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
 
     <div class="card header">
       <div>
-          <h1>PETALOT</h1>
+          <h1><img style="width: 28px;
+    vertical-align: sub;" src="data:image/svg+xml,%3Csvg%20xmlns%3D'http://www.w3.org/2000/svg'%20viewBox%3D'0%200%2032%2032'%3E%3Crect%20width%3D'32'%20height%3D'32'%20rx%3D'7'%20fill%3D'%23181c20'/%3E%3Crect%20x%3D'7'%20y%3D'7'%20width%3D'18'%20height%3D'18'%20rx%3D'4'%20fill%3D'none'%20stroke%3D'%2300ae42'%20stroke-width%3D'2.5'/%3E%3Ctext%20x%3D'16'%20y%3D'22'%20font-size%3D'15'%20text-anchor%3D'middle'%20fill%3D'%2300ae42'%20font-family%3D'sans-serif'%20font-weight%3D'bold'%3EP%3C/text%3E%3C/svg%3E" />PETaLot</h1>
           <a href="https://linktr.ee/function.3d" target="_blank">linktr.ee/function.3d</a>
       </div>
       <div class="header-right">
@@ -195,25 +196,25 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
       <div class="trigger" onclick="document.getElementById('settings-card').classList.toggle('open')"><span data-i18n="gs.settings">Settings</span><span class="toggle"></span></div>
       <form id="settings-form" class="content" onsubmit="event.preventDefault();">
       <div class="grid">
-        <div class="form-group"><label data-i18n="st.language">Language</label><select id="lang-select"></select></div>
+        <div class="form-group"><span class="label" data-i18n="st.language">Language</span><select id="lang-select"></select></div>
 
-        <div class="form-group"><div class="row-layout"><label data-i18n="st.startOnPower">Start up at power on</label><label class="switch"><input type="checkbox" name="StartOnPower"><span class="slider"></span></label></div><small class="help-text" data-i18n="st.startOnPowerHelp">If you disable it, you'll only be able to start the machine by pressing the sensor</small></div>
-        <div class="form-group"><div class="row-layout"><label data-i18n="st.motorOnTo">Motor starting at target temp</label><label class="switch"><input type="checkbox" name="MotorOnTo"><span class="slider"></span></label></div><small class="help-text" data-i18n="st.motorOnToHelp">If enabled, the motor will only run once the target temperature is reached</small></div>
-        <div id="setting-oled" class="form-group"><div class="row-layout"><label data-i18n="st.display">Use OLED Display</label><label class="switch"><input type="checkbox" name="UseDisplay"><span class="slider"></span></label></div><small id="setting-oled-help" class="help-text" data-i18n="st.displayHelp">Turn on the display if your machine has one</small></div>
+        <div class="form-group"><div class="row-layout"><span class="label" data-i18n="st.startOnPower">Start up at power on</span><label class="switch"><input type="checkbox" name="StartOnPower"><span class="slider"></span></label></div><small class="help-text" data-i18n="st.startOnPowerHelp">If you disable it, you'll only be able to start the machine by pressing the sensor</small></div>
+        <div class="form-group"><div class="row-layout"><span class="label" data-i18n="st.motorOnTo">Motor starting at target temp</span><label class="switch"><input type="checkbox" name="MotorOnTo"><span class="slider"></span></label></div><small class="help-text" data-i18n="st.motorOnToHelp">If enabled, the motor will only run once the target temperature is reached</small></div>
+        <div id="setting-oled" class="form-group"><div class="row-layout"><span class="label" data-i18n="st.display">Use OLED Display</span><label class="switch"><input type="checkbox" name="UseDisplay"><span class="slider"></span></label></div><small id="setting-oled-help" class="help-text" data-i18n="st.displayHelp">Turn on the display if your machine has one</small></div>
 
-        <div class="form-group"><label data-i18n="st.toffset">Temperature Offset</label><input type="number" name="TOffset"><small class="help-text" data-i18n="st.toffsetHelp">Adjust the temperature if you notice it's off</small></div>
-        <div class="form-group"><label data-i18n="st.stopDelay">Stop Delay (sec)</label><input type="number" name="Stopdelay"><small class="help-text" data-i18n="st.stopDelayHelp">Seconds to finish processing after strip end passes the sensor</small></div>
-        <div class="form-group"><label data-i18n="st.maxTime">Max Time (min)</label><input type="number" name="Maxtime"><small class="help-text" data-i18n="st.maxTimeHelp">Maximum machine run time</small></div>
-        <div class="form-group"><label data-i18n="st.sensorTimeout">Sensor timeout (min)</label><input type="number" name="NoFilamentTime"><small class="help-text" data-i18n="st.sensorTimeoutHelp">Minutes to run without sensor activity. If disabled, only Max Time applies</small></div>
+        <div class="form-group"><span class="label" data-i18n="st.toffset">Temperature Offset</span><input type="number" name="TOffset"><small class="help-text" data-i18n="st.toffsetHelp">Adjust the temperature if you notice it's off</small></div>
+        <div class="form-group"><span class="label" data-i18n="st.stopDelay">Stop Delay (sec)</span><input type="number" name="Stopdelay"><small class="help-text" data-i18n="st.stopDelayHelp">Seconds to finish processing after strip end passes the sensor</small></div>
+        <div class="form-group"><span class="label" data-i18n="st.maxTime">Max Time (min)</span><input type="number" name="Maxtime"><small class="help-text" data-i18n="st.maxTimeHelp">Maximum machine run time</small></div>
+        <div class="form-group"><span class="label" data-i18n="st.sensorTimeout">Sensor timeout (min)</span><input type="number" name="NoFilamentTime"><small class="help-text" data-i18n="st.sensorTimeoutHelp">Minutes to run without sensor activity. If disabled, only Max Time applies</small></div>
 
-        <div class="form-group"><label data-i18n="st.ssid">SSID</label><input type="text" name="ssid"><small class="help-text" data-i18n="st.ssidHelp">Your home/work Wi-Fi name</small></div>
-        <div class="form-group"><label data-i18n="st.password">SSID Password</label><input type="password" name="password"><small class="help-text" data-i18n="st.passwordHelp">Your Wi-Fi password</small></div>
+        <div class="form-group"><span class="label" data-i18n="st.ssid">SSID</span><input type="text" name="ssid"><small class="help-text" data-i18n="st.ssidHelp">Your home/work Wi-Fi name</small></div>
+        <div class="form-group"><span class="label" data-i18n="st.password">SSID Password</span><input type="password" name="password"><small class="help-text" data-i18n="st.passwordHelp">Your Wi-Fi password</small></div>
 
-        <div class="form-group"><label data-i18n="st.ip">IP Address</label><input type="text" name="LocalIP"><small class="help-text" data-i18n-html="st.ipHelp">DHCP used if blank. Try <a href="http://petalot.local">petalot.local</a> first; check router for IP if inaccessible</small></div>
-        <div class="form-group"><label data-i18n="st.subnet">Subnet</label><input type="text" name="Subnet"><small class="help-text" data-i18n="st.subnetHelp">255.255.255.0 if left blank</small></div>
-        <div class="form-group"><label data-i18n="st.gateway">Gateway</label><input type="text" name="Gateway"><small class="help-text" data-i18n="st.gatewayHelp">PETALOT does not require an Internet connection; 0.0.0.0 if left blank</small></div>
+        <div class="form-group"><span class="label" data-i18n="st.ip">IP Address</span><input type="text" name="LocalIP"><small class="help-text" data-i18n-html="st.ipHelp">DHCP used if blank. Try <a href="http://petalot.local">petalot.local</a> first; check router for IP if inaccessible</small></div>
+        <div class="form-group"><span class="label" data-i18n="st.subnet">Subnet</span><input type="text" name="Subnet"><small class="help-text" data-i18n="st.subnetHelp">255.255.255.0 if left blank</small></div>
+        <div class="form-group"><span class="label" data-i18n="st.gateway">Gateway</span><input type="text" name="Gateway"><small class="help-text" data-i18n="st.gatewayHelp">PETALOT does not require an Internet connection; 0.0.0.0 if left blank</small></div>
 
-        <div style="display:none" class="form-group"><label data-i18n="st.analog">Analog Read</label><input type="text" id="tele-AR" disabled></div>
+        <div style="display:none" class="form-group"><span class="label" data-i18n="st.analog">Analog Read</span><input type="text" id="tele-AR" disabled></div>
       </div>
         <div class="actions">
           <button type="button" class="btn" onclick="saveSettings()" data-i18n="btn.save">Save</button>
