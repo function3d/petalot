@@ -8,6 +8,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D'http://www.w3.org/2000/svg'%20viewBox%3D'0%200%2032%2032'%3E%3Crect%20width%3D'32'%20height%3D'32'%20rx%3D'7'%20fill%3D'%23181c20'/%3E%3Crect%20x%3D'7'%20y%3D'7'%20width%3D'18'%20height%3D'18'%20rx%3D'4'%20fill%3D'none'%20stroke%3D'%2300ae42'%20stroke-width%3D'2.5'/%3E%3Ctext%20x%3D'16'%20y%3D'22'%20font-size%3D'15'%20text-anchor%3D'middle'%20fill%3D'%2300ae42'%20font-family%3D'sans-serif'%20font-weight%3D'bold'%3EP%3C/text%3E%3C/svg%3E">
   <title data-i18n="gs.title">PETALOT Control</title>
   <style>
     :root {

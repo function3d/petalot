@@ -3,9 +3,6 @@
 #include <ArduinoJson.h>
 #include <LittleFS.h>
 
-// Set to 1 to print every loaded setting (and the JSON config) on boot
-#define DEBUG_LOG 0
-
 String msg;
 String status;
 double To;
@@ -102,7 +99,7 @@ void resetConfiguration() {
   LocalIP = "";
   Subnet = "";
   Gateway = "";
-  Gate = 45;
+  Gate = 50;
   MaxGate = 255;
   TOffset = 0;
   Stopdelay = 14;
@@ -149,7 +146,7 @@ void loadConfiguration(bool reset = false) {
   if (doc.containsKey("Gate"))
     Gate = doc["Gate"];
   else {
-    Gate = 45;
+    Gate = 50;
     doc["Gate"] = Gate;
   }
   if (doc.containsKey("MaxGate"))
@@ -186,27 +183,6 @@ void loadConfiguration(bool reset = false) {
     MotorOnTo = 0;
     doc["MotorOnTo"] = MotorOnTo;
   }
-  if (DEBUG_LOG) {
-    Serial.println();
-    Serial.println("To: Temperature");
-    Serial.println("Vo: Speed");
-    Serial.println("Fenable: Filament enabled");
-    Serial.println("Gate: Target approach gate drive percentage relative to MaxGate");
-    Serial.println("MaxGate: Maximum MOSFET gate drive limit (0-255)");
-    Serial.println("TOffset: Temperature Offset");
-    Serial.println("Stopdelay: Stop Delay (s)");
-    Serial.println("Maxtime: Max Time (min)");
-    Serial.println("NoFilamentTime: Minutes to stop if no filament is detected");
-    Serial.println("UseDisplay: Use OLED display");
-    Serial.println("StartOnPower: Start up at power on");
-    Serial.println("MotorOnTo: Motor starting at target temperature");
-    Serial.println("ssid: SSID");
-    Serial.println("password: SSID Password");
-    Serial.println("LocalIP: IP address");
-    Serial.println("Gateway: Gateway address");
-    Serial.println("Subnet: Subnet mask");
-    Serial.println(printConf(false));
-  }
 }
 
 void factoryReset(bool stats = false) {
@@ -232,6 +208,24 @@ void readConfigurationSerial() {
     }
 
     if (line.equalsIgnoreCase("conf")) {
+      Serial.println();
+      Serial.println("To: Temperature");
+      Serial.println("Vo: Speed");
+      Serial.println("Fenable: Filament enabled");
+      Serial.println("Gate: Target approach gate drive percentage relative to MaxGate");
+      Serial.println("MaxGate: Maximum MOSFET gate drive limit (0-255)");
+      Serial.println("TOffset: Temperature Offset");
+      Serial.println("Stopdelay: Stop Delay (s)");
+      Serial.println("Maxtime: Max Time (min)");
+      Serial.println("NoFilamentTime: Minutes to stop if no filament is detected");
+      Serial.println("UseDisplay: Use OLED display");
+      Serial.println("StartOnPower: Start up at power on");
+      Serial.println("MotorOnTo: Motor starting at target temperature");
+      Serial.println("ssid: SSID");
+      Serial.println("password: SSID Password");
+      Serial.println("LocalIP: IP address");
+      Serial.println("Gateway: Gateway address");
+      Serial.println("Subnet: Subnet mask");
       Serial.println(printConf(true));
       return;
     }
@@ -297,5 +291,7 @@ void initConf() {
 #endif
 
   loadConfiguration();
-  listFiles();
+  //listFiles();
+  Serial.println();
+  Serial.println("Type 'conf' to dump config or send a JSON config");
 }
