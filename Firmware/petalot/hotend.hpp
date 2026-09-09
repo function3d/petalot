@@ -118,9 +118,10 @@ double control() {
   }
 
   // Regulation zone: linear approach ramp plus a HOLD floor so the heater
-  // still delivers enough power right below the target to actually reach it.
-  // Only cuts at To (deadband for reheat + ramp prevents chatter).
-  if (T >= To) {
+  // delivers enough power right at/below the target to reach and hold To.
+  // Power is kept (floor) from the ramp up to To+HYS, and only cuts above,
+  // so the setpoint is reached and gently held instead of sagging away.
+  if (T >= (double)To + HYS) {
     return 0;
   }
   double ramp = (RAMP > 0) ? RAMP : 1.0;
