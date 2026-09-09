@@ -117,18 +117,23 @@ double control() {
     return MaxGate;
   }
 
-  // Regulation zone: deadband below To plus a linear approach ramp so the
-  // heater fades out (no bang-bang overshoot) and only re-heats once the
-  // temperature has really dropped HYS degrees below the target.
-  if (T >= To - HYS) {
+  // Regulation zone: linear approach ramp plus a HOLD floor so the heater
+  // still delivers enough power right below the target to actually reach it.
+  // Only cuts at To (deadband for reheat + ramp prevents chatter).
+  if (T >= To) {
     return 0;
   }
   double ramp = (RAMP > 0) ? RAMP : 1.0;
-  if (T <= To - HYS - ramp) {
-    return (double)MaxGate * Gate / 100.0;
+  double approach = (double)MaxGate * Gate / 100.0;
+  if (T <= (double)To - HYS - ramp) {
+    return approach;
   }
   double err = ((double)To - HYS) - T; // in (0, ramp]
-  return (double)MaxGate * Gate * err / (100.0 * ramp);
+  double duty = approach * err / ramp;
+  double floor = (double)MaxGate * HOLD / 100.0;
+  if (floor > approach) floor = approach;
+  if (duty < floor) duty = floor;
+  return duty;
 }
 
 void hotendReadTempTask() {
