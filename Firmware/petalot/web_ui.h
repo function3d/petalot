@@ -93,6 +93,12 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
     .form-group input[type="text"], .form-group input[type="number"], .form-group input[type="password"] { width: 100%; padding: 0.4rem; border: 1px solid #363e46; border-radius: 4px; font-size: 0.85rem; color: var(--text); background: #181c20; }
     .form-group input[type="text"]:focus, .form-group input[type="number"]:focus, .form-group input[type="password"]:focus { border-color: var(--accent); outline-style: none; }
     .form-group input:disabled { opacity: .5; }
+    .form-group input[type="file"] { color: var(--text); font-size: 0.8rem; }
+
+    .msg { font-size: 0.7rem; color: var(--muted); margin-top: 0.25rem; }
+    .msg.warn { color: var(--danger); font-weight: 600; }
+    .msg.ok { color: var(--accent); font-weight: 600; }
+    .update-section { border-top: 1px solid #363e46; margin-top: 0.75rem; padding-top: 0.75rem; }
 
     /* Botonera */
     .actions { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.5rem; }
@@ -219,7 +225,11 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         <div class="actions">
           <button type="button" class="btn" onclick="saveSettings()" data-i18n="btn.save">Save</button>
           <button type="button" class="btn btn-danger float-right" onclick="factoryReset();" data-i18n="btn.factoryReset">Factory Reset</button>
-          <button type="button" class="btn btn-danger" onclick="firmwareUpdate()" style="display:none">Update</button>
+        </div>
+        <div class="update-section">
+          <div class="form-group"><span class="label" data-i18n="gs.update">Firmware Update</span><input type="file" id="up-firmware" accept=".bin,.bin.gz"><button type="button" class="btn" onclick="startUpdate('firmware')" data-i18n="btn.update">Update</button></div>
+          <div class="form-group"><span class="label" data-i18n="st.fileFS">Filesystem file (.bin.gz)</span><input type="file" id="up-filesystem" accept=".bin,.bin.gz"><button type="button" class="btn" onclick="startUpdate('filesystem')" data-i18n="btn.update">Update</button></div>
+          <div class="msg" id="update-msg"></div>
         </div>
       </form>
     </div>
@@ -275,7 +285,13 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         't.confirmSave': 'Are you sure?',
         't.restarting': 'Restarting...',
         't.confirmReset': 'Factory reset? The statistics, temperature and temperature offset will not be reset',
-        't.done': 'Done'
+        't.done': 'Done',
+        'gs.update': 'Firmware Update',
+        'st.fileFS': 'Filesystem file (.bin.gz)',
+        'btn.update': 'Update',
+        'msg.updating': 'Updating... do not disconnect',
+        'msg.updateOk': 'Update successful, rebooting...',
+        'msg.updateError': 'Update error:'
       },
       es: {
         'gs.title': 'Control PETALOT',
@@ -322,7 +338,13 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         't.confirmSave': '¿Estás seguro?',
         't.restarting': 'Reiniciando...',
         't.confirmReset': '¿Restablecer de fábrica? No se restablecerán las estadísticas, temperatura ni desplazamiento',
-        't.done': 'Hecho'
+        't.done': 'Hecho',
+        'gs.update': 'Actualización de firmware',
+        'st.fileFS': 'Archivo del sistema de archivos (.bin.gz)',
+        'btn.update': 'Actualizar',
+        'msg.updating': 'Actualizando... no desconectes',
+        'msg.updateOk': 'Actualización correcta, reiniciando...',
+        'msg.updateError': 'Error de actualización:'
       },
       pt: {
         'gs.title': 'Controle PETALOT',
@@ -369,7 +391,13 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         't.confirmSave': 'Tem certeza?',
         't.restarting': 'Reiniciando...',
         't.confirmReset': 'Restaurar de fábrica? Estatísticas, temperatura e deslocamento não serão resetados',
-        't.done': 'Concluído'
+        't.done': 'Concluído',
+        'gs.update': 'Atualização de firmware',
+        'st.fileFS': 'Arquivo do sistema de arquivos (.bin.gz)',
+        'btn.update': 'Atualizar',
+        'msg.updating': 'Atualizando... não desconecte',
+        'msg.updateOk': 'Atualização concluída, reiniciando...',
+        'msg.updateError': 'Erro de atualização:'
       },
       fr: {
         'gs.title': 'Contrôle PETALOT',
@@ -416,7 +444,13 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         't.confirmSave': 'Êtes-vous sûr ?',
         't.restarting': 'Redémarrage...',
         't.confirmReset': "Réinitialiser ? Les statistiques, la température et le décalage ne seront pas réinitialisés",
-        't.done': 'Terminé'
+        't.done': 'Terminé',
+        'gs.update': 'Mise à jour du firmware',
+        'st.fileFS': 'Fichier système de fichiers (.bin.gz)',
+        'btn.update': 'Mettre à jour',
+        'msg.updating': 'Mise à jour... ne déconnectez pas',
+        'msg.updateOk': 'Mise à jour réussie, redémarrage...',
+        'msg.updateError': 'Erreur de mise à jour :'
       },
       de: {
         'gs.title': 'PETALOT Steuerung',
@@ -463,7 +497,13 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         't.confirmSave': 'Sicher?',
         't.restarting': 'Neustart...',
         't.confirmReset': 'Zurücksetzen? Statistiken, Temperatur und Offset werden nicht zurückgesetzt',
-        't.done': 'Fertig'
+        't.done': 'Fertig',
+        'gs.update': 'Firmware-Update',
+        'st.fileFS': 'Dateisystem-Datei (.bin.gz)',
+        'btn.update': 'Aktualisieren',
+        'msg.updating': 'Aktualisiere... nicht trennen',
+        'msg.updateOk': 'Update erfolgreich, Neustart...',
+        'msg.updateError': 'Update-Fehler:'
       },
       it: {
         'gs.title': 'Controllo PETALOT',
@@ -510,7 +550,13 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         't.confirmSave': 'Sicuro?',
         't.restarting': 'Riavvio...',
         't.confirmReset': 'Ripristino? Statistiche, temperatura e offset non verranno azzerati',
-        't.done': 'Fatto'
+        't.done': 'Fatto',
+        'gs.update': 'Aggiornamento firmware',
+        'st.fileFS': 'File filesystem (.bin.gz)',
+        'btn.update': 'Aggiorna',
+        'msg.updating': 'Aggiornamento... non scollegare',
+        'msg.updateOk': 'Aggiornamento riuscito, riavvio...',
+        'msg.updateError': 'Errore di aggiornamento:'
       },
       zh: {
         'gs.title': 'PETALOT 控制',
@@ -557,7 +603,13 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         't.confirmSave': '确定吗？',
         't.restarting': '正在重启...',
         't.confirmReset': '恢复出厂设置？统计数据、温度和偏移不会被重置',
-        't.done': '完成'
+        't.done': '完成',
+        'gs.update': '固件更新',
+        'st.fileFS': '文件系统文件（.bin.gz）',
+        'btn.update': '更新',
+        'msg.updating': '正在更新……请勿断开',
+        'msg.updateOk': '更新成功，正在重启……',
+        'msg.updateError': '更新错误：'
       },
       cs: {
         'gs.title': 'Ovládání PETALOT',
@@ -603,7 +655,13 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         't.confirmSave': 'Jste si jistí?',
         't.restarting': 'Restartování...',
         't.confirmReset': 'Tovární reset? Statistiky, teplota a korekce teploty nebudou resetovány',
-        't.done': 'Hotovo'
+        't.done': 'Hotovo',
+        'gs.update': 'Aktualizace firmwaru',
+        'st.fileFS': 'Soubor souborového systému (.bin.gz)',
+        'btn.update': 'Aktualizovat',
+        'msg.updating': 'Aktualizace... neodpojujte',
+        'msg.updateOk': 'Aktualizace úspěšná, restartuji...',
+        'msg.updateError': 'Chyba aktualizace:'
       },
       ru: {
         'gs.title': 'Управление PETALOT',
@@ -649,7 +707,13 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         't.confirmSave': 'Вы уверены?',
         't.restarting': 'Перезагрузка...',
         't.confirmReset': 'Сброс? Статистика, температура и коррекция температуры не будут сброшены',
-        't.done': 'Готово'
+        't.done': 'Готово',
+        'gs.update': 'Обновление прошивки',
+        'st.fileFS': 'Файл файловой системы (.bin.gz)',
+        'btn.update': 'Обновить',
+        'msg.updating': 'Обновление... не отключайтесь',
+        'msg.updateOk': 'Обновление успешно, перезагрузка...',
+        'msg.updateError': 'Ошибка обновления:'
       },
       tr: {
         'gs.title': 'PETALOT Kontrol',
@@ -695,7 +759,13 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         't.confirmSave': 'Emin misiniz?',
         't.restarting': 'Yeniden başlatılıyor...',
         't.confirmReset': 'Fabrika ayarlarına sıfırlansın mı? İstatistikler, sıcaklık ve sıcaklık ofseti sıfırlanmaz',
-        't.done': 'Tamam'
+        't.done': 'Tamam',
+        'gs.update': 'Bellenim güncellemesi',
+        'st.fileFS': 'Dosya sistemi dosyası (.bin.gz)',
+        'btn.update': 'Güncelle',
+        'msg.updating': 'Güncelleniyor... bağlantıyı kesme',
+        'msg.updateOk': 'Güncelleme başarılı, yeniden başlatılıyor...',
+        'msg.updateError': 'Güncelleme hatası:'
       },
       ja: {
         'gs.title': 'PETALOT コントロール',
@@ -741,7 +811,13 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         't.confirmSave': 'よろしいですか？',
         't.restarting': '再起動中...',
         't.confirmReset': '工場出荷時リセットしますか？統計、温度、温度オフセットはリセットされません',
-        't.done': '完了'
+        't.done': '完了',
+        'gs.update': 'ファームウェア更新',
+        'st.fileFS': 'ファイルシステムファイル（.bin.gz）',
+        'btn.update': '更新',
+        'msg.updating': '更新中……接続を切らないでください',
+        'msg.updateOk': '更新成功、再起動中……',
+        'msg.updateError': '更新エラー：'
       },
       ko: {
         'gs.title': 'PETALOT 제어',
@@ -787,7 +863,13 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         't.confirmSave': '확실합니까？',
         't.restarting': '재시작 중...',
         't.confirmReset': '공장 초기화하시겠습니까？통계、온도、온도 오프셋은 초기화되지 않습니다',
-        't.done': '완료'
+        't.done': '완료',
+        'gs.update': '펌웨어 업데이트',
+        'st.fileFS': '파일시스템 파일（.bin.gz）',
+        'btn.update': '업데이트',
+        'msg.updating': '업데이트 중……연결을 끊지 마세요',
+        'msg.updateOk': '업데이트 성공, 재시작 중……',
+        'msg.updateError': '업데이트 오류：'
       }
     };
 
@@ -968,8 +1050,32 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
       }
     }
 
-    function firmwareUpdate() {
-      fetch('/set?status=0').then(() => window.location.href = '/update');
+    function startUpdate(kind) {
+      const input = (kind === 'filesystem') ? document.getElementById('up-filesystem') : document.getElementById('up-firmware');
+      const file = input.files[0];
+      const msgEl = document.getElementById('update-msg');
+      if (!file) return;
+
+      msgEl.className = 'msg';
+      msgEl.textContent = t('msg.updating');
+      fetch('/set?status=0');
+      const fd = new FormData();
+      fd.append(kind, file);
+      fetch('/update?name=' + kind, { method: 'POST', body: fd })
+        .then(r => r.text())
+        .then(txt => {
+          if (txt.indexOf('Success') !== -1 || txt.indexOf('Reboot') !== -1) {
+            msgEl.className = 'msg ok';
+            msgEl.textContent = t('msg.updateOk');
+          } else {
+            msgEl.className = 'msg warn';
+            msgEl.textContent = (txt.trim() !== '') ? t('msg.updateError') + ' ' + txt : t('msg.updateOk');
+          }
+        })
+        .catch(() => {
+          msgEl.className = 'msg ok';
+          msgEl.textContent = t('msg.updateOk');
+        });
     }
 
     const inputSSID = document.getElementsByName('ssid')[0];
