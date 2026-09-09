@@ -97,8 +97,6 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
 
     .msg { font-size: 0.7rem; color: var(--muted); margin-top: 0.25rem; }
     .msg.warn { color: var(--danger); font-weight: 600; }
-    .msg.ok { color: var(--accent); font-weight: 600; }
-    .update-section { border-top: 1px solid #363e46; margin-top: 0.75rem; padding-top: 0.75rem; }
 
     /* Botonera */
     .actions { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.5rem; }
@@ -220,16 +218,13 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         <div class="form-group"><span class="label" data-i18n="st.subnet">Subnet</span><input type="text" name="Subnet"><small class="help-text" data-i18n="st.subnetHelp">255.255.255.0 if left blank</small></div>
         <div class="form-group"><span class="label" data-i18n="st.gateway">Gateway</span><input type="text" name="Gateway"><small class="help-text" data-i18n="st.gatewayHelp">PETALOT does not require an Internet connection; 0.0.0.0 if left blank</small></div>
 
+        <div class="form-group"><span class="label" data-i18n="gs.update">Firmware Update</span><input type="file" id="up-firmware" accept=".bin,.bin.gz"><button type="button" class="btn" onclick="startUpdate()" data-i18n="btn.update">Update</button><div class="msg" id="update-msg"></div></div>
+
         <div style="display:none" class="form-group"><span class="label" data-i18n="st.analog">Analog Read</span><input type="text" id="tele-AR" disabled></div>
       </div>
         <div class="actions">
           <button type="button" class="btn" onclick="saveSettings()" data-i18n="btn.save">Save</button>
           <button type="button" class="btn btn-danger float-right" onclick="factoryReset();" data-i18n="btn.factoryReset">Factory Reset</button>
-        </div>
-        <div class="update-section">
-          <div class="form-group"><span class="label" data-i18n="gs.update">Firmware Update</span><input type="file" id="up-firmware" accept=".bin,.bin.gz"><button type="button" class="btn" onclick="startUpdate('firmware')" data-i18n="btn.update">Update</button></div>
-          <div class="form-group"><span class="label" data-i18n="st.fileFS">Filesystem file (.bin.gz)</span><input type="file" id="up-filesystem" accept=".bin,.bin.gz"><button type="button" class="btn" onclick="startUpdate('filesystem')" data-i18n="btn.update">Update</button></div>
-          <div class="msg" id="update-msg"></div>
         </div>
       </form>
     </div>
@@ -287,10 +282,8 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         't.confirmReset': 'Factory reset? The statistics, temperature and temperature offset will not be reset',
         't.done': 'Done',
         'gs.update': 'Firmware Update',
-        'st.fileFS': 'Filesystem file (.bin.gz)',
         'btn.update': 'Update',
         'msg.updating': 'Updating... do not disconnect',
-        'msg.updateOk': 'Update successful, rebooting...',
         'msg.updateError': 'Update error:'
       },
       es: {
@@ -340,10 +333,8 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         't.confirmReset': '¿Restablecer de fábrica? No se restablecerán las estadísticas, temperatura ni desplazamiento',
         't.done': 'Hecho',
         'gs.update': 'Actualización de firmware',
-        'st.fileFS': 'Archivo del sistema de archivos (.bin.gz)',
         'btn.update': 'Actualizar',
         'msg.updating': 'Actualizando... no desconectes',
-        'msg.updateOk': 'Actualización correcta, reiniciando...',
         'msg.updateError': 'Error de actualización:'
       },
       pt: {
@@ -393,10 +384,8 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         't.confirmReset': 'Restaurar de fábrica? Estatísticas, temperatura e deslocamento não serão resetados',
         't.done': 'Concluído',
         'gs.update': 'Atualização de firmware',
-        'st.fileFS': 'Arquivo do sistema de arquivos (.bin.gz)',
         'btn.update': 'Atualizar',
         'msg.updating': 'Atualizando... não desconecte',
-        'msg.updateOk': 'Atualização concluída, reiniciando...',
         'msg.updateError': 'Erro de atualização:'
       },
       fr: {
@@ -446,10 +435,8 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         't.confirmReset': "Réinitialiser ? Les statistiques, la température et le décalage ne seront pas réinitialisés",
         't.done': 'Terminé',
         'gs.update': 'Mise à jour du firmware',
-        'st.fileFS': 'Fichier système de fichiers (.bin.gz)',
         'btn.update': 'Mettre à jour',
         'msg.updating': 'Mise à jour... ne déconnectez pas',
-        'msg.updateOk': 'Mise à jour réussie, redémarrage...',
         'msg.updateError': 'Erreur de mise à jour :'
       },
       de: {
@@ -499,10 +486,8 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         't.confirmReset': 'Zurücksetzen? Statistiken, Temperatur und Offset werden nicht zurückgesetzt',
         't.done': 'Fertig',
         'gs.update': 'Firmware-Update',
-        'st.fileFS': 'Dateisystem-Datei (.bin.gz)',
         'btn.update': 'Aktualisieren',
         'msg.updating': 'Aktualisiere... nicht trennen',
-        'msg.updateOk': 'Update erfolgreich, Neustart...',
         'msg.updateError': 'Update-Fehler:'
       },
       it: {
@@ -552,10 +537,8 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         't.confirmReset': 'Ripristino? Statistiche, temperatura e offset non verranno azzerati',
         't.done': 'Fatto',
         'gs.update': 'Aggiornamento firmware',
-        'st.fileFS': 'File filesystem (.bin.gz)',
         'btn.update': 'Aggiorna',
         'msg.updating': 'Aggiornamento... non scollegare',
-        'msg.updateOk': 'Aggiornamento riuscito, riavvio...',
         'msg.updateError': 'Errore di aggiornamento:'
       },
       zh: {
@@ -605,10 +588,8 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         't.confirmReset': '恢复出厂设置？统计数据、温度和偏移不会被重置',
         't.done': '完成',
         'gs.update': '固件更新',
-        'st.fileFS': '文件系统文件（.bin.gz）',
         'btn.update': '更新',
         'msg.updating': '正在更新……请勿断开',
-        'msg.updateOk': '更新成功，正在重启……',
         'msg.updateError': '更新错误：'
       },
       cs: {
@@ -657,10 +638,8 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         't.confirmReset': 'Tovární reset? Statistiky, teplota a korekce teploty nebudou resetovány',
         't.done': 'Hotovo',
         'gs.update': 'Aktualizace firmwaru',
-        'st.fileFS': 'Soubor souborového systému (.bin.gz)',
         'btn.update': 'Aktualizovat',
         'msg.updating': 'Aktualizace... neodpojujte',
-        'msg.updateOk': 'Aktualizace úspěšná, restartuji...',
         'msg.updateError': 'Chyba aktualizace:'
       },
       ru: {
@@ -709,10 +688,8 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         't.confirmReset': 'Сброс? Статистика, температура и коррекция температуры не будут сброшены',
         't.done': 'Готово',
         'gs.update': 'Обновление прошивки',
-        'st.fileFS': 'Файл файловой системы (.bin.gz)',
         'btn.update': 'Обновить',
         'msg.updating': 'Обновление... не отключайтесь',
-        'msg.updateOk': 'Обновление успешно, перезагрузка...',
         'msg.updateError': 'Ошибка обновления:'
       },
       tr: {
@@ -761,10 +738,8 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         't.confirmReset': 'Fabrika ayarlarına sıfırlansın mı? İstatistikler, sıcaklık ve sıcaklık ofseti sıfırlanmaz',
         't.done': 'Tamam',
         'gs.update': 'Bellenim güncellemesi',
-        'st.fileFS': 'Dosya sistemi dosyası (.bin.gz)',
         'btn.update': 'Güncelle',
         'msg.updating': 'Güncelleniyor... bağlantıyı kesme',
-        'msg.updateOk': 'Güncelleme başarılı, yeniden başlatılıyor...',
         'msg.updateError': 'Güncelleme hatası:'
       },
       ja: {
@@ -813,10 +788,8 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         't.confirmReset': '工場出荷時リセットしますか？統計、温度、温度オフセットはリセットされません',
         't.done': '完了',
         'gs.update': 'ファームウェア更新',
-        'st.fileFS': 'ファイルシステムファイル（.bin.gz）',
         'btn.update': '更新',
         'msg.updating': '更新中……接続を切らないでください',
-        'msg.updateOk': '更新成功、再起動中……',
         'msg.updateError': '更新エラー：'
       },
       ko: {
@@ -865,10 +838,8 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         't.confirmReset': '공장 초기화하시겠습니까？통계、온도、온도 오프셋은 초기화되지 않습니다',
         't.done': '완료',
         'gs.update': '펌웨어 업데이트',
-        'st.fileFS': '파일시스템 파일（.bin.gz）',
         'btn.update': '업데이트',
         'msg.updating': '업데이트 중……연결을 끊지 마세요',
-        'msg.updateOk': '업데이트 성공, 재시작 중……',
         'msg.updateError': '업데이트 오류：'
       }
     };
@@ -1050,8 +1021,8 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
       }
     }
 
-    function startUpdate(kind) {
-      const input = (kind === 'filesystem') ? document.getElementById('up-filesystem') : document.getElementById('up-firmware');
+    function startUpdate() {
+      const input = document.getElementById('up-firmware');
       const file = input.files[0];
       const msgEl = document.getElementById('update-msg');
       if (!file) return;
@@ -1060,21 +1031,25 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
       msgEl.textContent = t('msg.updating');
       fetch('/set?status=0');
       const fd = new FormData();
-      fd.append(kind, file);
-      fetch('/update?name=' + kind, { method: 'POST', body: fd })
+      fd.append('firmware', file);
+      fetch('/update?name=firmware', { method: 'POST', body: fd })
         .then(r => r.text())
         .then(txt => {
           if (txt.indexOf('Success') !== -1 || txt.indexOf('Reboot') !== -1) {
-            msgEl.className = 'msg ok';
-            msgEl.textContent = t('msg.updateOk');
+            waitForReboot();
           } else {
             msgEl.className = 'msg warn';
-            msgEl.textContent = (txt.trim() !== '') ? t('msg.updateError') + ' ' + txt : t('msg.updateOk');
+            msgEl.textContent = (txt.trim() !== '') ? t('msg.updateError') + ' ' + txt : t('msg.updateError');
           }
         })
+        .catch(() => waitForReboot());
+    }
+
+    function waitForReboot(attempts = 20) {
+      fetch('/tele')
+        .then(() => window.location.reload())
         .catch(() => {
-          msgEl.className = 'msg ok';
-          msgEl.textContent = t('msg.updateOk');
+          if (attempts > 0) setTimeout(() => waitForReboot(attempts - 1), 2000);
         });
     }
 
