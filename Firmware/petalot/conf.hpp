@@ -11,6 +11,8 @@ bool Fenable = true;  //filament sensor enabled
 double T;             //current temp
 int Gate;
 int MaxGate;
+double HYS = 1.5;   // deadband below To before reheating (°C)
+double RAMP = 6;    // approach ramp window above the deadband (°C)
 int TOffset = 0;
 bool MotorOnTo = 0;
 bool StartOnPower = 1;
@@ -78,6 +80,8 @@ void saveConfiguration(bool reset = true) {
   doc["Gateway"] = Gateway;
   doc["Gate"] = Gate;
   doc["MaxGate"] = MaxGate;
+  doc["HYS"] = HYS;
+  doc["RAMP"] = RAMP;
   doc["TOffset"] = TOffset;
   doc["Stopdelay"] = Stopdelay;
   doc["Maxtime"] = Maxtime;
@@ -109,6 +113,8 @@ void resetConfiguration() {
   Gateway = "";
   Gate = 50;
   MaxGate = 255;
+  HYS = 1.5;
+  RAMP = 6;
   TOffset = 0;
   Stopdelay = 14;
   Maxtime = 120;
@@ -163,6 +169,20 @@ void loadConfiguration(bool reset = false) {
     MaxGate = 255;
     doc["MaxGate"] = MaxGate;
   }
+  if (doc.containsKey("HYS"))
+    HYS = doc["HYS"];
+  else {
+    HYS = 1.5;
+    doc["HYS"] = HYS;
+  }
+  if (doc.containsKey("RAMP"))
+    RAMP = doc["RAMP"];
+  else {
+    RAMP = 6;
+    doc["RAMP"] = RAMP;
+  }
+  if (HYS < 0) HYS = 0;
+  if (RAMP < 1) RAMP = 1;
   
   if (doc.containsKey("TOffset"))
     TOffset = doc["TOffset"];
@@ -226,6 +246,8 @@ void readConfigurationSerial() {
       Serial.println("Fenable: Filament enabled");
       Serial.println("Gate: Target approach gate drive percentage relative to MaxGate");
       Serial.println("MaxGate: Maximum MOSFET gate drive limit (0-255)");
+      Serial.println("HYS: Deadband below target temp before reheating (deg C)");
+      Serial.println("RAMP: Approach ramp window above the deadband (deg C)");
       Serial.println("TOffset: Temperature Offset");
       Serial.println("Stopdelay: Stop Delay (s)");
       Serial.println("Maxtime: Max Time (min)");

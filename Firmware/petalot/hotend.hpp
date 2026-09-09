@@ -103,9 +103,6 @@ double control() {
     stop();
     return 0;
   }
-  if (T >= To) {
-    return 0;
-  }
 
   // Hysteresis around minT: use full power until minT is reached, then step
   // down to the working duty without flapping back and forth at the threshold.
@@ -119,7 +116,19 @@ double control() {
   if (boost) {
     return MaxGate;
   }
-  return (double)MaxGate * Gate / 100.0;
+
+  // Regulation zone: deadband below To plus a linear approach ramp so the
+  // heater fades out (no bang-bang overshoot) and only re-heats once the
+  // temperature has really dropped HYS degrees below the target.
+  if (T >= To - HYS) {
+    return 0;
+  }
+  double ramp = (RAMP > 0) ? RAMP : 1.0;
+  if (T <= To - HYS - ramp) {
+    return (double)MaxGate * Gate / 100.0;
+  }
+  double err = ((double)To - HYS) - T; // in (0, ramp]
+  return (double)MaxGate * Gate * err / (100.0 * ramp);
 }
 
 void hotendReadTempTask() {

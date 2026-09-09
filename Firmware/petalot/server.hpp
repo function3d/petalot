@@ -198,6 +198,8 @@ void set(AsyncWebServerRequest *request) {
   // Bulk update of settings form fields
   if (request->hasArg("Gate")) Gate = request->arg("Gate").toInt();
   if (request->hasArg("TOffset")) TOffset = request->arg("TOffset").toInt();
+  if (request->hasArg("HYS")) HYS = request->arg("HYS").toDouble();
+  if (request->hasArg("RAMP")) RAMP = request->arg("RAMP").toDouble();
 
   if (request->hasArg("StartOnPower")) StartOnPower = (request->arg("StartOnPower") == "true");
   if (request->hasArg("MotorOnTo")) MotorOnTo = (request->arg("MotorOnTo") == "true");
