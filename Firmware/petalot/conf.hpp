@@ -30,6 +30,13 @@ String Subnet;
 char ssid[64];
 char password[64];
 String LastStopReason = "";
+int pcbVer = 0; // Registered PCB version (locked at first boot)
+
+// Embedded marker so /updatecheck can identify the PCB version of a binary
+// without writing it to flash. Kept in the image even with --gc-sections.
+#define STRINGIFY_(x) #x
+#define STRINGIFY(x) STRINGIFY_(x)
+const char PCB_MAGIC[] PROGMEM __attribute__((used)) = "PETALOT-PCB-" STRINGIFY(VERSION);
 
 StaticJsonDocument<512> doc;
 
@@ -78,6 +85,7 @@ void saveConfiguration(bool reset = true) {
   doc["UseDisplay"] = UseDisplay;
   doc["StartOnPower"] = StartOnPower;
   doc["MotorOnTo"] = MotorOnTo;
+  if (pcbVer > 0) doc["pcbVer"] = pcbVer;
   if (serializeJson(doc, file) == 0) {
     msg = "Failed to write to file";
   }
@@ -183,6 +191,10 @@ void loadConfiguration(bool reset = false) {
     MotorOnTo = 0;
     doc["MotorOnTo"] = MotorOnTo;
   }
+  if (doc.containsKey("pcbVer"))
+    pcbVer = doc["pcbVer"];
+  else
+    pcbVer = 0;
 }
 
 void factoryReset(bool stats = false) {
@@ -226,6 +238,7 @@ void readConfigurationSerial() {
       Serial.println("LocalIP: IP address");
       Serial.println("Gateway: Gateway address");
       Serial.println("Subnet: Subnet mask");
+      Serial.println("pcbVer: Registered PCB version (locked at first boot)");
       Serial.println(printConf(true));
       return;
     }
@@ -291,6 +304,14 @@ void initConf() {
 #endif
 
   loadConfiguration();
+
+  if (pcbVer == 0) {
+    Serial.print("[INFO] First boot: locking PCB version to ");
+    Serial.println(VERSION);
+    pcbVer = VERSION;
+    doc["pcbVer"] = pcbVer;
+    saveConfiguration(false);
+  }
   //listFiles();
   Serial.println();
   Serial.println("Type 'conf' to dump config or send a JSON config");

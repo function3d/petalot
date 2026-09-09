@@ -43,6 +43,80 @@ void handleNotFound(AsyncWebServerRequest *request) {
   request->send(404, "text/plain", "Not found");
 }
 
+// ============================================================================
+// /UPDATECHECK (PCB VERSION GATE)
+// Streams an uploaded .bin and looks for the embedded "PETALOT-PCB-<ver>"
+// marker WITHOUT touching flash. The real update is done afterwards on /update
+// so a mismatched binary can never brick the board.
+// ============================================================================
+static bool updateCheckOk = false;
+static String updateCheckNeedle;
+static int updateCheckNeedleLen = 0;
+static char updateCheckTail[64];
+static int updateCheckTailLen = 0;
+
+void handleUpdateCheckData(AsyncWebServerRequest *request, String filename, size_t index, uint8_t *data, size_t len, bool final) {
+  if (index == 0) {
+    updateCheckOk = false;
+    updateCheckNeedle = FPSTR(PCB_MAGIC);
+    updateCheckNeedleLen = updateCheckNeedle.length();
+    updateCheckTailLen = 0;
+  }
+
+  if (updateCheckNeedleLen <= 1 || updateCheckOk) return;
+
+  const char *needle = updateCheckNeedle.c_str();
+  const int nlen = updateCheckNeedleLen;
+
+  // Marker fully inside this chunk
+  for (size_t i = 0; i + nlen <= len; i++) {
+    if (data[i] == (uint8_t)needle[0] && memcmp(data + i, needle, nlen) == 0) {
+      updateCheckOk = true;
+      return;
+    }
+  }
+
+  // Marker split between the previous tail and the start of this chunk
+  for (int take = 1; take < nlen && take <= updateCheckTailLen; take++) {
+    int fromData = nlen - take;
+    if ((size_t)fromData <= len &&
+        memcmp(updateCheckTail + updateCheckTailLen - take, needle, take) == 0 &&
+        memcmp(data, needle + take, fromData) == 0) {
+      updateCheckOk = true;
+      return;
+    }
+  }
+
+  // Keep the trailing bytes so a marker split across chunks is caught later
+  int need = nlen - 1;
+  if ((int)len >= need) {
+    memcpy(updateCheckTail, data + len - need, need);
+    updateCheckTailLen = need;
+  } else {
+    int keepOld = need - (int)len;
+    if (keepOld < 0) keepOld = 0;
+    if (keepOld > updateCheckTailLen) keepOld = updateCheckTailLen;
+    if (keepOld > 0) memmove(updateCheckTail, updateCheckTail + updateCheckTailLen - keepOld, keepOld);
+    memcpy(updateCheckTail + keepOld, data, len);
+    updateCheckTailLen = keepOld + (int)len;
+  }
+}
+
+void handleUpdateCheck(AsyncWebServerRequest *request) {
+  if (!isAuthorized(request)) {
+    updateCheckOk = false;
+    request->requestAuthentication();
+    return;
+  }
+  bool ok = updateCheckOk;
+  updateCheckOk = false;
+  if (ok) {
+    request->send(200, "text/plain", "OK");
+  } else {
+    request->send(403, "text/plain", String("PCB version mismatch, expected ") + pcbVer);
+  }
+}
+
 void tele(AsyncWebServerRequest *request) {
   StaticJsonDocument<384> teleData;
   teleData["status"]        = (status == "working") ? ((stepper.motorEnabled) ? 2 : 1) : 0;
@@ -165,6 +239,7 @@ void InitServer() {
   server.on("/tele", HTTP_GET, tele);
   server.on("/set", HTTP_GET, set);
   server.on("/reset", HTTP_GET, reset);
+  server.on("/updatecheck", HTTP_POST, handleUpdateCheck, handleUpdateCheckData);
 
   server.onNotFound(handleNotFound);
 

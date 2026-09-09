@@ -218,7 +218,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         <div class="form-group"><span class="label" data-i18n="st.subnet">Subnet</span><input type="text" name="Subnet"><small class="help-text" data-i18n="st.subnetHelp">255.255.255.0 if left blank</small></div>
         <div class="form-group"><span class="label" data-i18n="st.gateway">Gateway</span><input type="text" name="Gateway"><small class="help-text" data-i18n="st.gatewayHelp">PETALOT does not require an Internet connection; 0.0.0.0 if left blank</small></div>
 
-        <div class="form-group"><span class="label" data-i18n="gs.update">Firmware Update</span><input type="file" id="up-firmware" accept=".bin,.bin.gz"><button type="button" class="btn" onclick="startUpdate()" data-i18n="btn.update">Update</button><div class="msg" id="update-msg"></div></div>
+        <div class="form-group"><span class="label" data-i18n="gs.update">Firmware Update</span><div class="row-layout"><span class="label" data-i18n="st.pcb">PCB Version</span><span class="msg" id="update-pcb">-</span></div><input type="file" id="up-firmware" accept=".bin,.bin.gz"><button type="button" class="btn" onclick="startUpdate()" data-i18n="btn.update">Update</button><div class="msg" id="update-msg"></div></div>
 
         <div style="display:none" class="form-group"><span class="label" data-i18n="st.analog">Analog Read</span><input type="text" id="tele-AR" disabled></div>
       </div>
@@ -284,7 +284,9 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'gs.update': 'Firmware Update',
         'btn.update': 'Update',
         'msg.updating': 'Updating... do not disconnect',
-        'msg.updateError': 'Update error:'
+        'msg.updateError': 'Update error:',
+        'st.pcb': 'PCB Version',
+        'msg.updateMismatch': 'This firmware does not match the registered PCB version ({pcb}). Flash the correct one from the /update page'
       },
       es: {
         'gs.title': 'Control PETALOT',
@@ -335,7 +337,9 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'gs.update': 'Actualización de firmware',
         'btn.update': 'Actualizar',
         'msg.updating': 'Actualizando... no desconectes',
-        'msg.updateError': 'Error de actualización:'
+        'msg.updateError': 'Error de actualización:',
+        'st.pcb': 'Versión de PCB',
+        'msg.updateMismatch': 'Este firmware no coincide con la versión de PCB registrada ({pcb}). Instala la correcta desde la página /update'
       },
       pt: {
         'gs.title': 'Controle PETALOT',
@@ -386,7 +390,9 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'gs.update': 'Atualização de firmware',
         'btn.update': 'Atualizar',
         'msg.updating': 'Atualizando... não desconecte',
-        'msg.updateError': 'Erro de atualização:'
+        'msg.updateError': 'Erro de atualização:',
+        'st.pcb': 'Versão da PCB',
+        'msg.updateMismatch': 'Este firmware não corresponde à versão de PCB registrada ({pcb}). Instale a correta pela página /update'
       },
       fr: {
         'gs.title': 'Contrôle PETALOT',
@@ -437,7 +443,9 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'gs.update': 'Mise à jour du firmware',
         'btn.update': 'Mettre à jour',
         'msg.updating': 'Mise à jour... ne déconnectez pas',
-        'msg.updateError': 'Erreur de mise à jour :'
+        'msg.updateError': 'Erreur de mise à jour :',
+        'st.pcb': 'Version PCB',
+        'msg.updateMismatch': "Ce firmware ne correspond pas à la version de PCB enregistrée ({pcb}). Installez la bonne version depuis la page /update"
       },
       de: {
         'gs.title': 'PETALOT Steuerung',
@@ -488,7 +496,9 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'gs.update': 'Firmware-Update',
         'btn.update': 'Aktualisieren',
         'msg.updating': 'Aktualisiere... nicht trennen',
-        'msg.updateError': 'Update-Fehler:'
+        'msg.updateError': 'Update-Fehler:',
+        'st.pcb': 'PCB-Version',
+        'msg.updateMismatch': 'Diese Firmware passt nicht zur registrierten PCB-Version ({pcb}). Installiere die richtige über die /update-Seite'
       },
       it: {
         'gs.title': 'Controllo PETALOT',
@@ -539,7 +549,9 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'gs.update': 'Aggiornamento firmware',
         'btn.update': 'Aggiorna',
         'msg.updating': 'Aggiornamento... non scollegare',
-        'msg.updateError': 'Errore di aggiornamento:'
+        'msg.updateError': 'Errore di aggiornamento:',
+        'st.pcb': 'Versione PCB',
+        'msg.updateMismatch': 'Questo firmware non corrisponde alla versione PCB registrata ({pcb}). Installa la versione corretta dalla pagina /update'
       },
       zh: {
         'gs.title': 'PETALOT 控制',
@@ -590,7 +602,9 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'gs.update': '固件更新',
         'btn.update': '更新',
         'msg.updating': '正在更新……请勿断开',
-        'msg.updateError': '更新错误：'
+        'msg.updateError': '更新错误：',
+        'st.pcb': 'PCB 版本',
+        'msg.updateMismatch': '此固件与已注册的 PCB 版本（{pcb}）不匹配。请从 /update 页面安装正确的版本'
       },
       cs: {
         'gs.title': 'Ovládání PETALOT',
@@ -640,7 +654,9 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'gs.update': 'Aktualizace firmwaru',
         'btn.update': 'Aktualizovat',
         'msg.updating': 'Aktualizace... neodpojujte',
-        'msg.updateError': 'Chyba aktualizace:'
+        'msg.updateError': 'Chyba aktualizace:',
+        'st.pcb': 'Verze PCB',
+        'msg.updateMismatch': 'Tento firmware neodpovídá registrované verzi PCB ({pcb}). Nainstalujte správnou verzi ze stránky /update'
       },
       ru: {
         'gs.title': 'Управление PETALOT',
@@ -690,7 +706,9 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'gs.update': 'Обновление прошивки',
         'btn.update': 'Обновить',
         'msg.updating': 'Обновление... не отключайтесь',
-        'msg.updateError': 'Ошибка обновления:'
+        'msg.updateError': 'Ошибка обновления:',
+        'st.pcb': 'Версия платы (PCB)',
+        'msg.updateMismatch': 'Эта прошивка не соответствует зарегистрированной версии платы ({pcb}). Установите правильную со страницы /update'
       },
       tr: {
         'gs.title': 'PETALOT Kontrol',
@@ -740,7 +758,9 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'gs.update': 'Bellenim güncellemesi',
         'btn.update': 'Güncelle',
         'msg.updating': 'Güncelleniyor... bağlantıyı kesme',
-        'msg.updateError': 'Güncelleme hatası:'
+        'msg.updateError': 'Güncelleme hatası:',
+        'st.pcb': 'PCB Sürümü',
+        'msg.updateMismatch': 'Bu bellenim kayıtlı PCB sürümüyle ({pcb}) eşleşmiyor. Doğru sürümü /update sayfasından yükleyin'
       },
       ja: {
         'gs.title': 'PETALOT コントロール',
@@ -790,7 +810,9 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'gs.update': 'ファームウェア更新',
         'btn.update': '更新',
         'msg.updating': '更新中……接続を切らないでください',
-        'msg.updateError': '更新エラー：'
+        'msg.updateError': '更新エラー：',
+        'st.pcb': 'PCBバージョン',
+        'msg.updateMismatch': 'このファームウェアは登録されたPCBバージョン（{pcb}）と一致しません。/updateページから正しいバージョンをインストールしてください'
       },
       ko: {
         'gs.title': 'PETALOT 제어',
@@ -840,7 +862,9 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'gs.update': '펌웨어 업데이트',
         'btn.update': '업데이트',
         'msg.updating': '업데이트 중……연결을 끊지 마세요',
-        'msg.updateError': '업데이트 오류：'
+        'msg.updateError': '업데이트 오류：',
+        'st.pcb': 'PCB 버전',
+        'msg.updateMismatch': '이 펌웨어는 등록된 PCB 버전（{pcb}）과 일치하지 않습니다. /update 페이지에서 올바른 버전을 설치하세요'
       }
     };
 
@@ -931,6 +955,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
     }
 
     let conf = {};
+    let updatePcbVer = '';
 
     function fetchConf() {
       fetch('/get')
@@ -954,6 +979,11 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
 
           document.getElementById('msg-temp').innerText = t('msg.minmax', {min: data.minT, max: data.maxT});
           document.getElementById('msg-speed').innerText = t('msg.minmax', {min: data.minV, max: data.maxV});
+
+          if (data.pcbVer) {
+            updatePcbVer = data.pcbVer;
+            document.getElementById('update-pcb').innerText = data.pcbVer;
+          }
 
           const form = document.getElementById('settings-form');
 
@@ -1030,6 +1060,22 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
       msgEl.className = 'msg';
       msgEl.textContent = t('msg.updating');
       fetch('/set?status=0');
+      const fd = new FormData();
+      fd.append('firmware', file);
+
+      fetch('/updatecheck', { method: 'POST', body: fd })
+        .then(r => {
+          if (r.ok) {
+            doRealUpdate(file, msgEl);
+          } else {
+            msgEl.className = 'msg warn';
+            msgEl.textContent = t('msg.updateMismatch', {pcb: updatePcbVer});
+          }
+        })
+        .catch(() => waitForReboot());
+    }
+
+    function doRealUpdate(file, msgEl) {
       const fd = new FormData();
       fd.append('firmware', file);
       fetch('/update?name=firmware', { method: 'POST', body: fd })
