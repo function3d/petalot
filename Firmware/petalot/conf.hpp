@@ -14,9 +14,10 @@ int MaxGate;
 double HYS = 0.5;   // deadband below To before reheating (°C)
 double RAMP = 6;    // approach ramp window above the deadband (°C)
 double HOLD = 28;   // minimum hold duty (%) near the target so To is reachable
-double Kp = 5.0;    // PID proportional gain (only used with #define CONTROL_PID)
-double Ki = 0.11;   // PID integral gain, output per °C·s (CONTROL_PID only)
-double Kd = 15.0;   // PID derivative gain on filtered dT/dt (CONTROL_PID only)
+double Kp = 5.0;    // PID proportional gain (Heating control = PID)
+double Ki = 0.11;   // PID integral gain, output per °C·s (PID only)
+double Kd = 15.0;   // PID derivative gain on filtered dT/dt (PID only)
+int ControlMode = 0; // Heating control: 0 = PID (default), 1 = bang-bang
 int TOffset = 0;
 bool MotorOnTo = 0;
 bool StartOnPower = 1;
@@ -90,6 +91,7 @@ void saveConfiguration(bool reset = true) {
   doc["Kp"] = Kp;
   doc["Ki"] = Ki;
   doc["Kd"] = Kd;
+  doc["ControlMode"] = ControlMode;
   doc["TOffset"] = TOffset;
   doc["Stopdelay"] = Stopdelay;
   doc["Maxtime"] = Maxtime;
@@ -127,6 +129,7 @@ void resetConfiguration() {
   Kp = 5.0;
   Ki = 0.11;
   Kd = 15.0;
+  ControlMode = 0;
   TOffset = 0;
   Stopdelay = 12;
   Maxtime = 120;
@@ -217,6 +220,12 @@ void loadConfiguration(bool reset = false) {
     Kd = 15.0;
     doc["Kd"] = Kd;
   }
+  if (doc.containsKey("ControlMode"))
+    ControlMode = doc["ControlMode"];
+  else {
+    ControlMode = 0;
+    doc["ControlMode"] = ControlMode;
+  }
   if (HYS < 0) HYS = 0;
   if (RAMP < 1) RAMP = 1;
   if (HOLD < 0) HOLD = 0;
@@ -224,6 +233,8 @@ void loadConfiguration(bool reset = false) {
   if (Kp < 0) Kp = 0;
   if (Ki < 0) Ki = 0;
   if (Kd < 0) Kd = 0;
+  if (ControlMode < 0) ControlMode = 0;
+  if (ControlMode > 1) ControlMode = 1;
   
   if (doc.containsKey("TOffset"))
     TOffset = doc["TOffset"];
@@ -268,6 +279,7 @@ void factoryReset(bool stats = false) {
   double Kp_old = Kp;
   double Ki_old = Ki;
   double Kd_old = Kd;
+  int ControlMode_old = ControlMode;
   resetConfiguration();
   TOffset = TOffset_old;
   workT = workT_old;
@@ -277,6 +289,7 @@ void factoryReset(bool stats = false) {
   Kp = Kp_old;
   Ki = Ki_old;
   Kd = Kd_old;
+  ControlMode = ControlMode_old;
   saveConfiguration(false);
   if (stats) {
     LittleFS.remove("/stats.json");
@@ -302,9 +315,10 @@ void readConfigurationSerial() {
       Serial.println("HYS: Deadband below target temp before reheating (deg C)");
       Serial.println("RAMP: Approach ramp window above the deadband (deg C)");
       Serial.println("HOLD: Minimum hold duty near the target so To is reachable (%)");
-      Serial.println("Kp: PID proportional gain (CONTROL_PID builds only)");
-      Serial.println("Ki: PID integral gain per degC per second (CONTROL_PID builds only)");
-      Serial.println("Kd: PID derivative gain on filtered dT/dt (CONTROL_PID builds only)");
+      Serial.println("ControlMode: Heating control, 0 = PID, 1 = bang-bang");
+      Serial.println("Kp: PID proportional gain (lower it if the temp oscillates)");
+      Serial.println("Ki: PID integral gain per degC per second (raise it if the temp stays below the target)");
+      Serial.println("Kd: PID derivative gain on filtered dT/dt (raise it if the temp oscillates)");
       Serial.println("TOffset: Temperature Offset");
       Serial.println("Stopdelay: Stop Delay (s)");
       Serial.println("Maxtime: Max Time (min)");

@@ -204,6 +204,7 @@ void set(AsyncWebServerRequest *request) {
   if (request->hasArg("Kp")) Kp = request->arg("Kp").toDouble();
   if (request->hasArg("Ki")) Ki = request->arg("Ki").toDouble();
   if (request->hasArg("Kd")) Kd = request->arg("Kd").toDouble();
+  if (request->hasArg("ControlMode")) ControlMode = request->arg("ControlMode").toInt();
 
   if (request->hasArg("StartOnPower")) StartOnPower = (request->arg("StartOnPower") == "true");
   if (request->hasArg("MotorOnTo")) MotorOnTo = (request->arg("MotorOnTo") == "true");

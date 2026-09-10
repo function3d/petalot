@@ -245,10 +245,14 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
 
       <div class="tab-panel" id="tab-advanced">
       <div class="grid">
+        <div class="form-group"><span class="label" data-i18n="st.control">Heating control</span><select name="ControlMode" onchange="updateControlFields()"><option value="0">PID</option><option value="1">Bang-bang</option></select><small class="help-text" data-i18n="st.controlHelp">PID holds the temperature steady out of the box; Bang-bang is the simpler classic controller</small></div>
+        <div class="form-group" data-mode="pid"><span class="label" data-i18n="st.kp">Kp (proportional)</span><input type="number" name="Kp" step="0.1"><small class="help-text" data-i18n="st.kpHelp">Response speed: if it oscillates, lower it</small></div>
+        <div class="form-group" data-mode="pid"><span class="label" data-i18n="st.ki">Ki (integral)</span><input type="number" name="Ki" step="0.01"><small class="help-text" data-i18n="st.kiHelp">Reaches the target: if it stays below, raise it</small></div>
+        <div class="form-group" data-mode="pid"><span class="label" data-i18n="st.kd">Kd (derivative)</span><input type="number" name="Kd" step="1"><small class="help-text" data-i18n="st.kdHelp">Damping: if it oscillates, raise it</small></div>
+        <div class="form-group" data-mode="bang"><span class="label" data-i18n="st.hys">Hysteresis band</span><input type="number" name="HYS" step="0.1"><small class="help-text" data-i18n="st.hysHelp">Degrees each side of the target still driven at hold duty before cutting</small></div>
+        <div class="form-group" data-mode="bang"><span class="label" data-i18n="st.ramp">Approach ramp</span><input type="number" name="RAMP" step="0.1"><small class="help-text" data-i18n="st.rampHelp">Over these degrees power ramps down from the maximum to the hold duty</small></div>
+        <div class="form-group" data-mode="bang"><span class="label" data-i18n="st.hold">Hold duty</span><input type="number" name="HOLD" step="1"><small class="help-text" data-i18n="st.holdHelp">Minimum power (%) delivered near the target to keep the temperature stable</small></div>
         <div class="form-group"><span class="label" data-i18n="st.toffset">Temperature Offset</span><input type="number" name="TOffset"><small class="help-text" data-i18n="st.toffsetHelp">Adjust the temperature if you notice it's off</small></div>
-        <div class="form-group"><span class="label" data-i18n="st.hys">Hysteresis band</span><input type="number" name="HYS" step="0.1"><small class="help-text" data-i18n="st.hysHelp">Degrees each side of the target still driven at hold duty before cutting</small></div>
-        <div class="form-group"><span class="label" data-i18n="st.ramp">Approach ramp</span><input type="number" name="RAMP" step="0.1"><small class="help-text" data-i18n="st.rampHelp">Over these degrees power ramps down from the maximum to the hold duty</small></div>
-        <div class="form-group"><span class="label" data-i18n="st.hold">Hold duty</span><input type="number" name="HOLD" step="1"><small class="help-text" data-i18n="st.holdHelp">Minimum power (%) delivered near the target to keep the temperature stable</small></div>
 
         <div class="form-group"><span class="label" data-i18n="gs.update">Firmware Update</span><div class="msg"><span data-i18n="st.pcb">PCB Version</span>: <span id="update-pcb">-</span></div><input type="file" id="up-firmware" accept=".bin,.bin.gz"><button type="button" class="btn" onclick="startUpdate()" data-i18n="btn.update">Update</button><div class="msg" id="update-msg"></div></div>
 
@@ -285,6 +289,14 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.display': 'Use OLED Display',
         'st.language': 'Language',
         'st.displayHelp': 'Turn on the display if your machine has one',
+        'st.control': 'Heating control',
+        'st.controlHelp': 'PID holds the temperature steady out of the box; Bang-bang is the simpler classic controller',
+        'st.kp': 'Kp (proportional)',
+        'st.kpHelp': 'Response speed: if it oscillates, lower it',
+        'st.ki': 'Ki (integral)',
+        'st.kiHelp': 'Reaches the target: if it stays below, raise it',
+        'st.kd': 'Kd (derivative)',
+        'st.kdHelp': 'Damping: if it oscillates, raise it',
         'st.hys': 'Hysteresis band',
         'st.hysHelp': 'Degrees each side of the target still driven at hold duty before cutting',
         'st.ramp': 'Approach ramp',
@@ -348,6 +360,14 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.display': 'Usar pantalla OLED',
         'st.language': 'Idioma',
         'st.displayHelp': 'Enciende la pantalla si tu máquina tiene una',
+        'st.control': 'Control de calentamiento',
+        'st.controlHelp': 'El PID mantiene la temperatura estable sin calibración; Bang-bang es el controlador clásico más simple',
+        'st.kp': 'Kp (proporcional)',
+        'st.kpHelp': 'Velocidad de respuesta: si oscila, bájalo',
+        'st.ki': 'Ki (integral)',
+        'st.kiHelp': 'Alcanza el objetivo: si se queda por debajo, súbelo',
+        'st.kd': 'Kd (derivada)',
+        'st.kdHelp': 'Amortiguación: si oscila, súbelo',
         'st.hys': 'Banda de histéresis',
         'st.hysHelp': 'Grados a cada lado del objetivo que se mantienen a potencia de retención antes de cortar',
         'st.ramp': 'Rampa de aproximación',
@@ -411,6 +431,14 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.display': 'Usar display OLED',
         'st.language': 'Idioma',
         'st.displayHelp': 'Ligue o display se a sua máquina tiver um',
+        'st.control': 'Controle do aquecimento',
+        'st.controlHelp': 'O PID mantém a temperatura estável sem calibração; Bang-bang é o controlador clássico mais simples',
+        'st.kp': 'Kp (proporcional)',
+        'st.kpHelp': 'Velocidade de resposta: se oscilar, diminua',
+        'st.ki': 'Ki (integral)',
+        'st.kiHelp': 'Atinge o alvo: se ficar abaixo, aumente',
+        'st.kd': 'Kd (derivada)',
+        'st.kdHelp': 'Amortecimento: se oscilar, aumente',
         'st.hys': 'Banda de histerese',
         'st.hysHelp': 'Graus de cada lado do alvo mantidos na potência de retenção antes de cortar',
         'st.ramp': 'Rampa de aproximação',
@@ -474,6 +502,14 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.display': "Utiliser l'écran OLED",
         'st.language': 'Langue',
         'st.displayHelp': "Allumez l'écran si votre machine en a un",
+        'st.control': 'Contrôle du chauffage',
+        'st.controlHelp': "Le PID maintient la température stable sans calibrage ; Bang-bang est le contrôleur classique plus simple",
+        'st.kp': 'Kp (proportionnel)',
+        'st.kpHelp': "Vitesse de réponse : s'il oscille, diminuez-le",
+        'st.ki': 'Ki (intégral)',
+        'st.kiHelp': "Atteint la cible : s'il reste en dessous, augmentez-le",
+        'st.kd': 'Kd (dérivée)',
+        'st.kdHelp': "Amortissement : s'il oscille, augmentez-le",
         'st.hys': "Bande d'hystérésis",
         'st.hysHelp': "Degrés de chaque côté de la cible maintenus à la puissance de maintien avant coupe",
         'st.ramp': "Rampe d'approche",
@@ -537,6 +573,14 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.display': 'OLED-Display verwenden',
         'st.language': 'Sprache',
         'st.displayHelp': 'Display einschalten, falls die Maschine eines hat',
+        'st.control': 'Heizregelung',
+        'st.controlHelp': 'PID hält die Temperatur stabil ohne Kalibrierung; Bang-bang ist der einfachere klassische Regler',
+        'st.kp': 'Kp (proportional)',
+        'st.kpHelp': 'Ansprechgeschwindigkeit: bei Schwingen verringern',
+        'st.ki': 'Ki (integral)',
+        'st.kiHelp': 'Erreicht das Ziel: wenn es darunter bleibt, erhöhen',
+        'st.kd': 'Kd (Differenzial)',
+        'st.kdHelp': 'Dämpfung: bei Schwingen erhöhen',
         'st.hys': 'Hysterese-Band',
         'st.hysHelp': 'Grade pro Seite der Zieltemperatur, die auf Halteleistung gehalten werden, bevor abgeschaltet wird',
         'st.ramp': 'Annäherungsrampe',
@@ -600,6 +644,14 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.display': 'Usa display OLED',
         'st.language': 'Lingua',
         'st.displayHelp': 'Accendi il display se la macchina ne ha uno',
+        'st.control': 'Controllo riscaldamento',
+        'st.controlHelp': 'Il PID mantiene la temperatura stabile senza calibrazione; il Bang-bang è il controllore classico più semplice',
+        'st.kp': 'Kp (proporzionale)',
+        'st.kpHelp': 'Velocità di risposta: se oscilla, riducilo',
+        'st.ki': 'Ki (integrale)',
+        'st.kiHelp': 'Raggiunge il target: se resta sotto, aumentalo',
+        'st.kd': 'Kd (derivata)',
+        'st.kdHelp': 'Smorzamento: se oscilla, aumentalo',
         'st.hys': 'Banda di isteresi',
         'st.hysHelp': 'Gradi per lato dal target mantenuti alla potenza di tenuta prima del taglio',
         'st.ramp': 'Rampa di avvicinamento',
@@ -663,6 +715,14 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.display': '使用 OLED 显示屏',
         'st.language': '语言',
         'st.displayHelp': '如果机器有显示屏则开启',
+        'st.control': '加热控制',
+        'st.controlHelp': 'PID 无需校准即可保持温度稳定；Bang-bang 是更简单的经典控制器',
+        'st.kp': 'Kp（比例）',
+        'st.kpHelp': '响应速度：如果振荡，请调低',
+        'st.ki': 'Ki（积分）',
+        'st.kiHelp': '达到目标：如果达不到，请调高',
+        'st.kd': 'Kd（微分）',
+        'st.kdHelp': '阻尼：如果振荡，请调高',
         'st.hys': '迟滞带',
         'st.hysHelp': '目标两侧在关断前仍以保持功率驱动的度数',
         'st.ramp': '接近斜坡',
@@ -726,6 +786,14 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.display': 'Použít OLED displej',
         'st.language': 'Jazyk',
         'st.displayHelp': 'Zapněte displej, pokud ho váš stroj má',
+        'st.control': 'Regulace ohřevu',
+        'st.controlHelp': 'PID drží teplotu stabilní bez kalibrace; Bang-bang je jednodušší klasický regulátor',
+        'st.kp': 'Kp (proporcionální)',
+        'st.kpHelp': 'Rychlost odezvy: pokud kmitá, snižte',
+        'st.ki': 'Ki (integrální)',
+        'st.kiHelp': 'Dosahuje cíle: pokud zůstává pod, zvyšte',
+        'st.kd': 'Kd (derivační)',
+        'st.kdHelp': 'Tlumení: pokud kmitá, zvyšte',
         'st.hys': 'Hysterezní pásmo',
         'st.hysHelp': 'Stupně na obě strany cíle držené na udržovacím výkonu před vypnutím',
         'st.ramp': 'Náběhová rampa',
@@ -788,6 +856,14 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.display': 'Использовать OLED-экран',
         'st.language': 'Язык',
         'st.displayHelp': 'Включите экран, если он есть на машине',
+        'st.control': 'Управление нагревом',
+        'st.controlHelp': 'PID держит температуру стабильной без калибровки; Bang-bang — более простой классический регулятор',
+        'st.kp': 'Kp (пропорциональный)',
+        'st.kpHelp': 'Скорость реакции: если колеблется, уменьшите',
+        'st.ki': 'Ki (интегральный)',
+        'st.kiHelp': 'Достигает цели: если не достигает, увеличьте',
+        'st.kd': 'Kd (дифференциальный)',
+        'st.kdHelp': 'Демпфирование: если колеблется, увеличьте',
         'st.hys': 'Полоса гистерезиса',
         'st.hysHelp': 'Градусы по обе стороны от цели, удерживаемые на поддерживающей мощности до отключения',
         'st.ramp': 'Рампа приближения',
@@ -850,6 +926,14 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.display': 'OLED ekran kullan',
         'st.language': 'Dil',
         'st.displayHelp': 'Makinenizde varsa ekranı açın',
+        'st.control': 'Isıtma kontrolü',
+        'st.controlHelp': 'PID sıcaklığı ayar gerektirmeden sabit tutar; Bang-bang daha basit klasik denetleyicidir',
+        'st.kp': 'Kp (orantısal)',
+        'st.kpHelp': 'Yanıt hızı: salınım varsa azaltın',
+        'st.ki': 'Ki (integral)',
+        'st.kiHelp': 'Hedefe ulaşır: altında kalırsa yükseltin',
+        'st.kd': 'Kd (türev)',
+        'st.kdHelp': 'Sönümleme: salınım varsa yükseltin',
         'st.hys': 'Histerezis bandı',
         'st.hysHelp': 'Hedefin iki yanında kesmeden önce tutma gücü ile sürülen dereceler',
         'st.ramp': 'Yaklaşma rampası',
@@ -912,6 +996,14 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.display': 'OLEDディスプレイを使用',
         'st.language': '言語',
         'st.displayHelp': '機械にディスプレイがあればオンにします',
+        'st.control': '加熱制御',
+        'st.controlHelp': 'PID は調整なしで温度を安定に保ちます; バンバンはより単純な古典的制御器です',
+        'st.kp': 'Kp（比例）',
+        'st.kpHelp': '応答速度：振動する場合は下げる',
+        'st.ki': 'Ki（積分）',
+        'st.kiHelp': '目標に届く：下回ったままなら上げる',
+        'st.kd': 'Kd（微分）',
+        'st.kdHelp': '減衰：振動する場合は上げる',
         'st.hys': 'ヒステリシス帯',
         'st.hysHelp': '目標の両側でカット前に保持出力を継続する度数',
         'st.ramp': '接近ランプ',
@@ -974,6 +1066,14 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.display': 'OLED 디스플레이 사용',
         'st.language': '언어',
         'st.displayHelp': '기기에 디스플레이가 있으면 켭니다',
+        'st.control': '가열 제어',
+        'st.controlHelp': 'PID는 보정 없이 온도를 안정적으로 유지합니다; Bang-bang은 더 단순한 고전적 제어기입니다',
+        'st.kp': 'Kp(비례)',
+        'st.kpHelp': '반응 속도: 진동하면 낮추세요',
+        'st.ki': 'Ki(적분)',
+        'st.kiHelp': '목표 도달: 부족하면 높이세요',
+        'st.kd': 'Kd(미분)',
+        'st.kdHelp': '감쇠: 진동하면 높이세요',
         'st.hys': '히스테리시스 대역',
         'st.hysHelp': '목표 온도 양쪽에서 차단 전까지 유지 출력으로 유지되는 각도',
         'st.ramp': '접근 램프',
@@ -1152,6 +1252,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
           });
 
           updateNetworkFields();
+          updateControlFields();
 
         });
     }
@@ -1161,6 +1262,15 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
       document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b.dataset.tab === valid));
       document.querySelectorAll('.tab-panel').forEach(p => p.classList.toggle('active', p.id === 'tab-' + valid));
       try { localStorage.setItem('petalot-tab', valid); } catch (e) {}
+    }
+
+    function updateControlFields() {
+      const sel = document.getElementsByName('ControlMode')[0];
+      if (!sel) return;
+      const mode = (sel.value === '1') ? 'bang' : 'pid';
+      document.querySelectorAll('[data-mode]').forEach(el => {
+        el.style.display = (el.dataset.mode === mode) ? '' : 'none';
+      });
     }
 
     function saveSettings(reboot) {
@@ -1314,6 +1424,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
       lang = detectLang();
       applyI18n();
       showSettingsTab((() => { try { return localStorage.getItem('petalot-tab'); } catch (e) { return null; } })());
+      updateControlFields();
       fetchConf();
       fetchTele();
       updateNetworkFields();

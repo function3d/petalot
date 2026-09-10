@@ -1,13 +1,6 @@
 #pragma once
 
 // ============================================================================
-// Heater regulation: uncomment to use PID instead of the bang-bang control.
-// Bang-bang (HYS/RAMP/HOLD) is the default. PID needs no calibration for a
-// first test; fine-tune with /set?Kp=..&Ki=..&Kd=.. or via serial JSON.
-// #define CONTROL_PID
-// ============================================================================
-
-// ============================================================================
 // THERMISTOR + HEATER (HOTEND)
 // ============================================================================
 short AR;                 // analog read value (0-1023)
@@ -116,15 +109,14 @@ void initHotend() {
   lastAR = AR;
 }
 
-#ifdef CONTROL_PID
 // ============================================================================
-// PID REGULATION — alternative to the bang-bang control below.
-// Enable with:  #define CONTROL_PID  (hotend.hpp / petalot.ino)
-// Default gains suit the stock PETALOT heater and need no calibration for a
-// first test; fine-tune with /set?Kp=..&Ki=..&Kd=.. or via serial JSON.
-// Uses clamping anti-windup and a low-pass filtered derivative on the
-// measurement so the ±1°C ADC noise is not amplified into the heater.
-// Full power below minT is kept (same boost hysteresis as bang-bang).
+// HEATER REGULATION — two selectable controllers (Ajustes / Avanzado / Heating
+// control). PID is the default and works out of the box; Bang-bang uses
+// HYS/RAMP/HOLD. Both keep full power below minT (boost hysteresis).
+// PID fine-tune: Kp response (lower it if it oscillates), Ki reaches the
+// target (raise it if the temperature stays below), Kd damping (raise it if
+// it oscillates). Uses clamping anti-windup and a low-pass filtered
+// derivative so the ±1°C ADC noise is not amplified into the heater.
 // ============================================================================
 double pidIntegral = 0, pidPrevT = 0, pidDeriv = 0;
 bool pidFirst = true, pidBoost = true;
@@ -137,20 +129,7 @@ void pidReset() {
   pidBoost = false;
 }
 
-double control() {
-  if (status == "stopped") {
-    pidReset();
-    return 0;
-  }
-  if (isnan(T)) {
-    return 0;
-  }
-  if (T == 0) {
-    LastStopReason = "Anomalous temperature reading, something wrong with thermistor";
-    stop();
-    return 0;
-  }
-
+double controlPID() {
   // Full power until minT, with hysteresis so it does not flap at the threshold.
   const double HYSTERESIS = 3.0;
   static bool boost = false;
@@ -191,22 +170,9 @@ double control() {
   if (outRaw < 0.0) outRaw = 0.0;
   return outRaw;
 }
-#else
-double control() {
-  if (status == "stopped") {
-    return 0;
-  }
-  if (isnan(T)) {
-    return 0;
-  }
-  if (T == 0) {
-    LastStopReason = "Anomalous temperature reading, something wrong with thermistor";
-    stop();
-    return 0;
-  }
 
-  // Hysteresis around minT: use full power until minT is reached, then step
-  // down to the working duty without flapping back and forth at the threshold.
+double controlBangBang() {
+  // Full power until minT, with hysteresis so it does not flap at the threshold.
   const double HYSTERESIS = 3.0;
   static bool boost = false;
   if (T >= minT) {
@@ -237,7 +203,25 @@ double control() {
   if (duty < floor) duty = floor;
   return duty;
 }
-#endif // CONTROL_PID
+
+double control() {
+  if (status == "stopped") {
+    pidReset();
+    return 0;
+  }
+  if (isnan(T)) {
+    return 0;
+  }
+  if (T == 0) {
+    LastStopReason = "Anomalous temperature reading, something wrong with thermistor";
+    stop();
+    return 0;
+  }
+  if (ControlMode == 0) {
+    return controlPID();
+  }
+  return controlBangBang();
+}
 
 void hotendReadTempTask() {
   if (millis() >= tempLastSample + 250) {
