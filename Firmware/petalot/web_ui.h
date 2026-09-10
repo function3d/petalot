@@ -61,7 +61,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
 
     /* Grid Panel */
     .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; }
-    .ui-card .title-wrapper {flex-direction: row-reverse; display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; }
+    .ui-card .title-wrapper {display: flex; flex-wrap: wrap; align-items: center; }
     .ui-card .title { color: var(--muted); font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; }
     .ui-card .row { display: flex; justify-content: space-between; align-items: center; margin-top: 0.45rem; }
     .ui-card .value { font-size: 1.4rem; font-weight: 700; }
@@ -136,9 +136,9 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
 
       <div class="card ui-card">
         <div class="title-wrapper">
-          <div class="title" data-i18n="gs.status">Status</div>
-          <small class="conn-text">(<span id="conn-text" class="conn-down"></span>)</small>
           <div id="conn-icon" class="icon conn-icon conn-off"></div>
+          <div class="title" data-i18n="gs.status">Status</div>
+           <small class="conn-text">(<span id="conn-text" class="conn-down"></span>)</small>
         </div>
         <div class="row">
           <div class="value" id="val-status">...</div>
@@ -152,10 +152,10 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
 
       <div class="card ui-card">
         <div class="title-wrapper">
-          <div class="title" id="title-temp" data-i18n="gs.temp">Temp</div>
           <svg id="fire-icon" class="icon fire-icon fire-off" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"></path>
           </svg>
+          <div class="title" id="title-temp" data-i18n="gs.temp">Temp</div>
         </div>
         <div class="row">
           <div>
@@ -174,11 +174,11 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
 
       <div class="card ui-card">
         <div class="title-wrapper">
-        <div class="title" data-i18n="gs.speed">Speed</div>
         <svg id="motor-icon" class="icon motor-icon motor-off" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.1a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/>
           <circle cx="12" cy="12" r="3"/>
         </svg>
+        <div class="title" data-i18n="gs.speed">Speed</div>
         </div>
         <div class="row">
           <div>
@@ -324,7 +324,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'msg.minmax': 'min: {min}, max: {max}',
         't.running': 'Running',
         't.connected': 'connected',
-        't.disconnected': 'disconnected: device off, out of Wi-Fi range, or another issue',
+        't.disconnected': 'disconnected',
 
         't.stopped': 'Stopped',
         't.checkThermistor': 'Check thermistor',
@@ -397,7 +397,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'msg.minmax': 'mín: {min}, máx: {max}',
         't.running': 'En marcha',
         't.connected': 'conectado',
-        't.disconnected': 'desconectado: dispositivo apagado, fuera de rango Wi-Fi u otra circunstancia',
+        't.disconnected': 'desconectado',
 
         't.stopped': 'Parado',
         't.checkThermistor': 'Comprueba el termistor',
@@ -470,7 +470,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'msg.minmax': 'mín: {min}, máx: {max}',
         't.running': 'Em funcionamento',
         't.connected': 'conectado',
-        't.disconnected': 'desconectado: dispositivo desligado, fora do alcance do Wi-Fi ou outra circunstância',
+        't.disconnected': 'desconectado',
 
         't.stopped': 'Parado',
         't.checkThermistor': 'Verifique o termistor',
@@ -543,7 +543,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'msg.minmax': 'min : {min}, max : {max}',
         't.running': 'En marche',
         't.connected': 'connecté',
-        't.disconnected': 'déconnecté : appareil éteint, hors de portée Wi-Fi ou autre circonstance',
+        't.disconnected': 'déconnecté',
 
         't.stopped': 'Arrêté',
         't.checkThermistor': 'Vérifiez la thermistance',
@@ -616,7 +616,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'msg.minmax': 'min: {min}, max: {max}',
         't.running': 'Läuft',
         't.connected': 'verbunden',
-        't.disconnected': 'getrennt: Gerät aus, außerhalb der WLAN-Reichweite oder anderer Umstand',
+        't.disconnected': 'getrennt',
 
         't.stopped': 'Gestoppt',
         't.checkThermistor': 'Thermistor prüfen',
@@ -689,7 +689,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'msg.minmax': 'min: {min}, max: {max}',
         't.running': 'In funzione',
         't.connected': 'connesso',
-        't.disconnected': 'disconnesso: dispositivo spento, fuori dalla portata del Wi-Fi o altra circostanza',
+        't.disconnected': 'disconnesso',
 
         't.stopped': 'Fermata',
         't.checkThermistor': 'Controlla il termistore',
@@ -762,7 +762,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'msg.minmax': '最小：{min}，最大：{max}',
         't.running': '运行中',
         't.connected': '已连接',
-        't.disconnected': '已断开：设备已关机、超出 Wi-Fi 范围或其他情况',
+        't.disconnected': '已断开',
 
         't.stopped': '已停止',
         't.checkThermistor': '检查热敏电阻',
@@ -835,7 +835,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'msg.minmax': 'min: {min}, max: {max}',
         't.running': 'Běží',
         't.connected': 'připojeno',
-        't.disconnected': 'odpojeno: zařízení je vypnuté, mimo dosah Wi-Fi nebo jiná okolnost',
+        't.disconnected': 'odpojeno',
         't.stopped': 'Zastaveno',
         't.checkThermistor': 'Zkontrolujte termistor',
         't.speedWarn': 'Rychlosti >25 cm/s mohou způsobit tiskové vady. Otestujte před sériovou výrobou',
@@ -907,7 +907,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'msg.minmax': 'мин: {min}, макс: {max}',
         't.running': 'Работает',
         't.connected': 'подключено',
-        't.disconnected': 'отключено: устройство выключено, вне зоны Wi-Fi или другая причина',
+        't.disconnected': 'отключено',
         't.stopped': 'Остановлено',
         't.checkThermistor': 'Проверьте термистор',
         't.speedWarn': 'Скорости >25 см/с могут вызывать дефекты печати. Протестируйте перед серийным производством',
@@ -979,7 +979,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'msg.minmax': 'min: {min}, maks: {max}',
         't.running': 'Çalışıyor',
         't.connected': 'bağlı',
-        't.disconnected': 'bağlantı kesildi: cihaz kapalı, Wi-Fi kapsama alanı dışında veya başka bir durum',
+        't.disconnected': 'bağlantı kesildi',
         't.stopped': 'Durduruldu',
         't.checkThermistor': 'Termistörü kontrol edin',
         't.speedWarn': '>25 cm/s hızlar baskı hatalarına neden olabilir. Seri üretimden önce test edin',
@@ -1051,7 +1051,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'msg.minmax': '最小：{min}、最大：{max}',
         't.running': '運転中',
         't.connected': '接続済み',
-        't.disconnected': '切断中：デバイスがオフ、Wi-Fi圏外、またはその他の理由',
+        't.disconnected': '切断中',
         't.stopped': '停止中',
         't.checkThermistor': 'サーミスタを確認してください',
         't.speedWarn': '速度が25cm/sを超えると印刷不良になる可能性があります。量産前にテストしてください',
@@ -1123,7 +1123,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'msg.minmax': '최소：{min}、최대：{max}',
         't.running': '작동 중',
         't.connected': '연결됨',
-        't.disconnected': '연결 끊김: 기기가 꺼져 있거나 Wi-Fi 범위 밖 또는 기타 상황',
+        't.disconnected': '연결 끊김',
         't.stopped': '정지됨',
         't.checkThermistor': '서미스터를 확인하세요',
         't.speedWarn': '25cm/s를 초과하는 속도는 인쇄 불량을 유발할 수 있습니다. 양산 전에 테스트하세요',
