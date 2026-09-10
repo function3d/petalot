@@ -31,7 +31,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
     .header a { color: var(--muted); font-size: 0.8rem; text-decoration: none; }
     .header-right { text-align: right; font-size: 0.8rem; color: var(--muted); }
     .header-right span { color: var(--text); font-weight: 600; }
-    #lang-select, .settings-select { background: #181c20; color: var(--text); border: 1px solid #363e46; border-radius: 4px; font-size: 0.75rem; padding: 0.15rem 0.3rem; margin-top: 0.35rem; }
+    .settings-select { background: #181c20; color: var(--text); border: 1px solid #363e46; border-radius: 4px; font-size: 0.75rem; padding: 0.15rem 0.3rem; margin-top: 0.35rem; }
 
     /*version*/
     #version { text-align:right; font-size: 0.7rem; color: var(--muted); margin-top: 0.25rem; }
@@ -99,7 +99,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
     .form-group .row-layout { gap:1rem; display: flex; flex-direction: row; align-items: center; justify-content: space-between; padding: 0.25rem 0; }
     .form-group label, .form-group span.label { font-size: 0.8rem; color: var(--muted); font-weight: 700; margin-top: 5px; }
     .form-group input[type="text"], .form-group input[type="number"], .form-group input[type="password"] { width: 100%; padding: 0.4rem; border: 1px solid #363e46; border-radius: 4px; font-size: 0.85rem; color: var(--text); background: #181c20; }
-    .form-group input[type="text"]:focus, .form-group input[type="number"]:focus, .form-group input[type="password"]:focus { border-color: var(--accent); outline-style: none; }
+    .form-group input[type="text"]:focus, .form-group input[type="number"]:focus, .form-group input[type="password"]:focus, .form-group select:focus { border-color: var(--accent); outline-style: none; }
     .form-group input:disabled { opacity: .5; }
     .form-group input[type="file"] { color: var(--text); font-size: 0.8rem; }
 
@@ -209,29 +209,22 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
       <form id="settings-form" class="content" onsubmit="event.preventDefault();">
       <div class="tab-bar">
         <button type="button" class="tab-btn active" data-tab="general" data-i18n="tab.general" onclick="showSettingsTab('general')">General</button>
-        <button type="button" class="tab-btn" data-tab="run" data-i18n="tab.run" onclick="showSettingsTab('run')">Run</button>
         <button type="button" class="tab-btn" data-tab="network" data-i18n="tab.network" onclick="showSettingsTab('network')">Network</button>
         <button type="button" class="tab-btn" data-tab="advanced" data-i18n="tab.advanced" onclick="showSettingsTab('advanced')">Advanced</button>
       </div>
 
       <div class="tab-panel active" id="tab-general">
       <div class="grid">
-        <div class="form-group"><span class="label" data-i18n="st.language">Language</span><select id="lang-select"></select></div>
+        <div class="form-group"><span class="label" data-i18n="st.language">Language</span><select id="lang-select" class="settings-select"></select></div>
 
         <div class="form-group"><div class="row-layout"><span class="label" data-i18n="st.startOnPower">Start up at power on</span><label class="switch"><input type="checkbox" name="StartOnPower"><span class="slider"></span></label></div><small class="help-text" data-i18n="st.startOnPowerHelp">If you disable it, you'll only be able to start the machine by pressing the sensor</small></div>
         <div class="form-group"><div class="row-layout"><span class="label" data-i18n="st.motorOnTo">Motor starting at target temp</span><label class="switch"><input type="checkbox" name="MotorOnTo"><span class="slider"></span></label></div><small class="help-text" data-i18n="st.motorOnToHelp">If enabled, the motor will only run once the target temperature is reached</small></div>
-        <div id="setting-oled" class="form-group"><div class="row-layout"><span class="label" data-i18n="st.display">Use OLED Display</span><label class="switch"><input type="checkbox" name="UseDisplay"><span class="slider"></span></label></div><small id="setting-oled-help" class="help-text" data-i18n="st.displayHelp">Turn on the display if your machine has one</small></div>
-      </div>
-      </div>
-
-      <div class="tab-panel" id="tab-run">
-      <div class="grid">
         <div class="form-group"><span class="label" data-i18n="st.stopDelay">Stop Delay (sec)</span><input type="number" name="Stopdelay"><small class="help-text" data-i18n="st.stopDelayHelp">Seconds to finish processing after strip end passes the sensor</small></div>
         <div class="form-group"><span class="label" data-i18n="st.maxTime">Max Time (min)</span><input type="number" name="Maxtime"><small class="help-text" data-i18n="st.maxTimeHelp">Maximum machine run time</small></div>
         <div class="form-group"><span class="label" data-i18n="st.sensorTimeout">Sensor timeout (min)</span><input type="number" name="NoFilamentTime"><small class="help-text" data-i18n="st.sensorTimeoutHelp">Minutes to run without sensor activity. If disabled, only Max Time applies</small></div>
+        <div id="setting-oled" class="form-group"><div class="row-layout"><span class="label" data-i18n="st.display">Use OLED Display</span><label class="switch"><input type="checkbox" name="UseDisplay"><span class="slider"></span></label></div><small id="setting-oled-help" class="help-text" data-i18n="st.displayHelp">Turn on the display if your machine has one</small></div>
       </div>
       </div>
-
       <div class="tab-panel" id="tab-network">
       <div class="grid">
         <div class="form-group"><span class="label" data-i18n="st.ssid">SSID</span><input type="text" name="ssid"><small class="help-text" data-i18n="st.ssidHelp">Your home/work Wi-Fi name</small></div>
@@ -245,13 +238,13 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
 
       <div class="tab-panel" id="tab-advanced">
       <div class="grid">
-        <div class="form-group"><span class="label" data-i18n="st.control">Heating control</span><select name="ControlMode" class="settings-select" onchange="updateControlFields()"><option value="0">PID</option><option value="1">Bang-bang</option></select><small class="help-text" data-i18n="st.controlHelp">PID holds the temperature steady out of the box; Bang-bang is the simpler classic controller</small></div>
+        <!--<div class="form-group"><span class="label" data-i18n="st.control">Heating control</span><select name="ControlMode" class="settings-select" onchange="updateControlFields()"><option value="0">PID</option><option value="1">Bang-bang</option></select><small class="help-text" data-i18n="st.controlHelp">PID holds the temperature steady out of the box; Bang-bang is the simpler classic controller</small></div>-->
         <div class="form-group" data-mode="pid"><span class="label" data-i18n="st.kp">Kp (proportional)</span><input type="number" name="Kp" step="0.1"><small class="help-text" data-i18n="st.kpHelp">Response speed: if it oscillates, lower it</small></div>
         <div class="form-group" data-mode="pid"><span class="label" data-i18n="st.ki">Ki (integral)</span><input type="number" name="Ki" step="0.01"><small class="help-text" data-i18n="st.kiHelp">Reaches the target: if it stays below, raise it</small></div>
         <div class="form-group" data-mode="pid"><span class="label" data-i18n="st.kd">Kd (derivative)</span><input type="number" name="Kd" step="1"><small class="help-text" data-i18n="st.kdHelp">Damping: if it oscillates, raise it</small></div>
-        <div class="form-group" data-mode="bang"><span class="label" data-i18n="st.hys">Hysteresis band</span><input type="number" name="HYS" step="0.1"><small class="help-text" data-i18n="st.hysHelp">Degrees each side of the target still driven at hold duty before cutting</small></div>
+        <!--<div class="form-group" data-mode="bang"><span class="label" data-i18n="st.hys">Hysteresis band</span><input type="number" name="HYS" step="0.1"><small class="help-text" data-i18n="st.hysHelp">Degrees each side of the target still driven at hold duty before cutting</small></div>
         <div class="form-group" data-mode="bang"><span class="label" data-i18n="st.ramp">Approach ramp</span><input type="number" name="RAMP" step="0.1"><small class="help-text" data-i18n="st.rampHelp">Over these degrees power ramps down from the maximum to the hold duty</small></div>
-        <div class="form-group" data-mode="bang"><span class="label" data-i18n="st.hold">Hold duty</span><input type="number" name="HOLD" step="1"><small class="help-text" data-i18n="st.holdHelp">Minimum power (%) delivered near the target to keep the temperature stable</small></div>
+        <div class="form-group" data-mode="bang"><span class="label" data-i18n="st.hold">Hold duty</span><input type="number" name="HOLD" step="1"><small class="help-text" data-i18n="st.holdHelp">Minimum power (%) delivered near the target to keep the temperature stable</small></div>-->
         <div class="form-group"><span class="label" data-i18n="st.toffset">Temperature Offset</span><input type="number" name="TOffset"><small class="help-text" data-i18n="st.toffsetHelp">Adjust the temperature if you notice it's off</small></div>
 
         <div class="form-group"><span class="label" data-i18n="gs.update">Firmware Update</span><div class="msg"><span data-i18n="st.pcb">PCB Version</span>: <span id="update-pcb">-</span></div><input type="file" id="up-firmware" accept=".bin,.bin.gz"><button type="button" class="btn" onclick="startUpdate()" data-i18n="btn.update">Update</button><div class="msg" id="update-msg"></div></div>
@@ -335,7 +328,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         't.sensorDisabled': 'Sensor disabled',
         't.confirmSave': 'Are you sure?',
         't.restarting': 'Restarting...',
-        't.confirmReset': 'Factory reset? The statistics, temperature, offset and heating tuning (HYS/RAMP/HOLD) will not be reset',
+        't.confirmReset': 'Factory reset? The statistics, temperature, offset and heating tuning will not be reset',
         't.done': 'Done',
         'gs.update': 'Firmware Update',
         'btn.update': 'Update',
