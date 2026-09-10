@@ -115,9 +115,9 @@ void resetConfiguration() {
   Gateway = "";
   Gate = 50;
   MaxGate = 255;
-  HYS = 1.5;
+  HYS = 0.5;
   RAMP = 6;
-  HOLD = 25;
+  HOLD = 28;
   TOffset = 0;
   Stopdelay = 14;
   Maxtime = 120;
@@ -175,7 +175,7 @@ void loadConfiguration(bool reset = false) {
   if (doc.containsKey("HYS"))
     HYS = doc["HYS"];
   else {
-    HYS = 1.5;
+    HYS = 0.5;
     doc["HYS"] = HYS;
   }
   if (doc.containsKey("RAMP"))
@@ -187,7 +187,7 @@ void loadConfiguration(bool reset = false) {
   if (doc.containsKey("HOLD"))
     HOLD = doc["HOLD"];
   else {
-    HOLD = 25;
+    HOLD = 28;
     doc["HOLD"] = HOLD;
   }
   if (HYS < 0) HYS = 0;
