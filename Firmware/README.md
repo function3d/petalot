@@ -18,18 +18,13 @@ that matches the PCB you have installed.
 - If you built your own PETALOT from the public files, your PCB is the **v1.4.5**.
 - Versions **v1.5.1** and **v1.5.2** are only fitted on commercially sold machines.
 
-> Do not flash a firmware that does not match your PCB: each `.bin` carries an
-> embedded "PETALOT-PCB-xxxx" marker. During a web update the device checks it
-> and **refuses a build meant for another PCB**.
+> Do not flash a firmware that does not match your PCB.
 
 ## Identify your PCB
 
-| v1.4.5 (DIY, no display) | v1.5.1 (transitional, display) | v1.5.2 (current, display + buttons) |
+| v1.4.5 (DIY) | v1.5.1 | v1.5.2 |
 | --- | --- | --- |
 | ![PCB v1.4.5](PCB_v1.4.5.jpeg) | ![PCB v1.5.1](PCB_v1.5.1.jpeg) | ![PCB v1.5.2](PCB_v1.5.2.jpeg) |
-
-You can also check which version is running from the web UI: **Settings →
-Advanced** shows the **PCB Version** next to the Firmware Update field.
 
 ## First-time flash
 
@@ -42,15 +37,18 @@ Advanced** shows the **PCB Version** next to the Firmware Update field.
 
 ## Updating an existing device
 
-You do not need a cable: update over the air from the web UI.
+You do not need a cable: update over the air.
 
-1. Browse to the device web interface.
-2. Go to **Settings → Advanced → Firmware Update**.
-3. Select the `.bin` matching your PCB (`petalot.v1.4.5.bin`, `petalot.v1.5.1.bin`
-   or `petalot.v1.5.2.bin`) and click **Update**.
+1. Browse to `http://<device-ip>/update` (the built-in OTA page). This is the
+   update method available on **every** firmware version — older builds only
+   ship this one, since the update section in *Settings* is new in the current
+   build.
+2. Log in with user `admin` (password empty by default unless you changed it).
+3. Select the `.bin` matching your PCB (`petalot.v1.4.5.bin`,
+   `petalot.v1.5.1.bin` or `petalot.v1.5.2.bin`) and click **Update**.
 
-The device verifies the `.bin` marker and rejects a firmware built for another
-PCB version, so you cannot accidentally flash the wrong one.
+If your device is already running the current build, you can also update from
+the web UI: **Settings → Advanced → Firmware Update** — same result.
 
 ## Building from source
 
