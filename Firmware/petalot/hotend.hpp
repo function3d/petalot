@@ -40,14 +40,16 @@ void Thermister_ESP8266() {
 
   if (i == 0) {
     T = temptable[0][1];
-  } else if (i == TEMP_TABLE_ROWS) {
-    int last = TEMP_TABLE_ROWS - 1;
-    T = map(AR, temptable[last - 1][0], temptable[last][0], temptable[last - 1][1], temptable[last][1]);
   } else {
-    T = map(AR, temptable[i - 1][0], temptable[i][0], temptable[i - 1][1], temptable[i][1]);
+    // Fractional linear interpolation between the bracketing table entries
+    int hi = (i == TEMP_TABLE_ROWS) ? TEMP_TABLE_ROWS - 1 : i;
+    int lo = hi - 1;
+    double hiAR = temptable[hi][0], loAR = temptable[lo][0];
+    double hiT = temptable[hi][1], loT = temptable[lo][1];
+    T = loT + (double)(AR - loAR) * (hiT - loT) / (hiAR - loAR);
   }
 
-  int toffset = map(T, 0, To, 0, TOffset);
+  double toffset = TOffset * T / To;
   T = T + toffset;
   if (AR < temptable[TEMP_TABLE_ROWS - 1][0]) {
     T = 0;
