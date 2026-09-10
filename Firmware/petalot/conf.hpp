@@ -11,9 +11,9 @@ bool Fenable = true;  //filament sensor enabled
 double T;             //current temp
 int Gate;
 int MaxGate;
-double HYS = 1.5;   // deadband below To before reheating (°C)
+double HYS = 0.5;   // deadband below To before reheating (°C)
 double RAMP = 6;    // approach ramp window above the deadband (°C)
-double HOLD = 25;   // minimum hold duty (%) near the target so To is reachable
+double HOLD = 28;   // minimum hold duty (%) near the target so To is reachable
 int TOffset = 0;
 bool MotorOnTo = 0;
 bool StartOnPower = 1;

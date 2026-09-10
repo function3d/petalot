@@ -218,7 +218,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         <div class="form-group"><span class="label" data-i18n="st.subnet">Subnet</span><input type="text" name="Subnet"><small class="help-text" data-i18n="st.subnetHelp">255.255.255.0 if left blank</small></div>
         <div class="form-group"><span class="label" data-i18n="st.gateway">Gateway</span><input type="text" name="Gateway"><small class="help-text" data-i18n="st.gatewayHelp">PETALOT does not require an Internet connection; 0.0.0.0 if left blank</small></div>
 
-        <div class="form-group"><span class="label" data-i18n="gs.update">Firmware Update</span><div class="row-layout"><span class="label" data-i18n="st.pcb">PCB Version</span><span class="msg" id="update-pcb">-</span></div><input type="file" id="up-firmware" accept=".bin,.bin.gz"><button type="button" class="btn" onclick="startUpdate()" data-i18n="btn.update">Update</button><div class="msg" id="update-msg"></div></div>
+        <div class="form-group"><span class="label" data-i18n="gs.update">Firmware Update</span><div class="msg"><span data-i18n="st.pcb">PCB Version</span>: <span id="update-pcb">-</span></div><input type="file" id="up-firmware" accept=".bin,.bin.gz"><button type="button" class="btn" onclick="startUpdate()" data-i18n="btn.update">Update</button><div class="msg" id="update-msg"></div></div>
 
         <div style="display:none" class="form-group"><span class="label" data-i18n="st.analog">Analog Read</span><input type="text" id="tele-AR" disabled></div>
       </div>
@@ -919,7 +919,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
           document.getElementById('ctrl-status').checked = data.status;
           document.getElementById('warn-status').innerText = (!data.status && data.LastStopReason) ? data.LastStopReason : '';
 
-          document.getElementById('val-temp').innerText = Math.round(data.T);
+          document.getElementById('val-temp').innerText = data.T.toFixed(1);
           document.getElementById('title-temp').innerText = `${t('gs.temp')} (${data.To})`;
           document.getElementById('warn-temp').innerText = (data.T>0) ? '' : t('t.checkThermistor');
           document.getElementById('val-output').innerText = (data.Output !== undefined && data.Output !== '') ? '(' + data.Output + ')' : '';
