@@ -29,6 +29,11 @@ int temptable[8][2] = {
 };
 const int TEMP_TABLE_ROWS = sizeof(temptable) / sizeof(temptable[0]);
 
+// Sub-degree fractional temperature interpolation gives smoother control but
+// reacts to ADC noise (can show a 209 more often near 210). Uncomment to use
+// it; leave commented out for the classic integer map() conversion.
+// #define INTERPOLATION_FRACTIONAL
+
 void Thermister_ESP8266() {
   int i = 0;
 
@@ -38,6 +43,7 @@ void Thermister_ESP8266() {
     }
   }
 
+#ifdef INTERPOLATION_FRACTIONAL
   if (i == 0) {
     T = temptable[0][1];
   } else {
@@ -48,6 +54,16 @@ void Thermister_ESP8266() {
     double hiT = temptable[hi][1], loT = temptable[lo][1];
     T = loT + (double)(AR - loAR) * (hiT - loT) / (hiAR - loAR);
   }
+#else
+  if (i == 0) {
+    T = temptable[0][1];
+  } else if (i == TEMP_TABLE_ROWS) {
+    int last = TEMP_TABLE_ROWS - 1;
+    T = map(AR, temptable[last - 1][0], temptable[last][0], temptable[last - 1][1], temptable[last][1]);
+  } else {
+    T = map(AR, temptable[i - 1][0], temptable[i][0], temptable[i - 1][1], temptable[i][1]);
+  }
+#endif
 
   double toffset = TOffset * T / To;
   T = T + toffset;
