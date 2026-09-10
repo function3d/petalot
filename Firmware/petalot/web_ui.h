@@ -87,6 +87,14 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
     .card.open .toggle::after { content: "▲"; }
     .toggle { float:right; }
 
+    /* Settings Tabs */
+    .tab-bar { display: flex; flex-wrap: wrap; gap: 0.35rem; border-bottom: 1px solid #334155; padding-bottom: 0.55rem; }
+    .tab-btn { background: none; border: none; color: var(--muted); font-size: 0.8rem; font-weight: 700; padding: 0.3rem 0.7rem; border-radius: 4px; cursor: pointer; }
+    .tab-btn:hover { background: #363e46; color: var(--text); }
+    .tab-btn.active { background: #363e46; color: var(--text); }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: flex; flex-direction: column; gap: 0.6rem; }
+
     .form-group { display: flex; flex-direction: column; gap: 0.15rem; }
     .form-group .row-layout { gap:1rem; display: flex; flex-direction: row; align-items: center; justify-content: space-between; padding: 0.25rem 0; }
     .form-group label, .form-group span.label { font-size: 0.8rem; color: var(--muted); font-weight: 700; margin-top: 5px; }
@@ -199,32 +207,55 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
     <div class="card" id="settings-card">
       <div class="trigger" onclick="document.getElementById('settings-card').classList.toggle('open')"><span data-i18n="gs.settings">Settings</span><span class="toggle"></span></div>
       <form id="settings-form" class="content" onsubmit="event.preventDefault();">
+      <div class="tab-bar">
+        <button type="button" class="tab-btn active" data-tab="general" data-i18n="tab.general" onclick="showSettingsTab('general')">General</button>
+        <button type="button" class="tab-btn" data-tab="run" data-i18n="tab.run" onclick="showSettingsTab('run')">Run</button>
+        <button type="button" class="tab-btn" data-tab="network" data-i18n="tab.network" onclick="showSettingsTab('network')">Network</button>
+        <button type="button" class="tab-btn" data-tab="advanced" data-i18n="tab.advanced" onclick="showSettingsTab('advanced')">Advanced</button>
+      </div>
+
+      <div class="tab-panel active" id="tab-general">
       <div class="grid">
         <div class="form-group"><span class="label" data-i18n="st.language">Language</span><select id="lang-select"></select></div>
 
         <div class="form-group"><div class="row-layout"><span class="label" data-i18n="st.startOnPower">Start up at power on</span><label class="switch"><input type="checkbox" name="StartOnPower"><span class="slider"></span></label></div><small class="help-text" data-i18n="st.startOnPowerHelp">If you disable it, you'll only be able to start the machine by pressing the sensor</small></div>
         <div class="form-group"><div class="row-layout"><span class="label" data-i18n="st.motorOnTo">Motor starting at target temp</span><label class="switch"><input type="checkbox" name="MotorOnTo"><span class="slider"></span></label></div><small class="help-text" data-i18n="st.motorOnToHelp">If enabled, the motor will only run once the target temperature is reached</small></div>
         <div id="setting-oled" class="form-group"><div class="row-layout"><span class="label" data-i18n="st.display">Use OLED Display</span><label class="switch"><input type="checkbox" name="UseDisplay"><span class="slider"></span></label></div><small id="setting-oled-help" class="help-text" data-i18n="st.displayHelp">Turn on the display if your machine has one</small></div>
+      </div>
+      </div>
 
-        <div class="form-group"><span class="label" data-i18n="st.toffset">Temperature Offset</span><input type="number" name="TOffset"><small class="help-text" data-i18n="st.toffsetHelp">Adjust the temperature if you notice it's off</small></div>
-        <div class="form-group"><span class="label" data-i18n="st.hys">Hysteresis band</span><input type="number" name="HYS" step="0.1"><small class="help-text" data-i18n="st.hysHelp">Degrees each side of the target still driven at hold duty before cutting</small></div>
-        <div class="form-group"><span class="label" data-i18n="st.ramp">Approach ramp</span><input type="number" name="RAMP" step="0.1"><small class="help-text" data-i18n="st.rampHelp">Over these degrees power ramps down from the maximum to the hold duty</small></div>
-        <div class="form-group"><span class="label" data-i18n="st.hold">Hold duty</span><input type="number" name="HOLD" step="1"><small class="help-text" data-i18n="st.holdHelp">Minimum power (%) delivered near the target to keep the temperature stable</small></div>
+      <div class="tab-panel" id="tab-run">
+      <div class="grid">
         <div class="form-group"><span class="label" data-i18n="st.stopDelay">Stop Delay (sec)</span><input type="number" name="Stopdelay"><small class="help-text" data-i18n="st.stopDelayHelp">Seconds to finish processing after strip end passes the sensor</small></div>
         <div class="form-group"><span class="label" data-i18n="st.maxTime">Max Time (min)</span><input type="number" name="Maxtime"><small class="help-text" data-i18n="st.maxTimeHelp">Maximum machine run time</small></div>
         <div class="form-group"><span class="label" data-i18n="st.sensorTimeout">Sensor timeout (min)</span><input type="number" name="NoFilamentTime"><small class="help-text" data-i18n="st.sensorTimeoutHelp">Minutes to run without sensor activity. If disabled, only Max Time applies</small></div>
+      </div>
+      </div>
 
+      <div class="tab-panel" id="tab-network">
+      <div class="grid">
         <div class="form-group"><span class="label" data-i18n="st.ssid">SSID</span><input type="text" name="ssid"><small class="help-text" data-i18n="st.ssidHelp">Your home/work Wi-Fi name</small></div>
         <div class="form-group"><span class="label" data-i18n="st.password">SSID Password</span><input type="password" name="password"><small class="help-text" data-i18n="st.passwordHelp">Your Wi-Fi password</small></div>
 
         <div class="form-group"><span class="label" data-i18n="st.ip">IP Address</span><input type="text" name="LocalIP"><small class="help-text" data-i18n-html="st.ipHelp">DHCP used if blank. Try <a href="http://petalot.local">petalot.local</a> first; check router for IP if inaccessible</small></div>
         <div class="form-group"><span class="label" data-i18n="st.subnet">Subnet</span><input type="text" name="Subnet"><small class="help-text" data-i18n="st.subnetHelp">255.255.255.0 if left blank</small></div>
         <div class="form-group"><span class="label" data-i18n="st.gateway">Gateway</span><input type="text" name="Gateway"><small class="help-text" data-i18n="st.gatewayHelp">PETALOT does not require an Internet connection; 0.0.0.0 if left blank</small></div>
+      </div>
+      </div>
+
+      <div class="tab-panel" id="tab-advanced">
+      <div class="grid">
+        <div class="form-group"><span class="label" data-i18n="st.toffset">Temperature Offset</span><input type="number" name="TOffset"><small class="help-text" data-i18n="st.toffsetHelp">Adjust the temperature if you notice it's off</small></div>
+        <div class="form-group"><span class="label" data-i18n="st.hys">Hysteresis band</span><input type="number" name="HYS" step="0.1"><small class="help-text" data-i18n="st.hysHelp">Degrees each side of the target still driven at hold duty before cutting</small></div>
+        <div class="form-group"><span class="label" data-i18n="st.ramp">Approach ramp</span><input type="number" name="RAMP" step="0.1"><small class="help-text" data-i18n="st.rampHelp">Over these degrees power ramps down from the maximum to the hold duty</small></div>
+        <div class="form-group"><span class="label" data-i18n="st.hold">Hold duty</span><input type="number" name="HOLD" step="1"><small class="help-text" data-i18n="st.holdHelp">Minimum power (%) delivered near the target to keep the temperature stable</small></div>
 
         <div class="form-group"><span class="label" data-i18n="gs.update">Firmware Update</span><div class="msg"><span data-i18n="st.pcb">PCB Version</span>: <span id="update-pcb">-</span></div><input type="file" id="up-firmware" accept=".bin,.bin.gz"><button type="button" class="btn" onclick="startUpdate()" data-i18n="btn.update">Update</button><div class="msg" id="update-msg"></div></div>
 
         <div style="display:none" class="form-group"><span class="label" data-i18n="st.analog">Analog Read</span><input type="text" id="tele-AR" disabled></div>
       </div>
+      </div>
+
         <div class="actions">
           <button type="button" class="btn" onclick="saveSettings()" data-i18n="btn.save">Save</button>
           <button type="button" class="btn btn-danger float-right" onclick="factoryReset();" data-i18n="btn.factoryReset">Factory Reset</button>
@@ -243,6 +274,10 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'gs.ses': 'ses', 'gs.tot': 'tot',
         'gs.status': 'Status', 'gs.speed': 'Speed', 'gs.sensor': 'Sensor', 'gs.temp': 'Temp',
         'gs.settings': 'Settings',
+        'tab.general': 'General',
+        'tab.run': 'Run',
+        'tab.network': 'Network',
+        'tab.advanced': 'Advanced',
         'st.startOnPower': 'Start up at power on',
         'st.startOnPowerHelp': "If you disable it, you'll only be able to start the machine by pressing the sensor",
         'st.motorOnTo': 'Motor starting at target temp',
@@ -302,6 +337,10 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'gs.ses': 'ses', 'gs.tot': 'tot',
         'gs.status': 'Estado', 'gs.speed': 'Velocidad', 'gs.sensor': 'Sensor', 'gs.temp': 'Temp',
         'gs.settings': 'Ajustes',
+        'tab.general': 'General',
+        'tab.run': 'Funcionamiento',
+        'tab.network': 'Red',
+        'tab.advanced': 'Avanzado',
         'st.startOnPower': 'Arrancar al encender',
         'st.startOnPowerHelp': 'Si lo desactivas, solo podrás arrancar la máquina pulsando el sensor',
         'st.motorOnTo': 'Motor arranca a la temperatura objetivo',
@@ -361,6 +400,10 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'gs.ses': 'ses', 'gs.tot': 'tot',
         'gs.status': 'Status', 'gs.speed': 'Velocidade', 'gs.sensor': 'Sensor', 'gs.temp': 'Temp',
         'gs.settings': 'Configurações',
+        'tab.general': 'Geral',
+        'tab.run': 'Funcionamento',
+        'tab.network': 'Rede',
+        'tab.advanced': 'Avançado',
         'st.startOnPower': 'Iniciar ao ligar',
         'st.startOnPowerHelp': 'Se desativar, só poderá iniciar a máquina pressionando o sensor',
         'st.motorOnTo': 'Motor inicia na temperatura alvo',
@@ -420,6 +463,10 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'gs.ses': 'sess', 'gs.tot': 'tot',
         'gs.status': 'État', 'gs.speed': 'Vitesse', 'gs.sensor': 'Capteur', 'gs.temp': 'Temp',
         'gs.settings': 'Paramètres',
+        'tab.general': 'Général',
+        'tab.run': 'Fonctionnement',
+        'tab.network': 'Réseau',
+        'tab.advanced': 'Avancé',
         'st.startOnPower': 'Démarrer à la mise sous tension',
         'st.startOnPowerHelp': "Si désactivé, vous ne pourrez démarrer la machine qu'en appuyant sur le capteur",
         'st.motorOnTo': 'Moteur démarre à la température cible',
@@ -479,6 +526,10 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'gs.ses': 'ses', 'gs.tot': 'ges',
         'gs.status': 'Status', 'gs.speed': 'Geschwindigkeit', 'gs.sensor': 'Sensor', 'gs.temp': 'Temp',
         'gs.settings': 'Einstellungen',
+        'tab.general': 'Allgemein',
+        'tab.run': 'Betrieb',
+        'tab.network': 'Netzwerk',
+        'tab.advanced': 'Erweitert',
         'st.startOnPower': 'Beim Einschalten starten',
         'st.startOnPowerHelp': 'Wenn deaktiviert, kann die Maschine nur durch Drücken des Sensors gestartet werden',
         'st.motorOnTo': 'Motor startet bei Zieltemperatur',
@@ -538,6 +589,10 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'gs.ses': 'sess', 'gs.tot': 'tot',
         'gs.status': 'Stato', 'gs.speed': 'Velocità', 'gs.sensor': 'Sensore', 'gs.temp': 'Temp',
         'gs.settings': 'Impostazioni',
+        'tab.general': 'Generale',
+        'tab.run': 'Funzionamento',
+        'tab.network': 'Rete',
+        'tab.advanced': 'Avanzato',
         'st.startOnPower': "Avvio all'accensione",
         'st.startOnPowerHelp': "Se disattivato, puoi avviare la macchina solo premendo il sensore",
         'st.motorOnTo': 'Motore avvia alla temperatura target',
@@ -597,6 +652,10 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'gs.ses': '本次', 'gs.tot': '累计',
         'gs.status': '状态', 'gs.speed': '速度', 'gs.sensor': '传感器', 'gs.temp': '温度',
         'gs.settings': '设置',
+        'tab.general': '常规',
+        'tab.run': '运行',
+        'tab.network': '网络',
+        'tab.advanced': '高级',
         'st.startOnPower': '开机启动',
         'st.startOnPowerHelp': '如果禁用，只能通过按下传感器启动机器',
         'st.motorOnTo': '到达目标温度后启动电机',
@@ -656,6 +715,10 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'gs.ses': 'ses', 'gs.tot': 'cel',
         'gs.status': 'Stav', 'gs.speed': 'Rychlost', 'gs.sensor': 'Čidlo', 'gs.temp': 'Teplota',
         'gs.settings': 'Nastavení',
+        'tab.general': 'Obecné',
+        'tab.run': 'Provoz',
+        'tab.network': 'Síť',
+        'tab.advanced': 'Pokročilé',
         'st.startOnPower': 'Spustit po zapnutí',
         'st.startOnPowerHelp': 'Pokud zakážete, stroj spustíte pouze stisknutím čidla',
         'st.motorOnTo': 'Motor startuje při cílové teplotě',
@@ -714,6 +777,10 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'gs.ses': 'сес', 'gs.tot': 'итог',
         'gs.status': 'Статус', 'gs.speed': 'Скорость', 'gs.sensor': 'Датчик', 'gs.temp': 'Темп.',
         'gs.settings': 'Настройки',
+        'tab.general': 'Общие',
+        'tab.run': 'Работа',
+        'tab.network': 'Сеть',
+        'tab.advanced': 'Дополнительно',
         'st.startOnPower': 'Запуск при включении',
         'st.startOnPowerHelp': 'Если выключено, запускать машину можно только нажатием на датчик',
         'st.motorOnTo': 'Мотор запускается при целевой температуре',
@@ -772,6 +839,10 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'gs.ses': 'oturum', 'gs.tot': 'toplam',
         'gs.status': 'Durum', 'gs.speed': 'Hız', 'gs.sensor': 'Sensör', 'gs.temp': 'Sıcaklık',
         'gs.settings': 'Ayarlar',
+        'tab.general': 'Genel',
+        'tab.run': 'Çalışma',
+        'tab.network': 'Ağ',
+        'tab.advanced': 'Gelişmiş',
         'st.startOnPower': 'Açılışta çalıştır',
         'st.startOnPowerHelp': 'Kapatırsanız makineyi yalnızca sensöre basarak başlatabilirsiniz',
         'st.motorOnTo': 'Motor hedef sıcaklıkta çalışır',
@@ -830,6 +901,10 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'gs.ses': '今回', 'gs.tot': '累計',
         'gs.status': '状態', 'gs.speed': '速度', 'gs.sensor': 'センサー', 'gs.temp': '温度',
         'gs.settings': '設定',
+        'tab.general': '一般',
+        'tab.run': '動作',
+        'tab.network': 'ネットワーク',
+        'tab.advanced': '詳細',
         'st.startOnPower': '電源投入時に起動',
         'st.startOnPowerHelp': '無効にすると、センサーを押すことでのみ機械を起動できます',
         'st.motorOnTo': '目標温度でモーター起動',
@@ -888,6 +963,10 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'gs.ses': '세션', 'gs.tot': '합계',
         'gs.status': '상태', 'gs.speed': '속도', 'gs.sensor': '센서', 'gs.temp': '온도',
         'gs.settings': '설정',
+        'tab.general': '일반',
+        'tab.run': '작동',
+        'tab.network': '네트워크',
+        'tab.advanced': '고급',
         'st.startOnPower': '전원 켜짐 시 시작',
         'st.startOnPowerHelp': '비활성화하면 센서를 눌러서만 기기를 시작할 수 있습니다',
         'st.motorOnTo': '목표 온도에서 모터 시작',
@@ -1077,6 +1156,13 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         });
     }
 
+    function showSettingsTab(tab) {
+      const valid = ['general', 'run', 'network', 'advanced'].includes(tab) ? tab : 'general';
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b.dataset.tab === valid));
+      document.querySelectorAll('.tab-panel').forEach(p => p.classList.toggle('active', p.id === 'tab-' + valid));
+      try { localStorage.setItem('petalot-tab', valid); } catch (e) {}
+    }
+
     function saveSettings(reboot) {
       if (!confirm(t('t.confirmSave'))) return;
 
@@ -1227,6 +1313,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
 
       lang = detectLang();
       applyI18n();
+      showSettingsTab((() => { try { return localStorage.getItem('petalot-tab'); } catch (e) { return null; } })());
       fetchConf();
       fetchTele();
       updateNetworkFields();
