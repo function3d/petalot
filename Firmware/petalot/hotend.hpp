@@ -1,6 +1,13 @@
 #pragma once
 
 // ============================================================================
+// Heater regulation: uncomment to use PID instead of the bang-bang control.
+// Bang-bang (HYS/RAMP/HOLD) is the default. PID needs no calibration for a
+// first test; fine-tune with /set?Kp=..&Ki=..&Kd=.. or via serial JSON.
+// #define CONTROL_PID
+// ============================================================================
+
+// ============================================================================
 // THERMISTOR + HEATER (HOTEND)
 // ============================================================================
 short AR;                 // analog read value (0-1023)
@@ -109,6 +116,82 @@ void initHotend() {
   lastAR = AR;
 }
 
+#ifdef CONTROL_PID
+// ============================================================================
+// PID REGULATION — alternative to the bang-bang control below.
+// Enable with:  #define CONTROL_PID  (hotend.hpp / petalot.ino)
+// Default gains suit the stock PETALOT heater and need no calibration for a
+// first test; fine-tune with /set?Kp=..&Ki=..&Kd=.. or via serial JSON.
+// Uses clamping anti-windup and a low-pass filtered derivative on the
+// measurement so the ±1°C ADC noise is not amplified into the heater.
+// Full power below minT is kept (same boost hysteresis as bang-bang).
+// ============================================================================
+double pidIntegral = 0, pidPrevT = 0, pidDeriv = 0;
+bool pidFirst = true, pidBoost = true;
+
+void pidReset() {
+  pidIntegral = 0;
+  pidDeriv = 0;
+  pidPrevT = T;
+  pidFirst = true;
+  pidBoost = false;
+}
+
+double control() {
+  if (status == "stopped") {
+    pidReset();
+    return 0;
+  }
+  if (isnan(T)) {
+    return 0;
+  }
+  if (T == 0) {
+    LastStopReason = "Anomalous temperature reading, something wrong with thermistor";
+    stop();
+    return 0;
+  }
+
+  // Full power until minT, with hysteresis so it does not flap at the threshold.
+  const double HYSTERESIS = 3.0;
+  static bool boost = false;
+  if (T >= minT) {
+    boost = false;
+  } else if (T < minT - HYSTERESIS) {
+    boost = true;
+  }
+  if (boost) {
+    pidBoost = true; // next regulation pass starts with a clean integral
+    return MaxGate;
+  }
+
+  if (pidFirst) {
+    pidPrevT = T;
+    pidFirst = false;
+  }
+  if (pidBoost) {
+    pidIntegral = 0;
+    pidBoost = false;
+  }
+
+  const double dt = 0.25;                           // 250 ms control period
+  const double maxOut = (double)MaxGate * Gate / 100.0;
+  const double error = (double)To - T;
+
+  // Filtered derivative of the measurement (°C/s): rising temp pulls the
+  // output down (damping), falling temp pushes it back up.
+  const double dPV = (T - pidPrevT) / dt;
+  const double alpha = 0.25;                        // low-pass on derivative
+  pidDeriv = alpha * dPV + (1.0 - alpha) * pidDeriv;
+  pidPrevT = T;
+
+  double outRaw = Kp * error + Ki * pidIntegral - Kd * pidDeriv;
+  const bool saturated = (outRaw >= maxOut) || (outRaw <= 0.0);
+  if (!saturated) pidIntegral += error * dt;        // clamping anti-windup
+  if (outRaw > maxOut) outRaw = maxOut;
+  if (outRaw < 0.0) outRaw = 0.0;
+  return outRaw;
+}
+#else
 double control() {
   if (status == "stopped") {
     return 0;
@@ -154,6 +237,7 @@ double control() {
   if (duty < floor) duty = floor;
   return duty;
 }
+#endif // CONTROL_PID
 
 void hotendReadTempTask() {
   if (millis() >= tempLastSample + 250) {
