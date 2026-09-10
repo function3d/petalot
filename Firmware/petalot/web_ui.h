@@ -31,7 +31,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
     .header a { color: var(--muted); font-size: 0.8rem; text-decoration: none; }
     .header-right { text-align: right; font-size: 0.8rem; color: var(--muted); }
     .header-right span { color: var(--text); font-weight: 600; }
-    #lang-select { background: #181c20; color: var(--text); border: 1px solid #363e46; border-radius: 4px; font-size: 0.75rem; padding: 0.15rem 0.3rem; margin-top: 0.35rem; }
+    #lang-select, .settings-select { background: #181c20; color: var(--text); border: 1px solid #363e46; border-radius: 4px; font-size: 0.75rem; padding: 0.15rem 0.3rem; margin-top: 0.35rem; }
 
     /*version*/
     #version { text-align:right; font-size: 0.7rem; color: var(--muted); margin-top: 0.25rem; }
@@ -245,7 +245,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
 
       <div class="tab-panel" id="tab-advanced">
       <div class="grid">
-        <div class="form-group"><span class="label" data-i18n="st.control">Heating control</span><select name="ControlMode" onchange="updateControlFields()"><option value="0">PID</option><option value="1">Bang-bang</option></select><small class="help-text" data-i18n="st.controlHelp">PID holds the temperature steady out of the box; Bang-bang is the simpler classic controller</small></div>
+        <div class="form-group"><span class="label" data-i18n="st.control">Heating control</span><select name="ControlMode" class="settings-select" onchange="updateControlFields()"><option value="0">PID</option><option value="1">Bang-bang</option></select><small class="help-text" data-i18n="st.controlHelp">PID holds the temperature steady out of the box; Bang-bang is the simpler classic controller</small></div>
         <div class="form-group" data-mode="pid"><span class="label" data-i18n="st.kp">Kp (proportional)</span><input type="number" name="Kp" step="0.1"><small class="help-text" data-i18n="st.kpHelp">Response speed: if it oscillates, lower it</small></div>
         <div class="form-group" data-mode="pid"><span class="label" data-i18n="st.ki">Ki (integral)</span><input type="number" name="Ki" step="0.01"><small class="help-text" data-i18n="st.kiHelp">Reaches the target: if it stays below, raise it</small></div>
         <div class="form-group" data-mode="pid"><span class="label" data-i18n="st.kd">Kd (derivative)</span><input type="number" name="Kd" step="1"><small class="help-text" data-i18n="st.kdHelp">Damping: if it oscillates, raise it</small></div>
