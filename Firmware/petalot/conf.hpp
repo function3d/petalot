@@ -25,7 +25,7 @@ int minV = 5;
 int workV = 25;
 String LocalIP;
 String Gateway;
-int Stopdelay = 14;
+int Stopdelay = 12;
 int Maxtime = 120;
 int NoFilamentTime = 6;
 bool UseDisplay = 0;
@@ -119,7 +119,7 @@ void resetConfiguration() {
   RAMP = 6;
   HOLD = 28;
   TOffset = 0;
-  Stopdelay = 14;
+  Stopdelay = 12;
   Maxtime = 120;
   NoFilamentTime = 6;
   UseDisplay = 0;
@@ -201,7 +201,7 @@ void loadConfiguration(bool reset = false) {
     TOffset = 0;
     doc["TOffset"] = TOffset;
   }
-  Stopdelay = doc["Stopdelay"] | 14;
+  Stopdelay = doc["Stopdelay"] | 12;
   Maxtime = doc["Maxtime"] | 120;
   NoFilamentTime = doc["NoFilamentTime"] | 6;
   if (doc.containsKey("UseDisplay"))
@@ -232,9 +232,15 @@ void factoryReset(bool stats = false) {
   analogWrite(PIN_HEATER, 0);
   int TOffset_old = TOffset;
   int workT_old = workT;
+  double HYS_old = HYS;
+  double RAMP_old = RAMP;
+  double HOLD_old = HOLD;
   resetConfiguration();
   TOffset = TOffset_old;
   workT = workT_old;
+  HYS = HYS_old;
+  RAMP = RAMP_old;
+  HOLD = HOLD_old;
   saveConfiguration(false);
   if (stats) {
     LittleFS.remove("/stats.json");
