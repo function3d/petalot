@@ -1,4 +1,8 @@
 Media/
-Firmware/petalot/build/
+Firmware/petalot/build/*
+!Firmware/petalot/build/esp8266.esp8266.d1_mini_clone/
+!Firmware/petalot/build/esp8266.esp8266.d1_mini_clone/petalot.v1.4.5.bin
+!Firmware/petalot/build/esp8266.esp8266.d1_mini_clone/petalot.v1.5.1.bin
+!Firmware/petalot/build/esp8266.esp8266.d1_mini_clone/petalot.v1.5.2.bin
 Packaging/
 STLs/

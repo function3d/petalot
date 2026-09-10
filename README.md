@@ -17,7 +17,7 @@
 <img alt="Petalot" src="https://function3d.xyz/wp-content/uploads/2026/04/IMG_20260404_165417.webp" />
 
  - [Buy it ready-made](https://function3d.xyz/shop/)
- - **UPDATE**: firmware v1.4.4 needs R1=2Kohm
+ - **UPDATE**: the firmware you need depends on your PCB version — v1.4.5 (DIY) and v1.5.1/v1.5.2 (commercial). See the [Firmware README](Firmware/README.md).
  - [Gerber](https://github.com/function3d/petalot/raw/master/Schematic/Gerber_v1.1_2023-01-02.zip) for PCB fabrication, just upload this zip file to [jlcpcb.com](https://jlcpcb.com/?from=FUNC) and order your PCB.
  - [Schematic](https://github.com/function3d/petalot/tree/master/Schematic)
  - [Firmware](https://github.com/function3d/petalot/tree/master/Firmware)
