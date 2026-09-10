@@ -47,6 +47,9 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
     .conn-icon { width: 12px; height: 12px; margin-right: 6px; border-radius: 50%; }
     .conn-off { background: var(--danger); transition: background 0.3s; opacity: 1 }
     .conn-on { background: var(--accent); animation: pulse 1.8s infinite ease-in-out; }
+    .conn-text { color: var(--muted); font-size: 0.7rem; font-weight: 600; margin-left: 2px; letter-spacing: 0; }
+    .conn-text .conn-up { color: var(--accent); }
+    .conn-text .conn-down { color: var(--danger); }
     @keyframes pulse {
       0% { opacity: 1; }
       100% { opacity: 0.2; }
@@ -134,6 +137,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
       <div class="card ui-card">
         <div class="title-wrapper">
           <div class="title" data-i18n="gs.status">Status</div>
+          <small class="conn-text">(<span id="conn-text" class="conn-down"></span>)</small>
           <div id="conn-icon" class="icon conn-icon conn-off"></div>
         </div>
         <div class="row">
@@ -319,6 +323,8 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'btn.factoryReset': 'Factory Reset',
         'msg.minmax': 'min: {min}, max: {max}',
         't.running': 'Running',
+        't.connected': 'connected',
+        't.disconnected': 'disconnected: device off, out of Wi-Fi range, or another issue',
 
         't.stopped': 'Stopped',
         't.checkThermistor': 'Check thermistor',
@@ -390,6 +396,8 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'btn.factoryReset': 'Restablecer de fábrica',
         'msg.minmax': 'mín: {min}, máx: {max}',
         't.running': 'En marcha',
+        't.connected': 'conectado',
+        't.disconnected': 'desconectado: dispositivo apagado, fuera de rango Wi-Fi u otra circunstancia',
 
         't.stopped': 'Parado',
         't.checkThermistor': 'Comprueba el termistor',
@@ -461,6 +469,8 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'btn.factoryReset': 'Restaurar de fábrica',
         'msg.minmax': 'mín: {min}, máx: {max}',
         't.running': 'Em funcionamento',
+        't.connected': 'conectado',
+        't.disconnected': 'desconectado: dispositivo desligado, fora do alcance do Wi-Fi ou outra circunstância',
 
         't.stopped': 'Parado',
         't.checkThermistor': 'Verifique o termistor',
@@ -532,6 +542,8 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'btn.factoryReset': 'Réinitialiser',
         'msg.minmax': 'min : {min}, max : {max}',
         't.running': 'En marche',
+        't.connected': 'connecté',
+        't.disconnected': 'déconnecté : appareil éteint, hors de portée Wi-Fi ou autre circonstance',
 
         't.stopped': 'Arrêté',
         't.checkThermistor': 'Vérifiez la thermistance',
@@ -603,6 +615,8 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'btn.factoryReset': 'Zurücksetzen',
         'msg.minmax': 'min: {min}, max: {max}',
         't.running': 'Läuft',
+        't.connected': 'verbunden',
+        't.disconnected': 'getrennt: Gerät aus, außerhalb der WLAN-Reichweite oder anderer Umstand',
 
         't.stopped': 'Gestoppt',
         't.checkThermistor': 'Thermistor prüfen',
@@ -674,6 +688,8 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'btn.factoryReset': 'Ripristino',
         'msg.minmax': 'min: {min}, max: {max}',
         't.running': 'In funzione',
+        't.connected': 'connesso',
+        't.disconnected': 'disconnesso: dispositivo spento, fuori dalla portata del Wi-Fi o altra circostanza',
 
         't.stopped': 'Fermata',
         't.checkThermistor': 'Controlla il termistore',
@@ -745,6 +761,8 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'btn.factoryReset': '恢复出厂设置',
         'msg.minmax': '最小：{min}，最大：{max}',
         't.running': '运行中',
+        't.connected': '已连接',
+        't.disconnected': '已断开：设备已关机、超出 Wi-Fi 范围或其他情况',
 
         't.stopped': '已停止',
         't.checkThermistor': '检查热敏电阻',
@@ -816,6 +834,8 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'btn.factoryReset': 'Tovární nastavení',
         'msg.minmax': 'min: {min}, max: {max}',
         't.running': 'Běží',
+        't.connected': 'připojeno',
+        't.disconnected': 'odpojeno: zařízení je vypnuté, mimo dosah Wi-Fi nebo jiná okolnost',
         't.stopped': 'Zastaveno',
         't.checkThermistor': 'Zkontrolujte termistor',
         't.speedWarn': 'Rychlosti >25 cm/s mohou způsobit tiskové vady. Otestujte před sériovou výrobou',
@@ -886,6 +906,8 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'btn.factoryReset': 'Сброс к заводским',
         'msg.minmax': 'мин: {min}, макс: {max}',
         't.running': 'Работает',
+        't.connected': 'подключено',
+        't.disconnected': 'отключено: устройство выключено, вне зоны Wi-Fi или другая причина',
         't.stopped': 'Остановлено',
         't.checkThermistor': 'Проверьте термистор',
         't.speedWarn': 'Скорости >25 см/с могут вызывать дефекты печати. Протестируйте перед серийным производством',
@@ -956,6 +978,8 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'btn.factoryReset': 'Fabrika ayarları',
         'msg.minmax': 'min: {min}, maks: {max}',
         't.running': 'Çalışıyor',
+        't.connected': 'bağlı',
+        't.disconnected': 'bağlantı kesildi: cihaz kapalı, Wi-Fi kapsama alanı dışında veya başka bir durum',
         't.stopped': 'Durduruldu',
         't.checkThermistor': 'Termistörü kontrol edin',
         't.speedWarn': '>25 cm/s hızlar baskı hatalarına neden olabilir. Seri üretimden önce test edin',
@@ -1026,6 +1050,8 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'btn.factoryReset': '工場出荷時リセット',
         'msg.minmax': '最小：{min}、最大：{max}',
         't.running': '運転中',
+        't.connected': '接続済み',
+        't.disconnected': '切断中：デバイスがオフ、Wi-Fi圏外、またはその他の理由',
         't.stopped': '停止中',
         't.checkThermistor': 'サーミスタを確認してください',
         't.speedWarn': '速度が25cm/sを超えると印刷不良になる可能性があります。量産前にテストしてください',
@@ -1096,6 +1122,8 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'btn.factoryReset': '공장 초기화',
         'msg.minmax': '최소：{min}、최대：{max}',
         't.running': '작동 중',
+        't.connected': '연결됨',
+        't.disconnected': '연결 끊김: 기기가 꺼져 있거나 Wi-Fi 범위 밖 또는 기타 상황',
         't.stopped': '정지됨',
         't.checkThermistor': '서미스터를 확인하세요',
         't.speedWarn': '25cm/s를 초과하는 속도는 인쇄 불량을 유발할 수 있습니다. 양산 전에 테스트하세요',
@@ -1118,6 +1146,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
     const LANGS = { en: 'English', es: 'Español', pt: 'Português', fr: 'Français', de: 'Deutsch', it: 'Italiano', zh: '中文', cs: 'Čeština', ru: 'Русский', tr: 'Türkçe', ja: '日本語', ko: '한국어' };
 
     let lang = 'en';
+    let connOnline = false;
 
     function t(key, args) {
       const str = (I18N[lang] && I18N[lang][key]) || I18N.en[key] || key;
@@ -1135,6 +1164,15 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
       document.querySelectorAll('[data-i18n-html]').forEach(el => { el.innerHTML = t(el.dataset.i18nHtml); });
       const sel = document.getElementById('lang-select');
       if (sel.value !== lang) sel.value = lang;
+      setConnText();
+    }
+
+    function setConnText() {
+      const el = document.getElementById('conn-text');
+      if (!el) return;
+      el.textContent = connOnline ? t('t.connected') : t('t.disconnected');
+      el.classList.toggle('conn-up', connOnline);
+      el.classList.toggle('conn-down', !connOnline);
     }
 
     function setLang(l) {
@@ -1187,6 +1225,8 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         .catch(err => {
           document.getElementById('conn-icon').classList.remove('conn-on');
           document.getElementById('conn-icon').classList.add('conn-off');
+          connOnline = false;
+          setConnText();
           const fireIcon = document.getElementById('fire-icon');
           const motorIcon = document.getElementById('motor-icon');
           fireIcon.classList.remove('fire-on');
@@ -1384,6 +1424,8 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
 
       connIcon.classList.remove('conn-off');
       connIcon.classList.add('conn-on');
+      connOnline = true;
+      setConnText();
 
       if (data.status) {
         if (data.status === 2) {
