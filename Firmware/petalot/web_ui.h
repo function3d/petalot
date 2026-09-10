@@ -919,7 +919,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
           document.getElementById('ctrl-status').checked = data.status;
           document.getElementById('warn-status').innerText = (!data.status && data.LastStopReason) ? data.LastStopReason : '';
 
-          document.getElementById('val-temp').innerText = data.T.toFixed(1);
+          document.getElementById('val-temp').innerText = Math.round(data.T);
           document.getElementById('title-temp').innerText = `${t('gs.temp')} (${data.To})`;
           document.getElementById('warn-temp').innerText = (data.T>0) ? '' : t('t.checkThermistor');
           document.getElementById('val-output').innerText = (data.Output !== undefined && data.Output !== '') ? '(' + data.Output + ')' : '';
