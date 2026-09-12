@@ -43,8 +43,7 @@ You do not need a cable: update over the air.
    update method available on **every** firmware version — older builds only
    ship this one, since the update section in *Settings* is new in the current
    build.
-2. Log in with user `admin` (password empty by default unless you changed it).
-3. Select the `.bin` matching your PCB (`petalot.v1.4.5.bin`,
+2. Select the `.bin` matching your PCB (`petalot.v1.4.5.bin`,
    `petalot.v1.5.1.bin` or `petalot.v1.5.2.bin`) and click **Update**.
 
 If your device is already running the current build, you can also update from

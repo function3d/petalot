@@ -1363,13 +1363,13 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
 
       msgEl.className = 'msg';
       msgEl.textContent = t('msg.updating');
-      fetch('/set?status=0');
       const fd = new FormData();
       fd.append('firmware', file);
 
       fetch('/updatecheck', { method: 'POST', body: fd })
         .then(r => {
           if (r.ok) {
+            fetch('/set?status=0');
             doRealUpdate(file, msgEl);
           } else {
             msgEl.className = 'msg warn';

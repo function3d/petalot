@@ -1,4 +1,4 @@
-#define VERSION 1502 // See pins.hpp
+#define VERSION 1405 // See pins.hpp
 
 // Compile-time build date extracted from __DATE__ (e.g. "Sep  7 2026")
 // Year: '2' and '6' from '2026'
