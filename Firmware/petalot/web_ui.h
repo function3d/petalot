@@ -1147,6 +1147,13 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
 
     let lang = 'en';
     let connOnline = false;
+    let teleInFlight = false;
+    let teleTimer = null;
+
+    function scheduleTele() {
+      if (teleTimer) clearTimeout(teleTimer);
+      teleTimer = setTimeout(() => { teleTimer = null; fetchTele(); }, 2000);
+    }
 
     function t(key, args) {
       const str = (I18N[lang] && I18N[lang][key]) || I18N.en[key] || key;
@@ -1192,7 +1199,13 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
     }
 
     function fetchTele() {
-      fetch('/tele')
+      if (teleInFlight) return;
+      teleInFlight = true;
+
+      const abortCtrl = new AbortController();
+      const abortTimer = setTimeout(() => abortCtrl.abort(), 5000);
+
+      fetch('/tele', { signal: abortCtrl.signal })
         .then(res => res.json())
         .then(data => {
           document.getElementById('tele-Fs').innerText = Math.round(data.Fs) / 100;
@@ -1219,8 +1232,6 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
           document.getElementById('tele-AR').value = data.AR || 0;
 
           updateIcons(data);
-
-          setTimeout(fetchTele, 2000);
         })
         .catch(err => {
           document.getElementById('conn-icon').classList.remove('conn-on');
@@ -1233,7 +1244,11 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
           fireIcon.classList.add('fire-off');
           motorIcon.classList.remove('motor-on');
           motorIcon.classList.add('motor-off');
-          setTimeout(fetchTele, 2000);
+        })
+        .finally(() => {
+          clearTimeout(abortTimer);
+          teleInFlight = false;
+          scheduleTele();
         });
     }
 
