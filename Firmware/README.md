@@ -11,9 +11,9 @@ that matches the PCB you have installed.
 
 | PCB version | Firmware file | Availability |
 | --- | --- | --- |
-| **v1.4.5** | [`petalot.v1.4.5.bin`](Firmware/petalot/build/esp8266.esp8266.d1_mini_clone/petalot.v1.4.5.bin) | **DIY** — the only board released publicly. |
-| **v1.5.1** | [`petalot.v1.5.1.bin`](Firmware/petalot/build/esp8266.esp8266.d1_mini_clone/petalot.v1.5.1.bin) | **Commercial**. |
-| **v1.5.2** | [`petalot.v1.5.2.bin`](Firmware/petalot/build/esp8266.esp8266.d1_mini_clone/petalot.v1.5.2.bin) | **Commercial** (current). |
+| **v1.4.5** | [`petalot.1.4.5-v1.6.0.bin`](Firmware/petalot/build/esp8266.esp8266.d1_mini_clone/petalot.1.4.5-v1.6.0.bin) | **DIY** — the only board released publicly. |
+| **v1.5.1** | [`petalot.1.5.1-v1.6.0.bin`](Firmware/petalot/build/esp8266.esp8266.d1_mini_clone/petalot.1.5.1-v1.6.0.bin) | **Commercial**. |
+| **v1.5.2** | [`petalot.1.5.2-v1.6.0.bin`](Firmware/petalot/build/esp8266.esp8266.d1_mini_clone/petalot.1.5.2-v1.6.0.bin) | **Commercial** (current). |
 
 - If you built your own PETALOT from the public files, your PCB is the **v1.4.5**.
 - Versions **v1.5.1** and **v1.5.2** are only fitted on commercially sold machines.
@@ -56,8 +56,8 @@ mode or on a network without Internet.
 1. Browse to `http://<device-ip>/update` (the built-in OTA page). This is the
    update method available on **every** firmware version — older builds only
    ship this one.
-2. Select the `.bin` matching your PCB (`petalot.v1.4.5.bin`,
-   `petalot.v1.5.1.bin` or `petalot.v1.5.2.bin`) and click **Update**.
+2. Select the `.bin` matching your PCB (`petalot.1.4.5-v1.6.0.bin`,
+   `petalot.1.5.1-v1.6.0.bin` or `petalot.1.5.2-v1.6.0.bin`) and click **Update**.
 
 If your device already runs a recent build, you can also use **Settings →
 Advanced → Firmware Update** in the web UI — same result.

@@ -9,10 +9,12 @@
 #
 # It compiles PCB 1405 / 1501 / 1502 (same source, only `#define PCB` changes),
 # writes the binaries to
-#   petalot/build/esp8266.esp8266.d1_mini_clone/petalot.v1.4.5.bin  (PCB 1405)
-#   petalot/build/esp8266.esp8266.d1_mini_clone/petalot.v1.5.1.bin  (PCB 1501)
-#   petalot/build/esp8266.esp8266.d1_mini_clone/petalot.v1.5.2.bin  (PCB 1502)
-# and refreshes latest.json with the new version and sizes.
+#   petalot/build/esp8266.esp8266.d1_mini_clone/petalot.1.4.5-v<fw>.bin  (PCB 1405)
+#   petalot/build/esp8266.esp8266.d1_mini_clone/petalot.1.5.1-v<fw>.bin  (PCB 1501)
+#   petalot/build/esp8266.esp8266.d1_mini_clone/petalot.1.5.2-v<fw>.bin  (PCB 1502)
+# (only the latest build per PCB is kept; the legacy petalot.v1.2.bin and
+# petalot.1.4.4.bin are left untouched) and refreshes latest.json with the new
+# version and sizes.
 #
 # On success petalot.ino keeps the new VERSION and the original PCB is
 # restored, so commit everything together:
@@ -33,7 +35,8 @@ INO="$SKETCH_DIR/petalot.ino"
 BUILD_DIR="$SKETCH_DIR/build/esp8266.esp8266.d1_mini_clone"
 
 PCBS=(1405 1501 1502)
-FILES=(petalot.v1.4.5.bin petalot.v1.5.1.bin petalot.v1.5.2.bin)
+# Hardware revision as shown to users (PCB 1405 -> 1.4.5, etc.)
+HWS=(1.4.5 1.5.1 1.5.2)
 
 FQBN="${FQBN:-esp8266:esp8266:d1_mini_clone:baud=921600,xtal=80,eesz=4M2M,FlashMode=dout,FlashFreq=40,dbg=Disabled,lvl=None____,ip=lm2f,vt=flash,exception=disabled,stacksmash=disabled,wipe=none,ssl=all,mmu=3232,non32xfer=fast}"
 
@@ -73,6 +76,11 @@ minor=$(((version % 1000) / 100))
 patch=$((version % 100))
 human="$major.$minor.$patch"
 
+# Keep only the latest build for the active PCBs (the legacy petalot.v1.2.bin
+# and petalot.1.4.4.bin are left untouched).
+mkdir -p "$BUILD_DIR"
+rm -f "$BUILD_DIR"/petalot.1.4.5-v*.bin "$BUILD_DIR"/petalot.1.5.1-v*.bin "$BUILD_DIR"/petalot.1.5.2-v*.bin
+
 # --- sanity-check the web UI before spending a full build -------------------
 if [ -f "$SCRIPT_DIR/check_web_ui.py" ]; then
   echo "==> checking web_ui.h"
@@ -107,7 +115,8 @@ trap restore EXIT
 # --- build each PCB ---------------------------------------------------------
 for i in "${!PCBS[@]}"; do
   pcb="${PCBS[$i]}"
-  file="${FILES[$i]}"
+  hw="${HWS[$i]}"
+  file="petalot.${hw}-v${human}.bin"
   echo "==> PCB $pcb -> $file"
   sed -i "s/^#define PCB [0-9][0-9]*/#define PCB $pcb/" "$INO"
   if ! "$CLI" "${CLI_ARGS[@]}" compile --fqbn "$FQBN" \

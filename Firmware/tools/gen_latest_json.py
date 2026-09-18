@@ -19,11 +19,12 @@ import json
 import os
 import sys
 
-# PCB revision -> firmware file name (built with `#define PCB <rev>`)
+# PCB revision -> hardware revision shown to users. The firmware file is named
+# "petalot.<hw>-v<fw>.bin", e.g. petalot.1.5.2-v1.6.0.bin.
 BOARDS = {
-    "1405": "petalot.v1.4.5.bin",
-    "1501": "petalot.v1.5.1.bin",
-    "1502": "petalot.v1.5.2.bin",
+    "1405": "1.4.5",
+    "1501": "1.5.1",
+    "1502": "1.5.2",
 }
 
 DEFAULT_DIR = os.path.abspath(
@@ -42,8 +43,14 @@ def main():
     version = int(sys.argv[1])
     out_dir = os.path.abspath(sys.argv[2]) if len(sys.argv) > 2 else DEFAULT_DIR
 
+    major = version // 1000
+    minor = (version % 1000) // 100
+    patch = version % 100
+    fw = "%d.%d.%d" % (major, minor, patch)
+
     manifest = {}
-    for pcb, filename in BOARDS.items():
+    for pcb, hw in BOARDS.items():
+        filename = "petalot.%s-v%s.bin" % (hw, fw)
         entry = {"version": version, "file": filename}
         path = os.path.join(out_dir, filename)
         if os.path.exists(path):
