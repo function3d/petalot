@@ -11,9 +11,9 @@ that matches the PCB you have installed.
 
 | PCB version | Firmware file | Availability |
 | --- | --- | --- |
-| **v1.4.5** | [`petalot.1.4.5-v1.6.0.bin`](Firmware/petalot/build/esp8266.esp8266.d1_mini_clone/petalot.1.4.5-v1.6.0.bin) | **DIY** — the only board released publicly. |
-| **v1.5.1** | [`petalot.1.5.1-v1.6.0.bin`](Firmware/petalot/build/esp8266.esp8266.d1_mini_clone/petalot.1.5.1-v1.6.0.bin) | **Commercial**. |
-| **v1.5.2** | [`petalot.1.5.2-v1.6.0.bin`](Firmware/petalot/build/esp8266.esp8266.d1_mini_clone/petalot.1.5.2-v1.6.0.bin) | **Commercial** (current). |
+| **v1.4.5** | [`petalot.1.4.5-v1.6.0.bin`](petalot/build/esp8266.esp8266.d1_mini_clone/petalot.1.4.5-v1.6.0.bin) | **DIY** — the only board released publicly. |
+| **v1.5.1** | [`petalot.1.5.1-v1.6.0.bin`](petalot/build/esp8266.esp8266.d1_mini_clone/petalot.1.5.1-v1.6.0.bin) | **Commercial**. |
+| **v1.5.2** | [`petalot.1.5.2-v1.6.0.bin`](petalot/build/esp8266.esp8266.d1_mini_clone/petalot.1.5.2-v1.6.0.bin) | **Commercial** (current). |
 
 - If you built your own PETALOT from the public files, your PCB is the **v1.4.5**.
 - Versions **v1.5.1** and **v1.5.2** are only fitted on commercially sold machines.
@@ -80,7 +80,7 @@ Advanced → Firmware Update** in the web UI — same result.
 5. Compile and upload.
 
 The pin mapping for every hardware revision lives in `Firmware/petalot/pins.hpp`.
-See [`INSTALL_LIBRARIES.md`](Firmware/petalot/INSTALL_LIBRARIES.md) for the
+See [`INSTALL_LIBRARIES.md`](petalot/INSTALL_LIBRARIES.md) for the
 required libraries and board setup.
 
 ### Publishing an online update
