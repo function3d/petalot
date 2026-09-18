@@ -1,6 +1,6 @@
 #pragma once
 
-#if defined(ESP8266) && VERSION == 1405 // D1 mini
+#if defined(ESP8266) && PCB == 1405 // D1 mini
 
   #define PIN_EN    D1
   #define PIN_STEP  D2
@@ -11,7 +11,7 @@
   #define PIN_SCL 99
   #define PIN_SDA 99
 
-#elif defined(ESP8266) && VERSION == 1501  // D1 mini, Transitional PCB, Display but no buttons
+#elif defined(ESP8266) && PCB == 1501  // D1 mini, Transitional PCB, Display but no buttons
 
   #define PIN_EN    D1
   #define PIN_STEP  D2
@@ -22,7 +22,7 @@
   #define PIN_SCL D4
   #define PIN_SDA D3
 
-#elif defined(ESP8266) && VERSION >= 1502
+#elif defined(ESP8266) && PCB >= 1502
 
   #define PIN_EN          D1
   #define PIN_STEP        D2
@@ -37,7 +37,7 @@
   #define PIN_MSI3        D8
   
 // TODO
-/*#elif defined(ESP32) && VERSION == 1502 
+/*#elif defined(ESP32) && PCB == 1502 
 
   #define LED_BUILTIN     15 
   #define PIN_EN          35

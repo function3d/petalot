@@ -42,7 +42,7 @@ public:
 
   void init() {
     pinMode(PIN_EN, OUTPUT);
-#if VERSION == 1502
+#if PCB == 1502
     // Configure microstepping (MSI pins) for the 1.5.2 PCB
     pinMode(PIN_MSI3, OUTPUT);
     digitalWrite(PIN_MSI3, HIGH);

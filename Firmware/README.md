@@ -39,30 +39,60 @@ that matches the PCB you have installed.
 
 You do not need a cable: update over the air.
 
+### Online update (needs Internet in the browser)
+
+Open the web UI and go to **Settings → Advanced → Online update**, then click
+**Check for updates**. If a newer firmware for your PCB is available, click
+**Install update**.
+
+The manifest (`latest.json`) and the firmware image are downloaded from this
+repository by **your browser**, not by the device, and then uploaded to the
+device over the same path as a manual update. This means only the computer or
+phone running the browser needs Internet access; the device itself can be in AP
+mode or on a network without Internet.
+
+### Manual update (works offline)
+
 1. Browse to `http://<device-ip>/update` (the built-in OTA page). This is the
    update method available on **every** firmware version — older builds only
-   ship this one, since the update section in *Settings* is new in the current
-   build.
+   ship this one.
 2. Select the `.bin` matching your PCB (`petalot.v1.4.5.bin`,
    `petalot.v1.5.1.bin` or `petalot.v1.5.2.bin`) and click **Update**.
 
-If your device is already running the current build, you can also update from
-the web UI: **Settings → Advanced → Firmware Update** — same result.
+If your device already runs a recent build, you can also use **Settings →
+Advanced → Firmware Update** in the web UI — same result.
 
 ## Building from source
 
 1. Open `Firmware/petalot/petalot.ino` in the Arduino IDE.
-2. Set `VERSION` to the board you are compiling for:
+2. Set `PCB` to the hardware you are compiling for:
 
-   | `VERSION` | PCB |
+   | `PCB` | Hardware |
    | --- | --- |
    | `1405` | v1.4.5 |
    | `1501` | v1.5.1 |
    | `1502` | v1.5.2 |
 
-3. Select **Tools > Board > esp8266 > LOLIN(WEMOS) D1 mini (clone)**.
-4. Compile and upload.
+3. Set `VERSION` to the firmware version you are publishing (e.g. `1600`).
+   `VERSION` is independent of the PCB revision and is what the online update
+   compares against `latest.json`.
+4. Select **Tools > Board > esp8266 > LOLIN(WEMOS) D1 mini (clone)**.
+5. Compile and upload.
 
-The pin mapping for every version lives in `Firmware/petalot/pins.hpp`. See
-[`INSTALL_LIBRARIES.md`](Firmware/petalot/INSTALL_LIBRARIES.md) for the required
-libraries and board setup.
+The pin mapping for every hardware revision lives in `Firmware/petalot/pins.hpp`.
+See [`INSTALL_LIBRARIES.md`](Firmware/petalot/INSTALL_LIBRARIES.md) for the
+required libraries and board setup.
+
+### Publishing an online update
+
+1. Build the three firmwares (one per `PCB`) with the new `VERSION`.
+2. Regenerate the manifest:
+
+   ```
+   python3 Firmware/tools/gen_latest_json.py <VERSION>
+   ```
+
+   This writes `latest.json` next to the `.bin` files, with the version, file
+   name and size for every PCB.
+3. Commit and push the three `.bin` files and `latest.json` to the repository
+   (the online update reads them from `master`).

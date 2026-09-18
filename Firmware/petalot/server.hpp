@@ -240,6 +240,9 @@ void InitServer() {
   DefaultHeaders::Instance().addHeader("Access-Control-Allow-Origin", "*");
   DefaultHeaders::Instance().addHeader("Access-Control-Allow-Methods", "GET, POST");
   DefaultHeaders::Instance().addHeader("Access-Control-Allow-Headers", "Content-Type");
+  // Live endpoints must never be served from the browser cache, otherwise a
+  // stale /get can keep showing the old firmware version after an update.
+  DefaultHeaders::Instance().addHeader("Cache-Control", "no-store");
 
   server.on("/", HTTP_GET, handleRoot);
   server.on("/get", HTTP_GET, get);

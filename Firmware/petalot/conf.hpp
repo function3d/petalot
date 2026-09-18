@@ -43,7 +43,7 @@ int pcbVer = 0; // Registered PCB version (locked at first boot)
 // without writing it to flash. Kept in the image even with --gc-sections.
 #define STRINGIFY_(x) #x
 #define STRINGIFY(x) STRINGIFY_(x)
-const char PCB_MAGIC[] PROGMEM __attribute__((used)) = "PETALOT-PCB-" STRINGIFY(VERSION);
+const char PCB_MAGIC[] PROGMEM __attribute__((used)) = "PETALOT-PCB-" STRINGIFY(PCB);
 
 StaticJsonDocument<512> doc;
 
@@ -400,8 +400,8 @@ void initConf() {
 
   if (pcbVer == 0) {
     Serial.print("[INFO] First boot: locking PCB version to ");
-    Serial.println(VERSION);
-    pcbVer = VERSION;
+    Serial.println(PCB);
+    pcbVer = PCB;
     doc["pcbVer"] = pcbVer;
     saveConfiguration(false);
   }

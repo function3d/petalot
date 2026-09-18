@@ -113,7 +113,7 @@ void drawUI() {
   display.display();
 }
 
-#if VERSION > 1501
+#if PCB > 1501
 void checkButtons() {
   unsigned long currentMillis = millis();
 
@@ -164,7 +164,7 @@ void checkButtons() {
 #endif
 
 void displayTask() {
-#if VERSION > 1501
+#if PCB > 1501
   checkButtons();
 #endif
   if (millis() - lastUpdate >= UpdateTimeout) {

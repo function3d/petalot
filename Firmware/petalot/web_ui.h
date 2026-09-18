@@ -112,6 +112,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
     /* Botonera */
     .actions { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.5rem; }
     .btn { padding: 0.5rem 0.75rem; border: none; border-radius: 4px; font-weight: 700; cursor: pointer; color: white; font-size: 0.8rem; background: var(--accent); }
+    .btn:disabled { background: var(--muted); cursor: not-allowed; }
     .btn-danger { background: var(--danger); }
     .float-right { margin-left: auto; }
   </style>
@@ -251,7 +252,9 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         <div class="form-group" data-mode="bang"><span class="label" data-i18n="st.hold">Hold duty</span><input type="number" name="HOLD" step="1"><small class="help-text" data-i18n="st.holdHelp">Minimum power (%) delivered near the target to keep the temperature stable</small></div>-->
         <div class="form-group"><span class="label" data-i18n="st.toffset">Temperature Offset</span><input type="number" name="TOffset"><small class="help-text" data-i18n="st.toffsetHelp">Adjust the temperature if you notice it's off</small></div>
 
-        <div class="form-group"><span class="label" data-i18n="gs.update">Firmware Update</span><div class="msg"><span data-i18n="st.pcb">PCB Version</span>: <span id="update-pcb">-</span></div><input type="file" id="up-firmware" accept=".bin,.bin.gz"><button type="button" class="btn" onclick="startUpdate()" data-i18n="btn.update">Update</button><div class="msg" id="update-msg"></div></div>
+        <div class="form-group"><span class="label" data-i18n="gs.update">Firmware Update</span><input type="file" id="up-firmware" accept=".bin,.bin.gz"><button type="button" class="btn" onclick="startUpdate()" data-i18n="btn.update">Update</button><div class="msg" id="update-msg"></div></div>
+
+        <div class="form-group"><span class="label" data-i18n="st.updOnline">Online update</span><div class="msg" id="upd-status"></div><span id="upd-btns"><button type="button" class="btn" id="btn-check-upd" onclick="checkOnlineUpdate()" data-i18n="st.updCheck">Check for updates</button> <button type="button" class="btn" id="btn-install-upd" style="display:none" onclick="installOnlineUpdate()" data-i18n="st.updInstall">Install update</button></span></div>
 
         <div style="display:none" class="form-group"><span class="label" data-i18n="st.analog">Analog Read</span><input type="text" id="tele-AR" disabled></div>
       </div>
@@ -340,8 +343,15 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'btn.update': 'Update',
         'msg.updating': 'Updating... do not disconnect',
         'msg.updateError': 'Update error:',
-        'st.pcb': 'PCB Version',
-        'msg.updateMismatch': 'This firmware does not match the registered PCB version ({pcb}). Flash the correct one from the /update page'
+        'msg.updateMismatch': 'This firmware does not match the registered PCB version ({pcb}). Flash the correct one from the /update page',
+        'st.updOnline': 'Online update',
+        'st.updCheck': 'Check for updates',
+        'st.updInstall': 'Install update',
+        'msg.updChecking': 'Checking for updates...',
+        'msg.updAvailable': 'Version {ver} is available',
+        'msg.updUptodate': 'You are on the latest version',
+        'msg.updOffline': 'No internet connection',
+        'msg.updInstalling': 'Installing update... do not disconnect'
       },
       es: {
         'gs.title': 'Control PETALOT',
@@ -413,7 +423,14 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'btn.update': 'Actualizar',
         'msg.updating': 'Actualizando... no desconectes',
         'msg.updateError': 'Error de actualización:',
-        'st.pcb': 'Versión de PCB',
+        'st.updOnline': 'Actualización online',
+        'st.updCheck': 'Buscar actualizaciones',
+        'st.updInstall': 'Instalar actualización',
+        'msg.updChecking': 'Buscando actualizaciones...',
+        'msg.updAvailable': 'La versión {ver} está disponible',
+        'msg.updUptodate': 'Estás en la última versión',
+        'msg.updOffline': 'Sin conexión a internet',
+        'msg.updInstalling': 'Instalando actualización... no desconectes',
         'msg.updateMismatch': 'Este firmware no coincide con la versión de PCB registrada ({pcb}). Instala la correcta desde la página /update'
       },
       pt: {
@@ -486,7 +503,14 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'btn.update': 'Atualizar',
         'msg.updating': 'Atualizando... não desconecte',
         'msg.updateError': 'Erro de atualização:',
-        'st.pcb': 'Versão da PCB',
+        'st.updOnline': 'Atualização online',
+        'st.updCheck': 'Procurar atualizações',
+        'st.updInstall': 'Instalar atualização',
+        'msg.updChecking': 'A procurar atualizações...',
+        'msg.updAvailable': 'A versão {ver} está disponível',
+        'msg.updUptodate': 'Está na última versão',
+        'msg.updOffline': 'Sem ligação à internet',
+        'msg.updInstalling': 'A instalar atualização... não desligue',
         'msg.updateMismatch': 'Este firmware não corresponde à versão de PCB registrada ({pcb}). Instale a correta pela página /update'
       },
       fr: {
@@ -559,7 +583,14 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'btn.update': 'Mettre à jour',
         'msg.updating': 'Mise à jour... ne déconnectez pas',
         'msg.updateError': 'Erreur de mise à jour :',
-        'st.pcb': 'Version PCB',
+        'st.updOnline': 'Mise à jour en ligne',
+        'st.updCheck': 'Rechercher des mises à jour',
+        'st.updInstall': 'Installer la mise à jour',
+        'msg.updChecking': 'Recherche de mises à jour...',
+        'msg.updAvailable': 'La version {ver} est disponible',
+        'msg.updUptodate': 'Vous êtes à jour',
+        'msg.updOffline': 'Pas de connexion internet',
+        'msg.updInstalling': 'Installation... ne débranchez pas',
         'msg.updateMismatch': "Ce firmware ne correspond pas à la version de PCB enregistrée ({pcb}). Installez la bonne version depuis la page /update"
       },
       de: {
@@ -632,7 +663,14 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'btn.update': 'Aktualisieren',
         'msg.updating': 'Aktualisiere... nicht trennen',
         'msg.updateError': 'Update-Fehler:',
-        'st.pcb': 'PCB-Version',
+        'st.updOnline': 'Online-Update',
+        'st.updCheck': 'Nach Updates suchen',
+        'st.updInstall': 'Update installieren',
+        'msg.updChecking': 'Suche nach Updates...',
+        'msg.updAvailable': 'Version {ver} ist verfügbar',
+        'msg.updUptodate': 'Sie sind auf dem neuesten Stand',
+        'msg.updOffline': 'Keine Internetverbindung',
+        'msg.updInstalling': 'Update wird installiert... nicht trennen',
         'msg.updateMismatch': 'Diese Firmware passt nicht zur registrierten PCB-Version ({pcb}). Installiere die richtige über die /update-Seite'
       },
       it: {
@@ -705,7 +743,14 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'btn.update': 'Aggiorna',
         'msg.updating': 'Aggiornamento... non scollegare',
         'msg.updateError': 'Errore di aggiornamento:',
-        'st.pcb': 'Versione PCB',
+        'st.updOnline': 'Aggiornamento online',
+        'st.updCheck': 'Verifica aggiornamenti',
+        'st.updInstall': 'Installa aggiornamento',
+        'msg.updChecking': 'Verifica aggiornamenti...',
+        'msg.updAvailable': 'La versione {ver} è disponibile',
+        'msg.updUptodate': 'Hai la versione più recente',
+        'msg.updOffline': 'Nessuna connessione internet',
+        'msg.updInstalling': 'Installazione aggiornamento... non scollegare',
         'msg.updateMismatch': 'Questo firmware non corrisponde alla versione PCB registrata ({pcb}). Installa la versione corretta dalla pagina /update'
       },
       zh: {
@@ -778,7 +823,14 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'btn.update': '更新',
         'msg.updating': '正在更新……请勿断开',
         'msg.updateError': '更新错误：',
-        'st.pcb': 'PCB 版本',
+        'st.updOnline': '在线更新',
+        'st.updCheck': '检查更新',
+        'st.updInstall': '安装更新',
+        'msg.updChecking': '正在检查更新……',
+        'msg.updAvailable': '版本 {ver} 可用',
+        'msg.updUptodate': '已是最新版本',
+        'msg.updOffline': '无互联网连接',
+        'msg.updInstalling': '正在安装更新……请勿断开',
         'msg.updateMismatch': '此固件与已注册的 PCB 版本（{pcb}）不匹配。请从 /update 页面安装正确的版本'
       },
       cs: {
@@ -850,7 +902,14 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'btn.update': 'Aktualizovat',
         'msg.updating': 'Aktualizace... neodpojujte',
         'msg.updateError': 'Chyba aktualizace:',
-        'st.pcb': 'Verze PCB',
+        'st.updOnline': 'Online aktualizace',
+        'st.updCheck': 'Zkontrolovat aktualizace',
+        'st.updInstall': 'Nainstalovat aktualizaci',
+        'msg.updChecking': 'Kontrola aktualizací...',
+        'msg.updAvailable': 'Verze {ver} je k dispozici',
+        'msg.updUptodate': 'Máte nejnovější verzi',
+        'msg.updOffline': 'Bez připojení k internetu',
+        'msg.updInstalling': 'Instalace aktualizace... neodpojujte',
         'msg.updateMismatch': 'Tento firmware neodpovídá registrované verzi PCB ({pcb}). Nainstalujte správnou verzi ze stránky /update'
       },
       ru: {
@@ -922,7 +981,14 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'btn.update': 'Обновить',
         'msg.updating': 'Обновление... не отключайтесь',
         'msg.updateError': 'Ошибка обновления:',
-        'st.pcb': 'Версия платы (PCB)',
+        'st.updOnline': 'Обновление онлайн',
+        'st.updCheck': 'Проверить обновления',
+        'st.updInstall': 'Установить обновление',
+        'msg.updChecking': 'Проверка обновлений...',
+        'msg.updAvailable': 'Доступна версия {ver}',
+        'msg.updUptodate': 'У вас последняя версия',
+        'msg.updOffline': 'Нет подключения к интернету',
+        'msg.updInstalling': 'Установка обновления... не отключайте',
         'msg.updateMismatch': 'Эта прошивка не соответствует зарегистрированной версии платы ({pcb}). Установите правильную со страницы /update'
       },
       tr: {
@@ -994,7 +1060,14 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'btn.update': 'Güncelle',
         'msg.updating': 'Güncelleniyor... bağlantıyı kesme',
         'msg.updateError': 'Güncelleme hatası:',
-        'st.pcb': 'PCB Sürümü',
+        'st.updOnline': 'Çevrimiçi güncelleme',
+        'st.updCheck': 'Güncellemeleri kontrol et',
+        'st.updInstall': 'Güncellemeyi yükle',
+        'msg.updChecking': 'Güncellemeler kontrol ediliyor...',
+        'msg.updAvailable': '{ver} sürümü mevcut',
+        'msg.updUptodate': 'En son sürümdesiniz',
+        'msg.updOffline': 'İnternet bağlantısı yok',
+        'msg.updInstalling': 'Güncelleme yükleniyor... bağlantıyı kesme',
         'msg.updateMismatch': 'Bu bellenim kayıtlı PCB sürümüyle ({pcb}) eşleşmiyor. Doğru sürümü /update sayfasından yükleyin'
       },
       ja: {
@@ -1066,7 +1139,14 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'btn.update': '更新',
         'msg.updating': '更新中……接続を切らないでください',
         'msg.updateError': '更新エラー：',
-        'st.pcb': 'PCBバージョン',
+        'st.updOnline': 'オンライン更新',
+        'st.updCheck': '更新を確認',
+        'st.updInstall': '更新をインストール',
+        'msg.updChecking': '更新を確認中……',
+        'msg.updAvailable': 'バージョン {ver} が利用可能です',
+        'msg.updUptodate': '最新バージョンです',
+        'msg.updOffline': 'インターネット接続がありません',
+        'msg.updInstalling': '更新をインストール中……接続を切らないでください',
         'msg.updateMismatch': 'このファームウェアは登録されたPCBバージョン（{pcb}）と一致しません。/updateページから正しいバージョンをインストールしてください'
       },
       ko: {
@@ -1138,7 +1218,14 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'btn.update': '업데이트',
         'msg.updating': '업데이트 중……연결을 끊지 마세요',
         'msg.updateError': '업데이트 오류：',
-        'st.pcb': 'PCB 버전',
+        'st.updOnline': '온라인 업데이트',
+        'st.updCheck': '업데이트 확인',
+        'st.updInstall': '업데이트 설치',
+        'msg.updChecking': '업데이트 확인 중……',
+        'msg.updAvailable': '버전 {ver} 사용 가능',
+        'msg.updUptodate': '최신 버전입니다',
+        'msg.updOffline': '인터넷 연결 없음',
+        'msg.updInstalling': '업데이트 설치 중……연결을 끊지 마세요',
         'msg.updateMismatch': '이 펌웨어는 등록된 PCB 버전（{pcb}）과 일치하지 않습니다. /update 페이지에서 올바른 버전을 설치하세요'
       }
     };
@@ -1265,10 +1352,12 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         .then(data => {
           conf = data;
           if (data.version) {
-            document.getElementById('version').innerText = `v${data.version}`;
-
             let versionParts = data.version.split('.');
             let semanticVersion = parseInt(versionParts[0] + versionParts[1] + versionParts[2]);
+
+            const fwVer = versionParts.slice(0, 3).join('.');
+            const hwVer = data.pcbVer ? formatVersion(data.pcbVer) : '';
+            document.getElementById('version').innerText = hwVer ? `v${fwVer} (PCB ${hwVer})` : `v${fwVer}`;
 
             if (semanticVersion > 152) {
                 document.getElementById('setting-oled').style.display = 'flex';
@@ -1284,7 +1373,6 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
 
           if (data.pcbVer) {
             updatePcbVer = data.pcbVer;
-            document.getElementById('update-pcb').innerText = data.pcbVer;
           }
 
           const form = document.getElementById('settings-form');
@@ -1412,10 +1500,131 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
 
     function waitForReboot(attempts = 20) {
       fetch('/tele')
-        .then(() => window.location.reload())
+        .then(() => {
+          // The device answers, but its web server may still be initializing
+          // (and other polls compete for sockets). Wait, then only reload once
+          // the full page is available, to avoid rendering an unstyled page.
+          setTimeout(() => loadWhenReady(), 2000);
+        })
         .catch(() => {
           if (attempts > 0) setTimeout(() => waitForReboot(attempts - 1), 2000);
         });
+    }
+
+    function loadWhenReady(attempts = 20) {
+      fetch('/', { cache: 'no-store' })
+        .then(r => r.text())
+        .then(html => {
+          if (html.indexOf('</html>') !== -1) {
+            window.location.reload();
+          } else if (attempts > 0) {
+            setTimeout(() => loadWhenReady(attempts - 1), 1500);
+          }
+        })
+        .catch(() => {
+          if (attempts > 0) setTimeout(() => loadWhenReady(attempts - 1), 1500);
+        });
+    }
+
+    // --- Online update (GitHub manifest) -------------------------------------
+    // --- Online update ------------------------------------------------------
+    // The browser is the one with Internet: it reads the manifest and downloads
+    // the .bin from GitHub, then uploads it to the device through the same
+    // /updatecheck + /update path as the manual update. The device never does
+    // any HTTPS request, so there is no TLS/watchdog strain on it.
+    const UPDATE_BASE = 'https://raw.githubusercontent.com/function3d/petalot/master/Firmware/petalot/build/esp8266.esp8266.d1_mini_clone/';
+    let onlineUpdateUrl = '';
+
+    function formatVersion(v) {
+      if (!v) return '';
+      const major = Math.floor(v / 1000);
+      const minor = Math.floor((v % 1000) / 100);
+      const patch = v % 100;
+      return major + '.' + minor + '.' + patch;
+    }
+
+    function setUpdateStatus(text, warn) {
+      const status = document.getElementById('upd-status');
+      if (!status) return;
+      status.className = warn ? 'msg warn' : 'msg';
+      status.textContent = text || '';
+    }
+
+    function checkOnlineUpdate() {
+      const checkBtn = document.getElementById('btn-check-upd');
+      const installBtn = document.getElementById('btn-install-upd');
+      onlineUpdateUrl = '';
+      if (checkBtn) checkBtn.style.display = 'none';
+      if (installBtn) installBtn.style.display = 'none';
+      setUpdateStatus(t('msg.updChecking'), false);
+
+      fetch(UPDATE_BASE + 'latest.json', { cache: 'no-store' })
+        .then(r => r.json())
+        .then(manifest => {
+          const entry = manifest[updatePcbVer];
+          if (!entry) {
+            setUpdateStatus(t('msg.updError') + ' ' + updatePcbVer, true);
+            if (checkBtn) checkBtn.style.display = '';
+            return;
+          }
+          const vp = conf.version.split('.');
+          const current = parseInt(vp[0]) * 1000 + parseInt(vp[1]) * 100 + parseInt(vp[2]);
+          if (entry.version > current) {
+            onlineUpdateUrl = UPDATE_BASE + entry.file;
+            setUpdateStatus(t('msg.updAvailable', {ver: formatVersion(entry.version)}), false);
+            if (installBtn) installBtn.style.display = '';
+          } else {
+            setUpdateStatus(t('msg.updUptodate'), false);
+            if (checkBtn) checkBtn.style.display = '';
+          }
+        })
+        .catch(() => {
+          setUpdateStatus(t('msg.updOffline'), true);
+          if (checkBtn) checkBtn.style.display = '';
+        });
+    }
+
+    function installOnlineUpdate() {
+      const installBtn = document.getElementById('btn-install-upd');
+      if (installBtn) installBtn.style.display = 'none';
+      setUpdateStatus(t('msg.updInstalling'), false);
+      // 1) browser downloads the new firmware from GitHub
+      // 2) browser uploads it to the device, exactly like a manual update
+      fetch(onlineUpdateUrl, { cache: 'no-store' })
+        .then(r => r.blob())
+        .then(blob => {
+          const file = new File([blob], 'petalot.bin', { type: 'application/octet-stream' });
+          return uploadFirmware(file);
+        })
+        .catch(() => setUpdateStatus(t('msg.updError'), true));
+    }
+
+    function uploadFirmware(file) {
+      const msgEl = document.getElementById('upd-status');
+      const fd = new FormData();
+      fd.append('firmware', file);
+      return fetch('/updatecheck', { method: 'POST', body: fd })
+        .then(r => {
+          if (!r.ok) {
+            msgEl.className = 'msg warn';
+            msgEl.textContent = t('msg.updateMismatch', {pcb: updatePcbVer});
+            return;
+          }
+          const fd2 = new FormData();
+          fd2.append('firmware', file);
+          fetch('/set?status=0');
+          return fetch('/update?name=firmware', { method: 'POST', body: fd2 })
+            .then(res => res.text())
+            .then(txt => {
+              if (txt.indexOf('Success') !== -1 || txt.indexOf('Reboot') !== -1) {
+                waitForReboot(60);
+              } else {
+                msgEl.className = 'msg warn';
+                msgEl.textContent = (txt.trim() !== '') ? t('msg.updateError') + ' ' + txt : t('msg.updateError');
+              }
+            });
+        })
+        .catch(() => waitForReboot(60));
     }
 
     const inputSSID = document.getElementsByName('ssid')[0];

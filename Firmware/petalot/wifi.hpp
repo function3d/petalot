@@ -98,7 +98,13 @@ void initWiFi() {
   WiFi.mode(WIFI_STA);
   WiFi.begin(ssid, password);
 
-  if (localip && !WiFi.config(localip, gatewayip, subnet ? subnet : IPAddress(255, 255, 255, 0))) {
+  // With a static IP the DHCP client is stopped, so DNS must be provided
+  // explicitly or hostname lookups (online update) fail. Try the gateway first
+  // (local/hosts names) and fall back to a public resolver.
+  IPAddress dns1 = gatewayip.isSet() ? gatewayip : IPAddress(1, 1, 1, 1);
+  IPAddress dns2 = (dns1 == IPAddress(1, 1, 1, 1)) ? IPAddress(8, 8, 8, 8) : IPAddress(1, 1, 1, 1);
+
+  if (localip && !WiFi.config(localip, gatewayip, subnet ? subnet : IPAddress(255, 255, 255, 0), dns1, dns2)) {
     Serial.println("config wifi ips failed");
     AP();
     wifiReady = true;
