@@ -13,8 +13,8 @@
 #   petalot/build/esp8266.esp8266.d1_mini_clone/petalot.1.5.1-v<fw>.bin  (PCB 1501)
 #   petalot/build/esp8266.esp8266.d1_mini_clone/petalot.1.5.2-v<fw>.bin  (PCB 1502)
 # (only the latest build per PCB is kept; the legacy petalot.v1.2.bin and
-# petalot.1.4.4.bin are left untouched) and refreshes latest.json with the new
-# version and sizes.
+# petalot.1.4.4.bin are left untouched), refreshes latest.json with the new
+# version and sizes, and updates the firmware file names in Firmware/README.md.
 #
 # On success petalot.ino keeps the new VERSION and the original PCB is
 # restored, so commit everything together:
@@ -33,6 +33,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SKETCH_DIR="$(cd "$SCRIPT_DIR/../petalot" && pwd)"
 INO="$SKETCH_DIR/petalot.ino"
 BUILD_DIR="$SKETCH_DIR/build/esp8266.esp8266.d1_mini_clone"
+README="$(cd "$SCRIPT_DIR/.." && pwd)/README.md"
 
 PCBS=(1405 1501 1502)
 # Hardware revision as shown to users (PCB 1405 -> 1.4.5, etc.)
@@ -134,6 +135,16 @@ done
 
 # --- regenerate manifest ----------------------------------------------------
 python3 "$SCRIPT_DIR/gen_latest_json.py" "$version"
+
+# --- refresh the README firmware file names ---------------------------------
+if [ -f "$README" ]; then
+  echo "==> updating README file names"
+  for hw in "${HWS[@]}"; do
+    hw_re="${hw//./\\.}"
+    sed -i -E "s#petalot\.${hw_re}-v[0-9]+\.[0-9]+\.[0-9]+\.bin#petalot.${hw}-v${human}.bin#g" "$README"
+  done
+fi
+
 done_flag=1
 
 echo
