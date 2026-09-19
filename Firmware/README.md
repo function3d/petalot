@@ -83,6 +83,12 @@ The pin mapping for every hardware revision lives in `Firmware/petalot/pins.hpp`
 See [`INSTALL_LIBRARIES.md`](petalot/INSTALL_LIBRARIES.md) for the
 required libraries and board setup.
 
+### Previewing the web UI without flashing
+
+[`tools/webui_preview.py`](tools/webui_preview.py) serves `web_ui.h` in your
+browser (mock data, or proxied to a real device) so you can edit the UI and
+press F5 — no build or flash. See [`tools/README.md`](tools/README.md).
+
 ### Publishing an online update
 
 1. Build the three firmwares (one per `PCB`) with the new `VERSION`.
