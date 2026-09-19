@@ -21,7 +21,7 @@ int ControlMode = 0; // Heating control: 0 = PID (default), 1 = bang-bang
 int TOffset = 0;
 bool MotorOnTo = 0;
 bool StartOnPower = 1;
-int maxT = 220;
+int maxT = 230;
 int minT = 180;
 int workT = 210;
 int maxV = 35;

@@ -84,7 +84,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
 
     /* Ajustes / Acordeón */
     .trigger { font-weight: 700; cursor: pointer; font-size: 1rem; padding: 0.2rem 0; }
-    .content { display: none; flex-direction: column; gap: 0.6rem; margin-top: 0.5rem; border-top: 1px solid #334155; padding-top: 0.75rem; }
+    .content { display: none; flex-direction: column; gap: 0.6rem; margin-top: 0.5rem; padding-top: 0.75rem; }
     .card.open .content { display: flex; }
     .card .toggle::after { content: "▼"; }
     .card.open .toggle::after { content: "▲"; }
@@ -110,7 +110,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
     .msg.warn { color: var(--danger); font-weight: 600; }
 
     /* Botonera */
-    .actions { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.5rem; }
+    .actions { display: flex; flex-wrap: wrap; gap: 0.4rem; padding-top: 1rem; border-top: 1px solid #334155; }
     .btn { padding: 0.5rem 0.75rem; border: none; border-radius: 4px; font-weight: 700; cursor: pointer; color: white; font-size: 0.8rem; background: var(--accent); }
     .btn:disabled { background: var(--muted); cursor: not-allowed; }
     .btn-danger { background: var(--danger); }
