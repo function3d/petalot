@@ -22,7 +22,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, sans-serif; }
     body { background: var(--bg); padding: 1rem; color: var(--text); display: flex; justify-content: center; }
 
-    .container { width: 100%; max-width: 500px; display: flex; flex-direction: column; gap: 0.75rem; }
+    .container { width: 100%; max-width: 500px; display: flex; flex-direction: column; gap: 1rem; }
     .card { background: var(--card-bg); padding: 1rem; border:1px solid #363e46; border-radius: 6px; display: flex; flex-direction: column; gap: 0.25rem; }
 
     /* Header */
@@ -61,6 +61,20 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
 
     /* Grid Panel */
     .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; }
+    /* Statistics table */
+    .stats-table { width: 100%; border-collapse: collapse; margin-top: 0.4rem; font-size: 0.85rem; }
+    .stats-table th, .stats-table td { padding: 0.25rem 0.4rem; text-align: right; }
+    .stats-table th:first-child, .stats-table td:first-child { text-align: left; color: var(--muted); }
+    .stats-table tr:last-child td{ border-bottom: 1px solid #334155; }
+    .stats-table th { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); border-bottom: 1px solid #334155; }
+    .stats-sizes { margin-top: 0.6rem; }
+    .stats-sizes .label.small { font-size: 0.75rem; color: var(--muted); }
+    .stats-note { display: block; margin-top: 0.6rem; }
+    /* Confirmation modal */
+    .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); display: flex; align-items: center; justify-content: center; z-index: 100; }
+    .modal-box { background: var(--card, #1e242b); border: 1px solid #334155; border-radius: 10px; padding: 1.2rem; max-width: 340px; width: 90%; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+    .modal-text { margin-bottom: 1rem; font-size: 0.9rem; }
+    .modal-actions { display: flex; gap: 0.5rem; justify-content: flex-end; }
     .ui-card .title-wrapper {display: flex; flex-wrap: wrap; align-items: center; }
     .ui-card .title { color: var(--muted); font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; }
     .ui-card .row { display: flex; justify-content: space-between; align-items: center; margin-top: 0.45rem; }
@@ -110,7 +124,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
     .msg.warn { color: var(--danger); font-weight: 600; }
 
     /* Botonera */
-    .actions { display: flex; flex-wrap: wrap; gap: 0.4rem; padding-top: 1rem; border-top: 1px solid #334155; }
+    .actions { display: flex; flex-wrap: wrap; gap: 0.4rem; padding-top: 1rem; border-top: 1px solid #334155; margin-top: 1rem; }
     .btn { padding: 0.5rem 0.75rem; border: none; border-radius: 4px; font-weight: 700; cursor: pointer; color: white; font-size: 0.8rem; background: var(--accent); }
     .btn:disabled { background: var(--muted); cursor: not-allowed; }
     .btn-danger { background: var(--danger); }
@@ -128,8 +142,8 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
           <a href="https://linktr.ee/function.3d" target="_blank">linktr.ee/function.3d</a>
       </div>
       <div class="header-right">
-        ≈<span id="tele-Fs">0</span>m (<span id="tele-Ts">0s</span>) <span data-i18n="gs.ses">ses</span><br>
-        ≈<span id="tele-Ft">0</span>m (<span id="tele-Tt">0s</span>) <span data-i18n="gs.tot">tot</span>
+        <div><span data-i18n="gs.current">current bottle</span>: <span id="tele-Fs">0</span> m · <span id="tele-Ts">0s</span></div>
+        <div><span data-i18n="gs.total">total</span>: <span id="tele-Ft">0</span> m · <span id="tele-Bt">0</span> <span data-i18n="gs.bottles">bottles</span></div>
       </div>
     </div>
 
@@ -215,6 +229,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
       <div class="tab-bar">
         <button type="button" class="tab-btn active" data-tab="general" data-i18n="tab.general" onclick="showSettingsTab('general')">General</button>
         <button type="button" class="tab-btn" data-tab="network" data-i18n="tab.network" onclick="showSettingsTab('network')">Network</button>
+        <button type="button" class="tab-btn" data-tab="statistics" data-i18n="tab.stats" onclick="showSettingsTab('statistics')">Statistics</button>
         <button type="button" class="tab-btn" data-tab="advanced" data-i18n="tab.advanced" onclick="showSettingsTab('advanced')">Advanced</button>
       </div>
 
@@ -257,6 +272,25 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         <div class="form-group"><span class="label" data-i18n="st.updOnline">Online update</span><div class="msg" id="upd-status"></div><span id="upd-btns"><button type="button" class="btn" id="btn-check-upd" onclick="checkOnlineUpdate()" data-i18n="st.updCheck">Check for updates</button> <button type="button" class="btn" id="btn-install-upd" style="display:none" onclick="installOnlineUpdate()" data-i18n="st.updInstall">Install update</button></span></div>
 
         <div style="display:none" class="form-group"><span class="label" data-i18n="st.analog">Analog Read</span><input type="text" id="tele-AR" disabled></div>
+
+        <div class="form-group"><span class="label" data-i18n="btn.resetStats">Reset statistics</span><button type="button" class="btn btn-danger" onclick="resetStats()" data-i18n="btn.resetStats">Reset statistics</button><div class="msg" id="stats-msg"></div></div>
+      </div>
+      </div>
+
+      <div class="tab-panel" id="tab-statistics">
+      <div class="grid">
+        <div class="form-group stats-group" style="grid-column: 1 / -1">
+          <table class="stats-table">
+            <tr><th></th><th data-i18n="st.statsCurrent">Current</th><th data-i18n="st.statsTotal">Total</th></tr>
+            <tr><td data-i18n="st.statsFilament">Filament</td><td><span id="st-Fs">0</span> m</td><td><span id="st-Ft">0</span> m</td></tr>
+            <tr><td data-i18n="st.statsTime">Time</td><td id="st-Ts">0s</td><td id="st-Tt">0s</td></tr>
+            <tr><td data-i18n="st.statsBottles">Bottles</td><td></td><td><span id="st-Bt">0</span></td></tr>
+          </table>
+          <div class="stats-sizes">
+            <small class="help-text"><span data-i18n="st.statsMax">Longest</span>: <b id="st-max">0</b> m · <span data-i18n="st.statsLast">Last</span>: <b id="st-last">0</b> m</small>
+          </div>
+          <small class="help-text stats-note" data-i18n="st.statsNote">Values are approximate: processed length is only an estimate.</small>
+        </div>
       </div>
       </div>
 
@@ -271,17 +305,35 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
     </div>
   </div>
 
+  <div id="modal" class="modal-overlay" style="display:none">
+    <div class="modal-box">
+      <div class="modal-text" id="modal-text"></div>
+      <div class="modal-actions">
+        <button type="button" class="btn" id="modal-cancel" onclick="closeModal()" data-i18n="btn.cancel">Cancel</button>
+        <button type="button" class="btn btn-danger" id="modal-ok" data-i18n="btn.confirm">Confirm</button>
+      </div>
+    </div>
+  </div>
+
   <script>
     const I18N = {
       en: {
         'gs.title': 'PETALOT Control',
-        'gs.ses': 'ses', 'gs.tot': 'tot',
+        'gs.bottles': 'bottles',
+        'gs.current': 'Current', 'gs.total': 'Total',
+        'st.stats': 'Statistics', 'st.statsCurrent': 'Current', 'st.statsTotal': 'Total',
+        'st.statsFilament': 'Filament', 'st.statsTime': 'Time', 'st.statsBottles': 'Bottles',
+        'st.statsMax': 'Longest', 'st.statsLast': 'Last',
+        'st.statsNote': 'Values are approximate: processed length is only an estimate.',
+        'btn.resetStats': 'Reset statistics',
+        't.confirmResetStats': 'Reset statistics?',
         'gs.status': 'Status', 'gs.speed': 'Speed', 'gs.sensor': 'Sensor', 'gs.temp': 'Temp',
         'gs.settings': 'Settings',
         'tab.general': 'General',
         'tab.run': 'Run',
         'tab.network': 'Network',
         'tab.advanced': 'Advanced',
+        'tab.stats': 'Statistics',
         'st.startOnPower': 'Start up at power on',
         'st.startOnPowerHelp': "If you disable it, you'll only be able to start the machine by pressing the sensor",
         'st.motorOnTo': 'Motor starting at target temp',
@@ -323,6 +375,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.gatewayHelp': 'PETALOT does not require an Internet connection; 0.0.0.0 if left blank',
         'st.analog': 'Analog Read',
         'btn.save': 'Apply',
+        'btn.cancel': 'Cancel', 'btn.confirm': 'Confirm',
         'btn.factoryReset': 'Factory Reset',
         'msg.minmax': 'min: {min}, max: {max}',
         't.running': 'Running',
@@ -336,7 +389,6 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         't.notDetected': 'no detected',
         't.sensorDisabled': 'Sensor disabled',
         't.confirmSave': 'Are you sure?',
-        't.restarting': 'Restarting...',
         't.confirmReset': 'Factory reset? The statistics, temperature, offset and heating tuning will not be reset',
         't.done': 'Done',
         'gs.update': 'Firmware Update',
@@ -355,13 +407,21 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
       },
       es: {
         'gs.title': 'Control PETALOT',
-        'gs.ses': 'ses', 'gs.tot': 'tot',
+        'gs.bottles': 'botellas',
+        'gs.current': 'Actual', 'gs.total': 'Total',
+        'st.stats': 'Estadísticas', 'st.statsCurrent': 'Actual', 'st.statsTotal': 'Total',
+        'st.statsFilament': 'Filamento', 'st.statsTime': 'Tiempo', 'st.statsBottles': 'Botellas',
+        'st.statsMax': 'Más larga', 'st.statsLast': 'Última',
+        'st.statsNote': 'Valores aproximados: la longitud procesada es solo una estimación.',
+        'btn.resetStats': 'Restablecer estadísticas',
+        't.confirmResetStats': '¿Restablecer estadísticas?',
         'gs.status': 'Estado', 'gs.speed': 'Velocidad', 'gs.sensor': 'Sensor', 'gs.temp': 'Temp',
         'gs.settings': 'Ajustes',
         'tab.general': 'General',
         'tab.run': 'Funcionamiento',
         'tab.network': 'Red',
         'tab.advanced': 'Avanzado',
+        'tab.stats': 'Estadísticas',
         'st.startOnPower': 'Arrancar al encender',
         'st.startOnPowerHelp': 'Si lo desactivas, solo podrás arrancar la máquina pulsando el sensor',
         'st.motorOnTo': 'Motor arranca a la temperatura objetivo',
@@ -403,6 +463,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.gatewayHelp': 'PETALOT no necesita conexión a Internet; 0.0.0.0 si lo dejas vacío',
         'st.analog': 'Lectura analógica',
         'btn.save': 'Aplicar',
+        'btn.cancel': 'Cancelar', 'btn.confirm': 'Confirmar',
         'btn.factoryReset': 'Restablecer de fábrica',
         'msg.minmax': 'mín: {min}, máx: {max}',
         't.running': 'En marcha',
@@ -416,7 +477,6 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         't.notDetected': 'no detectado',
         't.sensorDisabled': 'Sensor desactivado',
         't.confirmSave': '¿Estás seguro?',
-        't.restarting': 'Reiniciando...',
         't.confirmReset': '¿Restablecer de fábrica? No se restablecerán las estadísticas, temperatura, desplazamiento ni la sintonía de calentamiento',
         't.done': 'Hecho',
         'gs.update': 'Actualización de firmware',
@@ -435,13 +495,21 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
       },
       pt: {
         'gs.title': 'Controle PETALOT',
-        'gs.ses': 'ses', 'gs.tot': 'tot',
+        'gs.bottles': 'garrafas',
+        'gs.current': 'Atual', 'gs.total': 'Total',
+        'st.stats': 'Estatísticas', 'st.statsCurrent': 'Atual', 'st.statsTotal': 'Total',
+        'st.statsFilament': 'Filamento', 'st.statsTime': 'Tempo', 'st.statsBottles': 'Garrafas',
+        'st.statsMax': 'Mais longa', 'st.statsLast': 'Última',
+        'st.statsNote': 'Valores aproximados: o comprimento processado é apenas uma estimativa.',
+        'btn.resetStats': 'Redefinir estatísticas',
+        't.confirmResetStats': 'Redefinir estatísticas?',
         'gs.status': 'Status', 'gs.speed': 'Velocidade', 'gs.sensor': 'Sensor', 'gs.temp': 'Temp',
         'gs.settings': 'Configurações',
         'tab.general': 'Geral',
         'tab.run': 'Funcionamento',
         'tab.network': 'Rede',
         'tab.advanced': 'Avançado',
+        'tab.stats': 'Estatísticas',
         'st.startOnPower': 'Iniciar ao ligar',
         'st.startOnPowerHelp': 'Se desativar, só poderá iniciar a máquina pressionando o sensor',
         'st.motorOnTo': 'Motor inicia na temperatura alvo',
@@ -483,6 +551,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.gatewayHelp': 'PETALOT não requer conexão com a Internet; 0.0.0.0 se deixar em branco',
         'st.analog': 'Leitura analógica',
         'btn.save': 'Aplicar',
+        'btn.cancel': 'Cancelar', 'btn.confirm': 'Confirmar',
         'btn.factoryReset': 'Restaurar de fábrica',
         'msg.minmax': 'mín: {min}, máx: {max}',
         't.running': 'Em funcionamento',
@@ -496,7 +565,6 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         't.notDetected': 'não detectado',
         't.sensorDisabled': 'Sensor desativado',
         't.confirmSave': 'Tem certeza?',
-        't.restarting': 'Reiniciando...',
         't.confirmReset': 'Restaurar de fábrica? Estatísticas, temperatura, deslocamento e ajuste de aquecimento não serão resetados',
         't.done': 'Concluído',
         'gs.update': 'Atualização de firmware',
@@ -515,13 +583,21 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
       },
       fr: {
         'gs.title': 'Contrôle PETALOT',
-        'gs.ses': 'sess', 'gs.tot': 'tot',
+        'gs.bottles': 'bouteilles',
+        'gs.current': 'Actuel', 'gs.total': 'Total',
+        'st.stats': 'Statistiques', 'st.statsCurrent': 'Actuel', 'st.statsTotal': 'Total',
+        'st.statsFilament': 'Filament', 'st.statsTime': 'Temps', 'st.statsBottles': 'Bouteilles',
+        'st.statsMax': 'La plus longue', 'st.statsLast': 'Dernière',
+        'st.statsNote': 'Valeurs approximatives : la longueur traitée n\'est qu\'une estimation.',
+        'btn.resetStats': 'Réinitialiser les statistiques',
+        't.confirmResetStats': 'Réinitialiser les statistiques ?',
         'gs.status': 'État', 'gs.speed': 'Vitesse', 'gs.sensor': 'Capteur', 'gs.temp': 'Temp',
         'gs.settings': 'Paramètres',
         'tab.general': 'Général',
         'tab.run': 'Fonctionnement',
         'tab.network': 'Réseau',
         'tab.advanced': 'Avancé',
+        'tab.stats': 'Statistiques',
         'st.startOnPower': 'Démarrer à la mise sous tension',
         'st.startOnPowerHelp': "Si désactivé, vous ne pourrez démarrer la machine qu'en appuyant sur le capteur",
         'st.motorOnTo': 'Moteur démarre à la température cible',
@@ -563,6 +639,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.gatewayHelp': "PETALOT ne nécessite pas de connexion Internet ; 0.0.0.0 si vide",
         'st.analog': 'Lecture analogique',
         'btn.save': 'Appliquer',
+        'btn.cancel': 'Annuler', 'btn.confirm': 'Confirmer',
         'btn.factoryReset': 'Réinitialiser',
         'msg.minmax': 'min : {min}, max : {max}',
         't.running': 'En marche',
@@ -576,7 +653,6 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         't.notDetected': 'non détecté',
         't.sensorDisabled': 'Capteur désactivé',
         't.confirmSave': 'Êtes-vous sûr ?',
-        't.restarting': 'Redémarrage...',
         't.confirmReset': "Réinitialiser ? Les statistiques, la température, le décalage et le réglage du chauffage ne seront pas réinitialisés",
         't.done': 'Terminé',
         'gs.update': 'Mise à jour du firmware',
@@ -595,13 +671,21 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
       },
       de: {
         'gs.title': 'PETALOT Steuerung',
-        'gs.ses': 'ses', 'gs.tot': 'ges',
+        'gs.bottles': 'Flaschen',
+        'gs.current': 'Aktuell', 'gs.total': 'Gesamt',
+        'st.stats': 'Statistiken', 'st.statsCurrent': 'Aktuell', 'st.statsTotal': 'Gesamt',
+        'st.statsFilament': 'Filament', 'st.statsTime': 'Zeit', 'st.statsBottles': 'Flaschen',
+        'st.statsMax': 'Längste', 'st.statsLast': 'Letzte',
+        'st.statsNote': 'Werte sind näherungsweise: die verarbeitete Länge ist nur eine Schätzung.',
+        'btn.resetStats': 'Statistiken zurücksetzen',
+        't.confirmResetStats': 'Statistiken zurücksetzen?',
         'gs.status': 'Status', 'gs.speed': 'Geschwindigkeit', 'gs.sensor': 'Sensor', 'gs.temp': 'Temp',
         'gs.settings': 'Einstellungen',
         'tab.general': 'Allgemein',
         'tab.run': 'Betrieb',
         'tab.network': 'Netzwerk',
         'tab.advanced': 'Erweitert',
+        'tab.stats': 'Statistiken',
         'st.startOnPower': 'Beim Einschalten starten',
         'st.startOnPowerHelp': 'Wenn deaktiviert, kann die Maschine nur durch Drücken des Sensors gestartet werden',
         'st.motorOnTo': 'Motor startet bei Zieltemperatur',
@@ -643,6 +727,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.gatewayHelp': 'PETALOT benötigt keine Internetverbindung; 0.0.0.0 wenn leer',
         'st.analog': 'Analoger Wert',
         'btn.save': 'Anwenden',
+        'btn.cancel': 'Abbrechen', 'btn.confirm': 'Bestätigen',
         'btn.factoryReset': 'Zurücksetzen',
         'msg.minmax': 'min: {min}, max: {max}',
         't.running': 'Läuft',
@@ -656,7 +741,6 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         't.notDetected': 'nicht erkannt',
         't.sensorDisabled': 'Sensor deaktiviert',
         't.confirmSave': 'Sicher?',
-        't.restarting': 'Neustart...',
         't.confirmReset': 'Zurücksetzen? Statistiken, Temperatur, Offset und Heizabstimmung werden nicht zurückgesetzt',
         't.done': 'Fertig',
         'gs.update': 'Firmware-Update',
@@ -675,13 +759,21 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
       },
       it: {
         'gs.title': 'Controllo PETALOT',
-        'gs.ses': 'sess', 'gs.tot': 'tot',
+        'gs.bottles': 'bottiglie',
+        'gs.current': 'Attuale', 'gs.total': 'Totale',
+        'st.stats': 'Statistiche', 'st.statsCurrent': 'Attuale', 'st.statsTotal': 'Totale',
+        'st.statsFilament': 'Filamento', 'st.statsTime': 'Tempo', 'st.statsBottles': 'Bottiglie',
+        'st.statsMax': 'Più lunga', 'st.statsLast': 'Ultima',
+        'st.statsNote': 'Valori approssimativi: la lunghezza elaborata è solo una stima.',
+        'btn.resetStats': 'Azzerra statistiche',
+        't.confirmResetStats': 'Azzerare le statistiche?',
         'gs.status': 'Stato', 'gs.speed': 'Velocità', 'gs.sensor': 'Sensore', 'gs.temp': 'Temp',
         'gs.settings': 'Impostazioni',
         'tab.general': 'Generale',
         'tab.run': 'Funzionamento',
         'tab.network': 'Rete',
         'tab.advanced': 'Avanzato',
+        'tab.stats': 'Statistiche',
         'st.startOnPower': "Avvio all'accensione",
         'st.startOnPowerHelp': "Se disattivato, puoi avviare la macchina solo premendo il sensore",
         'st.motorOnTo': 'Motore avvia alla temperatura target',
@@ -723,6 +815,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.gatewayHelp': 'PETALOT non richiede connessione Internet; 0.0.0.0 se vuoto',
         'st.analog': 'Lettura analogica',
         'btn.save': 'Applica',
+        'btn.cancel': 'Annulla', 'btn.confirm': 'Conferma',
         'btn.factoryReset': 'Ripristino',
         'msg.minmax': 'min: {min}, max: {max}',
         't.running': 'In funzione',
@@ -736,7 +829,6 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         't.notDetected': 'non rilevato',
         't.sensorDisabled': 'Sensore disattivato',
         't.confirmSave': 'Sicuro?',
-        't.restarting': 'Riavvio...',
         't.confirmReset': 'Ripristino? Statistiche, temperatura, offset e regolazione riscaldamento non verranno azzerati',
         't.done': 'Fatto',
         'gs.update': 'Aggiornamento firmware',
@@ -755,13 +847,21 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
       },
       zh: {
         'gs.title': 'PETALOT 控制',
-        'gs.ses': '本次', 'gs.tot': '累计',
+        'gs.bottles': '瓶',
+        'gs.current': '当前', 'gs.total': '累计',
+        'st.stats': '统计', 'st.statsCurrent': '当前', 'st.statsTotal': '累计',
+        'st.statsFilament': '材料', 'st.statsTime': '时间', 'st.statsBottles': '瓶数',
+        'st.statsMax': '最长', 'st.statsLast': '最近',
+        'st.statsNote': '数值为近似值：加工长度仅为估算。',
+        'btn.resetStats': '重置统计',
+        't.confirmResetStats': '重置统计？',
         'gs.status': '状态', 'gs.speed': '速度', 'gs.sensor': '传感器', 'gs.temp': '温度',
         'gs.settings': '设置',
         'tab.general': '常规',
         'tab.run': '运行',
         'tab.network': '网络',
         'tab.advanced': '高级',
+        'tab.stats': '统计',
         'st.startOnPower': '开机启动',
         'st.startOnPowerHelp': '如果禁用，只能通过按下传感器启动机器',
         'st.motorOnTo': '到达目标温度后启动电机',
@@ -803,6 +903,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.gatewayHelp': 'PETALOT 不需要互联网连接；留空则为 0.0.0.0',
         'st.analog': '模拟读取',
         'btn.save': '应用',
+        'btn.cancel': '取消', 'btn.confirm': '确认',
         'btn.factoryReset': '恢复出厂设置',
         'msg.minmax': '最小：{min}，最大：{max}',
         't.running': '运行中',
@@ -816,7 +917,6 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         't.notDetected': '未检测到',
         't.sensorDisabled': '传感器已禁用',
         't.confirmSave': '确定吗？',
-        't.restarting': '正在重启...',
         't.confirmReset': '恢复出厂设置？统计数据、温度、偏移和加热调校 不会被重置',
         't.done': '完成',
         'gs.update': '固件更新',
@@ -835,13 +935,21 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
       },
       cs: {
         'gs.title': 'Ovládání PETALOT',
-        'gs.ses': 'ses', 'gs.tot': 'cel',
+        'gs.bottles': 'láhve',
+        'gs.current': 'Aktuální', 'gs.total': 'Celkem',
+        'st.stats': 'Statistiky', 'st.statsCurrent': 'Aktuální', 'st.statsTotal': 'Celkem',
+        'st.statsFilament': 'Filament', 'st.statsTime': 'Čas', 'st.statsBottles': 'Láhve',
+        'st.statsMax': 'Nejdelší', 'st.statsLast': 'Poslední',
+        'st.statsNote': 'Hodnoty jsou přibližné: zpracovaná délka je pouze odhad.',
+        'btn.resetStats': 'Resetovat statistiky',
+        't.confirmResetStats': 'Resetovat statistiky?',
         'gs.status': 'Stav', 'gs.speed': 'Rychlost', 'gs.sensor': 'Čidlo', 'gs.temp': 'Teplota',
         'gs.settings': 'Nastavení',
         'tab.general': 'Obecné',
         'tab.run': 'Provoz',
         'tab.network': 'Síť',
         'tab.advanced': 'Pokročilé',
+        'tab.stats': 'Statistiky',
         'st.startOnPower': 'Spustit po zapnutí',
         'st.startOnPowerHelp': 'Pokud zakážete, stroj spustíte pouze stisknutím čidla',
         'st.motorOnTo': 'Motor startuje při cílové teplotě',
@@ -883,6 +991,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.gatewayHelp': 'PETALOT nepotřebuje připojení k internetu; 0.0.0.0, pokud prázdné',
         'st.analog': 'Analogový vstup',
         'btn.save': 'Použít',
+        'btn.cancel': 'Zrušit', 'btn.confirm': 'Potvrdit',
         'btn.factoryReset': 'Tovární nastavení',
         'msg.minmax': 'min: {min}, max: {max}',
         't.running': 'Běží',
@@ -895,7 +1004,6 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         't.notDetected': 'nedetekováno',
         't.sensorDisabled': 'Čidlo zakázáno',
         't.confirmSave': 'Jste si jistí?',
-        't.restarting': 'Restartování...',
         't.confirmReset': 'Tovární reset? Statistiky, teplota, korekce teploty a nastavení ohřevu nebudou resetovány',
         't.done': 'Hotovo',
         'gs.update': 'Aktualizace firmwaru',
@@ -914,13 +1022,21 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
       },
       ru: {
         'gs.title': 'Управление PETALOT',
-        'gs.ses': 'сес', 'gs.tot': 'итог',
+        'gs.bottles': 'бутылки',
+        'gs.current': 'Текущая', 'gs.total': 'Всего',
+        'st.stats': 'Статистика', 'st.statsCurrent': 'Текущая', 'st.statsTotal': 'Всего',
+        'st.statsFilament': 'Филамент', 'st.statsTime': 'Время', 'st.statsBottles': 'Бутылки',
+        'st.statsMax': 'Самая длинная', 'st.statsLast': 'Последняя',
+        'st.statsNote': 'Значения приблизительны: обработанная длина — только оценка.',
+        'btn.resetStats': 'Сбросить статистику',
+        't.confirmResetStats': 'Сбросить статистику?',
         'gs.status': 'Статус', 'gs.speed': 'Скорость', 'gs.sensor': 'Датчик', 'gs.temp': 'Темп.',
         'gs.settings': 'Настройки',
         'tab.general': 'Общие',
         'tab.run': 'Работа',
         'tab.network': 'Сеть',
         'tab.advanced': 'Дополнительно',
+        'tab.stats': 'Статистика',
         'st.startOnPower': 'Запуск при включении',
         'st.startOnPowerHelp': 'Если выключено, запускать машину можно только нажатием на датчик',
         'st.motorOnTo': 'Мотор запускается при целевой температуре',
@@ -962,6 +1078,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.gatewayHelp': 'PETALOT не требует подключения к интернету; 0.0.0.0, если пусто',
         'st.analog': 'Аналоговый вход',
         'btn.save': 'Применить',
+        'btn.cancel': 'Отмена', 'btn.confirm': 'Подтвердить',
         'btn.factoryReset': 'Сброс к заводским',
         'msg.minmax': 'мин: {min}, макс: {max}',
         't.running': 'Работает',
@@ -974,7 +1091,6 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         't.notDetected': 'не обнаружен',
         't.sensorDisabled': 'Датчик отключен',
         't.confirmSave': 'Вы уверены?',
-        't.restarting': 'Перезагрузка...',
         't.confirmReset': 'Сброс? Статистика, температура, коррекция температуры и настройка нагрева не будут сброшены',
         't.done': 'Готово',
         'gs.update': 'Обновление прошивки',
@@ -993,13 +1109,21 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
       },
       tr: {
         'gs.title': 'PETALOT Kontrol',
-        'gs.ses': 'oturum', 'gs.tot': 'toplam',
+        'gs.bottles': 'şişe',
+        'gs.current': 'Güncel', 'gs.total': 'Toplam',
+        'st.stats': 'İstatistikler', 'st.statsCurrent': 'Güncel', 'st.statsTotal': 'Toplam',
+        'st.statsFilament': 'Filament', 'st.statsTime': 'Süre', 'st.statsBottles': 'Şişe',
+        'st.statsMax': 'En uzun', 'st.statsLast': 'Son',
+        'st.statsNote': 'Değerler yaklaşıktır: işlenen uzunluk yalnızca bir tahmindir。',
+        'btn.resetStats': 'İstatistikleri sıfırla',
+        't.confirmResetStats': 'İstatistikler sıfırlansın mı?',
         'gs.status': 'Durum', 'gs.speed': 'Hız', 'gs.sensor': 'Sensör', 'gs.temp': 'Sıcaklık',
         'gs.settings': 'Ayarlar',
         'tab.general': 'Genel',
         'tab.run': 'Çalışma',
         'tab.network': 'Ağ',
         'tab.advanced': 'Gelişmiş',
+        'tab.stats': 'İstatistikler',
         'st.startOnPower': 'Açılışta çalıştır',
         'st.startOnPowerHelp': 'Kapatırsanız makineyi yalnızca sensöre basarak başlatabilirsiniz',
         'st.motorOnTo': 'Motor hedef sıcaklıkta çalışır',
@@ -1041,6 +1165,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.gatewayHelp': 'PETALOT internet bağlantısı gerektirmez; boşsa 0.0.0.0',
         'st.analog': 'Analog okuma',
         'btn.save': 'Uygula',
+        'btn.cancel': 'İptal', 'btn.confirm': 'Onayla',
         'btn.factoryReset': 'Fabrika ayarları',
         'msg.minmax': 'min: {min}, maks: {max}',
         't.running': 'Çalışıyor',
@@ -1053,7 +1178,6 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         't.notDetected': 'algılanmadı',
         't.sensorDisabled': 'Sensör devre dışı',
         't.confirmSave': 'Emin misiniz?',
-        't.restarting': 'Yeniden başlatılıyor...',
         't.confirmReset': 'Fabrika ayarlarına sıfırlansın mı? İstatistikler, sıcaklık, sıcaklık ofseti ve ısıtma ayarı sıfırlanmaz',
         't.done': 'Tamam',
         'gs.update': 'Bellenim güncellemesi',
@@ -1072,13 +1196,21 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
       },
       ja: {
         'gs.title': 'PETALOT コントロール',
-        'gs.ses': '今回', 'gs.tot': '累計',
+        'gs.bottles': 'ボトル',
+        'gs.current': '現在', 'gs.total': '累計',
+        'st.stats': '統計', 'st.statsCurrent': '現在', 'st.statsTotal': '累計',
+        'st.statsFilament': 'フィラメント', 'st.statsTime': '時間', 'st.statsBottles': 'ボトル',
+        'st.statsMax': '最長', 'st.statsLast': '最後',
+        'st.statsNote': '値は概算です：処理された長さは推定にすぎません。',
+        'btn.resetStats': '統計をリセット',
+        't.confirmResetStats': '統計をリセットしますか？',
         'gs.status': '状態', 'gs.speed': '速度', 'gs.sensor': 'センサー', 'gs.temp': '温度',
         'gs.settings': '設定',
         'tab.general': '一般',
         'tab.run': '動作',
         'tab.network': 'ネットワーク',
         'tab.advanced': '詳細',
+        'tab.stats': '統計',
         'st.startOnPower': '電源投入時に起動',
         'st.startOnPowerHelp': '無効にすると、センサーを押すことでのみ機械を起動できます',
         'st.motorOnTo': '目標温度でモーター起動',
@@ -1120,6 +1252,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.gatewayHelp': 'PETALOTはインターネット接続を必要としません。空欄なら0.0.0.0',
         'st.analog': 'アナログ読取',
         'btn.save': '適用',
+        'btn.cancel': 'キャンセル', 'btn.confirm': '確定',
         'btn.factoryReset': '工場出荷時リセット',
         'msg.minmax': '最小：{min}、最大：{max}',
         't.running': '運転中',
@@ -1132,7 +1265,6 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         't.notDetected': '未検出',
         't.sensorDisabled': 'センサー無効',
         't.confirmSave': 'よろしいですか？',
-        't.restarting': '再起動中...',
         't.confirmReset': '工場出荷時リセットしますか？統計、温度、温度オフセット、加熱調整 はリセットされません',
         't.done': '完了',
         'gs.update': 'ファームウェア更新',
@@ -1151,13 +1283,21 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
       },
       ko: {
         'gs.title': 'PETALOT 제어',
-        'gs.ses': '세션', 'gs.tot': '합계',
+        'gs.bottles': '병',
+        'gs.current': '현재', 'gs.total': '합계',
+        'st.stats': '통계', 'st.statsCurrent': '현재', 'st.statsTotal': '합계',
+        'st.statsFilament': '필라먼트', 'st.statsTime': '시간', 'st.statsBottles': '병',
+        'st.statsMax': '최장', 'st.statsLast': '최근',
+        'st.statsNote': '값은 개산치입니다: 처리된 길이는 추정치에 불과합니다.',
+        'btn.resetStats': '통계 초기화',
+        't.confirmResetStats': '통계를 초기화하시겠습니까?',
         'gs.status': '상태', 'gs.speed': '속도', 'gs.sensor': '센서', 'gs.temp': '온도',
         'gs.settings': '설정',
         'tab.general': '일반',
         'tab.run': '작동',
         'tab.network': '네트워크',
         'tab.advanced': '고급',
+        'tab.stats': '통계',
         'st.startOnPower': '전원 켜짐 시 시작',
         'st.startOnPowerHelp': '비활성화하면 센서를 눌러서만 기기를 시작할 수 있습니다',
         'st.motorOnTo': '목표 온도에서 모터 시작',
@@ -1199,6 +1339,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.gatewayHelp': 'PETALOT은 인터넷 연결이 필요하지 않습니다. 비우면 0.0.0.0',
         'st.analog': '아날로그 판독',
         'btn.save': '적용',
+        'btn.cancel': '취소', 'btn.confirm': '확인',
         'btn.factoryReset': '공장 초기화',
         'msg.minmax': '최소：{min}、최대：{max}',
         't.running': '작동 중',
@@ -1211,7 +1352,6 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         't.notDetected': '감지 안 됨',
         't.sensorDisabled': '센서 비활성',
         't.confirmSave': '확실합니까？',
-        't.restarting': '재시작 중...',
         't.confirmReset': '공장 초기화하시겠습니까？통계、온도、온도 오프셋、가열 튜닝 은 초기화되지 않습니다',
         't.done': '완료',
         'gs.update': '펌웨어 업데이트',
@@ -1295,10 +1435,20 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
       fetch('/tele', { signal: abortCtrl.signal })
         .then(res => res.json())
         .then(data => {
-          document.getElementById('tele-Fs').innerText = Math.round(data.Fs) / 100;
-          document.getElementById('tele-Ft').innerText = Math.round(data.Ft) / 100;
+          const Ft = Math.round(data.Ft) / 100;
+          const Fs = Math.round(data.Fs) / 100;
+          document.getElementById('tele-Ft').innerText = Ft;
+          document.getElementById('tele-Bt').innerText = data.Bt || 0;
+          document.getElementById('tele-Fs').innerText = Fs;
           document.getElementById('tele-Ts').innerText = toHHMMSS(data.Ts);
-          document.getElementById('tele-Tt').innerText = toHHMMSS(data.Tt);
+
+          document.getElementById('st-Fs').innerText = Fs;
+          document.getElementById('st-Ft').innerText = Ft;
+          document.getElementById('st-Ts').innerText = toHHMMSS(data.Ts);
+          document.getElementById('st-Tt').innerText = toHHMMSS(data.Tt);
+          document.getElementById('st-Bt').innerText = data.Bt || 0;
+          document.getElementById('st-max').innerText = Math.round(data.maxFs || 0) / 100;
+          document.getElementById('st-last').innerText = Math.round(data.lastFs || 0) / 100;
 
           document.getElementById('val-status').innerText = data.status ? t('t.running') : t('t.stopped');
           document.getElementById('ctrl-status').checked = data.status;
@@ -1345,6 +1495,32 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
 
     let conf = {};
     let updatePcbVer = '';
+
+    function openModal(text, onOk) {
+      const el = document.getElementById('modal');
+      document.getElementById('modal-text').textContent = text;
+      const ok = document.getElementById('modal-ok');
+      ok.onclick = () => { closeModal(); onOk(); };
+      el.style.display = 'flex';
+    }
+
+    function closeModal() {
+      document.getElementById('modal').style.display = 'none';
+    }
+
+    function resetStats() {
+      openModal(t('t.confirmResetStats'), () => {
+        const msgEl = document.getElementById('stats-msg');
+        fetch('/resetstats')
+          .then(res => res.json())
+          .then(data => {
+            if (msgEl) { msgEl.className = 'msg'; msgEl.textContent = t('t.done'); }
+          })
+          .catch(() => {
+            if (msgEl) { msgEl.className = 'msg warn'; msgEl.textContent = t('msg.updError'); }
+          });
+      });
+    }
 
     function fetchConf() {
       fetch('/get')
@@ -1394,7 +1570,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
     }
 
     function showSettingsTab(tab) {
-      const valid = ['general', 'run', 'network', 'advanced'].includes(tab) ? tab : 'general';
+      const valid = ['general', 'run', 'network', 'advanced', 'statistics'].includes(tab) ? tab : 'general';
       document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b.dataset.tab === valid));
       document.querySelectorAll('.tab-panel').forEach(p => p.classList.toggle('active', p.id === 'tab-' + valid));
       try { localStorage.setItem('petalot-tab', valid); } catch (e) {}
@@ -1410,8 +1586,10 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
     }
 
     function saveSettings(reboot) {
-      if (!confirm(t('t.confirmSave'))) return;
+      openModal(t('t.confirmSave'), () => doSaveSettings(reboot));
+    }
 
+    function doSaveSettings(reboot) {
       const form = document.getElementById('settings-form');
       const params = new URLSearchParams();
 
@@ -1444,7 +1622,6 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
       fetch(`/set?${params.toString()}`)
         .then(() => {
           if (reboot) {
-            alert(t('t.restarting'));
             setTimeout(() => window.location.reload(), 9000);
           } else {
             fetchConf();
@@ -1453,9 +1630,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
     }
 
     function factoryReset() {
-      if (confirm(t('t.confirmReset'))) {
-        fetch('/reset').then(() => alert(t('t.done')));
-      }
+      openModal(t('t.confirmReset'), () => fetch('/reset'));
     }
 
     function startUpdate() {

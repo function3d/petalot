@@ -27,6 +27,19 @@ double Tt = 0; // time total (s)
 double Fs = 0; // filament session (cm)
 double Ts = 0; // time session (s)
 
+// Bottle statistics. A bottle is counted as soon as a run crosses the
+// threshold, so a reboot mid-run does not lose it.
+#define BOTTLE_MIN_CM 300        // 3 m: minimum filament for a run to count as a bottle
+int Bt = 0;  // bottles total
+int maxFs = 0;   // longest run (cm), for reference
+int lastFs = 0;  // last counted bottle length (cm)
+bool bottleCounted = false; // current run already added to Bt (counted at threshold)
+bool statsDirty = false; // force a stats save after a bottle is counted
+
+// Defined below; declared here so server.hpp can call it.
+void saveStats();
+void resetStats();
+
 bool OTA_update = false;
 
 unsigned long tempLastStats;
@@ -66,6 +79,10 @@ void setup() {
   } else {
     Ft = stats["Ft"] ? stats["Ft"].as<double>() : 0.0;
     Tt = stats["Tt"] ? stats["Tt"].as<double>() : 0.0;
+    Bt = stats["Bt"] ? stats["Bt"].as<int>() : 0;
+    maxFs = stats["maxFs"] ? stats["maxFs"].as<int>() : 0;
+    lastFs = stats["lastFs"] ? stats["lastFs"].as<int>() : 0;
+    bottleCounted = stats["bc"] ? stats["bc"].as<bool>() : false;
   }
   file.close();
 }
@@ -86,20 +103,39 @@ void loop() {
       Ft = Ft + (float)Vo / 60;
       Tt = Tt + 1;
       Ts = Ts + 1;
-      if (millis() >= tempLastStatsSave + 10000) {
-        File file = LittleFS.open("/stats.json", "w");
-        if (!file) {
-          msg = "Failed to create file";
-        }
-        stats["Ft"] = Ft;
-        stats["Tt"] = Tt;
-        if (serializeJson(stats, file) == 0) {
-          msg = "Failed to write to file";
-        }
-        file.close();
+      countBottle(); // count as soon as the threshold is crossed
+      if (statsDirty || millis() >= tempLastStatsSave + 10000) {
+        saveStats();
         tempLastStatsSave = millis();
       }
       tempLastStats = millis();
     }
   }
+}
+
+void saveStats() {
+  File file = LittleFS.open("/stats.json", "w");
+  if (!file) {
+    msg = "Failed to create file";
+    return;
+  }
+  stats["Ft"] = Ft;
+  stats["Tt"] = Tt;
+  stats["Bt"] = Bt;
+  stats["maxFs"] = maxFs;
+  stats["lastFs"] = lastFs;
+  stats["bc"] = bottleCounted;
+  if (serializeJson(stats, file) == 0) {
+    msg = "Failed to write to file";
+  }
+  file.close();
+  statsDirty = false;
+}
+
+void resetStats() {
+  Ft = 0; Tt = 0; Fs = 0; Ts = 0;
+  Bt = 0; maxFs = 0; lastFs = 0;
+  bottleCounted = false;
+  statsDirty = true;
+  saveStats();
 }

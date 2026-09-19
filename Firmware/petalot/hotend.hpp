@@ -76,6 +76,7 @@ void start() {
   if (tempLastStart == 0) {
     Fs = 0;
     Ts = 0;
+    bottleCounted = false;
     status = "working";
     tempLastStart = millis();
     AR = analogRead(PIN_THERMISTER);
@@ -86,7 +87,26 @@ void start() {
   }
 }
 
+// Count the bottle as soon as the threshold is crossed, so a reboot mid-run
+// does not lose it. "Longest" and "last" are updated when the run stops, where
+// the full length of the bottle is known.
+void countBottle() {
+  if (bottleCounted || Fs < BOTTLE_MIN_CM) return;
+  Bt++;
+  bottleCounted = true;
+  statsDirty = true;
+}
+
+void finishBottle() {
+  if (!bottleCounted) return;
+  lastFs = (int)Fs;
+  if ((int)Fs > maxFs) maxFs = (int)Fs;
+  bottleCounted = false;
+  statsDirty = true;
+}
+
 void stop() {
+  if (status == "working") finishBottle();
   status = "stopped";
   analogWrite(PIN_HEATER, 0);
   if (!UseDisplay) {

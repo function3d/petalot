@@ -118,7 +118,7 @@ void handleUpdateCheck(AsyncWebServerRequest *request) {
 }
 
 void tele(AsyncWebServerRequest *request) {
-  StaticJsonDocument<384> teleData;
+  StaticJsonDocument<640> teleData;
   teleData["status"]        = (status == "working") ? ((stepper.motorEnabled) ? 2 : 1) : 0;
   teleData["T"]             = T;
   teleData["AR"]            = AR;
@@ -130,6 +130,9 @@ void tele(AsyncWebServerRequest *request) {
   teleData["Fs"]            = Fs;
   teleData["Tt"]            = Tt;
   teleData["Ts"]            = Ts;
+  teleData["Bt"]            = Bt;
+  teleData["maxFs"]         = maxFs;
+  teleData["lastFs"]        = lastFs;
   teleData["LastStopReason"] = LastStopReason;
   teleData["Output"]        = String(map((int)Output, 0, 255, 0, 100)) + "%";
   String r;
@@ -151,6 +154,14 @@ void reset(AsyncWebServerRequest *request) {
   wipeStats ? factoryReset(true) : factoryReset();
 }
 
+void resetStatsReq(AsyncWebServerRequest *request) {
+  if (!isAuthorized(request)) {
+    request->requestAuthentication();
+    return;
+  }
+  resetStats();
+  tele(request);
+}
 void set(AsyncWebServerRequest *request) {
   if (!isAuthorized(request)) {
     request->requestAuthentication();
@@ -249,6 +260,7 @@ void InitServer() {
   server.on("/tele", HTTP_GET, tele);
   server.on("/set", HTTP_GET, set);
   server.on("/reset", HTTP_GET, reset);
+  server.on("/resetstats", HTTP_GET, resetStatsReq);
   server.on("/updatecheck", HTTP_POST, handleUpdateCheck, handleUpdateCheckData);
 
   server.onNotFound(handleNotFound);

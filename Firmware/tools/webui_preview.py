@@ -34,7 +34,7 @@ WEB_UI = SKETCH / "web_ui.h"
 INO = SKETCH / "petalot.ino"
 
 # Routes the UI calls on the device that we answer (mock) or forward (proxy).
-API_ROUTES = ("/get", "/tele", "/set", "/reset", "/updatecheck", "/update")
+API_ROUTES = ("/get", "/tele", "/set", "/reset", "/resetstats", "/updatecheck", "/update")
 
 START_MARK = 'R"rawliteral('
 END_MARK = ')rawliteral"'
@@ -87,6 +87,7 @@ class MockState:
             "minT": 0, "maxT": 250, "minV": 1, "maxV": 30,
         }
         self.status = 0          # 0 stopped, 1 running (no motor), 2 running
+        self.bottles = {"Bt": 3, "maxFs": 720, "lastFs": 450}
 
     def tele(self):
         dt = time.time() - self.t0
@@ -105,6 +106,9 @@ class MockState:
             "Fs": round(dt / 3.0, 1),
             "Tt": int(dt),
             "Ts": int(dt),
+            "Bt": self.bottles["Bt"],
+            "maxFs": self.bottles["maxFs"],
+            "lastFs": self.bottles["lastFs"],
             "LastStopReason": "",
             "Output": "%d%%" % out,
         }
@@ -217,6 +221,10 @@ class Handler(BaseHTTPRequestHandler):
             self._send(200, self.mock.tele())
         elif path == "/reset":
             self._send(200, "OK", "text/plain")
+        elif path == "/resetstats":
+            self.mock.bottles = {"Bt": 0,
+                                 "maxFs": 0, "lastFs": 0}
+            self._send(200, self.mock.tele())
         elif path == "/updateinfo":
             self._send(404, "not found", "text/plain")
         else:
