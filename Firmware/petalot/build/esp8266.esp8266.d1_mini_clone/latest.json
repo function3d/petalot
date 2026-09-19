@@ -1,17 +1,17 @@
 {
   "1405": {
-    "version": 1600,
-    "file": "petalot.1.4.5-v1.6.0.bin",
-    "size": 526064
+    "version": 1601,
+    "file": "petalot.1.4.5-v1.6.1.bin",
+    "size": 538352
   },
   "1501": {
-    "version": 1600,
-    "file": "petalot.1.5.1-v1.6.0.bin",
-    "size": 526064
+    "version": 1601,
+    "file": "petalot.1.5.1-v1.6.1.bin",
+    "size": 538336
   },
   "1502": {
-    "version": 1600,
-    "file": "petalot.1.5.2-v1.6.0.bin",
-    "size": 526480
+    "version": 1601,
+    "file": "petalot.1.5.2-v1.6.1.bin",
+    "size": 538784
   }
 }
