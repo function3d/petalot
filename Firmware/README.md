@@ -39,28 +39,30 @@ that matches the PCB you have installed.
 
 You do not need a cable: update over the air.
 
-### Online update (needs Internet in the browser)
+### Online update (one-click, needs Internet while you do it)
 
 Open the web UI and go to **Settings → Advanced → Online update**, then click
 **Check for updates**. If a newer firmware for your PCB is available, click
-**Install update**.
+**Install update** and it updates by itself.
 
-The manifest (`latest.json`) and the firmware image are downloaded from this
-repository by **your browser**, not by the device, and then uploaded to the
-device over the same path as a manual update. This means only the computer or
-phone running the browser needs Internet access; the device itself can be in AP
-mode or on a network without Internet.
+This works when the device is connected to your home Wi-Fi: your computer or
+phone is then on the same network, so it has Internet access and can fetch and
+send the update. **It does not work while you are connected directly to the
+device's own Wi-Fi hotspot** ("PETALOT-XXXXXX"): while connected to that, your
+computer or phone has no Internet, so it cannot check or download anything. In
+that case use the manual update below — it works with no Internet at all.
 
-### Manual update (works offline)
+### Manual update (works offline, no Internet needed)
 
-1. Browse to `http://<device-ip>/update` (the built-in OTA page). This is the
-   update method available on **every** firmware version — older builds only
-   ship this one.
-2. Select the `.bin` matching your PCB (`petalot.1.4.5-v1.6.1.bin`,
-   `petalot.1.5.1-v1.6.1.bin` or `petalot.1.5.2-v1.6.1.bin`) and click **Update**.
+Use this if the device is not on your home Wi-Fi (for example, right out of the
+box, when you connect directly to its "PETALOT-XXXXXX" network).
 
-If your device already runs a recent build, you can also use **Settings →
-Advanced → Firmware Update** in the web UI — same result.
+1. Download the `.bin` for your PCB from this repository
+   (`petalot.1.4.5-v1.6.1.bin`, `petalot.1.5.1-v1.6.1.bin` or
+   `petalot.1.5.2-v1.6.1.bin`).
+2. Open the web UI and go to **Settings → Advanced → Firmware Update**, pick the
+   file and click **Update**. (Or browse to `http://<device-ip>/update` — the
+   built-in update page available on **every** firmware version.)
 
 ## Building from source
 
