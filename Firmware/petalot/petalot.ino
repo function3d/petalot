@@ -1,5 +1,5 @@
 #define PCB 1502     // Hardware revision: 1405 (DIY) / 1501 / 1502. See pins.hpp
-#define VERSION 1601 // Firmware version, independent of the PCB revision
+#define VERSION 1602 // Firmware version, independent of the PCB revision
 
 // Compile-time build date extracted from __DATE__ (e.g. "Sep  7 2026")
 // Year: '2' and '6' from '2026'
