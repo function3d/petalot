@@ -106,7 +106,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
 
     /* Settings Tabs */
     .tab-bar { display: flex; flex-wrap: wrap; gap: 0.35rem; border-bottom: 1px solid #334155; padding-bottom: 0.55rem; }
-    .tab-btn { background: none; border: none; color: var(--muted); font-size: 0.8rem; font-weight: 700; padding: 0.3rem 0.7rem; border-radius: 4px; cursor: pointer; }
+    .tab-btn { background: none; border: none; color: var(--muted); font-size: 0.8rem; font-weight: 700; padding: 0.3rem; border-radius: 4px; cursor: pointer; }
     .tab-btn:hover { background: #363e46; color: var(--text); }
     .tab-btn.active { background: #363e46; color: var(--text); }
     .tab-panel { display: none; }
@@ -267,7 +267,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         <div class="form-group" data-mode="bang"><span class="label" data-i18n="st.hold">Hold duty</span><input type="number" name="HOLD" step="1"><small class="help-text" data-i18n="st.holdHelp">Minimum power (%) delivered near the target to keep the temperature stable</small></div>-->
         <div class="form-group"><span class="label" data-i18n="st.toffset">Temperature Offset</span><input type="number" name="TOffset"><small class="help-text" data-i18n="st.toffsetHelp">Adjust the temperature if you notice it's off</small></div>
 
-        <div class="form-group"><span class="label" data-i18n="gs.update">Firmware Update</span><input type="file" id="up-firmware" accept=".bin,.bin.gz"><button type="button" class="btn" onclick="startUpdate()" data-i18n="btn.update">Update</button><div class="msg" id="update-msg"></div></div>
+        <div class="form-group"><span class="label" data-i18n="gs.update">Firmware Update</span><input type="file" id="up-firmware" accept=".bin,.bin.gz"><button type="button" class="btn" onclick="startUpdate()" data-i18n="btn.update">Update</button><div class="msg" id="update-msg"></div><small class="help-text" data-i18n-html="st.fwLink">Download the firmware: <a href="https://github.com/function3d/petalot/tree/master/Firmware/petalot/build/esp8266.esp8266.d1_mini_clone" target="_blank" rel="noopener">petalot .bin files on GitHub</a></small></div>
 
         <div class="form-group"><span class="label" data-i18n="st.updOnline">Online update</span><div class="msg" id="upd-status"></div><span id="upd-btns"><button type="button" class="btn" id="btn-check-upd" onclick="checkOnlineUpdate()" data-i18n="st.updCheck">Check for updates</button> <button type="button" class="btn" id="btn-install-upd" style="display:none" onclick="installOnlineUpdate()" data-i18n="st.updInstall">Install update</button></span></div>
 
@@ -393,6 +393,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         't.done': 'Done',
         'gs.update': 'Firmware Update',
         'btn.update': 'Update',
+        'st.fwLink': 'Download the firmware: <a href="https://github.com/function3d/petalot/tree/master/Firmware/petalot/build/esp8266.esp8266.d1_mini_clone" target="_blank" rel="noopener">petalot .bin files on GitHub</a>',
         'msg.updating': 'Updating... do not disconnect',
         'msg.updateError': 'Update error:',
         'msg.updateMismatch': 'This firmware does not match the registered PCB version ({pcb}). Flash the correct one from the /update page',
@@ -481,6 +482,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         't.done': 'Hecho',
         'gs.update': 'Actualización de firmware',
         'btn.update': 'Actualizar',
+        'st.fwLink': 'Descarga el firmware: <a href="https://github.com/function3d/petalot/tree/master/Firmware/petalot/build/esp8266.esp8266.d1_mini_clone" target="_blank" rel="noopener">archivos .bin de petalot en GitHub</a>',
         'msg.updating': 'Actualizando... no desconectes',
         'msg.updateError': 'Error de actualización:',
         'st.updOnline': 'Actualización online',
@@ -569,6 +571,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         't.done': 'Concluído',
         'gs.update': 'Atualização de firmware',
         'btn.update': 'Atualizar',
+        'st.fwLink': 'Descarregue o firmware: <a href="https://github.com/function3d/petalot/tree/master/Firmware/petalot/build/esp8266.esp8266.d1_mini_clone" target="_blank" rel="noopener">ficheiros .bin do petalot no GitHub</a>',
         'msg.updating': 'Atualizando... não desconecte',
         'msg.updateError': 'Erro de atualização:',
         'st.updOnline': 'Atualização online',
@@ -657,6 +660,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         't.done': 'Terminé',
         'gs.update': 'Mise à jour du firmware',
         'btn.update': 'Mettre à jour',
+        'st.fwLink': 'Téléchargez le firmware : <a href="https://github.com/function3d/petalot/tree/master/Firmware/petalot/build/esp8266.esp8266.d1_mini_clone" target="_blank" rel="noopener">fichiers .bin de petalot sur GitHub</a>',
         'msg.updating': 'Mise à jour... ne déconnectez pas',
         'msg.updateError': 'Erreur de mise à jour :',
         'st.updOnline': 'Mise à jour en ligne',
@@ -745,6 +749,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         't.done': 'Fertig',
         'gs.update': 'Firmware-Update',
         'btn.update': 'Aktualisieren',
+        'st.fwLink': 'Firmware herunterladen: <a href="https://github.com/function3d/petalot/tree/master/Firmware/petalot/build/esp8266.esp8266.d1_mini_clone" target="_blank" rel="noopener">petalot-.bin-Dateien auf GitHub</a>',
         'msg.updating': 'Aktualisiere... nicht trennen',
         'msg.updateError': 'Update-Fehler:',
         'st.updOnline': 'Online-Update',
@@ -833,6 +838,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         't.done': 'Fatto',
         'gs.update': 'Aggiornamento firmware',
         'btn.update': 'Aggiorna',
+        'st.fwLink': 'Scarica il firmware: <a href="https://github.com/function3d/petalot/tree/master/Firmware/petalot/build/esp8266.esp8266.d1_mini_clone" target="_blank" rel="noopener">file .bin di petalot su GitHub</a>',
         'msg.updating': 'Aggiornamento... non scollegare',
         'msg.updateError': 'Errore di aggiornamento:',
         'st.updOnline': 'Aggiornamento online',
@@ -921,6 +927,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         't.done': '完成',
         'gs.update': '固件更新',
         'btn.update': '更新',
+        'st.fwLink': '下载固件：<a href="https://github.com/function3d/petalot/tree/master/Firmware/petalot/build/esp8266.esp8266.d1_mini_clone" target="_blank" rel="noopener">GitHub 上的 petalot .bin 文件</a>',
         'msg.updating': '正在更新……请勿断开',
         'msg.updateError': '更新错误：',
         'st.updOnline': '在线更新',
@@ -1008,6 +1015,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         't.done': 'Hotovo',
         'gs.update': 'Aktualizace firmwaru',
         'btn.update': 'Aktualizovat',
+        'st.fwLink': 'Stáhnout firmware: <a href="https://github.com/function3d/petalot/tree/master/Firmware/petalot/build/esp8266.esp8266.d1_mini_clone" target="_blank" rel="noopener">soubory .bin petalot na GitHubu</a>',
         'msg.updating': 'Aktualizace... neodpojujte',
         'msg.updateError': 'Chyba aktualizace:',
         'st.updOnline': 'Online aktualizace',
@@ -1095,6 +1103,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         't.done': 'Готово',
         'gs.update': 'Обновление прошивки',
         'btn.update': 'Обновить',
+        'st.fwLink': 'Скачать прошивку: <a href="https://github.com/function3d/petalot/tree/master/Firmware/petalot/build/esp8266.esp8266.d1_mini_clone" target="_blank" rel="noopener">файлы .bin petalot на GitHub</a>',
         'msg.updating': 'Обновление... не отключайтесь',
         'msg.updateError': 'Ошибка обновления:',
         'st.updOnline': 'Обновление онлайн',
@@ -1182,6 +1191,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         't.done': 'Tamam',
         'gs.update': 'Bellenim güncellemesi',
         'btn.update': 'Güncelle',
+        'st.fwLink': 'Firmware\'u indir: <a href="https://github.com/function3d/petalot/tree/master/Firmware/petalot/build/esp8266.esp8266.d1_mini_clone" target="_blank" rel="noopener">GitHub\'daki petalot .bin dosyaları</a>',
         'msg.updating': 'Güncelleniyor... bağlantıyı kesme',
         'msg.updateError': 'Güncelleme hatası:',
         'st.updOnline': 'Çevrimiçi güncelleme',
@@ -1269,6 +1279,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         't.done': '完了',
         'gs.update': 'ファームウェア更新',
         'btn.update': '更新',
+        'st.fwLink': 'ファームウェアをダウンロード：<a href="https://github.com/function3d/petalot/tree/master/Firmware/petalot/build/esp8266.esp8266.d1_mini_clone" target="_blank" rel="noopener">GitHub の petalot .bin ファイル</a>',
         'msg.updating': '更新中……接続を切らないでください',
         'msg.updateError': '更新エラー：',
         'st.updOnline': 'オンライン更新',
@@ -1356,6 +1367,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         't.done': '완료',
         'gs.update': '펌웨어 업데이트',
         'btn.update': '업데이트',
+        'st.fwLink': '펌웨어 다운로드: <a href="https://github.com/function3d/petalot/tree/master/Firmware/petalot/build/esp8266.esp8266.d1_mini_clone" target="_blank" rel="noopener">GitHub의 petalot .bin 파일</a>',
         'msg.updating': '업데이트 중……연결을 끊지 마세요',
         'msg.updateError': '업데이트 오류：',
         'st.updOnline': '온라인 업데이트',
