@@ -26,12 +26,12 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
     .card { background: var(--card-bg); padding: 1rem; border:1px solid #363e46; border-radius: 6px; display: flex; flex-direction: column; gap: 0.25rem; }
 
     /* Header */
-    .header { flex-direction: row; justify-content: space-between; align-items: center; background:none; border:0; }
+    .header { flex-direction: row; justify-content: space-between; align-items: center; background:none; border:0; padding: 0 0.3rem; }
     .header h1 { font-size: 1.45rem; font-weight: 800; }
     .header a { color: var(--muted); font-size: 0.8rem; text-decoration: none; }
     .header-right { text-align: right; font-size: 0.8rem; color: var(--muted); }
     .header-right span { color: var(--text); font-weight: 600; }
-    .settings-select { background: #181c20; color: var(--text); border: 1px solid #363e46; border-radius: 4px; font-size: 0.75rem; padding: 0.15rem 0.3rem; margin-top: 0.35rem; }
+    .settings-select { padding: 0.4rem; background: #181c20; color: var(--text); border: 1px solid #363e46; border-radius: 4px; font-size: 0.75rem; margin-top: 0.35rem; }
 
     /*version*/
     #version { text-align:right; font-size: 0.7rem; color: var(--muted); margin-top: 0.25rem; }
@@ -112,7 +112,8 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
     .tab-panel { display: none; }
     .tab-panel.active { display: flex; flex-direction: column; gap: 0.6rem; }
 
-    .form-group { display: flex; flex-direction: column; gap: 0.15rem; }
+    .form-group { display: flex; flex-direction: column; gap: 0.15rem; border-bottom: 1px dashed #334155; padding-bottom: 1em; }
+    .form-group:last-child { border-bottom-style: unset }
     .form-group .row-layout { gap:1rem; display: flex; flex-direction: row; align-items: center; justify-content: space-between; padding: 0.25rem 0; }
     .form-group label, .form-group span.label { font-size: 0.8rem; color: var(--muted); font-weight: 700; margin-top: 5px; }
     .form-group input[type="text"], .form-group input[type="number"], .form-group input[type="password"] { width: 100%; padding: 0.4rem; border: 1px solid #363e46; border-radius: 4px; font-size: 0.85rem; color: var(--text); background: #181c20; }
@@ -243,6 +244,8 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         <div class="form-group"><span class="label" data-i18n="st.maxTime">Max Time (min)</span><input type="number" name="Maxtime"><small class="help-text" data-i18n="st.maxTimeHelp">Maximum machine run time</small></div>
         <div class="form-group"><span class="label" data-i18n="st.sensorTimeout">Sensor timeout (min)</span><input type="number" name="NoFilamentTime"><small class="help-text" data-i18n="st.sensorTimeoutHelp">Minutes to run without sensor activity. If disabled, only Max Time applies</small></div>
         <div id="setting-oled" class="form-group"><div class="row-layout"><span class="label" data-i18n="st.display">Use OLED Display</span><label class="switch"><input type="checkbox" name="UseDisplay"><span class="slider"></span></label></div><small id="setting-oled-help" class="help-text" data-i18n="st.displayHelp">Turn on the display if your machine has one</small></div>
+        <div class="form-group"><span class="label" data-i18n="st.toffset">Temperature Offset</span><input type="number" name="TOffset"><small class="help-text" data-i18n="st.toffsetHelp">Adjust the temperature if you notice it's off</small></div>
+
       </div>
       </div>
       <div class="tab-panel" id="tab-network">
@@ -265,15 +268,15 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         <div class="form-group" data-mode="bang"><span class="label" data-i18n="st.hys">Hysteresis band</span><input type="number" name="HYS" step="0.1"><small class="help-text" data-i18n="st.hysHelp">Degrees each side of the target still driven at hold duty before cutting</small></div>
         <div class="form-group" data-mode="bang"><span class="label" data-i18n="st.ramp">Approach ramp</span><input type="number" name="RAMP" step="0.1"><small class="help-text" data-i18n="st.rampHelp">Over these degrees power ramps down from the maximum to the hold duty</small></div>
         <div class="form-group" data-mode="bang"><span class="label" data-i18n="st.hold">Hold duty</span><input type="number" name="HOLD" step="1"><small class="help-text" data-i18n="st.holdHelp">Minimum power (%) delivered near the target to keep the temperature stable</small></div>-->
-        <div class="form-group"><span class="label" data-i18n="st.toffset">Temperature Offset</span><input type="number" name="TOffset"><small class="help-text" data-i18n="st.toffsetHelp">Adjust the temperature if you notice it's off</small></div>
-
+        
         <div class="form-group"><span class="label" data-i18n="gs.update">Firmware Update</span><input type="file" id="up-firmware" accept=".bin,.bin.gz"><button type="button" class="btn" onclick="startUpdate()" data-i18n="btn.update">Update</button><div class="msg" id="update-msg"></div><small class="help-text" data-i18n-html="st.fwLink">Download the firmware: <a href="https://github.com/function3d/petalot/tree/master/Firmware#petalot-firmware" target="_blank" rel="noopener">petalot .bin files on GitHub</a></small></div>
 
-        <div class="form-group"><span class="label" data-i18n="st.updOnline">Online update</span><div class="msg" id="upd-status"></div><span id="upd-btns"><button type="button" class="btn" id="btn-check-upd" onclick="checkOnlineUpdate()" data-i18n="st.updCheck">Check for updates</button> <button type="button" class="btn" id="btn-install-upd" style="display:none" onclick="installOnlineUpdate()" data-i18n="st.updInstall">Install update</button></span></div>
+        <div class="form-group"><button type="button" class="btn" id="btn-check-upd" onclick="checkOnlineUpdate()" data-i18n="st.updCheck">Check for updates</button> <button type="button" class="btn" id="btn-install-upd" style="display:none" onclick="installOnlineUpdate()" data-i18n="st.updInstall">Install update</button><div class="msg" id="upd-status"></div></div>
 
         <div style="display:none" class="form-group"><span class="label" data-i18n="st.analog">Analog Read</span><input type="text" id="tele-AR" disabled></div>
 
-        <div class="form-group"><span class="label" data-i18n="btn.resetStats">Reset statistics</span><button type="button" class="btn btn-danger" onclick="resetStats()" data-i18n="btn.resetStats">Reset statistics</button><div class="msg" id="stats-msg"></div></div>
+        <div class="form-group"><button type="button" class="btn btn-danger" onclick="resetStats()" data-i18n="btn.resetStats">Reset statistics</button><div class="msg" id="stats-msg"></div></div>
+        <div class="form-group"><button type="button" class="btn btn-danger" onclick="factoryReset();" data-i18n="btn.factoryReset">Factory Reset</button></div>
       </div>
       </div>
 
@@ -295,8 +298,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
       </div>
 
         <div class="actions">
-          <button type="button" class="btn" onclick="saveSettings()" data-i18n="btn.save">Save</button>
-          <button type="button" class="btn btn-danger float-right" onclick="factoryReset();" data-i18n="btn.factoryReset">Factory Reset</button>
+          <button id="btn-apply" type="button" class="btn" onclick="saveSettings()" data-i18n="btn.apply">Apply</button>
         </div>
       </form>
     </div>
@@ -374,7 +376,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.gateway': 'Gateway',
         'st.gatewayHelp': 'PETALOT does not require an Internet connection; 0.0.0.0 if left blank',
         'st.analog': 'Analog Read',
-        'btn.save': 'Apply',
+        'btn.apply': 'Apply',
         'btn.cancel': 'Cancel', 'btn.confirm': 'Confirm',
         'btn.factoryReset': 'Factory Reset',
         'msg.minmax': 'min: {min}, max: {max}',
@@ -397,7 +399,6 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'msg.updating': 'Updating... do not disconnect',
         'msg.updateError': 'Update error:',
         'msg.updateMismatch': 'This firmware does not match the registered PCB version ({pcb}). Flash the correct one from the /update page',
-        'st.updOnline': 'Online update',
         'st.updCheck': 'Check for updates',
         'st.updInstall': 'Install update',
         'msg.updChecking': 'Checking for updates...',
@@ -463,7 +464,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.gateway': 'Puerta de enlace',
         'st.gatewayHelp': 'PETALOT no necesita conexión a Internet; 0.0.0.0 si lo dejas vacío',
         'st.analog': 'Lectura analógica',
-        'btn.save': 'Aplicar',
+        'btn.apply': 'Aplicar',
         'btn.cancel': 'Cancelar', 'btn.confirm': 'Confirmar',
         'btn.factoryReset': 'Restablecer de fábrica',
         'msg.minmax': 'mín: {min}, máx: {max}',
@@ -485,7 +486,6 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.fwLink': 'Descarga el firmware: <a href="https://github.com/function3d/petalot/tree/master/Firmware#petalot-firmware" target="_blank" rel="noopener">archivos .bin de petalot en GitHub</a>',
         'msg.updating': 'Actualizando... no desconectes',
         'msg.updateError': 'Error de actualización:',
-        'st.updOnline': 'Actualización online',
         'st.updCheck': 'Buscar actualizaciones',
         'st.updInstall': 'Instalar actualización',
         'msg.updChecking': 'Buscando actualizaciones...',
@@ -552,7 +552,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.gateway': 'Gateway',
         'st.gatewayHelp': 'PETALOT não requer conexão com a Internet; 0.0.0.0 se deixar em branco',
         'st.analog': 'Leitura analógica',
-        'btn.save': 'Aplicar',
+        'btn.apply': 'Aplicar',
         'btn.cancel': 'Cancelar', 'btn.confirm': 'Confirmar',
         'btn.factoryReset': 'Restaurar de fábrica',
         'msg.minmax': 'mín: {min}, máx: {max}',
@@ -574,7 +574,6 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.fwLink': 'Descarregue o firmware: <a href="https://github.com/function3d/petalot/tree/master/Firmware#petalot-firmware" target="_blank" rel="noopener">ficheiros .bin do petalot no GitHub</a>',
         'msg.updating': 'Atualizando... não desconecte',
         'msg.updateError': 'Erro de atualização:',
-        'st.updOnline': 'Atualização online',
         'st.updCheck': 'Procurar atualizações',
         'st.updInstall': 'Instalar atualização',
         'msg.updChecking': 'A procurar atualizações...',
@@ -641,7 +640,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.gateway': 'Passerelle',
         'st.gatewayHelp': "PETALOT ne nécessite pas de connexion Internet ; 0.0.0.0 si vide",
         'st.analog': 'Lecture analogique',
-        'btn.save': 'Appliquer',
+        'btn.apply': 'Appliquer',
         'btn.cancel': 'Annuler', 'btn.confirm': 'Confirmer',
         'btn.factoryReset': 'Réinitialiser',
         'msg.minmax': 'min : {min}, max : {max}',
@@ -663,7 +662,6 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.fwLink': 'Téléchargez le firmware : <a href="https://github.com/function3d/petalot/tree/master/Firmware#petalot-firmware" target="_blank" rel="noopener">fichiers .bin de petalot sur GitHub</a>',
         'msg.updating': 'Mise à jour... ne déconnectez pas',
         'msg.updateError': 'Erreur de mise à jour :',
-        'st.updOnline': 'Mise à jour en ligne',
         'st.updCheck': 'Rechercher des mises à jour',
         'st.updInstall': 'Installer la mise à jour',
         'msg.updChecking': 'Recherche de mises à jour...',
@@ -730,7 +728,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.gateway': 'Gateway',
         'st.gatewayHelp': 'PETALOT benötigt keine Internetverbindung; 0.0.0.0 wenn leer',
         'st.analog': 'Analoger Wert',
-        'btn.save': 'Anwenden',
+        'btn.apply': 'Anwenden',
         'btn.cancel': 'Abbrechen', 'btn.confirm': 'Bestätigen',
         'btn.factoryReset': 'Zurücksetzen',
         'msg.minmax': 'min: {min}, max: {max}',
@@ -752,7 +750,6 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.fwLink': 'Firmware herunterladen: <a href="https://github.com/function3d/petalot/tree/master/Firmware#petalot-firmware" target="_blank" rel="noopener">petalot-.bin-Dateien auf GitHub</a>',
         'msg.updating': 'Aktualisiere... nicht trennen',
         'msg.updateError': 'Update-Fehler:',
-        'st.updOnline': 'Online-Update',
         'st.updCheck': 'Nach Updates suchen',
         'st.updInstall': 'Update installieren',
         'msg.updChecking': 'Suche nach Updates...',
@@ -819,7 +816,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.gateway': 'Gateway',
         'st.gatewayHelp': 'PETALOT non richiede connessione Internet; 0.0.0.0 se vuoto',
         'st.analog': 'Lettura analogica',
-        'btn.save': 'Applica',
+        'btn.apply': 'Applica',
         'btn.cancel': 'Annulla', 'btn.confirm': 'Conferma',
         'btn.factoryReset': 'Ripristino',
         'msg.minmax': 'min: {min}, max: {max}',
@@ -841,7 +838,6 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.fwLink': 'Scarica il firmware: <a href="https://github.com/function3d/petalot/tree/master/Firmware#petalot-firmware" target="_blank" rel="noopener">file .bin di petalot su GitHub</a>',
         'msg.updating': 'Aggiornamento... non scollegare',
         'msg.updateError': 'Errore di aggiornamento:',
-        'st.updOnline': 'Aggiornamento online',
         'st.updCheck': 'Verifica aggiornamenti',
         'st.updInstall': 'Installa aggiornamento',
         'msg.updChecking': 'Verifica aggiornamenti...',
@@ -908,7 +904,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.gateway': '网关',
         'st.gatewayHelp': 'PETALOT 不需要互联网连接；留空则为 0.0.0.0',
         'st.analog': '模拟读取',
-        'btn.save': '应用',
+        'btn.apply': '应用',
         'btn.cancel': '取消', 'btn.confirm': '确认',
         'btn.factoryReset': '恢复出厂设置',
         'msg.minmax': '最小：{min}，最大：{max}',
@@ -930,7 +926,6 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.fwLink': '下载固件：<a href="https://github.com/function3d/petalot/tree/master/Firmware#petalot-firmware" target="_blank" rel="noopener">GitHub 上的 petalot .bin 文件</a>',
         'msg.updating': '正在更新……请勿断开',
         'msg.updateError': '更新错误：',
-        'st.updOnline': '在线更新',
         'st.updCheck': '检查更新',
         'st.updInstall': '安装更新',
         'msg.updChecking': '正在检查更新……',
@@ -997,7 +992,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.gateway': 'Brána',
         'st.gatewayHelp': 'PETALOT nepotřebuje připojení k internetu; 0.0.0.0, pokud prázdné',
         'st.analog': 'Analogový vstup',
-        'btn.save': 'Použít',
+        'btn.apply': 'Použít',
         'btn.cancel': 'Zrušit', 'btn.confirm': 'Potvrdit',
         'btn.factoryReset': 'Tovární nastavení',
         'msg.minmax': 'min: {min}, max: {max}',
@@ -1018,7 +1013,6 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.fwLink': 'Stáhnout firmware: <a href="https://github.com/function3d/petalot/tree/master/Firmware#petalot-firmware" target="_blank" rel="noopener">soubory .bin petalot na GitHubu</a>',
         'msg.updating': 'Aktualizace... neodpojujte',
         'msg.updateError': 'Chyba aktualizace:',
-        'st.updOnline': 'Online aktualizace',
         'st.updCheck': 'Zkontrolovat aktualizace',
         'st.updInstall': 'Nainstalovat aktualizaci',
         'msg.updChecking': 'Kontrola aktualizací...',
@@ -1085,7 +1079,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.gateway': 'Шлюз',
         'st.gatewayHelp': 'PETALOT не требует подключения к интернету; 0.0.0.0, если пусто',
         'st.analog': 'Аналоговый вход',
-        'btn.save': 'Применить',
+        'btn.apply': 'Применить',
         'btn.cancel': 'Отмена', 'btn.confirm': 'Подтвердить',
         'btn.factoryReset': 'Сброс к заводским',
         'msg.minmax': 'мин: {min}, макс: {max}',
@@ -1106,7 +1100,6 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.fwLink': 'Скачать прошивку: <a href="https://github.com/function3d/petalot/tree/master/Firmware#petalot-firmware" target="_blank" rel="noopener">файлы .bin petalot на GitHub</a>',
         'msg.updating': 'Обновление... не отключайтесь',
         'msg.updateError': 'Ошибка обновления:',
-        'st.updOnline': 'Обновление онлайн',
         'st.updCheck': 'Проверить обновления',
         'st.updInstall': 'Установить обновление',
         'msg.updChecking': 'Проверка обновлений...',
@@ -1173,7 +1166,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.gateway': 'Ağ geçidi',
         'st.gatewayHelp': 'PETALOT internet bağlantısı gerektirmez; boşsa 0.0.0.0',
         'st.analog': 'Analog okuma',
-        'btn.save': 'Uygula',
+        'btn.apply': 'Uygula',
         'btn.cancel': 'İptal', 'btn.confirm': 'Onayla',
         'btn.factoryReset': 'Fabrika ayarları',
         'msg.minmax': 'min: {min}, maks: {max}',
@@ -1194,7 +1187,6 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.fwLink': 'Firmware\'u indir: <a href="https://github.com/function3d/petalot/tree/master/Firmware#petalot-firmware" target="_blank" rel="noopener">GitHub\'daki petalot .bin dosyaları</a>',
         'msg.updating': 'Güncelleniyor... bağlantıyı kesme',
         'msg.updateError': 'Güncelleme hatası:',
-        'st.updOnline': 'Çevrimiçi güncelleme',
         'st.updCheck': 'Güncellemeleri kontrol et',
         'st.updInstall': 'Güncellemeyi yükle',
         'msg.updChecking': 'Güncellemeler kontrol ediliyor...',
@@ -1261,7 +1253,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.gateway': 'ゲートウェイ',
         'st.gatewayHelp': 'PETALOTはインターネット接続を必要としません。空欄なら0.0.0.0',
         'st.analog': 'アナログ読取',
-        'btn.save': '適用',
+        'btn.apply': '適用',
         'btn.cancel': 'キャンセル', 'btn.confirm': '確定',
         'btn.factoryReset': '工場出荷時リセット',
         'msg.minmax': '最小：{min}、最大：{max}',
@@ -1282,7 +1274,6 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.fwLink': 'ファームウェアをダウンロード：<a href="https://github.com/function3d/petalot/tree/master/Firmware#petalot-firmware" target="_blank" rel="noopener">GitHub の petalot .bin ファイル</a>',
         'msg.updating': '更新中……接続を切らないでください',
         'msg.updateError': '更新エラー：',
-        'st.updOnline': 'オンライン更新',
         'st.updCheck': '更新を確認',
         'st.updInstall': '更新をインストール',
         'msg.updChecking': '更新を確認中……',
@@ -1349,7 +1340,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.gateway': '게이트웨이',
         'st.gatewayHelp': 'PETALOT은 인터넷 연결이 필요하지 않습니다. 비우면 0.0.0.0',
         'st.analog': '아날로그 판독',
-        'btn.save': '적용',
+        'btn.apply': '적용',
         'btn.cancel': '취소', 'btn.confirm': '확인',
         'btn.factoryReset': '공장 초기화',
         'msg.minmax': '최소：{min}、최대：{max}',
@@ -1370,7 +1361,6 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.fwLink': '펌웨어 다운로드: <a href="https://github.com/function3d/petalot/tree/master/Firmware#petalot-firmware" target="_blank" rel="noopener">GitHub의 petalot .bin 파일</a>',
         'msg.updating': '업데이트 중……연결을 끊지 마세요',
         'msg.updateError': '업데이트 오류：',
-        'st.updOnline': '온라인 업데이트',
         'st.updCheck': '업데이트 확인',
         'st.updInstall': '업데이트 설치',
         'msg.updChecking': '업데이트 확인 중……',
@@ -1582,10 +1572,16 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
     }
 
     function showSettingsTab(tab) {
-      const valid = ['general', 'run', 'network', 'advanced', 'statistics'].includes(tab) ? tab : 'general';
+      const valid = ['general', 'network', 'advanced', 'statistics'].includes(tab) ? tab : 'general';
       document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b.dataset.tab === valid));
       document.querySelectorAll('.tab-panel').forEach(p => p.classList.toggle('active', p.id === 'tab-' + valid));
       try { localStorage.setItem('petalot-tab', valid); } catch (e) {}
+      const applyBtn = document.getElementById('btn-apply');
+      if (tab == 'general' || tab == 'network' ){
+        applyBtn.style.display = '';
+      } else {
+        applyBtn.style.display = 'none';
+      }
     }
 
     function updateControlFields() {
