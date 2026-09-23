@@ -21,8 +21,8 @@ HEAD = {
  'parts-list-tools.csv':     ('Tools',                  'Herramientas'),
 }
 STAT = {'ok':('OK','OK'),'pcb':('PCB (JLC, ignored)','PCB (JLC, ignorada)'),'nolink':('NO LINK (M6 rod)','SIN ENLACE (varilla M6)')}
-COLS = [['Row','Qty','Component','Link','Variation','Price'],
-        ['Fila','Cant.','Componente','Enlace','Variación','Precio']]
+COLS = [['Row','Qty','Component','Link','Price'],
+        ['Fila','Cant.','Componente','Enlace','Precio']]
 TOT_HEAD = ['Totals','Totales']
 TOT_COLS = [['List','Total'],['Lista','Total']]
 TOTAL_LBL = ['TOTAL (minimum, no shipping)','TOTAL (mínimo, sin envío)']
@@ -79,7 +79,7 @@ def build(lang, csvname):
         L.append("|"+"---|"*len(COLS[lang]))
         for i,row in enumerate(rows):
             price,lot,st = D[f].get(i,(None,None,'ok'))
-            qn=qty_num(row[0]); var=row[4] if len(row)>4 else ''
+            qn=qty_num(row[0])
             link = row[3]
             if f=='parts-list-electronics.csv' and i==0:
                 link = 'https://jlcpcb.com/?from=FUNC · ' + PCB_PRODUCT
@@ -88,8 +88,8 @@ def build(lang, csvname):
             else:
                 total = (math.ceil(qn/lot)*price) if (isinstance(lot,int) and lot>0) else (price*qn)
                 precio=eur(total,comma)
-            L.append("| {r} | {q} | {d} | {l} | {v} | {p} |".format(
-                r=i+1,q=esc(str(row[0])),d=esc(strip(row[2])),l=esc(link),v=esc(var),p=precio))
+            L.append("| {r} | {q} | {d} | {l} | {p} |".format(
+                r=i+1,q=esc(str(row[0])),d=esc(strip(row[2])),l=esc(link),p=precio))
         L.append("")
     return "\n".join(L)+"\n"
 
