@@ -30,7 +30,7 @@ Precios actualizados: **24/09/2026**. Valores orientativos, pueden variar con el
 | 2 | Perno M3 14mm para el soporte del motor | https://s.click.aliexpress.com/e/_c38WdOKJ | 2,54 € |
 | 50cm | Hilo de nailon 1mm | https://s.click.aliexpress.com/e/_c4028B6b | 2,54 € |
 | 32cm | Funda para cables 6mm | https://s.click.aliexpress.com/e/_c4qwLShV | 3,69 € |
-| 1 | Base de madera para la máquina PETALOT (cortada según estas medidas) <br><img src="https://function3d.xyz/wp-content/uploads/2026/04/cotas2.jpg" alt="Wooden base dimensions" width="380"> | https://function3d.xyz/wp-content/uploads/2026/04/cotas2.jpg |  |
+| 1 | Base de madera para la máquina PETALOT (cortada según estas medidas) <br><img src="https://function3d.xyz/wp-content/uploads/2026/04/cotas2.jpg" alt="Wooden base dimensions" width="380"> |  |  |
 
 ## Electrónica para PETALOT
 

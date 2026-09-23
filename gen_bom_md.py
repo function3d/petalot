@@ -86,16 +86,16 @@ def build(lang, csvname):
             link = row[3]
             if f=='parts-list-electronics.csv' and i==0:
                 link = 'https://jlcpcb.com/?from=FUNC · ' + PCB_PRODUCT
+            desc = strip(row[2])
+            if 'Wooden base' in row[2] or 'Base de madera' in row[2]:
+                desc += ' <br><img src="' + WOOD_IMG + '" alt="Wooden base dimensions" width="380">'
             if price is None:
                 precio=''
             else:
                 total = (math.ceil(qn/lot)*price) if (isinstance(lot,int) and lot>0) else (price*qn)
                 precio=eur(total,comma)
             L.append("| {q} | {d} | {l} | {p} |".format(
-                q=esc(str(row[0])),d=esc(strip(row[2])),l=esc(link),p=precio))
-        if f=='parts-list-petalot.csv':
-            comp = WOOD_COMP[lang] + ' <br><img src="' + WOOD_IMG + '" alt="Wooden base dimensions" width="380">'
-            L.append("| 1 | {c} | {l} |  |".format(c=esc(comp), l=WOOD_IMG))
+                q=esc(str(row[0])),d=esc(desc),l=esc(link),p=precio))
         L.append("")
     return "\n".join(L)+"\n"
 
