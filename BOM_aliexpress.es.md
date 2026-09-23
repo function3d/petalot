@@ -8,6 +8,8 @@
 | Herramientas | 42,98 € |
 | **TOTAL (mínimo, sin envío)** | **173,60 €** |
 
+*La PCB no está incluida en el total (se fabrica en JLCPCB). La varilla roscada M6 del cortador tampoco: no se encontró un producto válido en AliExpress.*
+
 ## Máquina PETALOT
 
 | Fila | Cant. | Componente | Enlace | Variación | Precio |
@@ -31,7 +33,7 @@
 
 | Fila | Cant. | Componente | Enlace | Variación | Precio |
 |---|---|---|---|---|---|
-| 1 | 1 | PCB, gerber para fabricar la PCB; solo tienes que subir este archivo zip a jlcpcb.com y pedir tu PCB. | https://jlcpcb.com/?from=FUNC |  |  |
+| 1 | 1 | PCB, gerber para fabricar la PCB; solo tienes que subir este archivo zip a jlcpcb.com y pedir tu PCB. | https://jlcpcb.com/?from=FUNC · https://function3d.xyz/product/pcb-for-petalot |  |  |
 | 2 | 1 | Fuente de alimentación 12v 5A | https://s.click.aliexpress.com/e/_c2zdHPX3 |  | 6,09 € |
 | 3 | 1 | Wemos D1 MINI V4.0 (cualquier otra versión de WeMos que comparta los pines de salida debería servir) | https://s.click.aliexpress.com/e/_DCS2eTP | D1 MINI V4.0 | 2,99 € |
 | 4 | 1 | Mini DC-DC 12-24V a 5V 3A Step Down | https://s.click.aliexpress.com/e/_DDFlE5x |  | 4,99 € |

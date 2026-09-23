@@ -26,6 +26,9 @@ COLS = [['Row','Qty','Component','Link','Variation','Price'],
 TOT_HEAD = ['Totals','Totales']
 TOT_COLS = [['List','Total'],['Lista','Total']]
 TOTAL_LBL = ['TOTAL (minimum, no shipping)','TOTAL (mínimo, sin envío)']
+TOT_NOTE = ['*The PCB is not included in the total (it is fabricated at JLCPCB). The M6 threaded rod for the Bottle Cutter is also not included: no valid AliExpress product was found.*',
+            '*La PCB no está incluida en el total (se fabrica en JLCPCB). La varilla roscada M6 del cortador tampoco: no se encontró un producto válido en AliExpress.*']
+PCB_PRODUCT = 'https://function3d.xyz/product/pcb-for-petalot'
 
 def strip(h):
     h=re.sub(r'<br\s*/?>',' ',h); h=re.sub(r'<[^>]+>','',h); return re.sub(r'\s+',' ',h).strip()
@@ -57,6 +60,7 @@ def build(lang, csvname):
     L.append("| "+" | ".join(TOT_COLS[lang])+" |"); L.append("|---|---|")
     for f in FILES: L.append(f"| {HEAD[f][lang]} | {eur(totals[f],comma)} |")
     L.append(f"| **{TOTAL_LBL[lang]}** | **{eur(grand,comma)}** |"); L.append("")
+    L.append(TOT_NOTE[lang]); L.append("")
     # Tablas por CSV
     for f in FILES:
         rows=cache[f]
@@ -66,13 +70,16 @@ def build(lang, csvname):
         for i,row in enumerate(rows):
             price,lot,st = D[f].get(i,(None,None,'ok'))
             qn=qty_num(row[0]); var=row[4] if len(row)>4 else ''
+            link = row[3]
+            if f=='parts-list-electronics.csv' and i==0:
+                link = link + ' · ' + PCB_PRODUCT
             if price is None:
                 precio=''
             else:
                 total = (math.ceil(qn/lot)*price) if (isinstance(lot,int) and lot>0) else (price*qn)
                 precio=eur(total,comma)
             L.append("| {r} | {q} | {d} | {l} | {v} | {p} |".format(
-                r=i+1,q=esc(str(row[0])),d=esc(strip(row[2])),l=esc(row[3]),v=esc(var),p=precio))
+                r=i+1,q=esc(str(row[0])),d=esc(strip(row[2])),l=esc(link),v=esc(var),p=precio))
         L.append("")
     return "\n".join(L)+"\n"
 

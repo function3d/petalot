@@ -8,6 +8,8 @@
 | Tools | 42.98 € |
 | **TOTAL (minimum, no shipping)** | **173.60 €** |
 
+*The PCB is not included in the total (it is fabricated at JLCPCB). The M6 threaded rod for the Bottle Cutter is also not included: no valid AliExpress product was found.*
+
 ## PETALOT machine
 
 | Row | Qty | Component | Link | Variation | Price |
@@ -31,7 +33,7 @@
 
 | Row | Qty | Component | Link | Variation | Price |
 |---|---|---|---|---|---|
-| 1 | 1 | PCB, gerber for PCB fabrication, just upload this zip file to jlcpcb.com and order your PCB. | https://jlcpcb.com/?from=FUNC |  |  |
+| 1 | 1 | PCB, gerber for PCB fabrication, just upload this zip file to jlcpcb.com and order your PCB. | https://jlcpcb.com/?from=FUNC · https://function3d.xyz/product/pcb-for-petalot |  |  |
 | 2 | 1 | Power Supply 12v 5A | https://s.click.aliexpress.com/e/_c2zdHPX3 |  | 6.09 € |
 | 3 | 1 | Wemos D1 MINI V4.0 (any other version of WeMos that shares the output pins should work) | https://s.click.aliexpress.com/e/_DCS2eTP | D1 MINI V4.0 | 2.99 € |
 | 4 | 1 | Mini DC-DC 12-24V To 5V 3A Step Down | https://s.click.aliexpress.com/e/_DDFlE5x |  | 4.99 € |
