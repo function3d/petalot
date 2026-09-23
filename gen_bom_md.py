@@ -21,8 +21,8 @@ HEAD = {
  'parts-list-tools.csv':     ('Tools',                  'Herramientas'),
 }
 STAT = {'ok':('OK','OK'),'pcb':('PCB (JLC, ignored)','PCB (JLC, ignorada)'),'nolink':('NO LINK (M6 rod)','SIN ENLACE (varilla M6)')}
-COLS = [['Row','Qty','Component','Link','Variation','Price','Lots','Subtotal','Status','Notes'],
-        ['Fila','Cant.','Componente','Enlace','Variación','Precio','Lotes','Subtotal','Estado','Notas']]
+COLS = [['Row','Qty','Component','Link','Variation','Price'],
+        ['Fila','Cant.','Componente','Enlace','Variación','Precio']]
 TOT_HEAD = ['Totals','Totales']
 TOT_COLS = [['List','Total'],['Lista','Total']]
 TOTAL_LBL = ['TOTAL (minimum, no shipping)','TOTAL (mínimo, sin envío)']
@@ -51,15 +51,12 @@ def build(lang, csvname):
             price,lot,st = D[f].get(i,(None,None,'ok'))
             qn=qty_num(row[0]); var=row[4] if len(row)>4 else ''
             if price is None:
-                precio=lotes=sub=''
+                precio=''
             else:
-                if isinstance(lot,int) and lot>0:
-                    n=math.ceil(qn/lot); lotes=f"{n}×{lot}"; sub=eur(n*price,comma); t+=n*price
-                else:
-                    lotes=f"{qn}"; sub=eur(price*qn,comma); t+=price*qn
-                precio=eur(price,comma)
-            L.append("| {r} | {q} | {d} | {l} | {v} | {p} | {lo} | {s} | {e} |  |".format(
-                r=i+1,q=esc(str(row[0])),d=esc(strip(row[2])),l=esc(row[3]),v=esc(var),p=precio,lo=lotes,s=sub,e=esc(STAT[st][lang])))
+                total = (math.ceil(qn/lot)*price) if (isinstance(lot,int) and lot>0) else (price*qn)
+                precio=eur(total,comma); t+=total
+            L.append("| {r} | {q} | {d} | {l} | {v} | {p} |".format(
+                r=i+1,q=esc(str(row[0])),d=esc(strip(row[2])),l=esc(row[3]),v=esc(var),p=precio))
         totals[f]=t; grand+=t
         L.append("")
     L.append(f"## {TOT_HEAD[lang]}"); L.append("")
