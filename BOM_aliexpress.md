@@ -10,7 +10,7 @@ Prices updated: **2026-09-24**. Indicative values, they may vary over time — c
 | Tools | 42.98 € |
 | **TOTAL (minimum, no shipping)** | **173.60 €** |
 
-*The PCB is not included in the total (it is fabricated at JLCPCB). The 48cm M6 threaded rod for the Bottle Cutter is also not included: no valid AliExpress product was found.*
+*Not included in the total: the PCB (fabricated at JLCPCB), the 48cm M6 threaded rod for the Bottle Cutter (no valid AliExpress product found) and the wooden base for the PETALOT machine (cut to the dimensions in the PETALOT table).*
 
 ## PETALOT machine
 
@@ -30,6 +30,7 @@ Prices updated: **2026-09-24**. Indicative values, they may vary over time — c
 | 2 | M3 14mm bolt for motor mount | https://s.click.aliexpress.com/e/_c38WdOKJ | 2.54 € |
 | 50cm | Nylon thread 1mm | https://s.click.aliexpress.com/e/_c4028B6b | 2.54 € |
 | 32cm | Cable Sleeve 6mm | https://s.click.aliexpress.com/e/_c4qwLShV | 3.69 € |
+| 1 | Wooden base for the PETALOT machine (cut to these dimensions) <br><img src="https://function3d.xyz/wp-content/uploads/2026/04/cotas2.jpg" alt="Wooden base dimensions" width="380"> | https://function3d.xyz/wp-content/uploads/2026/04/cotas2.jpg |  |
 
 ## Electronics for PETALOT
 
