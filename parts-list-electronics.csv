@@ -1,6 +1,6 @@
 qty,image_url,description,aliexpress_link
 1,https://function3d.xyz/wp-content/uploads/2025/08/14614565_1_top_purple_small-300x214.png,"PCB, <a href=""https://github.com/function3d/petalot/raw/master/Schematic/Gerber_v1.1_2023-01-02.zip"">gerber</a> for PCB fabrication, just upload this <a href=""https://github.com/function3d/petalot/raw/master/Schematic/Gerber_v1.1_2023-01-02.zip"">zip</a> file to <a href=""https://jlcpcb.com/?from=FUNC"">jlcpcb.com</a> and order your PCB.",https://jlcpcb.com/?from=FUNC
-1,https://function3d.xyz/wp-content/uploads/2025/07/Power-Supply-300x300.webp,"Power Supply <strong>12v 5A</strong>",https://s.click.aliexpress.com/e/_c3bjEbkn
+1,https://function3d.xyz/wp-content/uploads/2025/07/Power-Supply-300x300.webp,"Power Supply <strong>12v 5A</strong>",https://s.click.aliexpress.com/e/_c2zdHPX3
 1,https://function3d.xyz/wp-content/uploads/2025/07/wemos-300x278.webp,"Wemos <strong>D1 MINI</strong> V4.0 (any other version of WeMos that shares the output pins should work)",https://s.click.aliexpress.com/e/_DCS2eTP
 1,https://function3d.xyz/wp-content/uploads/2025/07/DC-DC-300x300.webp,"Mini DC-DC 12-24V To 5V 3A <strong>Step Down</strong>",https://s.click.aliexpress.com/e/_DDFlE5x
 1,https://function3d.xyz/wp-content/uploads/2025/07/Micro-Limit-Switch-Roller-Lever-Arm-300x300.webp,"Mini Micro Limit Switch <strong>Roller Lever Arm</strong> (MS-1A-14.5-P)",https://s.click.aliexpress.com/e/_DdoNg8z
@@ -17,6 +17,6 @@ qty,image_url,description,aliexpress_link
 25cm,https://function3d.xyz/wp-content/uploads/2025/07/wire.webp,"Wire <strong>2P 18AWG</strong> (I use 25cm from the hotend heater cable)",https://s.click.aliexpress.com/e/_Dlnn1bd
 1,https://function3d.xyz/wp-content/uploads/2025/07/IEC320-300x300.webp,"10A 250V Male Power Socket 3 Pin IEC320 <strong>switch + Fuse</strong>",https://s.click.aliexpress.com/e/_DmuNpxf
 9+2,https://function3d.xyz/wp-content/uploads/2025/07/terminals-1.webp,"Terminal Wire Conector Crimp Insulated Ferrule <strong>20AWG</strong> (PCB power, IEC320, heater) <strong>24AWG</strong> (micro switch)",https://s.click.aliexpress.com/e/_oEJer1l
-5+5,https://function3d.xyz/wp-content/uploads/2025/07/Insulating-Sheath-300x282.webp,"<strong>4.8mm</strong> <strong>Female Terminal</strong> and <strong>Insulating Sheath</strong>",https://s.click.aliexpress.com/e/_oEGmvyL
+5+5,https://function3d.xyz/wp-content/uploads/2025/07/Insulating-Sheath-300x282.webp,"<strong>4.8mm</strong> <strong>Female Terminal</strong> and <strong>Insulating Sheath</strong>",https://s.click.aliexpress.com/e/_c2xFTcyv
 25mm,https://function3d.xyz/wp-content/uploads/2026/03/tube.jpg,"<strong>Heat Shrink Tube 5mm, for filament/strip sensor</strong>",https://s.click.aliexpress.com/e/_c3knUgat
 40mm,https://function3d.xyz/wp-content/uploads/2026/03/tube.jpg,"<strong>Heat Shrink Tube 2mm, for filament/strip sensor</strong>",https://s.click.aliexpress.com/e/_c3knUgat
