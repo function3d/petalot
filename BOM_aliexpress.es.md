@@ -10,7 +10,7 @@ Precios actualizados: **24/09/2026**. Valores orientativos, pueden variar con el
 | Herramientas | 42,98 € |
 | **TOTAL (mínimo, sin envío)** | **173,60 €** |
 
-*La PCB no está incluida en el total (se fabrica en JLCPCB). La varilla roscada M6 del cortador tampoco: no se encontró un producto válido en AliExpress.*
+*La PCB no está incluida en el total (se fabrica en JLCPCB). La varilla roscada 48cm M6 del cortador tampoco: no se encontró un producto válido en AliExpress.*
 
 ## Máquina PETALOT
 

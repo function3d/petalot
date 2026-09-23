@@ -26,8 +26,8 @@ COLS = [['Row','Qty','Component','Link','Price'],
 TOT_HEAD = ['Totals','Totales']
 TOT_COLS = [['List','Total'],['Lista','Total']]
 TOTAL_LBL = ['TOTAL (minimum, no shipping)','TOTAL (mínimo, sin envío)']
-TOT_NOTE = ['*The PCB is not included in the total (it is fabricated at JLCPCB). The M6 threaded rod for the Bottle Cutter is also not included: no valid AliExpress product was found.*',
-            '*La PCB no está incluida en el total (se fabrica en JLCPCB). La varilla roscada M6 del cortador tampoco: no se encontró un producto válido en AliExpress.*']
+TOT_NOTE = ['*The PCB is not included in the total (it is fabricated at JLCPCB). The 48cm M6 threaded rod for the Bottle Cutter is also not included: no valid AliExpress product was found.*',
+            '*La PCB no está incluida en el total (se fabrica en JLCPCB). La varilla roscada 48cm M6 del cortador tampoco: no se encontró un producto válido en AliExpress.*']
 PCB_PRODUCT = 'https://function3d.xyz/product/pcb-for-petalot'
 
 def _today(lang):
