@@ -72,7 +72,7 @@ def build(lang, csvname):
             qn=qty_num(row[0]); var=row[4] if len(row)>4 else ''
             link = row[3]
             if f=='parts-list-electronics.csv' and i==0:
-                link = link + ' · ' + PCB_PRODUCT
+                link = 'https://jlcpcb.com/?from=FUNC · ' + PCB_PRODUCT
             if price is None:
                 precio=''
             else:
