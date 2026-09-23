@@ -33,7 +33,7 @@
 
 | Row | Qty | Component | Link | Variation | Price |
 |---|---|---|---|---|---|
-| 1 | 1 | PCB, gerber for PCB fabrication, just upload this zip file to jlcpcb.com and order your PCB. | https://jlcpcb.com/?from=FUNC · https://function3d.xyz/product/pcb-for-petalot |  |  |
+| 1 | 1 | PCB, gerber for PCB fabrication, just upload this zip file to jlcpcb.com and order your PCB. Or buy a ready-made PCB. | https://jlcpcb.com/?from=FUNC · https://function3d.xyz/product/pcb-for-petalot |  |  |
 | 2 | 1 | Power Supply 12v 5A | https://s.click.aliexpress.com/e/_c2zdHPX3 |  | 6.09 € |
 | 3 | 1 | Wemos D1 MINI V4.0 (any other version of WeMos that shares the output pins should work) | https://s.click.aliexpress.com/e/_DCS2eTP | D1 MINI V4.0 | 2.99 € |
 | 4 | 1 | Mini DC-DC 12-24V To 5V 3A Step Down | https://s.click.aliexpress.com/e/_DDFlE5x |  | 4.99 € |
