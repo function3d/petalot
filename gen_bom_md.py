@@ -2,7 +2,7 @@
 # Genera BOM_aliexpress.md (EN) y BOM_aliexpress.es.md (ES) desde los CSV de partes.
 # Uso: python3 gen_bom_md.py
 # Precios concretados a mano (variación elegida, lote mínimo). Actualizar D si cambian.
-import csv, re, math, os, json
+import csv, re, math, os
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 
@@ -21,16 +21,11 @@ HEAD = {
  'parts-list-tools.csv':     ('Tools',                  'Herramientas'),
 }
 STAT = {'ok':('OK','OK'),'pcb':('PCB (JLC, ignored)','PCB (JLC, ignorada)'),'nolink':('NO LINK (M6 rod)','SIN ENLACE (varilla M6)')}
-COLS = [['Row','Qty','Component','Product','Link','Variation','Price','Lots','Subtotal','Status','Notes'],
-        ['Fila','Cant.','Componente','Producto','Enlace','Variación','Precio','Lotes','Subtotal','Estado','Notas']]
+COLS = [['Row','Qty','Component','Link','Variation','Price','Lots','Subtotal','Status','Notes'],
+        ['Fila','Cant.','Componente','Enlace','Variación','Precio','Lotes','Subtotal','Estado','Notas']]
 TOT_HEAD = ['Totals','Totales']
 TOT_COLS = [['List','Total'],['Lista','Total']]
 TOTAL_LBL = ['TOTAL (minimum, no shipping)','TOTAL (mínimo, sin envío)']
-
-try:
-    TITLES = json.load(open(os.path.join(HERE,'bom_titles.json'),encoding='utf-8'))
-except Exception:
-    TITLES = {}
 
 def strip(h):
     h=re.sub(r'<br\s*/?>',' ',h); h=re.sub(r'<[^>]+>','',h); return re.sub(r'\s+',' ',h).strip()
@@ -55,7 +50,6 @@ def build(lang, csvname):
         for i,row in enumerate(rows):
             price,lot,st = D[f].get(i,(None,None,'ok'))
             qn=qty_num(row[0]); var=row[4] if len(row)>4 else ''
-            title=TITLES.get(row[3],'')
             if price is None:
                 precio=lotes=sub=''
             else:
@@ -64,8 +58,8 @@ def build(lang, csvname):
                 else:
                     lotes=f"{qn}"; sub=eur(price*qn,comma); t+=price*qn
                 precio=eur(price,comma)
-            L.append("| {r} | {q} | {d} | {t} | {l} | {v} | {p} | {lo} | {s} | {e} |  |".format(
-                r=i+1,q=esc(str(row[0])),d=esc(strip(row[2])),t=esc(title),l=esc(row[3]),v=esc(var),p=precio,lo=lotes,s=sub,e=esc(STAT[st][lang])))
+            L.append("| {r} | {q} | {d} | {l} | {v} | {p} | {lo} | {s} | {e} |  |".format(
+                r=i+1,q=esc(str(row[0])),d=esc(strip(row[2])),l=esc(row[3]),v=esc(var),p=precio,lo=lotes,s=sub,e=esc(STAT[st][lang])))
         totals[f]=t; grand+=t
         L.append("")
     L.append(f"## {TOT_HEAD[lang]}"); L.append("")
