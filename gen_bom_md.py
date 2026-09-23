@@ -26,8 +26,8 @@ COLS = [['Qty','Component','Link','Price'],
 TOT_HEAD = ['Totals','Totales']
 TOT_COLS = [['List','Total'],['Lista','Total']]
 TOTAL_LBL = ['TOTAL (minimum, no shipping)','TOTAL (mínimo, sin envío)']
-TOT_NOTE = ['*Not included in the total: the PCB (fabricated at JLCPCB), the 48cm M6 threaded rod for the Bottle Cutter (no valid AliExpress product found) and the wooden base for the PETALOT machine (cut to the dimensions in the PETALOT table).*',
-            '*No incluidos en el total: la PCB (se fabrica en JLCPCB), la varilla roscada 48cm M6 del cortador (sin producto válido en AliExpress) y la base de madera de la máquina PETALOT (cortada según las medidas de la tabla de PETALOT).*']
+TOT_NOTE = ['*Not included in the total: the PCB (fabricated at JLCPCB), the 48cm M6 threaded rod for the Bottle Cutter (no valid AliExpress product found) and the wooden base for the PETALOT machine (cut to the dimensions in [this image](https://function3d.xyz/wp-content/uploads/2026/04/cotas2.jpg)).*',
+            '*No incluidos en el total: la PCB (se fabrica en JLCPCB), la varilla roscada 48cm M6 del cortador (sin producto válido en AliExpress) y la base de madera de la máquina PETALOT (cortada según las medidas de [esta imagen](https://function3d.xyz/wp-content/uploads/2026/04/cotas2.jpg)).*']
 PCB_PRODUCT = 'https://function3d.xyz/product/pcb-for-petalot'
 WOOD_IMG = 'https://function3d.xyz/wp-content/uploads/2026/04/cotas2.jpg'
 WOOD_COMP = ['Wooden base for the PETALOT machine (cut to these dimensions)',

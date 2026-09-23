@@ -10,7 +10,7 @@ Prices updated: **2026-09-24**. Indicative values, they may vary over time — c
 | Tools | 42.98 € |
 | **TOTAL (minimum, no shipping)** | **173.60 €** |
 
-*Not included in the total: the PCB (fabricated at JLCPCB), the 48cm M6 threaded rod for the Bottle Cutter (no valid AliExpress product found) and the wooden base for the PETALOT machine (cut to the dimensions in the PETALOT table).*
+*Not included in the total: the PCB (fabricated at JLCPCB), the 48cm M6 threaded rod for the Bottle Cutter (no valid AliExpress product found) and the wooden base for the PETALOT machine (cut to the dimensions in [this image](https://function3d.xyz/wp-content/uploads/2026/04/cotas2.jpg)).*
 
 ## PETALOT machine
 

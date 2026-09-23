@@ -10,7 +10,7 @@ Precios actualizados: **24/09/2026**. Valores orientativos, pueden variar con el
 | Herramientas | 42,98 € |
 | **TOTAL (mínimo, sin envío)** | **173,60 €** |
 
-*No incluidos en el total: la PCB (se fabrica en JLCPCB), la varilla roscada 48cm M6 del cortador (sin producto válido en AliExpress) y la base de madera de la máquina PETALOT (cortada según las medidas de la tabla de PETALOT).*
+*No incluidos en el total: la PCB (se fabrica en JLCPCB), la varilla roscada 48cm M6 del cortador (sin producto válido en AliExpress) y la base de madera de la máquina PETALOT (cortada según las medidas de [esta imagen](https://function3d.xyz/wp-content/uploads/2026/04/cotas2.jpg)).*
 
 ## Máquina PETALOT
 
