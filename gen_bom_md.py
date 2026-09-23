@@ -2,7 +2,7 @@
 # Genera BOM_aliexpress.md (EN) y BOM_aliexpress.es.md (ES) desde los CSV de partes.
 # Uso: python3 gen_bom_md.py
 # Precios concretados a mano (variación elegida, lote mínimo). Actualizar D si cambian.
-import csv, re, math, os
+import csv, re, math, os, datetime
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 
@@ -30,6 +30,10 @@ TOT_NOTE = ['*The PCB is not included in the total (it is fabricated at JLCPCB).
             '*La PCB no está incluida en el total (se fabrica en JLCPCB). La varilla roscada M6 del cortador tampoco: no se encontró un producto válido en AliExpress.*']
 PCB_PRODUCT = 'https://function3d.xyz/product/pcb-for-petalot'
 
+def _today(lang):
+    d = datetime.date.today()
+    return d.isoformat() if lang==0 else d.strftime('%d/%m/%Y')
+
 def strip(h):
     h=re.sub(r'<br\s*/?>',' ',h); h=re.sub(r'<[^>]+>','',h); return re.sub(r'\s+',' ',h).strip()
 def esc(s): return (s or '').replace('|','\\|')
@@ -55,6 +59,12 @@ def build(lang, csvname):
             t += (math.ceil(qn/lot)*price) if (isinstance(lot,int) and lot>0) else (price*qn)
         totals[f]=t; grand+=t
     L=[]
+    # Fecha de los precios
+    if lang==0:
+        L.append(f"Prices updated: **{_today(0)}**. Indicative values, they may vary over time — check AliExpress for the current price.")
+    else:
+        L.append(f"Precios actualizados: **{_today(1)}**. Valores orientativos, pueden variar con el tiempo — consulta el precio actual en AliExpress.")
+    L.append("")
     # Totales (al principio)
     L.append(f"## {TOT_HEAD[lang]}"); L.append("")
     L.append("| "+" | ".join(TOT_COLS[lang])+" |"); L.append("|---|---|")
