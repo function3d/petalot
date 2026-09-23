@@ -1,3 +1,13 @@
+## Totals
+
+| List | Total |
+|---|---|
+| PETALOT machine | 39.02 € |
+| Electronics for PETALOT | 71.02 € |
+| Bottle Cutter | 20.58 € |
+| Tools | 42.98 € |
+| **TOTAL (minimum, no shipping)** | **173.60 €** |
+
 ## PETALOT machine
 
 | Row | Qty | Component | Link | Variation | Price |
@@ -68,14 +78,4 @@
 | 4 | 1 | Solder Wire Tin 1mm | https://s.click.aliexpress.com/e/_c44dnlgz | 1,0 mm | 5.59 € |
 | 5 | 1 | Crimper Cable Cutter Wire Stripper Stripping Crimping Pliers Terminal | https://s.click.aliexpress.com/e/_oodj3Yb |  | 9.19 € |
 | 6 | 1 | Crimping Pliers Ferrule Sleeves Tubular Terminal | https://s.click.aliexpress.com/e/_oEekGpt |  | 9.29 € |
-
-## Totals
-
-| List | Total |
-|---|---|
-| PETALOT machine | 39.02 € |
-| Electronics for PETALOT | 71.02 € |
-| Bottle Cutter | 20.58 € |
-| Tools | 42.98 € |
-| **TOTAL (minimum, no shipping)** | **173.60 €** |
 

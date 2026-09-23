@@ -1,3 +1,13 @@
+## Totales
+
+| Lista | Total |
+|---|---|
+| Máquina PETALOT | 39,02 € |
+| Electrónica para PETALOT | 71,02 € |
+| Cortador de botellas | 20,58 € |
+| Herramientas | 42,98 € |
+| **TOTAL (mínimo, sin envío)** | **173,60 €** |
+
 ## Máquina PETALOT
 
 | Fila | Cant. | Componente | Enlace | Variación | Precio |
@@ -68,14 +78,4 @@
 | 4 | 1 | Hilo de estaño para soldar 1mm | https://s.click.aliexpress.com/e/_c44dnlgz | 1,0 mm | 5,59 € |
 | 5 | 1 | Alicate crimpador, cortacables y pelacables para terminales | https://s.click.aliexpress.com/e/_oodj3Yb |  | 9,19 € |
 | 6 | 1 | Alicate de crimpar para terminales tubulares y fundas | https://s.click.aliexpress.com/e/_oEekGpt |  | 9,29 € |
-
-## Totales
-
-| Lista | Total |
-|---|---|
-| Máquina PETALOT | 39,02 € |
-| Electrónica para PETALOT | 71,02 € |
-| Cortador de botellas | 20,58 € |
-| Herramientas | 42,98 € |
-| **TOTAL (mínimo, sin envío)** | **173,60 €** |
 

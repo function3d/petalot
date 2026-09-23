@@ -39,14 +39,30 @@ def qty_num(q):
 
 def build(lang, csvname):
     comma = (lang==1)
-    L=[]; totals={}; grand=0.0
+    # Primera pasada: totales
+    totals={}; grand=0.0; cache={}
     for f in FILES:
-        fn = csvname(f)
-        rows=[r for r in csv.reader(open(os.path.join(HERE,fn),newline='',encoding='utf-8')) if r][1:]
+        rows=[r for r in csv.reader(open(os.path.join(HERE,csvname(f)),newline='',encoding='utf-8')) if r][1:]
+        cache[f]=rows
+        t=0.0
+        for i,row in enumerate(rows):
+            price,lot,st = D[f].get(i,(None,None,'ok'))
+            if price is None: continue
+            qn=qty_num(row[0])
+            t += (math.ceil(qn/lot)*price) if (isinstance(lot,int) and lot>0) else (price*qn)
+        totals[f]=t; grand+=t
+    L=[]
+    # Totales (al principio)
+    L.append(f"## {TOT_HEAD[lang]}"); L.append("")
+    L.append("| "+" | ".join(TOT_COLS[lang])+" |"); L.append("|---|---|")
+    for f in FILES: L.append(f"| {HEAD[f][lang]} | {eur(totals[f],comma)} |")
+    L.append(f"| **{TOTAL_LBL[lang]}** | **{eur(grand,comma)}** |"); L.append("")
+    # Tablas por CSV
+    for f in FILES:
+        rows=cache[f]
         L.append(f"## {HEAD[f][lang]}"); L.append("")
         L.append("| "+" | ".join(COLS[lang])+" |")
         L.append("|"+"---|"*len(COLS[lang]))
-        t=0.0
         for i,row in enumerate(rows):
             price,lot,st = D[f].get(i,(None,None,'ok'))
             qn=qty_num(row[0]); var=row[4] if len(row)>4 else ''
@@ -54,15 +70,10 @@ def build(lang, csvname):
                 precio=''
             else:
                 total = (math.ceil(qn/lot)*price) if (isinstance(lot,int) and lot>0) else (price*qn)
-                precio=eur(total,comma); t+=total
+                precio=eur(total,comma)
             L.append("| {r} | {q} | {d} | {l} | {v} | {p} |".format(
                 r=i+1,q=esc(str(row[0])),d=esc(strip(row[2])),l=esc(row[3]),v=esc(var),p=precio))
-        totals[f]=t; grand+=t
         L.append("")
-    L.append(f"## {TOT_HEAD[lang]}"); L.append("")
-    L.append("| "+" | ".join(TOT_COLS[lang])+" |"); L.append("|---|---|")
-    for f in FILES: L.append(f"| {HEAD[f][lang]} | {eur(totals[f],comma)} |")
-    L.append(f"| **{TOTAL_LBL[lang]}** | **{eur(grand,comma)}** |"); L.append("")
     return "\n".join(L)+"\n"
 
 def en_name(f): return f
