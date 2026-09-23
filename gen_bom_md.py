@@ -21,8 +21,8 @@ HEAD = {
  'parts-list-tools.csv':     ('Tools',                  'Herramientas'),
 }
 STAT = {'ok':('OK','OK'),'pcb':('PCB (JLC, ignored)','PCB (JLC, ignorada)'),'nolink':('NO LINK (M6 rod)','SIN ENLACE (varilla M6)')}
-COLS = [['Row','Qty','Component','Link','Price'],
-        ['Fila','Cant.','Componente','Enlace','Precio']]
+COLS = [['Qty','Component','Link','Price'],
+        ['Cant.','Componente','Enlace','Precio']]
 TOT_HEAD = ['Totals','Totales']
 TOT_COLS = [['List','Total'],['Lista','Total']]
 TOTAL_LBL = ['TOTAL (minimum, no shipping)','TOTAL (mínimo, sin envío)']
@@ -88,8 +88,8 @@ def build(lang, csvname):
             else:
                 total = (math.ceil(qn/lot)*price) if (isinstance(lot,int) and lot>0) else (price*qn)
                 precio=eur(total,comma)
-            L.append("| {r} | {q} | {d} | {l} | {p} |".format(
-                r=i+1,q=esc(str(row[0])),d=esc(strip(row[2])),l=esc(link),p=precio))
+            L.append("| {q} | {d} | {l} | {p} |".format(
+                q=esc(str(row[0])),d=esc(strip(row[2])),l=esc(link),p=precio))
         L.append("")
     return "\n".join(L)+"\n"
 
