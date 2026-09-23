@@ -23,7 +23,7 @@ Prices updated: **2026-09-24**. Indicative values, they may vary over time — c
 | 5 | 1 | V6 Stainless steel nozzle 0.4 mm | https://s.click.aliexpress.com/e/_c3ejwXiT | 1.75mm, 0.4mm | 0.26 € |
 | 6 | 4 | Bearing 8x22x7 mm 608RS | https://s.click.aliexpress.com/e/_DFmmUC5 | 608 RS | 3.69 € |
 | 7 | 1 | 90 Degree Angle Bracket 20x20mm | https://s.click.aliexpress.com/e/_c4VSPnbL |  | 2.69 € |
-| 8 | 2 | M8x105mm Threaded Rod (I use rod thereaded cut to 10.5cm) | https://s.click.aliexpress.com/e/_DeTWIUt | M8x110mm | 6.78 € |
+| 8 | 2 | M8x110mm Threaded Rod (I use rod thereaded cut to 10.5cm) | https://s.click.aliexpress.com/e/_DeTWIUt | M8x110mm | 6.78 € |
 | 9 | 4 | M8 Hex Nylon Insert Lock Nut Self-locking Locknut | https://s.click.aliexpress.com/e/_c31WJI0D | M8 | 3.39 € |
 | 10 | 3 | Screw M3 8mm for the motor gear, electronic box and motor mount | https://s.click.aliexpress.com/e/_c38WdOKJ | M3, 8 mm | 1.94 € |
 | 11 | 1 | M3 nut for the motor gear | https://s.click.aliexpress.com/e/_c4DrxHSF | M3 | 3.49 € |

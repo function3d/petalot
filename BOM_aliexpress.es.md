@@ -23,7 +23,7 @@ Precios actualizados: **24/09/2026**. Valores orientativos, pueden variar con el
 | 5 | 1 | Boquilla V6 de acero inoxidable 0.4 mm | https://s.click.aliexpress.com/e/_c3ejwXiT | 1.75mm, 0.4mm | 0,26 € |
 | 6 | 4 | Rodamiento 8x22x7 mm 608RS | https://s.click.aliexpress.com/e/_DFmmUC5 | 608 RS | 3,69 € |
 | 7 | 1 | Escuadra en ángulo de 90 grados 20x20mm | https://s.click.aliexpress.com/e/_c4VSPnbL |  | 2,69 € |
-| 8 | 2 | M8x105mm varilla roscada (yo uso varilla roscada cortada a 10,5 cm) | https://s.click.aliexpress.com/e/_DeTWIUt | M8x110mm | 6,78 € |
+| 8 | 2 | M8x110mm varilla roscada (yo uso varilla roscada cortada a 10,5 cm) | https://s.click.aliexpress.com/e/_DeTWIUt | M8x110mm | 6,78 € |
 | 9 | 4 | Tuerca autoblocante hexagonal M8 con inserción de nailon | https://s.click.aliexpress.com/e/_c31WJI0D | M8 | 3,39 € |
 | 10 | 3 | Tornillo M3 8mm para el engranaje del motor, caja electrónica y soporte del motor | https://s.click.aliexpress.com/e/_c38WdOKJ | M3, 8 mm | 1,94 € |
 | 11 | 1 | Tuerca M3 para el engranaje del motor | https://s.click.aliexpress.com/e/_c4DrxHSF | M3 | 3,49 € |
