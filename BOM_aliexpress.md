@@ -37,19 +37,19 @@ Prices updated: **2026-09-24**. Indicative values, they may vary over time — c
 | Qty | Component | Link | Price |
 |---|---|---|---|
 | 1 | PCB, gerber for PCB fabrication, just upload this zip file to jlcpcb.com and order your PCB. Or buy a ready-made PCB. | https://jlcpcb.com/?from=FUNC · https://function3d.xyz/product/pcb-for-petalot |  |
-| 1 | Power Supply 12v 5A | https://s.click.aliexpress.com/e/_c2zdHPX3 | 6.09 € |
 | 1 | Wemos D1 MINI V4.0 (any other version of WeMos that shares the output pins should work) | https://s.click.aliexpress.com/e/_DCS2eTP | 2.99 € |
 | 1 | Mini DC-DC 12-24V To 5V 3A Step Down | https://s.click.aliexpress.com/e/_DDFlE5x | 4.99 € |
-| 1 | Mini Micro Limit Switch Roller Lever Arm (MS-1A-14.5-P) | https://s.click.aliexpress.com/e/_DdoNg8z | 2.13 € |
 | 1 | A4988 stepper motor driver+heat sink (It is quite easy to burn it, especially if you are a beginner, better 2 units) | https://s.click.aliexpress.com/e/_c32zgNiZ | 1.50 € |
-| 1 | Nema 17 stepper motor height >=38mm D shaped shaft (17HS4401S-Dupont) | https://s.click.aliexpress.com/e/_c39SiyRr | 11.19 € |
 | 1 | IRLZ44N MOSFET | https://s.click.aliexpress.com/e/_DdfBlgH | 3.09 € |
-| 1 | Hotend MK8 12V 40W | https://s.click.aliexpress.com/e/_DnlMNy5 | 3.65 € |
 | 1 | capacitor 16V 100uf | https://s.click.aliexpress.com/e/_optaFrN | 2.27 € |
 | 1 | pin header Male and Female | https://s.click.aliexpress.com/e/_DcGRnY9 | 3.79 € |
 | 3 | Terminal Block Connector 2P | https://s.click.aliexpress.com/e/_DkqRgFn | 0.83 € |
 | 1 | 10K ohms resistors R2 | https://s.click.aliexpress.com/e/_DeT9AAz | 1.70 € |
 | 1 | 2K ohms resistors for R1 if firmware version >=1.4 | https://s.click.aliexpress.com/e/_DeT9AAz | 2.18 € |
+| 1 | Power Supply 12v 5A | https://s.click.aliexpress.com/e/_c2zdHPX3 | 6.09 € |
+| 1 | Mini Micro Limit Switch Roller Lever Arm (MS-1A-14.5-P) | https://s.click.aliexpress.com/e/_DdoNg8z | 2.13 € |
+| 1 | Nema 17 stepper motor height >=38mm D shaped shaft (17HS4401S-Dupont) | https://s.click.aliexpress.com/e/_c39SiyRr | 11.19 € |
+| 1 | Hotend MK8 12V 40W | https://s.click.aliexpress.com/e/_DnlMNy5 | 3.65 € |
 | 30cm | Wire 2P 30AWG (for limit switch filament sensor, digital signal, I use the very thin wires stripped from an old LPT1 printer cable) | https://s.click.aliexpress.com/e/_Dlnn1bd | 0.72 € |
 | 25cm | Wire 2P 18AWG (I use 25cm from the hotend heater cable) | https://s.click.aliexpress.com/e/_Dlnn1bd | 1.62 € |
 | 1 | 10A 250V Male Power Socket 3 Pin IEC320 switch + Fuse | https://s.click.aliexpress.com/e/_DmuNpxf | 2.36 € |

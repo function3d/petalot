@@ -37,19 +37,19 @@ Precios actualizados: **24/09/2026**. Valores orientativos, pueden variar con el
 | Cant. | Componente | Enlace | Precio |
 |---|---|---|---|
 | 1 | PCB, gerber para fabricar la PCB; solo tienes que subir este archivo zip a jlcpcb.com y pedir tu PCB. O compra una PCB ya fabricada. | https://jlcpcb.com/?from=FUNC · https://function3d.xyz/product/pcb-for-petalot |  |
-| 1 | Fuente de alimentación 12v 5A | https://s.click.aliexpress.com/e/_c2zdHPX3 | 6,09 € |
 | 1 | Wemos D1 MINI V4.0 (cualquier otra versión de WeMos que comparta los pines de salida debería servir) | https://s.click.aliexpress.com/e/_DCS2eTP | 2,99 € |
 | 1 | Mini DC-DC 12-24V a 5V 3A Step Down | https://s.click.aliexpress.com/e/_DDFlE5x | 4,99 € |
-| 1 | Mini micro interruptor de final de carrera con palanca de rodillo (MS-1A-14.5-P) | https://s.click.aliexpress.com/e/_DdoNg8z | 2,13 € |
 | 1 | Driver de motor paso a paso A4988 + disipador (es bastante fácil quemarlo, sobre todo si eres principiante; mejor 2 unidades) | https://s.click.aliexpress.com/e/_c32zgNiZ | 1,50 € |
-| 1 | Motor paso a paso Nema 17, altura >=38mm, eje en forma de D (17HS4401S-Dupont) | https://s.click.aliexpress.com/e/_c39SiyRr | 11,19 € |
 | 1 | MOSFET IRLZ44N | https://s.click.aliexpress.com/e/_DdfBlgH | 3,09 € |
-| 1 | Hotend MK8 12V 40W | https://s.click.aliexpress.com/e/_DnlMNy5 | 3,65 € |
 | 1 | Condensador 16V 100uf | https://s.click.aliexpress.com/e/_optaFrN | 2,27 € |
 | 1 | Tira de pines macho y hembra | https://s.click.aliexpress.com/e/_DcGRnY9 | 3,79 € |
 | 3 | Conector de bloque de terminales 2P | https://s.click.aliexpress.com/e/_DkqRgFn | 0,83 € |
 | 1 | Resistencias de 10K ohmios R2 | https://s.click.aliexpress.com/e/_DeT9AAz | 1,70 € |
 | 1 | Resistencias de 2K ohmios para R1 si la versión de firmware es >=1.4 | https://s.click.aliexpress.com/e/_DeT9AAz | 2,18 € |
+| 1 | Fuente de alimentación 12v 5A | https://s.click.aliexpress.com/e/_c2zdHPX3 | 6,09 € |
+| 1 | Mini micro interruptor de final de carrera con palanca de rodillo (MS-1A-14.5-P) | https://s.click.aliexpress.com/e/_DdoNg8z | 2,13 € |
+| 1 | Motor paso a paso Nema 17, altura >=38mm, eje en forma de D (17HS4401S-Dupont) | https://s.click.aliexpress.com/e/_c39SiyRr | 11,19 € |
+| 1 | Hotend MK8 12V 40W | https://s.click.aliexpress.com/e/_DnlMNy5 | 3,65 € |
 | 30cm | Cable 2P 30AWG (para el sensor de filamento de final de carrera, señal digital; yo uso los cables muy finos que saco de un cable de impresora LPT1 viejo) | https://s.click.aliexpress.com/e/_Dlnn1bd | 0,72 € |
 | 25cm | Cable 2P 18AWG (yo uso 25 cm del cable calefactor del hotend) | https://s.click.aliexpress.com/e/_Dlnn1bd | 1,62 € |
 | 1 | Toma de corriente macho 10A 250V de 3 pines IEC320 con interruptor + fusible | https://s.click.aliexpress.com/e/_DmuNpxf | 2,36 € |
