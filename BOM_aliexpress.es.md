@@ -10,8 +10,6 @@ Precios actualizados: **24/09/2026**. Valores orientativos, pueden variar con el
 | Herramientas | 42,98 € |
 | **TOTAL (mínimo, sin envío)** | **173,60 €** |
 
-*No incluidos en el total: la PCB (se fabrica en JLCPCB), la varilla roscada 48cm M6 del cortador (sin producto válido en AliExpress) y la base de madera de la máquina PETALOT (cortada según las medidas de [esta imagen](https://function3d.xyz/wp-content/uploads/2026/04/cotas2.jpg)).*
-
 ## Máquina PETALOT
 
 | Cant. | Componente | Enlace | Precio |
@@ -31,6 +29,8 @@ Precios actualizados: **24/09/2026**. Valores orientativos, pueden variar con el
 | 50cm | Hilo de nailon 1mm | https://s.click.aliexpress.com/e/_c4028B6b | 2,54 € |
 | 32cm | Funda para cables 6mm | https://s.click.aliexpress.com/e/_c4qwLShV | 3,69 € |
 | 1 | Base de madera para la máquina PETALOT (cortada según estas medidas) <br><img src="https://function3d.xyz/wp-content/uploads/2026/04/cotas2.jpg" alt="Wooden base dimensions" width="380"> |  |  |
+
+*No incluida en el total: la base de madera de la máquina PETALOT (cortada según las medidas de [esta imagen](https://function3d.xyz/wp-content/uploads/2026/04/cotas2.jpg)).*
 
 ## Electrónica para PETALOT
 
@@ -60,6 +60,8 @@ Precios actualizados: **24/09/2026**. Valores orientativos, pueden variar con el
 | 25mm | Tubo termorretráctil 5mm, para el sensor de filamento/tira | https://s.click.aliexpress.com/e/_c3knUgat | 1,32 € |
 | 40mm | Tubo termorretráctil 2mm, para el sensor de filamento/tira | https://s.click.aliexpress.com/e/_c3knUgat | 1,23 € |
 
+*No incluida en el total: la PCB (se fabrica en JLCPCB).*
+
 ## Cortador de botellas
 
 | Cant. | Componente | Enlace | Precio |
@@ -72,6 +74,8 @@ Precios actualizados: **24/09/2026**. Valores orientativos, pueden variar con el
 | 2 | M8x40mm varilla roscada (para el rodamiento inferior y la guía; yo uso varilla roscada cortada a 42mm y 30mm) | https://s.click.aliexpress.com/e/_DeTWIUt | 3,59 € |
 | 1 | 48cm M6 varilla roscada (sirve cualquier varilla de 6mm; 48 cm es más que suficiente para botellas de 8 litros) |  |  |
 | 2 | Tornillo M4 x 35mm (para fijar el cortador a una base de madera) | https://s.click.aliexpress.com/e/_onWNJ8P | 2,94 € |
+
+*No incluida en el total: la varilla roscada 48cm M6 del cortador.*
 
 ## Herramientas
 

@@ -10,8 +10,6 @@ Prices updated: **2026-09-24**. Indicative values, they may vary over time — c
 | Tools | 42.98 € |
 | **TOTAL (minimum, no shipping)** | **173.60 €** |
 
-*Not included in the total: the PCB (fabricated at JLCPCB), the 48cm M6 threaded rod for the Bottle Cutter (no valid AliExpress product found) and the wooden base for the PETALOT machine (cut to the dimensions in [this image](https://function3d.xyz/wp-content/uploads/2026/04/cotas2.jpg)).*
-
 ## PETALOT machine
 
 | Qty | Component | Link | Price |
@@ -31,6 +29,8 @@ Prices updated: **2026-09-24**. Indicative values, they may vary over time — c
 | 50cm | Nylon thread 1mm | https://s.click.aliexpress.com/e/_c4028B6b | 2.54 € |
 | 32cm | Cable Sleeve 6mm | https://s.click.aliexpress.com/e/_c4qwLShV | 3.69 € |
 | 1 | Wooden base for the PETALOT machine (cut to these dimensions) <br><img src="https://function3d.xyz/wp-content/uploads/2026/04/cotas2.jpg" alt="Wooden base dimensions" width="380"> |  |  |
+
+*Not included in the total: the wooden base for the PETALOT machine (cut to the dimensions in [this image](https://function3d.xyz/wp-content/uploads/2026/04/cotas2.jpg)).*
 
 ## Electronics for PETALOT
 
@@ -60,6 +60,8 @@ Prices updated: **2026-09-24**. Indicative values, they may vary over time — c
 | 25mm | Heat Shrink Tube 5mm, for filament/strip sensor | https://s.click.aliexpress.com/e/_c3knUgat | 1.32 € |
 | 40mm | Heat Shrink Tube 2mm, for filament/strip sensor | https://s.click.aliexpress.com/e/_c3knUgat | 1.23 € |
 
+*Not included in the total: the PCB (fabricated at JLCPCB).*
+
 ## Bottle Cutter
 
 | Qty | Component | Link | Price |
@@ -72,6 +74,8 @@ Prices updated: **2026-09-24**. Indicative values, they may vary over time — c
 | 2 | M8x40mm Threaded Rod (for low bearing and guide, I use rod thereaded cut to 42mm and 30mm) | https://s.click.aliexpress.com/e/_DeTWIUt | 3.59 € |
 | 1 | 48cm M6 Threaded Rod (any 6mm rod will do, 48 cm is more than enough for 8-liter bottles) |  |  |
 | 2 | Screw M4 x 35mm (to fix the cutter to a wooden base) | https://s.click.aliexpress.com/e/_onWNJ8P | 2.94 € |
+
+*Not included in the total: the 48cm M6 threaded rod for the Bottle Cutter.*
 
 ## Tools
 

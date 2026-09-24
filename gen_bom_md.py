@@ -18,8 +18,15 @@ COLS = [['Qty','Component','Link','Price'],
 TOT_HEAD = ['Totals','Totales']
 TOT_COLS = [['List','Total'],['Lista','Total']]
 TOTAL_LBL = ['TOTAL (minimum, no shipping)','TOTAL (mínimo, sin envío)']
-TOT_NOTE = ['*Not included in the total: the PCB (fabricated at JLCPCB), the 48cm M6 threaded rod for the Bottle Cutter (no valid AliExpress product found) and the wooden base for the PETALOT machine (cut to the dimensions in [this image](https://function3d.xyz/wp-content/uploads/2026/04/cotas2.jpg)).*',
-            '*No incluidos en el total: la PCB (se fabrica en JLCPCB), la varilla roscada 48cm M6 del cortador (sin producto válido en AliExpress) y la base de madera de la máquina PETALOT (cortada según las medidas de [esta imagen](https://function3d.xyz/wp-content/uploads/2026/04/cotas2.jpg)).*']
+TOT_NOTE = None
+NOTES = {
+ 'parts-list-petalot.csv': ['*Not included in the total: the wooden base for the PETALOT machine (cut to the dimensions in [this image](https://function3d.xyz/wp-content/uploads/2026/04/cotas2.jpg)).*',
+                            '*No incluida en el total: la base de madera de la máquina PETALOT (cortada según las medidas de [esta imagen](https://function3d.xyz/wp-content/uploads/2026/04/cotas2.jpg)).*'],
+ 'parts-list-electronics.csv': ['*Not included in the total: the PCB (fabricated at JLCPCB).*',
+                                '*No incluida en el total: la PCB (se fabrica en JLCPCB).*'],
+ 'parts-list-cutter.csv': ['*Not included in the total: the 48cm M6 threaded rod for the Bottle Cutter.*',
+                           '*No incluida en el total: la varilla roscada 48cm M6 del cortador.*'],
+}
 PCB_PRODUCT = 'https://function3d.xyz/product/pcb-for-petalot'
 WOOD_IMG = 'https://function3d.xyz/wp-content/uploads/2026/04/cotas2.jpg'
 
@@ -68,7 +75,6 @@ def build(lang, csvname):
     L.append("| "+" | ".join(TOT_COLS[lang])+" |"); L.append("|---|---|")
     for f in FILES: L.append(f"| {HEAD[f][lang]} | {eur(totals[f],comma)} |")
     L.append(f"| **{TOTAL_LBL[lang]}** | **{eur(grand,comma)}** |"); L.append("")
-    L.append(TOT_NOTE[lang]); L.append("")
     for f in FILES:
         rows=cache[f]
         L.append(f"## {HEAD[f][lang]}"); L.append("")
@@ -87,6 +93,8 @@ def build(lang, csvname):
             L.append("| {q} | {d} | {l} | {p} |".format(
                 q=esc(str(row[0])),d=esc(desc),l=esc(link),p=precio))
         L.append("")
+        if f in NOTES:
+            L.append(NOTES[f][lang]); L.append("")
     return "\n".join(L)+"\n"
 
 def en_name(f): return f
