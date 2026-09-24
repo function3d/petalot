@@ -50,14 +50,14 @@ Prices updated: **2026-09-24**. Indicative values, they may vary over time — c
 | 1 | Mini Micro Limit Switch Roller Lever Arm (MS-1A-14.5-P) | https://s.click.aliexpress.com/e/_DdoNg8z | 2.13 € |
 | 1 | Nema 17 stepper motor height >=38mm D shaped shaft (17HS4401S-Dupont) | https://s.click.aliexpress.com/e/_c39SiyRr | 11.19 € |
 | 1 | Hotend MK8 12V 40W | https://s.click.aliexpress.com/e/_DnlMNy5 | 3.65 € |
-| 30cm | Wire 2P 30AWG (for limit switch filament sensor, digital signal, I use the very thin wires stripped from an old LPT1 printer cable) | https://s.click.aliexpress.com/e/_Dlnn1bd | 0.72 € |
+| 30cm | Wire 2P 30AWG (for limit switch strip sensor, digital signal, I use the very thin wires stripped from an old LPT1 printer cable) | https://s.click.aliexpress.com/e/_Dlnn1bd | 0.72 € |
 | 25cm | Wire 2P 18AWG (I use 25cm from the hotend heater cable) | https://s.click.aliexpress.com/e/_Dlnn1bd | 1.62 € |
 | 1 | 10A 250V Male Power Socket 3 Pin IEC320 switch + Fuse | https://s.click.aliexpress.com/e/_DmuNpxf | 2.36 € |
 | 9 | Terminal Wire Conector Crimp Insulated Ferrule 20AWG (PCB power, IEC320, heater) | https://s.click.aliexpress.com/e/_oEJer1l | 1.06 € |
 | 2 | Terminal Wire Conector Crimp Insulated Ferrule 24AWG (micro switch) | https://s.click.aliexpress.com/e/_oEJer1l | 1.06 € |
 | 5 | 4.8mm Female Terminal | https://s.click.aliexpress.com/e/_c2xFTcyv | 0.94 € |
-| 25mm | Heat Shrink Tube 5mm, for filament/strip sensor | https://s.click.aliexpress.com/e/_c3knUgat | 1.32 € |
-| 40mm | Heat Shrink Tube 2mm, for filament/strip sensor | https://s.click.aliexpress.com/e/_c3knUgat | 1.23 € |
+| 25mm | Heat Shrink Tube 5mm, for strip sensor and 4.8mm Female Terminal | https://s.click.aliexpress.com/e/_c3knUgat | 1.32 € |
+| 40mm | Heat Shrink Tube 2mm, for strip sensor | https://s.click.aliexpress.com/e/_c3knUgat | 1.23 € |
 
 *Not included in the total: the PCB (fabricated at JLCPCB).*
 

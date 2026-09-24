@@ -50,14 +50,14 @@ Precios actualizados: **24/09/2026**. Valores orientativos, pueden variar con el
 | 1 | Mini micro interruptor de final de carrera con palanca de rodillo (MS-1A-14.5-P) | https://s.click.aliexpress.com/e/_DdoNg8z | 2,13 € |
 | 1 | Motor paso a paso Nema 17, altura >=38mm, eje en forma de D (17HS4401S-Dupont) | https://s.click.aliexpress.com/e/_c39SiyRr | 11,19 € |
 | 1 | Hotend MK8 12V 40W | https://s.click.aliexpress.com/e/_DnlMNy5 | 3,65 € |
-| 30cm | Cable 2P 30AWG (para el sensor de filamento de final de carrera, señal digital; yo uso los cables muy finos que saco de un cable de impresora LPT1 viejo) | https://s.click.aliexpress.com/e/_Dlnn1bd | 0,72 € |
+| 30cm | Cable 2P 30AWG (para el sensor de tira de final de carrera, señal digital; yo uso los cables muy finos que saco de un cable de impresora LPT1 viejo) | https://s.click.aliexpress.com/e/_Dlnn1bd | 0,72 € |
 | 25cm | Cable 2P 18AWG (yo uso 25 cm del cable calefactor del hotend) | https://s.click.aliexpress.com/e/_Dlnn1bd | 1,62 € |
 | 1 | Toma de corriente macho 10A 250V de 3 pines IEC320 con interruptor + fusible | https://s.click.aliexpress.com/e/_DmuNpxf | 2,36 € |
 | 9 | Terminales de cable crimpados con funda aislante 20AWG (alimentación de la PCB, IEC320, calefactor) | https://s.click.aliexpress.com/e/_oEJer1l | 1,06 € |
 | 2 | Terminales de cable crimpados con funda aislante 24AWG (micro interruptor) | https://s.click.aliexpress.com/e/_oEJer1l | 1,06 € |
 | 5 | Terminal hembra de 4.8mm | https://s.click.aliexpress.com/e/_c2xFTcyv | 0,94 € |
-| 25mm | Tubo termorretráctil 5mm, para el sensor de filamento/tira | https://s.click.aliexpress.com/e/_c3knUgat | 1,32 € |
-| 40mm | Tubo termorretráctil 2mm, para el sensor de filamento/tira | https://s.click.aliexpress.com/e/_c3knUgat | 1,23 € |
+| 25mm | Tubo termorretráctil 5mm, para el sensor de tira y el terminal hembra de 4.8mm | https://s.click.aliexpress.com/e/_c3knUgat | 1,32 € |
+| 40mm | Tubo termorretráctil 2mm, para el sensor de tira | https://s.click.aliexpress.com/e/_c3knUgat | 1,23 € |
 
 *No incluida en el total: la PCB (se fabrica en JLCPCB).*
 
