@@ -1,16 +1,16 @@
-qty,image_url,description,aliexpress_link,variation
-18,https://function3d.xyz/wp-content/uploads/2025/07/m2x20mm.webp,Screw <strong>M2.3 x 20mm</strong> (union between Large Gear and Pulley),https://s.click.aliexpress.com/e/_c3eyUDcN,"M2.3, 20mm"
-2,https://function3d.xyz/wp-content/uploads/2025/07/m2x20mm.webp,Screw <strong>M2 x 12mm</strong> (fix PCB to wood base),https://s.click.aliexpress.com/e/_c3eyUDcN,"M2, 12mm"
-3,https://function3d.xyz/wp-content/uploads/2025/07/wood-screw-300x300.webp,Screw <strong>M4 x 35mm</strong> (central wooden block and Angle Bracket),https://s.click.aliexpress.com/e/_onWNJ8P,M4x35
-14,https://function3d.xyz/wp-content/uploads/2025/07/wood-screw-300x300.webp,Screw <strong>M3 x 20mm</strong> (to screw the different parts to the wood base),https://s.click.aliexpress.com/e/_onWNJ8P,M3x20
-1,https://function3d.xyz/wp-content/uploads/2026/05/nozzle.webp,V6 Stainless steel nozzle <strong>0.4 mm</strong>,https://s.click.aliexpress.com/e/_c3ejwXiT,"1.75mm, 0.4mm"
-4,https://function3d.xyz/wp-content/uploads/2025/07/S72cdd33641be456fbd6f14e7003cd6688-300x300.webp,Bearing 8x22x7 mm <strong>608RS</strong>,https://s.click.aliexpress.com/e/_DFmmUC5,608 RS
-1,https://function3d.xyz/wp-content/uploads/2025/07/Angle-Bracket-267x300.webp,90 Degree Angle Bracket <strong>20x20mm</strong>,https://s.click.aliexpress.com/e/_c4VSPnbL,
-2,https://function3d.xyz/wp-content/uploads/2025/07/M8-Threaded-Rod-1-300x300.webp,<strong>M8x110mm</strong> Threaded Rod (I use rod thereaded cut to 10.5cm),https://s.click.aliexpress.com/e/_DeTWIUt,M8x110mm
-4,https://function3d.xyz/wp-content/uploads/2025/07/M8-Hex-Nylon-Nut-Self-locking-282x300.webp,<strong>M8</strong> Hex Nylon Insert Lock Nut Self-locking Locknut,https://s.click.aliexpress.com/e/_c31WJI0D,M8
-3,https://function3d.xyz/wp-content/uploads/2025/07/M3-8mm-300x300.webp,"Screw <strong>M3 8mm</strong> for the motor gear, electronic box and motor mount",https://s.click.aliexpress.com/e/_c38WdOKJ,"M3, 8 mm"
-1,https://function3d.xyz/wp-content/uploads/2026/05/m3-nut.webp,<strong>M3</strong> nut for the motor gear,https://s.click.aliexpress.com/e/_c4DrxHSF,M3
-2,https://function3d.xyz/wp-content/uploads/2026/05/m3-14mm-300x300-1.webp,<strong>M3 14mm</strong> bolt for motor mount,https://s.click.aliexpress.com/e/_c38WdOKJ,"M3, 14 mm"
-50cm,https://function3d.xyz/wp-content/uploads/2025/07/kite-rope-1.webp,Nylon thread <strong>1mm</strong>,https://s.click.aliexpress.com/e/_c4028B6b,1 mm
-32cm,https://function3d.xyz/wp-content/uploads/2026/05/Sleeve.webp,Cable Sleeve <strong>6mm</strong>,https://s.click.aliexpress.com/e/_c4qwLShV,6MM
-1,https://function3d.xyz/wp-content/uploads/2026/04/cotas2.jpg,Wooden base for the PETALOT machine (cut to these dimensions),,
+qty,image_url,description,aliexpress_link,variation,price,lot,status
+18,https://function3d.xyz/wp-content/uploads/2025/07/m2x20mm.webp,Screw <strong>M2.3 x 20mm</strong> (union between Large Gear and Pulley),https://s.click.aliexpress.com/e/_c3eyUDcN,"M2.3, 20mm",1.75,50,ok
+2,https://function3d.xyz/wp-content/uploads/2025/07/m2x20mm.webp,Screw <strong>M2 x 12mm</strong> (fix PCB to wood base),https://s.click.aliexpress.com/e/_c3eyUDcN,"M2, 12mm",1.28,50,ok
+3,https://function3d.xyz/wp-content/uploads/2025/07/wood-screw-300x300.webp,Screw <strong>M4 x 35mm</strong> (central wooden block and Angle Bracket),https://s.click.aliexpress.com/e/_onWNJ8P,M4x35,2.94,30,ok
+14,https://function3d.xyz/wp-content/uploads/2025/07/wood-screw-300x300.webp,Screw <strong>M3 x 20mm</strong> (to screw the different parts to the wood base),https://s.click.aliexpress.com/e/_onWNJ8P,M3x20,2.04,30,ok
+1,https://function3d.xyz/wp-content/uploads/2026/05/nozzle.webp,V6 Stainless steel nozzle <strong>0.4 mm</strong>,https://s.click.aliexpress.com/e/_c3ejwXiT,"1.75mm, 0.4mm",0.26,,ok
+4,https://function3d.xyz/wp-content/uploads/2025/07/S72cdd33641be456fbd6f14e7003cd6688-300x300.webp,Bearing 8x22x7 mm <strong>608RS</strong>,https://s.click.aliexpress.com/e/_DFmmUC5,608 RS,3.69,10,ok
+1,https://function3d.xyz/wp-content/uploads/2025/07/Angle-Bracket-267x300.webp,90 Degree Angle Bracket <strong>20x20mm</strong>,https://s.click.aliexpress.com/e/_c4VSPnbL,,2.69,10,ok
+2,https://function3d.xyz/wp-content/uploads/2025/07/M8-Threaded-Rod-1-300x300.webp,<strong>M8x110mm</strong> Threaded Rod (I use rod thereaded cut to 10.5cm),https://s.click.aliexpress.com/e/_DeTWIUt,M8x110mm,3.39,1,ok
+4,https://function3d.xyz/wp-content/uploads/2025/07/M8-Hex-Nylon-Nut-Self-locking-282x300.webp,<strong>M8</strong> Hex Nylon Insert Lock Nut Self-locking Locknut,https://s.click.aliexpress.com/e/_c31WJI0D,M8,3.39,20,ok
+3,https://function3d.xyz/wp-content/uploads/2025/07/M3-8mm-300x300.webp,"Screw <strong>M3 8mm</strong> for the motor gear, electronic box and motor mount",https://s.click.aliexpress.com/e/_c38WdOKJ,"M3, 8 mm",1.94,50,ok
+1,https://function3d.xyz/wp-content/uploads/2026/05/m3-nut.webp,<strong>M3</strong> nut for the motor gear,https://s.click.aliexpress.com/e/_c4DrxHSF,M3,3.49,200,ok
+2,https://function3d.xyz/wp-content/uploads/2026/05/m3-14mm-300x300-1.webp,<strong>M3 14mm</strong> bolt for motor mount,https://s.click.aliexpress.com/e/_c38WdOKJ,"M3, 14 mm",2.54,50,ok
+50cm,https://function3d.xyz/wp-content/uploads/2025/07/kite-rope-1.webp,Nylon thread <strong>1mm</strong>,https://s.click.aliexpress.com/e/_c4028B6b,1 mm,2.54,1,ok
+32cm,https://function3d.xyz/wp-content/uploads/2026/05/Sleeve.webp,Cable Sleeve <strong>6mm</strong>,https://s.click.aliexpress.com/e/_c4qwLShV,6MM,3.69,1,ok
+1,https://function3d.xyz/wp-content/uploads/2026/04/cotas2.jpg,Wooden base for the PETALOT machine (cut to these dimensions),,,,,nolink
