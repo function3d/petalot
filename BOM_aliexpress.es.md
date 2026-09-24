@@ -5,10 +5,10 @@ Precios actualizados: **25/09/2026**. Valores orientativos, pueden variar con el
 | Lista | Total |
 |---|---|
 | Máquina PETALOT | 39,02 € |
-| Electrónica para PETALOT | 56,82 € |
+| Electrónica para PETALOT | 56,47 € |
 | Cortador de botellas | 20,58 € |
 | Herramientas | 42,98 € |
-| **TOTAL (mínimo, sin envío)** | **159,40 €** |
+| **TOTAL (mínimo, sin envío)** | **159,05 €** |
 
 ## Máquina PETALOT
 
@@ -47,7 +47,7 @@ Precios actualizados: **25/09/2026**. Valores orientativos, pueden variar con el
 | 1 | Resistencias de 10K ohmios R2 | https://s.click.aliexpress.com/e/_DeT9AAz | 1,70 € |
 | 1 | Resistencias de 2K ohmios para R1 si la versión de firmware es >=1.4 | https://s.click.aliexpress.com/e/_DeT9AAz | 2,18 € |
 | 1 | Fuente de alimentación 12v 5A | https://s.click.aliexpress.com/e/_c2zdHPX3 | 6,09 € |
-| 1 | Mini micro interruptor de final de carrera con palanca de rodillo, para el sensor de tira (MS-1A-14.5-P) | https://s.click.aliexpress.com/e/_DdoNg8z | 2,24 € |
+| 1 | Mini micro interruptor de final de carrera con palanca de rodillo, para el sensor de tira (MS-1A-14.5-P) | https://s.click.aliexpress.com/e/_c3QnPcE9 | 1,89 € |
 | 1 | Motor paso a paso Nema 17, altura >=38mm, eje en forma de D (17HS4401S-Dupont) | https://s.click.aliexpress.com/e/_c39SiyRr | 11,19 € |
 | 1 | Hotend MK8 12V 40W | https://s.click.aliexpress.com/e/_DnlMNy5 | 3,65 € |
 | 30cm | Cable 2P 30AWG (para el sensor de tira de final de carrera, señal digital; yo uso los cables muy finos que saco de un cable de impresora LPT1 viejo) | https://s.click.aliexpress.com/e/_Dlnn1bd | 0,72 € |
