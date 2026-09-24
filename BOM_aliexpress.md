@@ -5,10 +5,10 @@ Prices updated: **2026-09-24**. Indicative values, they may vary over time — c
 | List | Total |
 |---|---|
 | PETALOT machine | 39.02 € |
-| Electronics for PETALOT | 56.71 € |
+| Electronics for PETALOT | 54.58 € |
 | Bottle Cutter | 20.58 € |
 | Tools | 42.98 € |
-| **TOTAL (minimum, no shipping)** | **159.29 €** |
+| **TOTAL (minimum, no shipping)** | **157.16 €** |
 
 ## PETALOT machine
 
@@ -47,7 +47,7 @@ Prices updated: **2026-09-24**. Indicative values, they may vary over time — c
 | 1 | 10K ohms resistors R2 | https://s.click.aliexpress.com/e/_DeT9AAz | 1.70 € |
 | 1 | 2K ohms resistors for R1 if firmware version >=1.4 | https://s.click.aliexpress.com/e/_DeT9AAz | 2.18 € |
 | 1 | Power Supply 12v 5A | https://s.click.aliexpress.com/e/_c2zdHPX3 | 6.09 € |
-| 1 | Mini Micro Limit Switch Roller Lever Arm (MS-1A-14.5-P) | https://s.click.aliexpress.com/e/_DdoNg8z | 2.13 € |
+| 1 | Mini Micro Limit Switch Roller Lever Arm |  for strip sensor (MS-1A-14.5-P) |  |
 | 1 | Nema 17 stepper motor height >=38mm D shaped shaft (17HS4401S-Dupont) | https://s.click.aliexpress.com/e/_c39SiyRr | 11.19 € |
 | 1 | Hotend MK8 12V 40W | https://s.click.aliexpress.com/e/_DnlMNy5 | 3.65 € |
 | 30cm | Wire 2P 30AWG (for limit switch strip sensor, digital signal, I use the very thin wires stripped from an old LPT1 printer cable) | https://s.click.aliexpress.com/e/_Dlnn1bd | 0.72 € |
