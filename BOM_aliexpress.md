@@ -5,10 +5,10 @@ Prices updated: **2026-09-24**. Indicative values, they may vary over time — c
 | List | Total |
 |---|---|
 | PETALOT machine | 39.02 € |
-| Electronics for PETALOT | 57.62 € |
+| Electronics for PETALOT | 56.71 € |
 | Bottle Cutter | 20.58 € |
 | Tools | 42.98 € |
-| **TOTAL (minimum, no shipping)** | **160.20 €** |
+| **TOTAL (minimum, no shipping)** | **159.29 €** |
 
 ## PETALOT machine
 
@@ -56,7 +56,6 @@ Prices updated: **2026-09-24**. Indicative values, they may vary over time — c
 | 9 | Terminal Wire Conector Crimp Insulated Ferrule 20AWG (PCB power, IEC320, heater) | https://s.click.aliexpress.com/e/_oEJer1l | 1.06 € |
 | 2 | Terminal Wire Conector Crimp Insulated Ferrule 24AWG (micro switch) | https://s.click.aliexpress.com/e/_oEJer1l | 1.06 € |
 | 5 | 4.8mm Female Terminal | https://s.click.aliexpress.com/e/_c2xFTcyv | 0.94 € |
-| 5 | 4.8mm Insulating Sheath | https://s.click.aliexpress.com/e/_c2xFTcyv | 0.91 € |
 | 25mm | Heat Shrink Tube 5mm, for filament/strip sensor | https://s.click.aliexpress.com/e/_c3knUgat | 1.32 € |
 | 40mm | Heat Shrink Tube 2mm, for filament/strip sensor | https://s.click.aliexpress.com/e/_c3knUgat | 1.23 € |
 

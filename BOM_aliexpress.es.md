@@ -5,10 +5,10 @@ Precios actualizados: **24/09/2026**. Valores orientativos, pueden variar con el
 | Lista | Total |
 |---|---|
 | Máquina PETALOT | 39,02 € |
-| Electrónica para PETALOT | 57,62 € |
+| Electrónica para PETALOT | 56,71 € |
 | Cortador de botellas | 20,58 € |
 | Herramientas | 42,98 € |
-| **TOTAL (mínimo, sin envío)** | **160,20 €** |
+| **TOTAL (mínimo, sin envío)** | **159,29 €** |
 
 ## Máquina PETALOT
 
@@ -56,7 +56,6 @@ Precios actualizados: **24/09/2026**. Valores orientativos, pueden variar con el
 | 9 | Terminales de cable crimpados con funda aislante 20AWG (alimentación de la PCB, IEC320, calefactor) | https://s.click.aliexpress.com/e/_oEJer1l | 1,06 € |
 | 2 | Terminales de cable crimpados con funda aislante 24AWG (micro interruptor) | https://s.click.aliexpress.com/e/_oEJer1l | 1,06 € |
 | 5 | Terminal hembra de 4.8mm | https://s.click.aliexpress.com/e/_c2xFTcyv | 0,94 € |
-| 5 | Funda aislante de 4.8mm | https://s.click.aliexpress.com/e/_c2xFTcyv | 0,91 € |
 | 25mm | Tubo termorretráctil 5mm, para el sensor de filamento/tira | https://s.click.aliexpress.com/e/_c3knUgat | 1,32 € |
 | 40mm | Tubo termorretráctil 2mm, para el sensor de filamento/tira | https://s.click.aliexpress.com/e/_c3knUgat | 1,23 € |
 
