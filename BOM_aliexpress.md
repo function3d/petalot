@@ -42,7 +42,7 @@ Prices updated: **2026-09-24**. Indicative values, they may vary over time — c
 | 1 | Mini DC-DC 12-24V To 5V 3A Step Down | https://s.click.aliexpress.com/e/_DDFlE5x | 4.99 € |
 | 1 | Mini Micro Limit Switch Roller Lever Arm (MS-1A-14.5-P) | https://s.click.aliexpress.com/e/_DdoNg8z | 2.13 € |
 | 1 | A4988 stepper motor driver+heat sink (It is quite easy to burn it, especially if you are a beginner, better 2 units) | https://s.click.aliexpress.com/e/_c32zgNiZ | 1.50 € |
-| 1 | Nema 17 stepper motor height >=38mm D shaped shaft (17HS4401S-Dupont) | https://s.click.aliexpress.com/e/_c3LZ0fev | 11.19 € |
+| 1 | Nema 17 stepper motor height >=38mm D shaped shaft (17HS4401S-Dupont) | https://s.click.aliexpress.com/e/_c39SiyRr | 11.19 € |
 | 1 | IRLZ44N MOSFET | https://s.click.aliexpress.com/e/_DdfBlgH | 3.09 € |
 | 1 | Hotend MK8 12V 40W | https://s.click.aliexpress.com/e/_DnlMNy5 | 3.65 € |
 | 1 | capacitor 16V 100uf | https://s.click.aliexpress.com/e/_optaFrN | 2.27 € |

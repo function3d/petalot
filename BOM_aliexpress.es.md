@@ -42,7 +42,7 @@ Precios actualizados: **24/09/2026**. Valores orientativos, pueden variar con el
 | 1 | Mini DC-DC 12-24V a 5V 3A Step Down | https://s.click.aliexpress.com/e/_DDFlE5x | 4,99 € |
 | 1 | Mini micro interruptor de final de carrera con palanca de rodillo (MS-1A-14.5-P) | https://s.click.aliexpress.com/e/_DdoNg8z | 2,13 € |
 | 1 | Driver de motor paso a paso A4988 + disipador (es bastante fácil quemarlo, sobre todo si eres principiante; mejor 2 unidades) | https://s.click.aliexpress.com/e/_c32zgNiZ | 1,50 € |
-| 1 | Motor paso a paso Nema 17, altura >=38mm, eje en forma de D (17HS4401S-Dupont) | https://s.click.aliexpress.com/e/_c3LZ0fev | 11,19 € |
+| 1 | Motor paso a paso Nema 17, altura >=38mm, eje en forma de D (17HS4401S-Dupont) | https://s.click.aliexpress.com/e/_c39SiyRr | 11,19 € |
 | 1 | MOSFET IRLZ44N | https://s.click.aliexpress.com/e/_DdfBlgH | 3,09 € |
 | 1 | Hotend MK8 12V 40W | https://s.click.aliexpress.com/e/_DnlMNy5 | 3,65 € |
 | 1 | Condensador 16V 100uf | https://s.click.aliexpress.com/e/_optaFrN | 2,27 € |
