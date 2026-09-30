@@ -91,6 +91,12 @@ if [ -f "$SCRIPT_DIR/check_web_ui.py" ]; then
   fi
 fi
 
+# --- regenerate the gzip-compressed web UI ----------------------------------
+if [ -f "$SCRIPT_DIR/gen_web_gzip.py" ]; then
+  echo "==> regenerating web_ui_gz.h"
+  python3 "$SCRIPT_DIR/gen_web_gzip.py" --input "$SKETCH_DIR/web_ui.h" --output "$SKETCH_DIR/web_ui_gz.h"
+fi
+
 # --- work dir + restore on exit --------------------------------------------
 WORK="$(mktemp -d)"
 OUT="$WORK/out"

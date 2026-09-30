@@ -185,6 +185,20 @@ def i18n_parity(js):
     return errors
 
 
+def check_gzip_stale(ui_path):
+    """Warn if web_ui_gz.h is older than web_ui.h (UI change not re-packed)."""
+    gz = ui_path.parent / "web_ui_gz.h"
+    if not gz.exists():
+        print(f"  note: {gz} missing; run Firmware/tools/gen_web_gzip.py")
+        return
+    try:
+        if gz.stat().st_mtime < ui_path.stat().st_mtime:
+            print(f"  warning: {gz.name} is older than {ui_path.name}; "
+                  "run Firmware/tools/gen_web_gzip.py")
+    except OSError:
+        pass
+
+
 def main():
     path = Path(sys.argv[1]) if len(sys.argv) > 1 else DEFAULT
     html = path.read_text(encoding="utf-8")
@@ -192,6 +206,7 @@ def main():
 
     errors = scan(js)
     errors += i18n_parity(js)
+    check_gzip_stale(path)
 
     if errors:
         print(f"{path}: FAIL ({len(errors)} problem(s))")

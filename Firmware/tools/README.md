@@ -48,6 +48,25 @@ runs it before every build.
 python3 Firmware/tools/check_web_ui.py [Firmware/petalot/web_ui.h]
 ```
 
+The checker also warns when `web_ui_gz.h` is older than `web_ui.h` (i.e. the
+gzip-packed UI on device is stale).
+
+## gen_web_gzip.py — pack the UI into a gzip PROGMEM blob
+
+The web UI is ~100 KB of HTML/CSS/JS. Serving it compressed makes page loads
+much faster on the ESP's slow WiFi. This script gzip-compresses the `INDEX_HTML`
+raw string from `web_ui.h` and writes `web_ui_gz.h` (bytes + length + ETag),
+which `server.hpp` serves with `Content-Encoding: gzip`.
+
+```bash
+python3 Firmware/tools/gen_web_gzip.py          # web_ui.h -> web_ui_gz.h
+python3 Firmware/tools/gen_web_gzip.py --input path/web_ui.h --output path/web_ui_gz.h
+```
+
+Run it after **every** edit to `web_ui.h`, or `release.sh` will do it for you.
+The gzip is deterministic (mtime=0) so the ETag is stable across identical
+inputs.
+
 ## gen_latest_json.py — regenerate the update manifest
 
 Writes `latest.json` (the file the browser reads for the online update) with

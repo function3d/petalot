@@ -12,6 +12,7 @@
 #include <ESPAsyncHTTPUpdateServer.h>
 
 #include "web_ui.h"
+#include "web_ui_gz.h"
 
 // ============================================================================
 // GLOBAL SERVER OBJECTS
@@ -137,11 +138,15 @@ void tele(AsyncWebServerRequest *request) {
   teleData["Output"]        = String(map((int)Output, 0, 255, 0, 100)) + "%";
   String r;
   serializeJson(teleData, r);
-  request->send(200, "application/json", r);
+  AsyncWebServerResponse *response = request->beginResponse(200, "application/json", r);
+  response->addHeader("Cache-Control", "no-store");
+  request->send(response);
 }
 
 void get(AsyncWebServerRequest *request) {
-  request->send(200, "application/json", printConf());
+  AsyncWebServerResponse *response = request->beginResponse(200, "application/json", printConf());
+  response->addHeader("Cache-Control", "no-store");
+  request->send(response);
 }
 
 void reset(AsyncWebServerRequest *request) {
@@ -241,7 +246,17 @@ void set(AsyncWebServerRequest *request) {
 }
 
 void handleRoot(AsyncWebServerRequest *request) {
-  request->send_P(200, "text/html", INDEX_HTML);
+  String etag = request->header("If-None-Match");
+  if (!etag.isEmpty() && strcmp_P(etag.c_str(), INDEX_HTML_ETAG) == 0) {
+    request->send(304, "text/html", "");
+    return;
+  }
+  AsyncWebServerResponse *response =
+    request->beginResponse_P(200, "text/html", INDEX_HTML_GZ, INDEX_HTML_GZ_LEN);
+  response->addHeader("Content-Encoding", "gzip");
+  response->addHeader("ETag", INDEX_HTML_ETAG);
+  response->addHeader("Cache-Control", "public, no-cache");
+  request->send(response);
 }
 
 // ============================================================================
@@ -251,9 +266,6 @@ void InitServer() {
   DefaultHeaders::Instance().addHeader("Access-Control-Allow-Origin", "*");
   DefaultHeaders::Instance().addHeader("Access-Control-Allow-Methods", "GET, POST");
   DefaultHeaders::Instance().addHeader("Access-Control-Allow-Headers", "Content-Type");
-  // Live endpoints must never be served from the browser cache, otherwise a
-  // stale /get can keep showing the old firmware version after an update.
-  DefaultHeaders::Instance().addHeader("Cache-Control", "no-store");
 
   server.on("/", HTTP_GET, handleRoot);
   server.on("/get", HTTP_GET, get);
