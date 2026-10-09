@@ -82,7 +82,11 @@ void drawUI() {
 
   display.setTextSize(2);
   display.setCursor(0, 13);
-  display.print(T, 0);
+  if (isnan(T)) {
+    display.print("--");
+  } else {
+    display.print(T, 0);
+  }
   display.setTextSize(1);
   display.print("C");
 

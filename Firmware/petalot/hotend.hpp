@@ -29,6 +29,14 @@ int temptable[8][2] = {
 };
 const int TEMP_TABLE_ROWS = sizeof(temptable) / sizeof(temptable[0]);
 
+// Valid ADC window for a connected thermistor. An unplugged probe reads ~0
+// (A0 pulled to GND by the 2k) and a shorted one ~1023; anything in between is
+// a real reading. The hotend only works around minT (>=180 C), so cold ambient
+// is not measured accurately and is reported as T_AMBIENT_MIN below.
+const int AR_MIN = 4;
+const int AR_MAX = 1021;
+const double T_AMBIENT_MIN = 25;
+
 // Sub-degree fractional temperature interpolation gives smoother control but
 // reacts to ADC noise (can show a 209 more often near 210). Uncomment to use
 // it; leave commented out for the classic integer map() conversion.
@@ -67,8 +75,12 @@ void Thermister_ESP8266() {
 
   double toffset = TOffset * T / To;
   T = T + toffset;
-  if (AR < temptable[TEMP_TABLE_ROWS - 1][0]) {
-    T = 0;
+
+  // Below the usable range the table is not calibrated (ambient reads well
+  // under 25 C), so clamp instead of showing a bogus cold value. The machine
+  // does not run cold anyway.
+  if (T < T_AMBIENT_MIN) {
+    T = T_AMBIENT_MIN;
   }
 }
 
@@ -80,7 +92,11 @@ void start() {
     status = "working";
     tempLastStart = millis();
     AR = analogRead(PIN_THERMISTER);
-    Thermister_ESP8266();
+    if (AR > AR_MIN && AR < AR_MAX) {
+      Thermister_ESP8266();
+    } else {
+      T = NAN;
+    }
     temperatureStart = T;
     if (tempLastStart == 0) tempLastStart = 1;
     LastStopReason = "";
@@ -230,9 +246,6 @@ double control() {
     return 0;
   }
   if (isnan(T)) {
-    return 0;
-  }
-  if (T == 0) {
     LastStopReason = "Anomalous temperature reading, something wrong with thermistor";
     stop();
     return 0;
@@ -246,13 +259,14 @@ double control() {
 void hotendReadTempTask() {
   if (millis() >= tempLastSample + 250) {
     // 2-sample moving average using integer math (no FPU on ESP8266).
-    // The sanity band 15..1007 is equivalent to the original 0.05..3.25 V check.
     AR = analogRead(PIN_THERMISTER);
     int avgAR = (AR + lastAR) / 2;
     lastAR = AR;
 
-    if (avgAR > 15 && avgAR < 1007) {
+    if (avgAR > AR_MIN && avgAR < AR_MAX) {
       Thermister_ESP8266();
+    } else {
+      T = NAN; // open/short thermistor: invalid reading
     }
 
     Output = control();

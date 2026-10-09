@@ -1458,7 +1458,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
 
           document.getElementById('val-temp').innerText = Math.round(data.T);
           document.getElementById('title-temp').innerText = `${t('gs.temp')} (${data.To})`;
-          document.getElementById('warn-temp').innerText = (data.T>0) ? '' : t('t.checkThermistor');
+          document.getElementById('warn-temp').innerText = (data.T === null) ? t('t.checkThermistor') : '';
           document.getElementById('val-output').innerText = (data.Output !== undefined && data.Output !== '') ? '(' + data.Output + ')' : '';
 
           document.getElementById('val-speed').innerText = data.Vo;

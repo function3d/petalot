@@ -1,5 +1,5 @@
 #define PCB 1501     // Hardware revision: 1405 (DIY) / 1501 / 1502. See pins.hpp
-#define VERSION 1603 // Firmware version, independent of the PCB revision
+#define VERSION 1604 // Firmware version, independent of the PCB revision
 
 // Compile-time build date extracted from __DATE__ (e.g. "Sep  7 2026")
 // Year: '2' and '6' from '2026'
@@ -98,7 +98,11 @@ void loop() {
     if (UseDisplay) {
       displayTask();
     }
-    if ((F || !Fenable) && status == "working" && millis() >= tempLastStats + 1000) {
+    // Stats follow the motor, not the sensor: with MotorOnTo the motor stays
+    // off until the target temperature is reached, and no filament moves (nor
+    // time passes for the job) while it waits.
+    if ((F || !Fenable) && status == "working" && stepper.motorEnabled &&
+        millis() >= tempLastStats + 1000) {
       Fs = Fs + (float)Vo / 60; // cm per second
       Ft = Ft + (float)Vo / 60;
       Tt = Tt + 1;

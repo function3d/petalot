@@ -85,8 +85,8 @@ public:
   }
 
   void task() {
-    // Temperature safety: if MotorOnTo is set, wait until T >= To - 6°C
-    if (MotorOnTo && T < To - 6.0f) {
+    // Temperature safety: if MotorOnTo is set, wait until T >= To - 3°C
+    if (MotorOnTo && T < To - 3.0f) {
       disable();
       return;
     }
