@@ -1376,6 +1376,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
 
     let lang = 'en';
     let connOnline = false;
+    let hadConnection = false;
     let teleInFlight = false;
     let teleTimer = null;
 
@@ -1437,6 +1438,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
       fetch('/tele', { signal: abortCtrl.signal })
         .then(res => res.json())
         .then(data => {
+          const wasOnline = connOnline;
           const Ft = Math.round(data.Ft) / 100;
           const Fs = Math.round(data.Fs) / 100;
           document.getElementById('tele-Ft').innerText = Ft;
@@ -1471,6 +1473,12 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
           document.getElementById('tele-AR').value = data.AR || 0;
 
           updateIcons(data);
+
+          // Reload the page whenever the connection comes back (device reboot,
+          // Wi-Fi blip, firmware update), so the UI always shows fresh state.
+          // Skip the very first sample after a page load to avoid a reload loop.
+          if (hadConnection && !wasOnline) loadWhenReady();
+          hadConnection = true;
         })
         .catch(err => {
           document.getElementById('conn-icon').classList.remove('conn-on');
