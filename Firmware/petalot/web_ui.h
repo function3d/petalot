@@ -122,6 +122,16 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
     .form-group input:disabled { opacity: .5; }
     .form-group input[type="file"] { color: var(--text); font-size: 0.8rem; }
 
+    /* Password show/hide */
+    .pw-wrap { position: relative; display: flex; align-items: center; }
+    .pw-wrap input { flex: 1; padding-right: 2.4rem; }
+    .pw-toggle { position: absolute; right: 0.35rem; display: flex; align-items: center; background: none; border: none; padding: 0; cursor: pointer; color: var(--muted); }
+    .pw-toggle:hover { color: var(--text); }
+    .pw-toggle svg { width: 16px; height: 16px; display: block; }
+    .pw-toggle .eye-off { display: none; }
+    .pw-wrap.revealed .eye-on { display: none; }
+    .pw-wrap.revealed .eye-off { display: block; }
+
     .msg { font-size: 0.7rem; color: var(--muted); margin-top: 0.25rem; }
     .msg.warn { color: var(--danger); font-weight: 600; }
 
@@ -254,7 +264,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
       <div class="tab-panel" id="tab-network">
       <div class="grid">
         <div class="form-group"><span class="label" data-i18n="st.ssid">SSID</span><input type="text" name="ssid"><small class="help-text" data-i18n="st.ssidHelp">Your home/work Wi-Fi name</small></div>
-        <div class="form-group"><span class="label" data-i18n="st.password">SSID Password</span><input type="password" name="password"><small class="help-text" data-i18n="st.passwordHelp">Your Wi-Fi password</small></div>
+        <div class="form-group"><span class="label" data-i18n="st.password">SSID Password</span><div class="pw-wrap"><input type="password" name="password" autocomplete="off"><button type="button" class="pw-toggle" onclick="togglePassword(this)" aria-label="Show password"><svg class="eye-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg><svg class="eye-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg></button></div><small class="help-text" data-i18n="st.passwordHelp">Your Wi-Fi password</small></div>
 
         <div class="form-group"><span class="label" data-i18n="st.ip">IP Address</span><input type="text" name="LocalIP"><small class="help-text" data-i18n-html="st.ipHelp">DHCP used if blank. Try <a href="http://petalot.local">petalot.local</a> first; check router for IP if inaccessible</small></div>
         <div class="form-group"><span class="label" data-i18n="st.subnet">Subnet</span><input type="text" name="Subnet"><small class="help-text" data-i18n="st.subnetHelp">255.255.255.0 if left blank</small></div>
@@ -1866,6 +1876,14 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
       inputSubnet.disabled = isSsidEmpty;
       inputGateway.disabled = isSsidEmpty;
       inputPassword.disabled = isSsidEmpty;
+    }
+
+    function togglePassword(btn) {
+      const wrap = btn.closest('.pw-wrap');
+      const input = wrap.querySelector('input');
+      const revealed = wrap.classList.toggle('revealed');
+      input.type = revealed ? 'text' : 'password';
+      btn.setAttribute('aria-label', revealed ? 'Hide password' : 'Show password');
     }
 
     function updateIcons(data) {
