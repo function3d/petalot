@@ -37,6 +37,7 @@ String Subnet;
 char ssid[64];
 char password[64];
 String DeviceName = "";
+String APPassword = "";
 String LastStopReason = "";
 int pcbVer = 0; // Registered PCB version (locked at first boot)
 
@@ -56,17 +57,32 @@ String sanitizeDeviceName(const String &in) {
   return out;
 }
 
+// Password for the PETALOT- access point. WPA2 requires 8-63 characters; an
+// empty value keeps the AP open. This is unrelated to the home Wi-Fi password.
+#define AP_PASSWORD_MIN 8
+#define AP_PASSWORD_MAX 63
+
+bool apPasswordValid(const String &p) {
+  if (p.length() == 0) return true;
+  if (p.length() < AP_PASSWORD_MIN || p.length() > AP_PASSWORD_MAX) return false;
+  for (size_t i = 0; i < p.length(); i++) {
+    char c = p[i];
+    if (c < 32 || c > 126) return false;  // WPA2 accepts printable ASCII only
+  }
+  return true;
+}
+
 // Embedded marker so /updatecheck can identify the PCB version of a binary
 // without writing it to flash. Kept in the image even with --gc-sections.
 #define STRINGIFY_(x) #x
 #define STRINGIFY(x) STRINGIFY_(x)
 const char PCB_MAGIC[] PROGMEM __attribute__((used)) = "PETALOT-PCB-" STRINGIFY(PCB);
 
-StaticJsonDocument<1024> doc;
+StaticJsonDocument<1536> doc;
 
 String printConf(bool plus = true) {
   String confString;
-  StaticJsonDocument<1024> conf;
+  StaticJsonDocument<1536> conf;
   conf = doc;
   if (plus) {
     conf["version"] = version;
@@ -98,6 +114,7 @@ void saveConfiguration(bool reset = true) {
   doc["ssid"] = ssid;
   doc["password"] = password;
   doc["DeviceName"] = DeviceName;
+  doc["APPassword"] = APPassword;
   doc["LocalIP"] = LocalIP;
   doc["Subnet"] = Subnet;
   doc["Gateway"] = Gateway;
@@ -134,6 +151,7 @@ void resetConfiguration() {
   strcpy(ssid, "");
   strcpy(password, "");
   DeviceName = "";
+  APPassword = "";
   To = workT;
   Vo = workV;
   Fenable = true;
@@ -187,6 +205,10 @@ void loadConfiguration(bool reset = false) {
 
   DeviceName = sanitizeDeviceName(doc["DeviceName"] | "");
   doc["DeviceName"] = DeviceName;
+
+  APPassword = doc["APPassword"] | "";
+  if (!apPasswordValid(APPassword)) APPassword = "";
+  doc["APPassword"] = APPassword;
 
   To = doc["To"] | workT;
   Vo = doc["Vo"] | workV;
@@ -351,6 +373,7 @@ void readConfigurationSerial() {
       Serial.println("ssid: SSID");
       Serial.println("password: SSID Password");
       Serial.println("DeviceName: Device name (header + Wi-Fi AP suffix, max 24 chars)");
+      Serial.println("APPassword: PETALOT- access point password (8-63 chars, empty = open AP)");
       Serial.println("LocalIP: IP address");
       Serial.println("Gateway: Gateway address");
       Serial.println("Subnet: Subnet mask");
@@ -364,7 +387,7 @@ void readConfigurationSerial() {
       return;
     }
 
-    StaticJsonDocument<1024> docInput;
+    StaticJsonDocument<1536> docInput;
     DeserializationError error = deserializeJson(docInput, line);
     if (error) {
       Serial.println("Invalid JSON");

@@ -47,9 +47,11 @@ void AP() {
     apName += macSuffix;
   }
 
-  if (WiFi.softAP(apName.c_str())) {
+  const char *apPass = (APPassword.length() > 0) ? APPassword.c_str() : NULL;
+  if (WiFi.softAP(apName.c_str(), apPass)) {
     Serial.print("AP Ready: ");
-    Serial.println(apName);
+    Serial.print(apName);
+    Serial.println(apPass ? " (password protected)" : " (open)");
     apmode = true;
   } else {
     Serial.println("AP Failed!");

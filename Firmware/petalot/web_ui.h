@@ -265,6 +265,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
       <div class="grid">
         <div class="form-group"><span class="label" data-i18n="st.ssid">SSID</span><input type="text" name="ssid"><small class="help-text" data-i18n="st.ssidHelp">Your home/work Wi-Fi name</small></div>
         <div class="form-group"><span class="label" data-i18n="st.password">SSID Password</span><div class="pw-wrap"><input type="password" name="password" autocomplete="off"><button type="button" class="pw-toggle" onclick="togglePassword(this)" aria-label="Show password"><svg class="eye-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg><svg class="eye-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg></button></div><small class="help-text" data-i18n="st.passwordHelp">Your Wi-Fi password</small></div>
+        <div class="form-group"><span class="label" data-i18n="st.apPassword">PETALOT- AP password</span><div class="pw-wrap"><input type="password" name="APPassword" minlength="8" maxlength="63" autocomplete="off"><button type="button" class="pw-toggle" onclick="togglePassword(this)" aria-label="Show password"><svg class="eye-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg><svg class="eye-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg></button></div><small class="help-text msg warn" data-i18n="st.apPasswordHelp">Password for the PETALOT- access point (8-63 characters). Leave blank for an open AP. If you forget it the device may become unreachable; recover through your home Wi-Fi or the serial port. This is NOT your home Wi-Fi password.</small></div>
 
         <div class="form-group"><span class="label" data-i18n="st.ip">IP Address</span><input type="text" name="LocalIP"><small class="help-text" data-i18n-html="st.ipHelp">DHCP used if blank. Try <a href="http://petalot.local">petalot.local</a> first; check router for IP if inaccessible</small></div>
         <div class="form-group"><span class="label" data-i18n="st.subnet">Subnet</span><input type="text" name="Subnet"><small class="help-text" data-i18n="st.subnetHelp">255.255.255.0 if left blank</small></div>
@@ -384,6 +385,8 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.ssidHelp': 'Your home/work Wi-Fi name',
         'st.password': 'SSID Password',
         'st.passwordHelp': 'Your Wi-Fi password',
+        'st.apPassword': 'PETALOT- AP password',
+        'st.apPasswordHelp': 'Password for the PETALOT- access point (8-63 characters). Leave blank for an open AP. If you forget it the device may become unreachable; recover through your home Wi-Fi or the serial port. This is NOT your home Wi-Fi password.',
         'st.ip': 'IP Address',
         'st.ipHelp': 'DHCP used if blank. Check router for assigned IP if manual IP is not set',
         'st.subnet': 'Subnet',
@@ -474,6 +477,8 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.ssidHelp': 'Nombre de tu red Wi-Fi (casa/trabajo)',
         'st.password': 'Contraseña SSID',
         'st.passwordHelp': 'Tu contraseña de Wi-Fi',
+        'st.apPassword': 'Contraseña del AP PETALOT-',
+        'st.apPasswordHelp': 'Contraseña del punto de acceso PETALOT- (8-63 caracteres). Déjala vacía para un AP abierto. Si la olvidas el dispositivo puede quedar inaccesible; recupéralo por tu Wi-Fi de casa o el puerto serie. NO es la contraseña de tu Wi-Fi de casa.',
         'st.ip': 'Dirección IP',
         'st.ipHelp': 'Usa DHCP si lo dejas vacío. Revisa el router para ver la IP asignada si no has puesto IP manual',
         'st.subnet': 'Máscara de subred',
@@ -564,6 +569,8 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.ssidHelp': 'Nome da sua rede Wi-Fi',
         'st.password': 'Senha SSID',
         'st.passwordHelp': 'Sua senha do Wi-Fi',
+        'st.apPassword': 'Senha do AP PETALOT-',
+        'st.apPasswordHelp': 'Senha do ponto de acesso PETALOT- (8-63 caracteres). Deixe em branco para um AP aberto. Se a esquecer o dispositivo pode ficar inacessível; recupere pela sua Wi-Fi de casa ou pela porta série. NÃO é a senha da sua Wi-Fi de casa.',
         'st.ip': 'Endereço IP',
         'st.ipHelp': 'Usa DHCP se deixar em branco. Verifique a IP atribuída no roteador se não definir IP manual',
         'st.subnet': 'Máscara de sub-rede',
@@ -654,6 +661,8 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.ssidHelp': "Nom de votre réseau Wi-Fi",
         'st.password': 'Mot de passe SSID',
         'st.passwordHelp': 'Votre mot de passe Wi-Fi',
+        'st.apPassword': "Mot de passe du point d'accès PETALOT-",
+        'st.apPasswordHelp': "Mot de passe du point d'accès PETALOT- (8 à 63 caractères). Laissez vide pour un point d'accès ouvert. Si vous l'oubliez l'appareil peut devenir inaccessible ; récupérez via votre Wi-Fi maison ou le port série. Ce n'est PAS le mot de passe de votre Wi-Fi maison.",
         'st.ip': 'Adresse IP',
         'st.ipHelp': "DHCP utilisé si vide. Vérifiez dans le routeur l'IP attribuée si aucune IP manuelle n'est définie",
         'st.subnet': 'Masque de sous-réseau',
@@ -744,6 +753,8 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.ssidHelp': 'Name deines WLAN-Netzwerks',
         'st.password': 'WLAN-Passwort',
         'st.passwordHelp': 'Dein WLAN-Passwort',
+        'st.apPassword': 'PETALOT- AP-Passwort',
+        'st.apPasswordHelp': 'Passwort für den PETALOT--Zugangspunkt (8-63 Zeichen). Leer lassen für einen offenen AP. Wenn du es vergisst, kann das Gerät unerreichbar werden; Zugriff über dein Heim-WLAN oder die serielle Schnittstelle wiederherstellen. Das ist NICHT dein Heim-WLAN-Passwort.',
         'st.ip': 'IP-Adresse',
         'st.ipHelp': 'DHCP wird verwendet, wenn leer. Prüfe im Router die zugewiesene IP, wenn keine manuelle IP gesetzt ist',
         'st.subnet': 'Subnetzmaske',
@@ -834,6 +845,8 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.ssidHelp': 'Nome della tua rete Wi-Fi',
         'st.password': 'Password SSID',
         'st.passwordHelp': 'La tua password Wi-Fi',
+        'st.apPassword': "Password dell'AP PETALOT-",
+        'st.apPasswordHelp': "Password del punto di accesso PETALOT- (8-63 caratteri). Lascia vuoto per un AP aperto. Se la dimentichi il dispositivo può diventare irraggiungibile; recupera dalla tua Wi-Fi di casa o dalla porta seriale. NON è la password della tua Wi-Fi di casa.",
         'st.ip': 'Indirizzo IP',
         'st.ipHelp': 'DHCP usato se vuoto. Controlla l\'IP assegnata nel router se non è impostata un\'IP manuale',
         'st.subnet': 'Subnet mask',
@@ -924,6 +937,8 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.ssidHelp': '您的家庭/工作 Wi-Fi 名称',
         'st.password': 'SSID 密码',
         'st.passwordHelp': '您的 Wi-Fi 密码',
+        'st.apPassword': 'PETALOT- 热点密码',
+        'st.apPasswordHelp': 'PETALOT- 接入点的密码（8-63 个字符）。留空则为开放热点。如果忘记，设备可能无法访问；请通过家庭 Wi-Fi 或串口恢复。这不是您家庭 Wi-Fi 的密码。',
         'st.ip': 'IP 地址',
         'st.ipHelp': '留空则使用 DHCP。若未设置手动 IP，请在路由器中查看分配的 IP',
         'st.subnet': '子网掩码',
@@ -1014,6 +1029,8 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.ssidHelp': 'Název vaší Wi-Fi (doma / v práci)',
         'st.password': 'Heslo SSID',
         'st.passwordHelp': 'Vaše heslo Wi-Fi',
+        'st.apPassword': 'Heslo AP PETALOT-',
+        'st.apPasswordHelp': 'Heslo přístupového bodu PETALOT- (8-63 znaků). Ponechte prázdné pro otevřený AP. Pokud je zapomenete, zařízení může být nedostupné; obnovte přístup přes domácí Wi-Fi nebo sériový port. Toto NENÍ heslo vaší domácí Wi-Fi.',
         'st.ip': 'IP adresa',
         'st.ipHelp': 'DHCP, pokud prázdné. Pokud není nastavena ruční IP, zkontrolujte přidělenou IP v routeru',
         'st.subnet': 'Maska sítě',
@@ -1103,6 +1120,8 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.ssidHelp': 'Название вашей Wi-Fi (дом / работа)',
         'st.password': 'Пароль SSID',
         'st.passwordHelp': 'Ваш пароль Wi-Fi',
+        'st.apPassword': 'Пароль точки доступа PETALOT-',
+        'st.apPasswordHelp': 'Пароль точки доступа PETALOT- (8-63 символа). Оставьте пустым для открытой точки доступа. Если забудете, устройство может стать недоступным; восстановите доступ через домашний Wi-Fi или последовательный порт. Это НЕ пароль вашего домашнего Wi-Fi.',
         'st.ip': 'IP-адрес',
         'st.ipHelp': 'DHCP, если пусто. Если ручной IP не задан, проверьте назначенный IP в роутере',
         'st.subnet': 'Маска подсети',
@@ -1192,6 +1211,8 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.ssidHelp': 'Wi-Fi ağınızın adı (ev / iş)',
         'st.password': 'SSID şifresi',
         'st.passwordHelp': 'Wi-Fi şifreniz',
+        'st.apPassword': 'PETALOT- AP şifresi',
+        'st.apPasswordHelp': 'PETALOT- erişim noktası şifresi (8-63 karakter). Açık AP için boş bırakın. Unutursanız cihaz erişilemez hale gelebilir; ev Wi-Fi ağınızdan veya seri porttan kurtarın. Bu, ev Wi-Fi şifreniz DEĞİLDİR.',
         'st.ip': 'IP adresi',
         'st.ipHelp': 'Boşsa DHCP kullanılır. Manuel IP ayarlanmadıysa yönlendiricide atanan IP adresini kontrol edin',
         'st.subnet': 'Alt ağ maskesi',
@@ -1281,6 +1302,8 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.ssidHelp': '自宅・職場のWi-Fi名',
         'st.password': 'SSIDパスワード',
         'st.passwordHelp': 'Wi-Fiパスワード',
+        'st.apPassword': 'PETALOT- AP パスワード',
+        'st.apPasswordHelp': 'PETALOT- アクセスポイントのパスワード（8〜63文字）。空欄にするとオープンAPになります。忘れるとデバイスにアクセスできなくなることがあります。自宅Wi-Fiまたはシリアルポートで復旧してください。これは自宅Wi-Fiのパスワードではありません。',
         'st.ip': 'IPアドレス',
         'st.ipHelp': '空欄ならDHCP。手動IP未設定の場合はルーターで割り当て済みのIPを確認してください',
         'st.subnet': 'サブネットマスク',
@@ -1370,6 +1393,8 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.ssidHelp': '집·직장 Wi-Fi 이름',
         'st.password': 'SSID 비밀번호',
         'st.passwordHelp': 'Wi-Fi 비밀번호',
+        'st.apPassword': 'PETALOT- AP 비밀번호',
+        'st.apPasswordHelp': 'PETALOT- 액세스 포인트 비밀번호(8-63자). 비워 두면 개방형 AP입니다. 잊어버리면 기기에 접근하지 못할 수 있습니다. 집 Wi-Fi 또는 시리얼 포트로 복구하세요. 집 Wi-Fi 비밀번호가 아닙니다.',
         'st.ip': 'IP 주소',
         'st.ipHelp': '비우면 DHCP를 사용합니다. 수동 IP가 설정되지 않은 경우 라우터에서 할당된 IP를 확인하세요',
         'st.subnet': '서브넷 마스크',
@@ -1652,6 +1677,9 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
       const form = document.getElementById('settings-form');
       const params = new URLSearchParams();
 
+      const apEl = form.elements['APPassword'];
+      if (apEl && !apEl.checkValidity()) { apEl.reportValidity(); return; }
+
       Array.from(form.elements).forEach(el => {
         if (!el.name) return;
         if (el.name === 'ssid' && el.value != conf.ssid) {
@@ -1661,6 +1689,9 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
           reboot = true;
         }
         if (el.name === 'DeviceName' && el.value != conf.DeviceName) {
+          reboot = true;
+        }
+        if (el.name === 'APPassword' && el.value != conf.APPassword) {
           reboot = true;
         }
         if (el.name === 'LocalIP' && el.value != conf.LocalIP) {

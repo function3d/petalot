@@ -228,6 +228,11 @@ void set(AsyncWebServerRequest *request) {
   if (request->hasArg("UseDisplay")) displayInitialized = false;
 
   if (request->hasArg("DeviceName")) DeviceName = sanitizeDeviceName(request->arg("DeviceName"));
+  if (request->hasArg("APPassword")) {
+    String ap = request->arg("APPassword");
+    if (apPasswordValid(ap)) APPassword = ap;
+    else msg = "AP password must be 8-63 characters or empty";
+  }
   if (request->hasArg("ssid")) request->arg("ssid").toCharArray(ssid, sizeof(ssid));
   if (request->hasArg("password")) request->arg("password").toCharArray(password, sizeof(password));
   if (request->hasArg("LocalIP")) LocalIP = request->arg("LocalIP");
