@@ -263,13 +263,15 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
       </div>
       <div class="tab-panel" id="tab-network">
       <div class="grid">
-        <div class="form-group"><span class="label" data-i18n="st.ssid">SSID</span><input type="text" name="ssid"><small class="help-text" data-i18n="st.ssidHelp">Your home/work Wi-Fi name</small></div>
-        <div class="form-group"><span class="label" data-i18n="st.password">SSID Password</span><div class="pw-wrap"><input type="password" name="password" autocomplete="off"><button type="button" class="pw-toggle" onclick="togglePassword(this)" aria-label="Show password"><svg class="eye-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg><svg class="eye-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg></button></div><small class="help-text" data-i18n="st.passwordHelp">Your Wi-Fi password</small></div>
-        <div class="form-group"><span class="label" data-i18n="st.apPassword">PETALOT- AP password</span><div class="pw-wrap"><input type="password" name="APPassword" minlength="8" maxlength="63" autocomplete="off"><button type="button" class="pw-toggle" onclick="togglePassword(this)" aria-label="Show password"><svg class="eye-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg><svg class="eye-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg></button></div><small class="help-text msg warn" data-i18n="st.apPasswordHelp">Password for the PETALOT- access point (8-63 characters). Leave blank for an open AP. If you forget it the device may become unreachable; recover through your home Wi-Fi or the serial port. This is NOT your home Wi-Fi password.</small></div>
+        <div class="form-group"><span class="label" data-i18n="st.wifiMode">Wi-Fi mode</span><select id="wifi-mode" class="settings-select" onchange="updateWifiZones()"><option value="ap" data-i18n="st.wifiModeAp">Access point (PETALOT-...)</option><option value="sta" data-i18n="st.wifiModeSta">Home network (client)</option></select></div>
 
-        <div class="form-group"><span class="label" data-i18n="st.ip">IP Address</span><input type="text" name="LocalIP"><small class="help-text" data-i18n-html="st.ipHelp">DHCP used if blank. Try <a href="http://petalot.local">petalot.local</a> first; check router for IP if inaccessible</small></div>
-        <div class="form-group"><span class="label" data-i18n="st.subnet">Subnet</span><input type="text" name="Subnet"><small class="help-text" data-i18n="st.subnetHelp">255.255.255.0 if left blank</small></div>
-        <div class="form-group"><span class="label" data-i18n="st.gateway">Gateway</span><input type="text" name="Gateway"><small class="help-text" data-i18n="st.gatewayHelp">PETALOT does not require an Internet connection; 0.0.0.0 if left blank</small></div>
+        <div class="form-group" data-zone="sta"><span class="label" data-i18n="st.ssid">SSID</span><input type="text" name="ssid" list="wifi-list" autocomplete="off"><datalist id="wifi-list"></datalist><div class="row-layout"><button type="button" class="btn" id="btn-scan" onclick="scanWifi()" data-i18n="st.wifiScan">Scan networks</button><div class="msg" id="scan-msg"></div></div><small class="help-text" data-i18n="st.ssidHelp">Your home/work Wi-Fi name</small></div>
+        <div class="form-group" data-zone="sta"><span class="label" data-i18n="st.password">SSID Password</span><div class="pw-wrap"><input type="password" name="password" autocomplete="off"><button type="button" class="pw-toggle" onclick="togglePassword(this)" aria-label="Show password"><svg class="eye-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg><svg class="eye-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg></button></div><small class="help-text" data-i18n="st.passwordHelp">Your Wi-Fi password</small></div>
+        <div class="form-group" data-zone="ap"><span class="label" data-i18n="st.apPassword">PETALOT- AP password</span><div class="pw-wrap"><input type="password" name="APPassword" minlength="8" maxlength="63" autocomplete="off"><button type="button" class="pw-toggle" onclick="togglePassword(this)" aria-label="Show password"><svg class="eye-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg><svg class="eye-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg></button></div><small class="help-text" data-i18n="st.apPasswordHelp">Password for the PETALOT- access point (8-63 characters). Leave blank for an open AP. If you forget it the device may become unreachable; recover through your home Wi-Fi or the serial port. This is NOT your home Wi-Fi password.</small></div>
+
+        <div class="form-group" data-zone="sta"><span class="label" data-i18n="st.ip">IP Address</span><input type="text" name="LocalIP"><small class="help-text" data-i18n-html="st.ipHelp">DHCP used if blank. Try <a href="http://petalot.local">petalot.local</a> first; check router for IP if inaccessible</small></div>
+        <div class="form-group" data-zone="sta"><span class="label" data-i18n="st.subnet">Subnet</span><input type="text" name="Subnet"><small class="help-text" data-i18n="st.subnetHelp">255.255.255.0 if left blank</small></div>
+        <div class="form-group" data-zone="sta"><span class="label" data-i18n="st.gateway">Gateway</span><input type="text" name="Gateway"><small class="help-text" data-i18n="st.gatewayHelp">PETALOT does not require an Internet connection; 0.0.0.0 if left blank</small></div>
       </div>
       </div>
 
@@ -387,6 +389,13 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.passwordHelp': 'Your Wi-Fi password',
         'st.apPassword': 'PETALOT- AP password',
         'st.apPasswordHelp': 'Password for the PETALOT- access point (8-63 characters). Leave blank for an open AP. If you forget it the device may become unreachable; recover through your home Wi-Fi or the serial port. This is NOT your home Wi-Fi password.',
+        'st.wifiMode': 'Wi-Fi mode',
+        'st.wifiModeAp': 'Access point (PETALOT-...)',
+        'st.wifiModeSta': 'Home network (client)',
+        'st.wifiScan': 'Scan networks',
+        'st.wifiScanning': 'Scanning...',
+        'st.wifiScanError': 'Scan failed',
+        'st.wifiBusy': 'Stop the machine before scanning',
         'st.ip': 'IP Address',
         'st.ipHelp': 'DHCP used if blank. Check router for assigned IP if manual IP is not set',
         'st.subnet': 'Subnet',
@@ -479,6 +488,13 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.passwordHelp': 'Tu contraseña de Wi-Fi',
         'st.apPassword': 'Contraseña del AP PETALOT-',
         'st.apPasswordHelp': 'Contraseña del punto de acceso PETALOT- (8-63 caracteres). Déjala vacía para un AP abierto. Si la olvidas el dispositivo puede quedar inaccesible; recupéralo por tu Wi-Fi de casa o el puerto serie. NO es la contraseña de tu Wi-Fi de casa.',
+        'st.wifiMode': 'Modo Wi-Fi',
+        'st.wifiModeAp': 'Punto de acceso (PETALOT-...)',
+        'st.wifiModeSta': 'Red de casa (cliente)',
+        'st.wifiScan': 'Buscar redes',
+        'st.wifiScanning': 'Buscando...',
+        'st.wifiScanError': 'Error al buscar',
+        'st.wifiBusy': 'Para la máquina antes de buscar',
         'st.ip': 'Dirección IP',
         'st.ipHelp': 'Usa DHCP si lo dejas vacío. Revisa el router para ver la IP asignada si no has puesto IP manual',
         'st.subnet': 'Máscara de subred',
@@ -571,6 +587,13 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.passwordHelp': 'Sua senha do Wi-Fi',
         'st.apPassword': 'Senha do AP PETALOT-',
         'st.apPasswordHelp': 'Senha do ponto de acesso PETALOT- (8-63 caracteres). Deixe em branco para um AP aberto. Se a esquecer o dispositivo pode ficar inacessível; recupere pela sua Wi-Fi de casa ou pela porta série. NÃO é a senha da sua Wi-Fi de casa.',
+        'st.wifiMode': 'Modo Wi-Fi',
+        'st.wifiModeAp': 'Ponto de acesso (PETALOT-...)',
+        'st.wifiModeSta': 'Rede de casa (cliente)',
+        'st.wifiScan': 'Procurar redes',
+        'st.wifiScanning': 'Procurando...',
+        'st.wifiScanError': 'Falha ao procurar',
+        'st.wifiBusy': 'Pare a máquina antes de procurar',
         'st.ip': 'Endereço IP',
         'st.ipHelp': 'Usa DHCP se deixar em branco. Verifique a IP atribuída no roteador se não definir IP manual',
         'st.subnet': 'Máscara de sub-rede',
@@ -663,6 +686,13 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.passwordHelp': 'Votre mot de passe Wi-Fi',
         'st.apPassword': "Mot de passe du point d'accès PETALOT-",
         'st.apPasswordHelp': "Mot de passe du point d'accès PETALOT- (8 à 63 caractères). Laissez vide pour un point d'accès ouvert. Si vous l'oubliez l'appareil peut devenir inaccessible ; récupérez via votre Wi-Fi maison ou le port série. Ce n'est PAS le mot de passe de votre Wi-Fi maison.",
+        'st.wifiMode': 'Mode Wi-Fi',
+        'st.wifiModeAp': "Point d'accès (PETALOT-...)",
+        'st.wifiModeSta': 'Réseau domestique (client)',
+        'st.wifiScan': 'Rechercher les réseaux',
+        'st.wifiScanning': 'Recherche...',
+        'st.wifiScanError': 'Échec de la recherche',
+        'st.wifiBusy': 'Arrêtez la machine avant de rechercher',
         'st.ip': 'Adresse IP',
         'st.ipHelp': "DHCP utilisé si vide. Vérifiez dans le routeur l'IP attribuée si aucune IP manuelle n'est définie",
         'st.subnet': 'Masque de sous-réseau',
@@ -755,6 +785,13 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.passwordHelp': 'Dein WLAN-Passwort',
         'st.apPassword': 'PETALOT- AP-Passwort',
         'st.apPasswordHelp': 'Passwort für den PETALOT--Zugangspunkt (8-63 Zeichen). Leer lassen für einen offenen AP. Wenn du es vergisst, kann das Gerät unerreichbar werden; Zugriff über dein Heim-WLAN oder die serielle Schnittstelle wiederherstellen. Das ist NICHT dein Heim-WLAN-Passwort.',
+        'st.wifiMode': 'WLAN-Modus',
+        'st.wifiModeAp': 'Zugangspunkt (PETALOT-...)',
+        'st.wifiModeSta': 'Heimnetzwerk (Client)',
+        'st.wifiScan': 'Netzwerke suchen',
+        'st.wifiScanning': 'Suche läuft...',
+        'st.wifiScanError': 'Suche fehlgeschlagen',
+        'st.wifiBusy': 'Maschine vor der Suche stoppen',
         'st.ip': 'IP-Adresse',
         'st.ipHelp': 'DHCP wird verwendet, wenn leer. Prüfe im Router die zugewiesene IP, wenn keine manuelle IP gesetzt ist',
         'st.subnet': 'Subnetzmaske',
@@ -847,6 +884,13 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.passwordHelp': 'La tua password Wi-Fi',
         'st.apPassword': "Password dell'AP PETALOT-",
         'st.apPasswordHelp': "Password del punto di accesso PETALOT- (8-63 caratteri). Lascia vuoto per un AP aperto. Se la dimentichi il dispositivo può diventare irraggiungibile; recupera dalla tua Wi-Fi di casa o dalla porta seriale. NON è la password della tua Wi-Fi di casa.",
+        'st.wifiMode': 'Modalità Wi-Fi',
+        'st.wifiModeAp': 'Punto di accesso (PETALOT-...)',
+        'st.wifiModeSta': 'Rete di casa (client)',
+        'st.wifiScan': 'Cerca reti',
+        'st.wifiScanning': 'Ricerca in corso...',
+        'st.wifiScanError': 'Ricerca non riuscita',
+        'st.wifiBusy': 'Ferma la macchina prima di cercare',
         'st.ip': 'Indirizzo IP',
         'st.ipHelp': 'DHCP usato se vuoto. Controlla l\'IP assegnata nel router se non è impostata un\'IP manuale',
         'st.subnet': 'Subnet mask',
@@ -939,6 +983,13 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.passwordHelp': '您的 Wi-Fi 密码',
         'st.apPassword': 'PETALOT- 热点密码',
         'st.apPasswordHelp': 'PETALOT- 接入点的密码（8-63 个字符）。留空则为开放热点。如果忘记，设备可能无法访问；请通过家庭 Wi-Fi 或串口恢复。这不是您家庭 Wi-Fi 的密码。',
+        'st.wifiMode': 'Wi-Fi 模式',
+        'st.wifiModeAp': '接入点 (PETALOT-...)',
+        'st.wifiModeSta': '家庭网络 (客户端)',
+        'st.wifiScan': '搜索网络',
+        'st.wifiScanning': '搜索中...',
+        'st.wifiScanError': '搜索失败',
+        'st.wifiBusy': '搜索前请停止机器',
         'st.ip': 'IP 地址',
         'st.ipHelp': '留空则使用 DHCP。若未设置手动 IP，请在路由器中查看分配的 IP',
         'st.subnet': '子网掩码',
@@ -1031,6 +1082,13 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.passwordHelp': 'Vaše heslo Wi-Fi',
         'st.apPassword': 'Heslo AP PETALOT-',
         'st.apPasswordHelp': 'Heslo přístupového bodu PETALOT- (8-63 znaků). Ponechte prázdné pro otevřený AP. Pokud je zapomenete, zařízení může být nedostupné; obnovte přístup přes domácí Wi-Fi nebo sériový port. Toto NENÍ heslo vaší domácí Wi-Fi.',
+        'st.wifiMode': 'Režim Wi-Fi',
+        'st.wifiModeAp': 'Přístupový bod (PETALOT-...)',
+        'st.wifiModeSta': 'Domácí síť (klient)',
+        'st.wifiScan': 'Vyhledat sítě',
+        'st.wifiScanning': 'Vyhledávání...',
+        'st.wifiScanError': 'Vyhledání selhalo',
+        'st.wifiBusy': 'Před vyhledáním zastavte stroj',
         'st.ip': 'IP adresa',
         'st.ipHelp': 'DHCP, pokud prázdné. Pokud není nastavena ruční IP, zkontrolujte přidělenou IP v routeru',
         'st.subnet': 'Maska sítě',
@@ -1122,6 +1180,13 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.passwordHelp': 'Ваш пароль Wi-Fi',
         'st.apPassword': 'Пароль точки доступа PETALOT-',
         'st.apPasswordHelp': 'Пароль точки доступа PETALOT- (8-63 символа). Оставьте пустым для открытой точки доступа. Если забудете, устройство может стать недоступным; восстановите доступ через домашний Wi-Fi или последовательный порт. Это НЕ пароль вашего домашнего Wi-Fi.',
+        'st.wifiMode': 'Режим Wi-Fi',
+        'st.wifiModeAp': 'Точка доступа (PETALOT-...)',
+        'st.wifiModeSta': 'Домашняя сеть (клиент)',
+        'st.wifiScan': 'Сканировать сети',
+        'st.wifiScanning': 'Сканирование...',
+        'st.wifiScanError': 'Ошибка сканирования',
+        'st.wifiBusy': 'Остановите машину перед сканированием',
         'st.ip': 'IP-адрес',
         'st.ipHelp': 'DHCP, если пусто. Если ручной IP не задан, проверьте назначенный IP в роутере',
         'st.subnet': 'Маска подсети',
@@ -1213,6 +1278,13 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.passwordHelp': 'Wi-Fi şifreniz',
         'st.apPassword': 'PETALOT- AP şifresi',
         'st.apPasswordHelp': 'PETALOT- erişim noktası şifresi (8-63 karakter). Açık AP için boş bırakın. Unutursanız cihaz erişilemez hale gelebilir; ev Wi-Fi ağınızdan veya seri porttan kurtarın. Bu, ev Wi-Fi şifreniz DEĞİLDİR.',
+        'st.wifiMode': 'Wi-Fi modu',
+        'st.wifiModeAp': 'Erişim noktası (PETALOT-...)',
+        'st.wifiModeSta': 'Ev ağı (istemci)',
+        'st.wifiScan': 'Ağları tara',
+        'st.wifiScanning': 'Taranıyor...',
+        'st.wifiScanError': 'Tarama başarısız',
+        'st.wifiBusy': 'Taramadan önce makineyi durdurun',
         'st.ip': 'IP adresi',
         'st.ipHelp': 'Boşsa DHCP kullanılır. Manuel IP ayarlanmadıysa yönlendiricide atanan IP adresini kontrol edin',
         'st.subnet': 'Alt ağ maskesi',
@@ -1304,6 +1376,13 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.passwordHelp': 'Wi-Fiパスワード',
         'st.apPassword': 'PETALOT- AP パスワード',
         'st.apPasswordHelp': 'PETALOT- アクセスポイントのパスワード（8〜63文字）。空欄にするとオープンAPになります。忘れるとデバイスにアクセスできなくなることがあります。自宅Wi-Fiまたはシリアルポートで復旧してください。これは自宅Wi-Fiのパスワードではありません。',
+        'st.wifiMode': 'Wi-Fi モード',
+        'st.wifiModeAp': 'アクセスポイント (PETALOT-...)',
+        'st.wifiModeSta': '自宅ネットワーク (クライアント)',
+        'st.wifiScan': 'ネットワークをスキャン',
+        'st.wifiScanning': 'スキャン中...',
+        'st.wifiScanError': 'スキャン失敗',
+        'st.wifiBusy': 'スキャンする前にマシンを停止してください',
         'st.ip': 'IPアドレス',
         'st.ipHelp': '空欄ならDHCP。手動IP未設定の場合はルーターで割り当て済みのIPを確認してください',
         'st.subnet': 'サブネットマスク',
@@ -1395,6 +1474,13 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.passwordHelp': 'Wi-Fi 비밀번호',
         'st.apPassword': 'PETALOT- AP 비밀번호',
         'st.apPasswordHelp': 'PETALOT- 액세스 포인트 비밀번호(8-63자). 비워 두면 개방형 AP입니다. 잊어버리면 기기에 접근하지 못할 수 있습니다. 집 Wi-Fi 또는 시리얼 포트로 복구하세요. 집 Wi-Fi 비밀번호가 아닙니다.',
+        'st.wifiMode': 'Wi-Fi 모드',
+        'st.wifiModeAp': '액세스 포인트 (PETALOT-...)',
+        'st.wifiModeSta': '홈 네트워크 (클라이언트)',
+        'st.wifiScan': '네트워크 검색',
+        'st.wifiScanning': '검색 중...',
+        'st.wifiScanError': '검색 실패',
+        'st.wifiBusy': '검색하기 전에 기계를 중지하세요',
         'st.ip': 'IP 주소',
         'st.ipHelp': '비우면 DHCP를 사용합니다. 수동 IP가 설정되지 않은 경우 라우터에서 할당된 IP를 확인하세요',
         'st.subnet': '서브넷 마스크',
@@ -1644,6 +1730,12 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
           updateNetworkFields();
           updateControlFields();
 
+          const modeSel = document.getElementById('wifi-mode');
+          if (modeSel) {
+            modeSel.value = (conf.ssid && conf.ssid.length) ? 'sta' : 'ap';
+            updateWifiZones();
+          }
+
         });
     }
 
@@ -1677,7 +1769,15 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
       const form = document.getElementById('settings-form');
       const params = new URLSearchParams();
 
+      // Wi-Fi mode selects which credential is active. The other one is saved
+      // empty: AP mode drops the home SSID, client mode leaves the fallback AP
+      // open so a bad home setup can always be recovered.
+      const modeSel = document.getElementById('wifi-mode');
+      const mode = modeSel ? modeSel.value : 'sta';
+      const ssidEl = form.elements['ssid'];
       const apEl = form.elements['APPassword'];
+      if (mode === 'ap') { if (ssidEl) ssidEl.value = ''; }
+      else if (apEl) { apEl.value = ''; }
       if (apEl && !apEl.checkValidity()) { apEl.reportValidity(); return; }
 
       Array.from(form.elements).forEach(el => {
@@ -1917,6 +2017,66 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
       btn.setAttribute('aria-label', revealed ? 'Hide password' : 'Show password');
     }
 
+    function updateWifiZones() {
+      const modeSel = document.getElementById('wifi-mode');
+      const mode = modeSel ? modeSel.value : 'sta';
+      document.querySelectorAll('#tab-network [data-zone]').forEach(el => {
+        el.style.display = (el.dataset.zone === mode) ? '' : 'none';
+      });
+    }
+
+    function fillWifiList(networks) {
+      const list = document.getElementById('wifi-list');
+      list.innerHTML = '';
+      networks.slice().sort((a, b) => b.rssi - a.rssi).forEach(n => {
+        if (!n.ssid) return;
+        const o = document.createElement('option');
+        o.value = n.ssid;
+        o.label = n.rssi + ' dBm' + (n.enc ? ' \uD83D\uDD12' : '');
+        list.appendChild(o);
+      });
+    }
+
+    function scanWifi() {
+      const msgEl = document.getElementById('scan-msg');
+      const btn = document.getElementById('btn-scan');
+      const done = () => { if (btn) btn.disabled = false; };
+      const fail = () => { msgEl.className = 'msg warn'; msgEl.textContent = t('st.wifiScanError'); done(); };
+
+      msgEl.className = 'msg';
+      msgEl.textContent = t('st.wifiScanning');
+      if (btn) btn.disabled = true;
+
+      function poll(n) {
+        if (n > 20) return fail();
+        setTimeout(() => {
+          fetch('/scan')
+            .then(r => r.json())
+            .then(res => {
+              if (res.scanning) return poll(n + 1);
+              if (res.error || !Array.isArray(res)) return fail();
+              fillWifiList(res);
+              msgEl.className = 'msg';
+              msgEl.textContent = res.length ? '' : t('st.wifiScanError');
+              done();
+            })
+            .catch(fail);
+        }, 700);
+      }
+
+      fetch('/scan?start=1')
+        .then(r => r.json())
+        .then(res => {
+          if (res.error === 'running') {
+            msgEl.className = 'msg warn';
+            msgEl.textContent = t('st.wifiBusy');
+            return done();
+          }
+          poll(0);
+        })
+        .catch(fail);
+    }
+
     function updateIcons(data) {
       const fireIcon = document.getElementById('fire-icon');
       const motorIcon = document.getElementById('motor-icon');
@@ -1963,6 +2123,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
       fetchConf();
       fetchTele();
       updateNetworkFields();
+      updateWifiZones();
 
       inputSSID.addEventListener('input', updateNetworkFields);
           };

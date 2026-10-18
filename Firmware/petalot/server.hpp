@@ -266,6 +266,56 @@ void handleRoot(AsyncWebServerRequest *request) {
 }
 
 // ============================================================================
+// /SCAN (Wi-Fi list for the settings picker)
+// Async scan so the main loop keeps regulating the heater; the UI polls until
+// the result is ready. Only allowed while the machine is stopped.
+// ============================================================================
+void handleScan(AsyncWebServerRequest *request) {
+  if (request->hasArg("start")) {
+    if (status == "working") {
+      request->send(200, "application/json", "{\"error\":\"running\"}");
+      return;
+    }
+    if (apmode) {
+      // Scanning needs the station interface; AP_STA keeps the AP clients up.
+#if defined(ESP8266)
+      if (WiFi.getMode() != WIFI_AP_STA) WiFi.mode(WIFI_AP_STA);
+#elif defined(ESP32)
+      if (WiFi.getMode() != WIFI_MODE_APSTA) WiFi.mode(WIFI_MODE_APSTA);
+#endif
+    }
+    WiFi.scanDelete();
+    WiFi.scanNetworks(true, true);
+    request->send(200, "application/json", "{\"scanning\":true}");
+    return;
+  }
+
+  int n = WiFi.scanComplete();
+  if (n == WIFI_SCAN_RUNNING) {
+    request->send(200, "application/json", "{\"scanning\":true}");
+    return;
+  }
+  if (n == WIFI_SCAN_FAILED) {
+    WiFi.scanDelete();
+    request->send(200, "application/json", "{\"error\":\"failed\"}");
+    return;
+  }
+
+  String json = "[";
+  for (int i = 0; i < n; i++) {
+    if (i) json += ',';
+    String s = WiFi.SSID(i);
+    s.replace("\\", "\\\\");
+    s.replace("\"", "\\\"");
+    json += "{\"ssid\":\"" + s + "\",\"rssi\":" + String(WiFi.RSSI(i)) +
+            ",\"enc\":" + String(WiFi.encryptionType(i) != 0 ? 1 : 0) + "}";
+  }
+  json += "]";
+  WiFi.scanDelete();
+  request->send(200, "application/json", json);
+}
+
+// ============================================================================
 // SERVER INIT
 // ============================================================================
 void InitServer() {
@@ -277,6 +327,7 @@ void InitServer() {
   server.on("/get", HTTP_GET, get);
   server.on("/tele", HTTP_GET, tele);
   server.on("/set", HTTP_GET, set);
+  server.on("/scan", HTTP_GET, handleScan);
   server.on("/reset", HTTP_GET, reset);
   server.on("/resetstats", HTTP_GET, resetStatsReq);
   server.on("/updatecheck", HTTP_POST, handleUpdateCheck, handleUpdateCheckData);
