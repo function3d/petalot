@@ -31,6 +31,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
     .header a { color: var(--muted); font-size: 0.8rem; text-decoration: none; }
     .header-right { text-align: right; font-size: 0.8rem; color: var(--muted); }
     .header-right span { color: var(--text); font-weight: 600; }
+    #device-name { color: var(--text); font-weight: 700; font-size: 0.95rem; margin-bottom: 0.2rem; }
     .settings-select { padding: 0.4rem; background: #181c20; color: var(--text); border: 1px solid #363e46; border-radius: 4px; font-size: 0.75rem; margin-top: 0.35rem; }
 
     /*version*/
@@ -143,6 +144,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
           <a href="https://linktr.ee/function.3d" target="_blank">linktr.ee/function.3d</a>
       </div>
       <div class="header-right">
+        <div id="device-name" style="display:none"></div>
         <div><span data-i18n="gs.current">current bottle</span>: <span id="tele-Fs">0</span> m · <span id="tele-Ts">0s</span></div>
         <div><span data-i18n="gs.total">total</span>: <span id="tele-Ft">0</span> m · <span id="tele-Bt">0</span> <span data-i18n="gs.bottles">bottles</span></div>
       </div>
@@ -237,6 +239,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
       <div class="tab-panel active" id="tab-general">
       <div class="grid">
         <div class="form-group"><span class="label" data-i18n="st.language">Language</span><select id="lang-select" class="settings-select"></select></div>
+        <div class="form-group"><span class="label" data-i18n="st.deviceName">Device Name</span><input type="text" name="DeviceName" maxlength="24"><small class="help-text" data-i18n="st.deviceNameHelp">Name shown in the header and appended to PETALOT- for the Wi-Fi AP (letters, numbers, - and _, max 24)</small></div>
 
         <div class="form-group"><div class="row-layout"><span class="label" data-i18n="st.startOnPower">Start up at power on</span><label class="switch"><input type="checkbox" name="StartOnPower"><span class="slider"></span></label></div><small class="help-text" data-i18n="st.startOnPowerHelp">If you disable it, you'll only be able to start the machine by pressing the sensor</small></div>
         <div class="form-group"><div class="row-layout"><span class="label" data-i18n="st.motorOnTo">Motor starting at target temp</span><label class="switch"><input type="checkbox" name="MotorOnTo"><span class="slider"></span></label></div><small class="help-text" data-i18n="st.motorOnToHelp">If enabled, the motor will only run once the target temperature is reached</small></div>
@@ -342,6 +345,8 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.motorOnToHelp': 'If enabled, the motor will only run once the target temperature is reached',
         'st.display': 'Use OLED Display',
         'st.language': 'Language',
+        'st.deviceName': 'Device Name',
+        'st.deviceNameHelp': 'Shown in the header and appended to PETALOT- for the Wi-Fi AP (letters, numbers, - and _, max 24)',
         'st.displayHelp': 'Turn on the display if your machine has one',
         'st.control': 'Heating control',
         'st.controlHelp': 'PID holds the temperature steady out of the box; Bang-bang is the simpler classic controller',
@@ -430,6 +435,8 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.motorOnToHelp': 'Si está activado, el motor solo funcionará cuando se alcance la temperatura objetivo',
         'st.display': 'Usar pantalla OLED',
         'st.language': 'Idioma',
+        'st.deviceName': 'Nombre del dispositivo',
+        'st.deviceNameHelp': 'Se muestra en la cabecera y se añade a PETALOT- para el AP Wi-Fi (letras, números, - y _, máx. 24)',
         'st.displayHelp': 'Enciende la pantalla si tu máquina tiene una',
         'st.control': 'Control de calentamiento',
         'st.controlHelp': 'El PID mantiene la temperatura estable sin calibración; Bang-bang es el controlador clásico más simple',
@@ -518,6 +525,8 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.motorOnToHelp': 'Se ativado, o motor só funcionará quando for atingida a temperatura alvo',
         'st.display': 'Usar display OLED',
         'st.language': 'Idioma',
+        'st.deviceName': 'Nome do dispositivo',
+        'st.deviceNameHelp': 'Mostrado no cabeçalho e adicionado a PETALOT- para o AP Wi-Fi (letras, números, - e _, máx. 24)',
         'st.displayHelp': 'Ligue o display se a sua máquina tiver um',
         'st.control': 'Controle do aquecimento',
         'st.controlHelp': 'O PID mantém a temperatura estável sem calibração; Bang-bang é o controlador clássico mais simples',
@@ -606,6 +615,8 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.motorOnToHelp': "Si activé, le moteur ne tournera qu'une fois la température cible atteinte",
         'st.display': "Utiliser l'écran OLED",
         'st.language': 'Langue',
+        'st.deviceName': "Nom de l'appareil",
+        'st.deviceNameHelp': "Affiché dans l'en-tête et ajouté à PETALOT- pour le point d'accès Wi-Fi (lettres, chiffres, - et _, max 24)",
         'st.displayHelp': "Allumez l'écran si votre machine en a un",
         'st.control': 'Contrôle du chauffage',
         'st.controlHelp': "Le PID maintient la température stable sans calibrage ; Bang-bang est le contrôleur classique plus simple",
@@ -694,6 +705,8 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.motorOnToHelp': 'Wenn aktiviert, läuft der Motor erst, sobald die Zieltemperatur erreicht ist',
         'st.display': 'OLED-Display verwenden',
         'st.language': 'Sprache',
+        'st.deviceName': 'Gerätename',
+        'st.deviceNameHelp': 'Wird in der Kopfzeile angezeigt und an PETALOT- für den WLAN-AP angehängt (Buchstaben, Zahlen, - und _, max. 24)',
         'st.displayHelp': 'Display einschalten, falls die Maschine eines hat',
         'st.control': 'Heizregelung',
         'st.controlHelp': 'PID hält die Temperatur stabil ohne Kalibrierung; Bang-bang ist der einfachere klassische Regler',
@@ -782,6 +795,8 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.motorOnToHelp': 'Se attivato, il motore gira solo al raggiungimento della temperatura target',
         'st.display': 'Usa display OLED',
         'st.language': 'Lingua',
+        'st.deviceName': 'Nome dispositivo',
+        'st.deviceNameHelp': "Mostrato nell'intestazione e aggiunto a PETALOT- per l'AP Wi-Fi (lettere, numeri, - e _, max 24)",
         'st.displayHelp': 'Accendi il display se la macchina ne ha uno',
         'st.control': 'Controllo riscaldamento',
         'st.controlHelp': 'Il PID mantiene la temperatura stabile senza calibrazione; il Bang-bang è il controllore classico più semplice',
@@ -870,6 +885,8 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.motorOnToHelp': '启用后，电机只有在达到目标温度后才会运行',
         'st.display': '使用 OLED 显示屏',
         'st.language': '语言',
+        'st.deviceName': '设备名称',
+        'st.deviceNameHelp': '显示在页眉并附加到 PETALOT- 作为 Wi-Fi AP 名称（字母、数字、- 和 _，最多 24）',
         'st.displayHelp': '如果机器有显示屏则开启',
         'st.control': '加热控制',
         'st.controlHelp': 'PID 无需校准即可保持温度稳定；Bang-bang 是更简单的经典控制器',
@@ -958,6 +975,8 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.motorOnToHelp': 'Pokud je povoleno, motor se spustí až po dosažení cílové teploty',
         'st.display': 'Použít OLED displej',
         'st.language': 'Jazyk',
+        'st.deviceName': 'Název zařízení',
+        'st.deviceNameHelp': 'Zobrazí se v záhlaví a připojí se k PETALOT- pro Wi-Fi AP (písmena, číslice, - a _, max 24)',
         'st.displayHelp': 'Zapněte displej, pokud ho váš stroj má',
         'st.control': 'Regulace ohřevu',
         'st.controlHelp': 'PID drží teplotu stabilní bez kalibrace; Bang-bang je jednodušší klasický regulátor',
@@ -1045,6 +1064,8 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.motorOnToHelp': 'Если включено, мотор работает только после достижения целевой температуры',
         'st.display': 'Использовать OLED-экран',
         'st.language': 'Язык',
+        'st.deviceName': 'Имя устройства',
+        'st.deviceNameHelp': 'Отображается в заголовке и добавляется к PETALOT- для точки доступа Wi-Fi (буквы, цифры, - и _, макс. 24)',
         'st.displayHelp': 'Включите экран, если он есть на машине',
         'st.control': 'Управление нагревом',
         'st.controlHelp': 'PID держит температуру стабильной без калибровки; Bang-bang — более простой классический регулятор',
@@ -1132,6 +1153,8 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.motorOnToHelp': 'Etkinse motor yalnızca hedef sıcaklığa ulaşıldığında çalışır',
         'st.display': 'OLED ekran kullan',
         'st.language': 'Dil',
+        'st.deviceName': 'Cihaz Adı',
+        'st.deviceNameHelp': 'Başlıkta gösterilir ve Wi-Fi AP adı için PETALOT- ön ekine eklenir (harf, rakam, - ve _, en fazla 24)',
         'st.displayHelp': 'Makinenizde varsa ekranı açın',
         'st.control': 'Isıtma kontrolü',
         'st.controlHelp': 'PID sıcaklığı ayar gerektirmeden sabit tutar; Bang-bang daha basit klasik denetleyicidir',
@@ -1219,6 +1242,8 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.motorOnToHelp': '有効にすると、目標温度に達した時のみモーターが回転します',
         'st.display': 'OLEDディスプレイを使用',
         'st.language': '言語',
+        'st.deviceName': 'デバイス名',
+        'st.deviceNameHelp': 'ヘッダーに表示し、Wi-Fi AP 名として PETALOT- に連結します（英数字、-、_、最大 24）',
         'st.displayHelp': '機械にディスプレイがあればオンにします',
         'st.control': '加熱制御',
         'st.controlHelp': 'PID は調整なしで温度を安定に保ちます; バンバンはより単純な古典的制御器です',
@@ -1306,6 +1331,8 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.motorOnToHelp': '활성화하면 목표 온도에 도달했을 때만 모터가 회전합니다',
         'st.display': 'OLED 디스플레이 사용',
         'st.language': '언어',
+        'st.deviceName': '기기 이름',
+        'st.deviceNameHelp': '헤더에 표시되고 Wi-Fi AP용으로 PETALOT-에 붙습니다 (영문, 숫자, - 및 _, 최대 24)',
         'st.displayHelp': '기기에 디스플레이가 있으면 켭니다',
         'st.control': '가열 제어',
         'st.controlHelp': 'PID는 보정 없이 온도를 안정적으로 유지합니다; Bang-bang은 더 단순한 고전적 제어기입니다',
@@ -1537,6 +1564,12 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         .then(res => res.json())
         .then(data => {
           conf = data;
+
+          const dn = (data.DeviceName || '').trim();
+          const dnEl = document.getElementById('device-name');
+          dnEl.textContent = dn;
+          dnEl.style.display = dn ? '' : 'none';
+
           if (data.version) {
             let versionParts = data.version.split('.');
             let semanticVersion = parseInt(versionParts[0] + versionParts[1] + versionParts[2]);
@@ -1615,6 +1648,9 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
           reboot = true;
         }
         if (el.name === 'password' && el.value != conf.password) {
+          reboot = true;
+        }
+        if (el.name === 'DeviceName' && el.value != conf.DeviceName) {
           reboot = true;
         }
         if (el.name === 'LocalIP' && el.value != conf.LocalIP) {

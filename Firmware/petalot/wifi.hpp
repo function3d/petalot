@@ -27,23 +27,29 @@ void AP() {
   IPAddress subnet(255, 255, 255, 0);
   WiFi.softAPConfig(local_IP, gateway, subnet);
 
-  char APNAME[40];
-
+  String apName = String(AP_PREFIX);
+  if (DeviceName.length() > 0) {
+    apName += DeviceName;
+  } else {
+    // No name set: fall back to the MAC tail so APs stay unique.
 #if defined(ESP8266)
-  unsigned char mac[6];
-  WiFi.macAddress(mac);
+    unsigned char mac[6];
+    WiFi.macAddress(mac);
 #elif defined(ESP32)
-  uint8_t mac[6];
-  esp_err_t err = esp_read_mac(mac, ESP_MAC_WIFI_STA);
-  if (err != ESP_OK) {
-    Serial.println("Failed to read MAC address");
-  }
+    uint8_t mac[6];
+    esp_err_t err = esp_read_mac(mac, ESP_MAC_WIFI_STA);
+    if (err != ESP_OK) {
+      Serial.println("Failed to read MAC address");
+    }
 #endif
+    char macSuffix[8];
+    sprintf(macSuffix, "%02X%02X%02X", mac[3], mac[4], mac[5]);
+    apName += macSuffix;
+  }
 
-  sprintf(APNAME, "PETALOT-%02X%02X%02X", mac[3], mac[4], mac[5]);
-  if (WiFi.softAP(APNAME)) {
+  if (WiFi.softAP(apName.c_str())) {
     Serial.print("AP Ready: ");
-    Serial.println(APNAME);
+    Serial.println(apName);
     apmode = true;
   } else {
     Serial.println("AP Failed!");

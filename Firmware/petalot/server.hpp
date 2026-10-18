@@ -227,6 +227,7 @@ void set(AsyncWebServerRequest *request) {
   if (request->hasArg("UseDisplay")) UseDisplay = (request->arg("UseDisplay") == "true");
   if (request->hasArg("UseDisplay")) displayInitialized = false;
 
+  if (request->hasArg("DeviceName")) DeviceName = sanitizeDeviceName(request->arg("DeviceName"));
   if (request->hasArg("ssid")) request->arg("ssid").toCharArray(ssid, sizeof(ssid));
   if (request->hasArg("password")) request->arg("password").toCharArray(password, sizeof(password));
   if (request->hasArg("LocalIP")) LocalIP = request->arg("LocalIP");

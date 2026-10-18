@@ -36,8 +36,25 @@ bool UseDisplay = 0;
 String Subnet;
 char ssid[64];
 char password[64];
+String DeviceName = "";
 String LastStopReason = "";
 int pcbVer = 0; // Registered PCB version (locked at first boot)
+
+// Device name: shown in the UI header and appended to AP_PREFIX to build the
+// Wi-Fi AP SSID. An SSID is 32 chars max, so the name is capped at 24.
+#define AP_PREFIX "PETALOT-"
+#define DEVICE_NAME_MAX 24
+
+// Keep only characters that are safe in an SSID and in the UI/Android clients.
+String sanitizeDeviceName(const String &in) {
+  String out;
+  for (size_t i = 0; i < in.length(); i++) {
+    char c = in[i];
+    if (isalnum((unsigned char)c) || c == '-' || c == '_') out += c;
+  }
+  if (out.length() > DEVICE_NAME_MAX) out = out.substring(0, DEVICE_NAME_MAX);
+  return out;
+}
 
 // Embedded marker so /updatecheck can identify the PCB version of a binary
 // without writing it to flash. Kept in the image even with --gc-sections.
@@ -45,11 +62,11 @@ int pcbVer = 0; // Registered PCB version (locked at first boot)
 #define STRINGIFY(x) STRINGIFY_(x)
 const char PCB_MAGIC[] PROGMEM __attribute__((used)) = "PETALOT-PCB-" STRINGIFY(PCB);
 
-StaticJsonDocument<512> doc;
+StaticJsonDocument<1024> doc;
 
 String printConf(bool plus = true) {
   String confString;
-  StaticJsonDocument<512> conf;
+  StaticJsonDocument<1024> conf;
   conf = doc;
   if (plus) {
     conf["version"] = version;
@@ -80,6 +97,7 @@ void saveConfiguration(bool reset = true) {
   doc["Fenable"] = Fenable;
   doc["ssid"] = ssid;
   doc["password"] = password;
+  doc["DeviceName"] = DeviceName;
   doc["LocalIP"] = LocalIP;
   doc["Subnet"] = Subnet;
   doc["Gateway"] = Gateway;
@@ -115,6 +133,7 @@ void resetConfiguration() {
   Serial.println("reset");
   strcpy(ssid, "");
   strcpy(password, "");
+  DeviceName = "";
   To = workT;
   Vo = workV;
   Fenable = true;
@@ -165,6 +184,9 @@ void loadConfiguration(bool reset = false) {
   strlcpy(password,
           doc["password"],
           sizeof(password));
+
+  DeviceName = sanitizeDeviceName(doc["DeviceName"] | "");
+  doc["DeviceName"] = DeviceName;
 
   To = doc["To"] | workT;
   Vo = doc["Vo"] | workV;
@@ -328,6 +350,7 @@ void readConfigurationSerial() {
       Serial.println("MotorOnTo: Motor starting at target temperature");
       Serial.println("ssid: SSID");
       Serial.println("password: SSID Password");
+      Serial.println("DeviceName: Device name (header + Wi-Fi AP suffix, max 24 chars)");
       Serial.println("LocalIP: IP address");
       Serial.println("Gateway: Gateway address");
       Serial.println("Subnet: Subnet mask");
@@ -341,7 +364,7 @@ void readConfigurationSerial() {
       return;
     }
 
-    StaticJsonDocument<512> docInput;
+    StaticJsonDocument<1024> docInput;
     DeserializationError error = deserializeJson(docInput, line);
     if (error) {
       Serial.println("Invalid JSON");
