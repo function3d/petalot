@@ -5,6 +5,7 @@
 <img alt="Petalot" src="https://function3d.xyz/wp-content/uploads/2026/04/IMG_20260404_164018.webp" />
 
  - [Buy it ready-made](https://function3d.xyz/shop/)
+ - [Instruction Manual](https://function3d.xyz/en/petalot-manual/)
  - [FAQs](https://function3d.xyz/faqs)
  - [How to build it](https://www.tiktok.com/@function.3d/playlist/PETALOT%20Build-7340398832935521056?is_from_webapp=1&sender_device=pc)
  - [STLs](https://makerworld.com/en/models/190886-petalot-plastic-bottles-into-3d-filament)
