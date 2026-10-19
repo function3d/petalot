@@ -8,7 +8,6 @@ import java.net.HttpURLConnection
 import java.net.InetSocketAddress
 import java.net.Socket
 import java.net.URL
-import java.util.Collections
 import java.util.concurrent.Executors
 import java.util.concurrent.atomic.AtomicInteger
 
@@ -20,17 +19,19 @@ import java.util.concurrent.atomic.AtomicInteger
  * petalot.local and mDNS can only report one address. A sweep is the only way
  * to list them all.
  *
- * Two steps, to keep it quick: a TCP connect to port 80 to see who is up, then
- * a /get on the few responders to confirm the answer comes from a PETALOT.
+ * Each address is checked in one go (TCP connect, then /get) and reported as
+ * soon as it is confirmed, so the first device shows up in about a second
+ * instead of after the whole sweep.
  */
 object Sweep {
 
-    private const val CONNECT_MS = 500
-    private const val HTTP_MS = 2500
-    private const val THREADS = 24
+    private const val CONNECT_MS = 400
+    private const val HTTP_MS = 2000
+    private const val THREADS = 48
 
     private val main = Handler(Looper.getMainLooper())
 
+    /** Callbacks are delivered on the main thread. */
     fun find(ctx: Context, onFound: (String) -> Unit, onDone: () -> Unit) {
         val network = Net.wifiNetwork(ctx)
         val own = network?.let { Net.localIpv4(ctx, it) }
@@ -40,7 +41,6 @@ object Sweep {
         }
 
         val base = own and -256 // the /24 we are on
-        val alive = Collections.synchronizedSet(LinkedHashSet<Int>())
         val pool = Executors.newFixedThreadPool(THREADS)
         val pending = AtomicInteger(0)
 
@@ -50,43 +50,21 @@ object Sweep {
             pending.incrementAndGet()
             pool.execute {
                 try {
+                    val address = Net.toAddress(ip)
+                    // Cheap filter: only hosts with port 80 open are candidates.
                     Socket().use { socket ->
                         network.bindSocket(socket)
-                        socket.connect(InetSocketAddress(Net.toAddress(ip), 80), CONNECT_MS)
-                        alive.add(ip)
+                        socket.connect(InetSocketAddress(address, 80), CONNECT_MS)
                     }
+                    val url = "http://$address"
+                    if (isPetalot(network, url)) main.post { onFound(url) }
                 } catch (_: Exception) {
                     // Nothing listening (or filtered): not a candidate.
                 } finally {
                     if (pending.decrementAndGet() == 0) {
                         pool.shutdown()
-                        main.post { confirm(network, alive.toList(), onFound, onDone) }
+                        main.post(onDone)
                     }
-                }
-            }
-        }
-    }
-
-    /** Keeps only the addresses that answer /get like a PETALOT. */
-    private fun confirm(
-        network: Network,
-        hosts: List<Int>,
-        onFound: (String) -> Unit,
-        onDone: () -> Unit,
-    ) {
-        if (hosts.isEmpty()) {
-            main.post(onDone)
-            return
-        }
-        val pool = Executors.newFixedThreadPool(THREADS)
-        val pending = AtomicInteger(hosts.size)
-        for (ip in hosts) {
-            pool.execute {
-                val url = "http://${Net.toAddress(ip)}"
-                if (isPetalot(network, url)) main.post { onFound(url) }
-                if (pending.decrementAndGet() == 0) {
-                    pool.shutdown()
-                    main.post(onDone)
                 }
             }
         }
