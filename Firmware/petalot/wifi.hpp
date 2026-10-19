@@ -18,6 +18,31 @@ unsigned long tempLastWifiTask;
 unsigned long tempStartWifiTask;
 bool wifiReady = false;
 
+// SSID the access point will use: AP_PREFIX + DeviceName, or the MAC tail when
+// no name is set. Exposed to the web UI through /get so it shows the real name.
+String apSsidName() {
+  String apName = String(AP_PREFIX);
+  if (DeviceName.length() > 0) {
+    apName += DeviceName;
+    return apName;
+  }
+  // No name set: fall back to the MAC tail so APs stay unique.
+#if defined(ESP8266)
+  unsigned char mac[6];
+  WiFi.macAddress(mac);
+#elif defined(ESP32)
+  uint8_t mac[6];
+  esp_err_t err = esp_read_mac(mac, ESP_MAC_WIFI_STA);
+  if (err != ESP_OK) {
+    Serial.println("Failed to read MAC address");
+  }
+#endif
+  char macSuffix[8];
+  sprintf(macSuffix, "%02X%02X%02X", mac[3], mac[4], mac[5]);
+  apName += macSuffix;
+  return apName;
+}
+
 void AP() {
   apmode = true;
   WiFi.disconnect(true);
@@ -27,25 +52,7 @@ void AP() {
   IPAddress subnet(255, 255, 255, 0);
   WiFi.softAPConfig(local_IP, gateway, subnet);
 
-  String apName = String(AP_PREFIX);
-  if (DeviceName.length() > 0) {
-    apName += DeviceName;
-  } else {
-    // No name set: fall back to the MAC tail so APs stay unique.
-#if defined(ESP8266)
-    unsigned char mac[6];
-    WiFi.macAddress(mac);
-#elif defined(ESP32)
-    uint8_t mac[6];
-    esp_err_t err = esp_read_mac(mac, ESP_MAC_WIFI_STA);
-    if (err != ESP_OK) {
-      Serial.println("Failed to read MAC address");
-    }
-#endif
-    char macSuffix[8];
-    sprintf(macSuffix, "%02X%02X%02X", mac[3], mac[4], mac[5]);
-    apName += macSuffix;
-  }
+  String apName = apSsidName();
 
   const char *apPass = (APPassword.length() > 0) ? APPassword.c_str() : NULL;
   if (WiFi.softAP(apName.c_str(), apPass)) {

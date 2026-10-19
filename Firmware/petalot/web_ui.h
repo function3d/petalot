@@ -387,10 +387,10 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.ssidHelp': 'Your home/work Wi-Fi name',
         'st.password': 'SSID Password',
         'st.passwordHelp': 'Your Wi-Fi password',
-        'st.apPassword': 'PETALOT- AP password',
-        'st.apPasswordHelp': 'Password for the PETALOT- access point (8-63 characters). Leave blank for an open AP. If you forget it the device may become unreachable; recover through your home Wi-Fi or the serial port. This is NOT your home Wi-Fi password.',
+        'st.apPassword': '{ap} password',
+        'st.apPasswordHelp': 'Password for the {ap} access point (8-63 characters). Leave blank for an open AP. If you forget it you cannot connect to the device; recover by clearing the configuration from the serial console. This is NOT your home Wi-Fi password.',
         'st.wifiMode': 'Wi-Fi mode',
-        'st.wifiModeAp': 'Access point (PETALOT-...)',
+        'st.wifiModeAp': 'Access point ({ap})',
         'st.wifiModeSta': 'Home network (client)',
         'st.wifiScan': 'Scan networks',
         'st.wifiScanning': 'Scanning...',
@@ -486,10 +486,10 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.ssidHelp': 'Nombre de tu red Wi-Fi (casa/trabajo)',
         'st.password': 'Contraseña SSID',
         'st.passwordHelp': 'Tu contraseña de Wi-Fi',
-        'st.apPassword': 'Contraseña del AP PETALOT-',
-        'st.apPasswordHelp': 'Contraseña del punto de acceso PETALOT- (8-63 caracteres). Déjala vacía para un AP abierto. Si la olvidas el dispositivo puede quedar inaccesible; recupéralo por tu Wi-Fi de casa o el puerto serie. NO es la contraseña de tu Wi-Fi de casa.',
+        'st.apPassword': 'Contraseña de {ap}',
+        'st.apPasswordHelp': 'Contraseña del punto de acceso {ap} (8-63 caracteres). Déjala vacía para un AP abierto. Si la olvidas no podrás conectarte al equipo; recupéralo borrando la configuración desde el puerto serie. NO es la contraseña de tu Wi-Fi de casa.',
         'st.wifiMode': 'Modo Wi-Fi',
-        'st.wifiModeAp': 'Punto de acceso (PETALOT-...)',
+        'st.wifiModeAp': 'Punto de acceso ({ap})',
         'st.wifiModeSta': 'Red de casa (cliente)',
         'st.wifiScan': 'Buscar redes',
         'st.wifiScanning': 'Buscando...',
@@ -585,10 +585,10 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.ssidHelp': 'Nome da sua rede Wi-Fi',
         'st.password': 'Senha SSID',
         'st.passwordHelp': 'Sua senha do Wi-Fi',
-        'st.apPassword': 'Senha do AP PETALOT-',
-        'st.apPasswordHelp': 'Senha do ponto de acesso PETALOT- (8-63 caracteres). Deixe em branco para um AP aberto. Se a esquecer o dispositivo pode ficar inacessível; recupere pela sua Wi-Fi de casa ou pela porta série. NÃO é a senha da sua Wi-Fi de casa.',
+        'st.apPassword': 'Senha de {ap}',
+        'st.apPasswordHelp': 'Senha do ponto de acesso {ap} (8-63 caracteres). Deixe em branco para um AP aberto. Se a esquecer não poderá ligar-se ao equipamento; recupere apagando a configuração pela porta série. NÃO é a senha da sua Wi-Fi de casa.',
         'st.wifiMode': 'Modo Wi-Fi',
-        'st.wifiModeAp': 'Ponto de acesso (PETALOT-...)',
+        'st.wifiModeAp': 'Ponto de acesso ({ap})',
         'st.wifiModeSta': 'Rede de casa (cliente)',
         'st.wifiScan': 'Procurar redes',
         'st.wifiScanning': 'Procurando...',
@@ -684,10 +684,10 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.ssidHelp': "Nom de votre réseau Wi-Fi",
         'st.password': 'Mot de passe SSID',
         'st.passwordHelp': 'Votre mot de passe Wi-Fi',
-        'st.apPassword': "Mot de passe du point d'accès PETALOT-",
-        'st.apPasswordHelp': "Mot de passe du point d'accès PETALOT- (8 à 63 caractères). Laissez vide pour un point d'accès ouvert. Si vous l'oubliez l'appareil peut devenir inaccessible ; récupérez via votre Wi-Fi maison ou le port série. Ce n'est PAS le mot de passe de votre Wi-Fi maison.",
+        'st.apPassword': "Mot de passe de {ap}",
+        'st.apPasswordHelp': "Mot de passe du point d'accès {ap} (8 à 63 caractères). Laissez vide pour un point d'accès ouvert. Si vous l'oubliez vous ne pourrez plus vous connecter à l'appareil ; récupérez en effaçant la configuration depuis le port série. Ce n'est PAS le mot de passe de votre Wi-Fi maison.",
         'st.wifiMode': 'Mode Wi-Fi',
-        'st.wifiModeAp': "Point d'accès (PETALOT-...)",
+        'st.wifiModeAp': "Point d'accès ({ap})",
         'st.wifiModeSta': 'Réseau domestique (client)',
         'st.wifiScan': 'Rechercher les réseaux',
         'st.wifiScanning': 'Recherche...',
@@ -783,10 +783,10 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.ssidHelp': 'Name deines WLAN-Netzwerks',
         'st.password': 'WLAN-Passwort',
         'st.passwordHelp': 'Dein WLAN-Passwort',
-        'st.apPassword': 'PETALOT- AP-Passwort',
-        'st.apPasswordHelp': 'Passwort für den PETALOT--Zugangspunkt (8-63 Zeichen). Leer lassen für einen offenen AP. Wenn du es vergisst, kann das Gerät unerreichbar werden; Zugriff über dein Heim-WLAN oder die serielle Schnittstelle wiederherstellen. Das ist NICHT dein Heim-WLAN-Passwort.',
+        'st.apPassword': 'Passwort für {ap}',
+        'st.apPasswordHelp': 'Passwort für den Zugangspunkt {ap} (8-63 Zeichen). Leer lassen für einen offenen AP. Wenn du es vergisst, kannst du dich nicht mehr mit dem Gerät verbinden; Zugriff durch Löschen der Konfiguration über die serielle Schnittstelle wiederherstellen. Das ist NICHT dein Heim-WLAN-Passwort.',
         'st.wifiMode': 'WLAN-Modus',
-        'st.wifiModeAp': 'Zugangspunkt (PETALOT-...)',
+        'st.wifiModeAp': 'Zugangspunkt ({ap})',
         'st.wifiModeSta': 'Heimnetzwerk (Client)',
         'st.wifiScan': 'Netzwerke suchen',
         'st.wifiScanning': 'Suche läuft...',
@@ -882,10 +882,10 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.ssidHelp': 'Nome della tua rete Wi-Fi',
         'st.password': 'Password SSID',
         'st.passwordHelp': 'La tua password Wi-Fi',
-        'st.apPassword': "Password dell'AP PETALOT-",
-        'st.apPasswordHelp': "Password del punto di accesso PETALOT- (8-63 caratteri). Lascia vuoto per un AP aperto. Se la dimentichi il dispositivo può diventare irraggiungibile; recupera dalla tua Wi-Fi di casa o dalla porta seriale. NON è la password della tua Wi-Fi di casa.",
+        'st.apPassword': "Password di {ap}",
+        'st.apPasswordHelp': "Password del punto di accesso {ap} (8-63 caratteri). Lascia vuoto per un AP aperto. Se la dimentichi non potrai più connetterti al dispositivo; recupera cancellando la configurazione dalla porta seriale. NON è la password della tua Wi-Fi di casa.",
         'st.wifiMode': 'Modalità Wi-Fi',
-        'st.wifiModeAp': 'Punto di accesso (PETALOT-...)',
+        'st.wifiModeAp': 'Punto di accesso ({ap})',
         'st.wifiModeSta': 'Rete di casa (client)',
         'st.wifiScan': 'Cerca reti',
         'st.wifiScanning': 'Ricerca in corso...',
@@ -981,10 +981,10 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.ssidHelp': '您的家庭/工作 Wi-Fi 名称',
         'st.password': 'SSID 密码',
         'st.passwordHelp': '您的 Wi-Fi 密码',
-        'st.apPassword': 'PETALOT- 热点密码',
-        'st.apPasswordHelp': 'PETALOT- 接入点的密码（8-63 个字符）。留空则为开放热点。如果忘记，设备可能无法访问；请通过家庭 Wi-Fi 或串口恢复。这不是您家庭 Wi-Fi 的密码。',
+        'st.apPassword': '{ap} 密码',
+        'st.apPasswordHelp': '{ap} 接入点的密码（8-63 个字符）。留空则为开放热点。如果忘记，您将无法连接到设备；请通过串口清除配置来恢复。这不是您家庭 Wi-Fi 的密码。',
         'st.wifiMode': 'Wi-Fi 模式',
-        'st.wifiModeAp': '接入点 (PETALOT-...)',
+        'st.wifiModeAp': '接入点 ({ap})',
         'st.wifiModeSta': '家庭网络 (客户端)',
         'st.wifiScan': '搜索网络',
         'st.wifiScanning': '搜索中...',
@@ -1080,10 +1080,10 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.ssidHelp': 'Název vaší Wi-Fi (doma / v práci)',
         'st.password': 'Heslo SSID',
         'st.passwordHelp': 'Vaše heslo Wi-Fi',
-        'st.apPassword': 'Heslo AP PETALOT-',
-        'st.apPasswordHelp': 'Heslo přístupového bodu PETALOT- (8-63 znaků). Ponechte prázdné pro otevřený AP. Pokud je zapomenete, zařízení může být nedostupné; obnovte přístup přes domácí Wi-Fi nebo sériový port. Toto NENÍ heslo vaší domácí Wi-Fi.',
+        'st.apPassword': 'Heslo pro {ap}',
+        'st.apPasswordHelp': 'Heslo přístupového bodu {ap} (8-63 znaků). Ponechte prázdné pro otevřený AP. Pokud je zapomenete, nepřipojíte se k zařízení; obnovte přístup vymazáním konfigurace přes sériový port. Toto NENÍ heslo vaší domácí Wi-Fi.',
         'st.wifiMode': 'Režim Wi-Fi',
-        'st.wifiModeAp': 'Přístupový bod (PETALOT-...)',
+        'st.wifiModeAp': 'Přístupový bod ({ap})',
         'st.wifiModeSta': 'Domácí síť (klient)',
         'st.wifiScan': 'Vyhledat sítě',
         'st.wifiScanning': 'Vyhledávání...',
@@ -1178,10 +1178,10 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.ssidHelp': 'Название вашей Wi-Fi (дом / работа)',
         'st.password': 'Пароль SSID',
         'st.passwordHelp': 'Ваш пароль Wi-Fi',
-        'st.apPassword': 'Пароль точки доступа PETALOT-',
-        'st.apPasswordHelp': 'Пароль точки доступа PETALOT- (8-63 символа). Оставьте пустым для открытой точки доступа. Если забудете, устройство может стать недоступным; восстановите доступ через домашний Wi-Fi или последовательный порт. Это НЕ пароль вашего домашнего Wi-Fi.',
+        'st.apPassword': 'Пароль {ap}',
+        'st.apPasswordHelp': 'Пароль точки доступа {ap} (8-63 символа). Оставьте пустым для открытой точки доступа. Если забудете, вы не сможете подключиться к устройству; восстановите доступ, очистив конфигурацию через последовательный порт. Это НЕ пароль вашего домашнего Wi-Fi.',
         'st.wifiMode': 'Режим Wi-Fi',
-        'st.wifiModeAp': 'Точка доступа (PETALOT-...)',
+        'st.wifiModeAp': 'Точка доступа ({ap})',
         'st.wifiModeSta': 'Домашняя сеть (клиент)',
         'st.wifiScan': 'Сканировать сети',
         'st.wifiScanning': 'Сканирование...',
@@ -1276,10 +1276,10 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.ssidHelp': 'Wi-Fi ağınızın adı (ev / iş)',
         'st.password': 'SSID şifresi',
         'st.passwordHelp': 'Wi-Fi şifreniz',
-        'st.apPassword': 'PETALOT- AP şifresi',
-        'st.apPasswordHelp': 'PETALOT- erişim noktası şifresi (8-63 karakter). Açık AP için boş bırakın. Unutursanız cihaz erişilemez hale gelebilir; ev Wi-Fi ağınızdan veya seri porttan kurtarın. Bu, ev Wi-Fi şifreniz DEĞİLDİR.',
+        'st.apPassword': '{ap} şifresi',
+        'st.apPasswordHelp': '{ap} erişim noktası şifresi (8-63 karakter). Açık AP için boş bırakın. Unutursanız cihaza bağlanamazsınız; yapılandırmayı seri porttan silerek kurtarın. Bu, ev Wi-Fi şifreniz DEĞİLDİR.',
         'st.wifiMode': 'Wi-Fi modu',
-        'st.wifiModeAp': 'Erişim noktası (PETALOT-...)',
+        'st.wifiModeAp': 'Erişim noktası ({ap})',
         'st.wifiModeSta': 'Ev ağı (istemci)',
         'st.wifiScan': 'Ağları tara',
         'st.wifiScanning': 'Taranıyor...',
@@ -1374,10 +1374,10 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.ssidHelp': '自宅・職場のWi-Fi名',
         'st.password': 'SSIDパスワード',
         'st.passwordHelp': 'Wi-Fiパスワード',
-        'st.apPassword': 'PETALOT- AP パスワード',
-        'st.apPasswordHelp': 'PETALOT- アクセスポイントのパスワード（8〜63文字）。空欄にするとオープンAPになります。忘れるとデバイスにアクセスできなくなることがあります。自宅Wi-Fiまたはシリアルポートで復旧してください。これは自宅Wi-Fiのパスワードではありません。',
+        'st.apPassword': '{ap} のパスワード',
+        'st.apPasswordHelp': '{ap} アクセスポイントのパスワード（8〜63文字）。空欄にするとオープンAPになります。忘れるとデバイスに接続できなくなります。シリアルポートから設定を消去して復旧してください。これは自宅Wi-Fiのパスワードではありません。',
         'st.wifiMode': 'Wi-Fi モード',
-        'st.wifiModeAp': 'アクセスポイント (PETALOT-...)',
+        'st.wifiModeAp': 'アクセスポイント ({ap})',
         'st.wifiModeSta': '自宅ネットワーク (クライアント)',
         'st.wifiScan': 'ネットワークをスキャン',
         'st.wifiScanning': 'スキャン中...',
@@ -1472,10 +1472,10 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.ssidHelp': '집·직장 Wi-Fi 이름',
         'st.password': 'SSID 비밀번호',
         'st.passwordHelp': 'Wi-Fi 비밀번호',
-        'st.apPassword': 'PETALOT- AP 비밀번호',
-        'st.apPasswordHelp': 'PETALOT- 액세스 포인트 비밀번호(8-63자). 비워 두면 개방형 AP입니다. 잊어버리면 기기에 접근하지 못할 수 있습니다. 집 Wi-Fi 또는 시리얼 포트로 복구하세요. 집 Wi-Fi 비밀번호가 아닙니다.',
+        'st.apPassword': '{ap} 비밀번호',
+        'st.apPasswordHelp': '{ap} 액세스 포인트 비밀번호(8-63자). 비워 두면 개방형 AP입니다. 잊어버리면 기기에 연결할 수 없습니다. 시리얼 포트에서 설정을 지워 복구하세요. 집 Wi-Fi 비밀번호가 아닙니다.',
         'st.wifiMode': 'Wi-Fi 모드',
-        'st.wifiModeAp': '액세스 포인트 (PETALOT-...)',
+        'st.wifiModeAp': '액세스 포인트 ({ap})',
         'st.wifiModeSta': '홈 네트워크 (클라이언트)',
         'st.wifiScan': '네트워크 검색',
         'st.wifiScanning': '검색 중...',
@@ -1525,6 +1525,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
     let lang = 'en';
     let connOnline = false;
     let hadConnection = false;
+    let apSsid = 'PETALOT-...';
     let teleInFlight = false;
     let teleTimer = null;
 
@@ -1545,8 +1546,8 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
 
     function applyI18n() {
       document.documentElement.lang = lang;
-      document.querySelectorAll('[data-i18n]').forEach(el => { el.textContent = t(el.dataset.i18n); });
-      document.querySelectorAll('[data-i18n-html]').forEach(el => { el.innerHTML = t(el.dataset.i18nHtml); });
+      document.querySelectorAll('[data-i18n]').forEach(el => { el.textContent = t(el.dataset.i18n, { ap: apSsid }); });
+      document.querySelectorAll('[data-i18n-html]').forEach(el => { el.innerHTML = t(el.dataset.i18nHtml, { ap: apSsid }); });
       const sel = document.getElementById('lang-select');
       if (sel.value !== lang) sel.value = lang;
       setConnText();
@@ -1690,6 +1691,9 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
           const dnEl = document.getElementById('device-name');
           dnEl.textContent = dn;
           dnEl.style.display = dn ? '' : 'none';
+
+          apSsid = data.apSsid || 'PETALOT-...';
+          applyI18n();
 
           if (data.version) {
             let versionParts = data.version.split('.');

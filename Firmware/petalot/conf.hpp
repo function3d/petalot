@@ -78,12 +78,15 @@ bool apPasswordValid(const String &p) {
 #define STRINGIFY(x) STRINGIFY_(x)
 const char PCB_MAGIC[] PROGMEM __attribute__((used)) = "PETALOT-PCB-" STRINGIFY(PCB);
 
+String apSsidName();  // defined in wifi.hpp: AP_PREFIX + DeviceName or MAC tail
+
 StaticJsonDocument<1536> doc;
 
 String printConf(bool plus = true) {
   String confString;
   StaticJsonDocument<1536> conf;
   conf = doc;
+  conf["apSsid"] = apSsidName();
   if (plus) {
     conf["version"] = version;
     conf["minT"] = minT;
@@ -382,8 +385,15 @@ void readConfigurationSerial() {
       return;
     }
 
+    if (line.equalsIgnoreCase("reset")) {
+      Serial.println("Resetting configuration...");
+      resetConfiguration();
+      saveConfiguration(true);  // reboots
+      return;
+    }
+
     if (!line.startsWith("{")) {
-      Serial.println("Unknown command. Type 'conf' to dump config or send a JSON config");
+      Serial.println("Unknown command. Type 'conf' to dump config, 'reset' to clear it, or send a JSON config");
       return;
     }
 
