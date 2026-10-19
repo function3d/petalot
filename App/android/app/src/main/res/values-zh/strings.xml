@@ -3,7 +3,6 @@
     <string name="saved_empty">尚无已保存的设备。</string>
     <string name="scanning">正在搜索您网络中的设备…</string>
     <string name="search">搜索</string>
-    <string name="found_count">网络中的设备：%1$d</string>
     <string name="input_hint">您的设备 IP</string>
     <string name="enter_address">输入地址</string>
     <string name="connect">连接</string>

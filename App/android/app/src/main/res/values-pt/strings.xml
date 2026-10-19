@@ -3,7 +3,6 @@
     <string name="saved_empty">Ainda não há equipamentos guardados.</string>
     <string name="scanning">A procurar equipamentos na sua rede…</string>
     <string name="search">Procurar</string>
-    <string name="found_count">Na sua rede: %1$d</string>
     <string name="input_hint">IP do seu equipamento</string>
     <string name="enter_address">Introduza um endereço</string>
     <string name="connect">Ligar</string>

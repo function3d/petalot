@@ -3,7 +3,6 @@
     <string name="saved_empty">保存されたデバイスはまだありません。</string>
     <string name="scanning">ネットワーク上のデバイスを検索しています…</string>
     <string name="search">検索</string>
-    <string name="found_count">ネットワーク上: %1$d</string>
     <string name="input_hint">デバイスの IP アドレス</string>
     <string name="enter_address">アドレスを入力</string>
     <string name="connect">接続</string>

@@ -3,7 +3,6 @@
     <string name="saved_empty">Сохранённых устройств пока нет.</string>
     <string name="scanning">Поиск устройств в вашей сети…</string>
     <string name="search">Поиск</string>
-    <string name="found_count">В вашей сети: %1$d</string>
     <string name="input_hint">IP вашего устройства</string>
     <string name="enter_address">Введите адрес</string>
     <string name="connect">Подключить</string>

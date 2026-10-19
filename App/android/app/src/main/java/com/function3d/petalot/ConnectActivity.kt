@@ -343,7 +343,8 @@ class ConnectActivity : Activity() {
         scanBar.visibility = if (searching) View.VISIBLE else View.GONE
 
         status.text = when {
-            discovered.isNotEmpty() -> getString(R.string.found_count, discovered.size)
+            // The list speaks for itself; no prefix and no counter.
+            discovered.isNotEmpty() -> ""
             searching -> getString(R.string.scanning)
             saved.isEmpty() -> getString(R.string.saved_empty)
             else -> ""

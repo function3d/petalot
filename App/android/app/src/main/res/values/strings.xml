@@ -5,7 +5,6 @@
     <string name="saved_empty">No saved devices yet.</string>
     <string name="scanning">Searching for devices on your network…</string>
     <string name="search">Search</string>
-    <string name="found_count">On your network: %1$d</string>
     <string name="input_hint">Your device IP</string>
     <string name="enter_address">Enter an address</string>
     <string name="connect">Connect</string>

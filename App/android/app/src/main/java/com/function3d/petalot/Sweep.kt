@@ -104,24 +104,29 @@ object Sweep {
         return false
     }
 
-    private fun isPetalotOnce(network: Network, base: String): Boolean = try {
-        val target = URL("$base/get")
-        val conn = network.openConnection(target) as HttpURLConnection
-        conn.connectTimeout = HTTP_MS
-        conn.readTimeout = HTTP_MS
-        conn.requestMethod = "GET"
-        val code = conn.responseCode
-        val body = if (code == 200) {
-            val buf = ByteArray(4096)
-            val read = conn.inputStream.use { it.read(buf) }
-            if (read > 0) String(buf, 0, read) else ""
-        } else {
-            ""
+    private fun isPetalotOnce(network: Network, base: String): Boolean {
+        return try {
+            val target = URL("$base/get")
+            val conn = network.openConnection(target) as HttpURLConnection
+            conn.connectTimeout = HTTP_MS
+            conn.readTimeout = HTTP_MS
+            conn.requestMethod = "GET"
+            val code = conn.responseCode
+            val body = if (code == 200) {
+                val buf = ByteArray(4096)
+                val read = conn.inputStream.use { it.read(buf) }
+                if (read > 0) String(buf, 0, read) else ""
+            } else {
+                ""
+            }
+            conn.disconnect()
+            // /get carries the config JSON. Newer firmware includes "version";
+            // older ones only expose the settings, so accept those keys too.
+            code == 401 ||
+                (code == 200 && (body.contains("\"version\"") ||
+                    (body.contains("\"To\":") && body.contains("\"Vo\":"))))
+        } catch (_: Exception) {
+            false
         }
-        conn.disconnect()
-        // /get always carries the firmware version; 401 means auth is on.
-        code == 401 || (code == 200 && body.contains("\"version\""))
-    } catch (_: Exception) {
-        false
     }
 }

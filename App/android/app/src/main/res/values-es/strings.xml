@@ -3,7 +3,6 @@
     <string name="saved_empty">Sin equipos guardados todavía.</string>
     <string name="scanning">Buscando equipos en tu red…</string>
     <string name="search">Buscar</string>
-    <string name="found_count">En tu red: %1$d</string>
     <string name="input_hint">IP de tu equipo</string>
     <string name="enter_address">Escribe una dirección</string>
     <string name="connect">Conectar</string>

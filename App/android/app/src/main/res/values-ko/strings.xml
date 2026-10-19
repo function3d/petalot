@@ -3,7 +3,6 @@
     <string name="saved_empty">저장된 기기가 아직 없습니다.</string>
     <string name="scanning">네트워크에서 기기를 검색하는 중…</string>
     <string name="search">검색</string>
-    <string name="found_count">네트워크에서: %1$d</string>
     <string name="input_hint">기기의 IP 주소</string>
     <string name="enter_address">주소를 입력하세요</string>
     <string name="connect">연결</string>
