@@ -46,6 +46,7 @@ class ConnectActivity : Activity() {
     private val urls = mutableListOf<String>()
     private val online = HashMap<String, Boolean>() // url -> reachable
     private val probing = HashSet<String>()
+    private val removed = HashSet<String>() // deleted by the user, do not re-add
     private var apUrl: String? = null
     private var sweepId = 0
     private var sweepRunning = false
@@ -226,7 +227,7 @@ class ConnectActivity : Activity() {
             sweepRunning = true
             val id = sweepId
             Sweep.find(this, { url ->
-                if (id == sweepId) {
+                if (id == sweepId && url !in removed) {
                     swept.add(url)
                     probe(url)
                     rebuild()
@@ -292,6 +293,7 @@ class ConnectActivity : Activity() {
         discovered.addAll(found)
         discovered.addAll(swept)
         apUrl?.let { discovered.add(it) }
+        discovered.removeAll(removed)
 
         urls.clear()
         labels.clear()
@@ -347,6 +349,7 @@ class ConnectActivity : Activity() {
 
     private fun connect(raw: String) {
         val url = DeviceStore.normalize(raw)
+        removed.remove(url) // the user wants it back
         DeviceStore.remember(this, url)
         startActivity(
             Intent(this, MainActivity::class.java)
@@ -361,7 +364,12 @@ class ConnectActivity : Activity() {
             .setTitle(R.string.remove_title)
             .setMessage(hostPort(url))
             .setPositiveButton(R.string.remove) { _, _ ->
+                // Drop it everywhere, or the mDNS/sweep result puts it straight
+                // back into the list.
+                removed.add(url)
                 DeviceStore.remove(this, url)
+                swept.remove(url)
+                found.remove(url)
                 online.remove(url)
                 reloadSaved()
             }
