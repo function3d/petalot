@@ -25,8 +25,8 @@ import java.util.concurrent.atomic.AtomicInteger
  */
 object Sweep {
 
-    private const val CONNECT_MS = 400
-    private const val HTTP_MS = 2000
+    private const val CONNECT_MS = 600
+    private const val HTTP_MS = 2500
     private const val THREADS = 48
 
     private val main = Handler(Looper.getMainLooper())
@@ -70,7 +70,16 @@ object Sweep {
         }
     }
 
-    private fun isPetalot(network: Network, base: String): Boolean = try {
+    private fun isPetalot(network: Network, base: String): Boolean {
+        // A slow ESP can miss the first request; the host is already known to be
+        // up, so a second try is cheap and avoids losing the machine.
+        repeat(2) {
+            if (isPetalotOnce(network, base)) return true
+        }
+        return false
+    }
+
+    private fun isPetalotOnce(network: Network, base: String): Boolean = try {
         val target = URL("$base/get")
         val conn = network.openConnection(target) as HttpURLConnection
         conn.connectTimeout = HTTP_MS

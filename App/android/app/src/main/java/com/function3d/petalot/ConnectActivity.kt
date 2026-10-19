@@ -48,6 +48,7 @@ class ConnectActivity : Activity() {
     private val probing = HashSet<String>()
     private var apUrl: String? = null
     private var sweepId = 0
+    private var sweepRunning = false
 
     // Lazily: getSystemService() is not usable before the activity is attached.
     private val connectivity by lazy { getSystemService(ConnectivityManager::class.java) }
@@ -186,6 +187,9 @@ class ConnectActivity : Activity() {
 
     override fun onStart() {
         super.onStart()
+        // Registering the callback delivers onAvailable for the current network
+        // immediately; record it first so it does not trigger a second search.
+        currentNetwork = connectivity.activeNetwork
         connectivity.registerDefaultNetworkCallback(networkCallback)
         search()
     }
@@ -194,6 +198,7 @@ class ConnectActivity : Activity() {
         main.removeCallbacks(stopSearching)
         searching = false
         sweepId++ // ignore whatever the sweep still reports
+        sweepRunning = false
         runCatching { connectivity.unregisterNetworkCallback(networkCallback) }
         discovery.stop()
         scanBar.visibility = ProgressBar.GONE
@@ -215,15 +220,21 @@ class ConnectActivity : Activity() {
         discovery.start { urls -> found.clear(); found.addAll(urls); rebuild() }
 
         // mDNS cannot tell two machines apart (same hostname in the firmware),
-        // so the sweep is what actually finds all of them.
-        swept.clear()
-        val id = ++sweepId
-        Sweep.find(this, { url ->
-            if (id == sweepId) {
-                swept.add(url)
-                rebuild()
-            }
-        }, {})
+        // so the sweep is what actually finds all of them. Results accumulate:
+        // a device that stops answering turns red, it does not vanish.
+        if (!sweepRunning) {
+            sweepRunning = true
+            val id = sweepId
+            Sweep.find(this, { url ->
+                if (id == sweepId) {
+                    swept.add(url)
+                    probe(url)
+                    rebuild()
+                }
+            }, {
+                if (id == sweepId) sweepRunning = false
+            })
+        }
 
         reloadSaved()
     }
@@ -251,6 +262,7 @@ class ConnectActivity : Activity() {
 
         autofillAp()
         saved.forEach { probe(it) }
+        swept.forEach { probe(it) }
         apUrl?.let { probe(it) }
         rebuild()
     }
@@ -286,7 +298,9 @@ class ConnectActivity : Activity() {
         // Devices found now go first, then saved ones not already listed.
         discovered.forEach {
             urls.add(it)
-            labels.add(row(it, true))
+            // Reachability is checked for these too, so a machine that goes away
+            // turns red instead of disappearing.
+            labels.add(row(it, online[it]))
         }
         saved.forEach {
             if (it !in discovered) {
