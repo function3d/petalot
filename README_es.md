@@ -28,7 +28,7 @@
 
 Controla tu PETALOT desde el móvil: la misma interfaz que la web del equipo, con ajustes, estadísticas y actualización de firmware, además de descubrimiento automático de los equipos de tu red.
 
- - [Descargar la app para Android](https://github.com/function3d/petalot/raw/master/App/dist/petalot-1.2.apk) (58 KB) — Android 7.0 o superior.
+ - [Descargar la app para Android](https://github.com/function3d/petalot/raw/master/App/dist/petalot.apk) (58 KB) — Android 7.0 o superior.
  - **No está en Google Play**: Android te pedirá permitir la instalación de apps desde tu navegador o gestor de archivos. La app está firmada y las actualizaciones conservan tus equipos guardados.
  - Si un equipo está en modo AP, conéctate a su Wi-Fi `PETALOT-XXXXXX` y entra en `192.168.4.1`.
  - La app comprueba si hay versiones nuevas y ofrece la descarga.

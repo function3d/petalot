@@ -8,8 +8,12 @@
 #   App/android/tools/release.sh            # rebuild the current version
 #
 # It writes:
-#   App/dist/petalot-<version>.apk          signed APK
+#   App/dist/petalot.apk                    signed APK, stable name (links never change)
 #   App/dist/app-latest.json                manifest the app checks
+#
+# The stable file name is deliberate: the website and the READMEs can link to
+# App/dist/petalot.apk forever, and the version is read from the manifest.
+# Older builds stay reachable through git history.
 #
 # The manifest and the APK are meant to be committed: the app reads them from
 # raw.githubusercontent.com, so no server of your own is involved.
@@ -61,21 +65,25 @@ APK="$ANDROID_DIR/app/build/outputs/apk/release/app-release.apk"
 [ -f "$APK" ] || { echo "error: release APK not built" >&2; exit 1; }
 
 mkdir -p "$DIST"
-rm -f "$DIST"/petalot-*.apk
-out="$DIST/petalot-$version.apk"
+# One stable file name, so links never change: the version lives in the
+# manifest and in git history.
+rm -f "$DIST"/petalot.apk "$DIST"/petalot-*.apk
+out="$DIST/petalot.apk"
 cp "$APK" "$out"
 
 sha="$(sha256sum "$out" | cut -d' ' -f1)"
 size="$(stat -c%s "$out")"
 
-python3 - "$DIST/app-latest.json" "$code" "$version" "petalot-$version.apk" "$sha" "$size" "$BASE_URL" <<'PY'
+python3 - "$DIST/app-latest.json" "$code" "$version" "$sha" "$size" "$BASE_URL" <<'PY'
 import json, sys
-path, code, name, file, sha, size, base = sys.argv[1:8]
+path, code, name, sha, size, base = sys.argv[1:7]
+file = "petalot.apk"
 manifest = {
     "versionCode": int(code),
     "versionName": name,
     "file": file,
-    "url": base + file,
+    # The query busts GitHub's CDN cache; the file name never changes.
+    "url": "%s%s?v=%s" % (base, file, name),
     "sha256": sha,
     "size": int(size),
 }
@@ -90,7 +98,7 @@ echo "==> updating README download links"
 for f in "$REPO_DIR/README.md" "$REPO_DIR/README_es.md" "$REPO_DIR/README_pt.md"; do
   [ -f "$f" ] || continue
   sed -i -E \
-    -e "s#App/dist/petalot-[0-9]+\.[0-9]+(\.[0-9]+)?\.apk#App/dist/petalot-$version.apk#g" \
+    -e "s#App/dist/petalot(-[0-9]+(\.[0-9]+)?)?\.apk#App/dist/petalot.apk#g" \
     -e "s#\([0-9]+ KB\) — Android 7\.0#($kb KB) — Android 7.0#g" \
     "$f"
 done
