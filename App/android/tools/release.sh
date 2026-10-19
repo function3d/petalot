@@ -82,8 +82,9 @@ manifest = {
     "versionCode": int(code),
     "versionName": name,
     "file": file,
-    # The query busts GitHub's CDN cache; the file name never changes.
-    "url": "%s%s?v=%s" % (base, file, name),
+    # GitHub's raw CDN keeps the previous file for a couple of minutes after a
+    # push; a query string does not bypass it, so keep the URL clean.
+    "url": base + file,
     "sha256": sha,
     "size": int(size),
 }
