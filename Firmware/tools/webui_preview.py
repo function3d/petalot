@@ -34,7 +34,7 @@ WEB_UI = SKETCH / "web_ui.h"
 INO = SKETCH / "petalot.ino"
 
 # Routes the UI calls on the device that we answer (mock) or forward (proxy).
-API_ROUTES = ("/get", "/tele", "/set", "/reset", "/resetstats", "/updatecheck", "/update")
+API_ROUTES = ("/get", "/tele", "/set", "/reset", "/resetstats", "/scan", "/updatecheck", "/update")
 
 START_MARK = 'R"rawliteral('
 END_MARK = ')rawliteral"'
@@ -78,6 +78,7 @@ class MockState:
         self.conf = {
             "To": 65, "Vo": 6, "Fenable": True,
             "ssid": "HomeWifi", "password": "secret",
+            "DeviceName": "shop", "APPassword": "", "apSsid": "PETALOT-shop",
             "LocalIP": "", "Subnet": "", "Gateway": "",
             "Gate": 2, "MaxGate": 30, "HYS": 1.0, "RAMP": 5.0, "HOLD": 40,
             "Kp": 12.0, "Ki": 0.5, "Kd": 30.0, "ControlMode": 0,
@@ -225,6 +226,16 @@ class Handler(BaseHTTPRequestHandler):
             self.mock.bottles = {"Bt": 0,
                                  "maxFs": 0, "lastFs": 0}
             self._send(200, self.mock.tele())
+        elif path == "/scan":
+            if parse_qs(urlparse(self.path).query).get("start"):
+                self._send(200, {"scanning": True})
+            else:
+                self._send(200, [
+                    {"ssid": "HomeWifi", "rssi": -45, "enc": 1},
+                    {"ssid": "Neighbour_2G", "rssi": -67, "enc": 1},
+                    {"ssid": "CafeGuest", "rssi": -78, "enc": 0},
+                    {"ssid": "TP-Link_9F2A", "rssi": -84, "enc": 1},
+                ])
         elif path == "/updateinfo":
             self._send(404, "not found", "text/plain")
         else:

@@ -32,7 +32,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
     .header-right { text-align: right; font-size: 0.8rem; color: var(--muted); }
     .header-right span { color: var(--text); font-weight: 600; }
     #device-name { color: var(--text); font-weight: 700; font-size: 0.95rem; margin-bottom: 0.2rem; }
-    .settings-select { padding: 0.4rem; background: #181c20; color: var(--text); border: 1px solid #363e46; border-radius: 4px; font-size: 0.75rem; margin-top: 0.35rem; }
+    .settings-select { padding: 0.4rem; background: #181c20; color: var(--text); border: 1px solid #363e46; border-radius: 4px; font-size: 0.75rem; }
 
     /*version*/
     #version { text-align:right; font-size: 0.7rem; color: var(--muted); margin-top: 0.25rem; }
@@ -132,6 +132,12 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
     .pw-wrap.revealed .eye-on { display: none; }
     .pw-wrap.revealed .eye-off { display: block; }
 
+    /* Scanned Wi-Fi list */
+    .wifi-chips { display: flex; flex-wrap: wrap; gap: 0.3rem; margin-top: 0.4rem; }
+    .wifi-chip { background: #181c20; border: 1px solid #363e46; color: var(--text); border-radius: 4px; padding: 0.25rem 0.5rem; font-size: 0.75rem; cursor: pointer; }
+    .wifi-chip:hover { border-color: var(--accent); }
+    .wifi-chip small { color: var(--muted); margin-left: 0.3rem; }
+
     .msg { font-size: 0.7rem; color: var(--muted); margin-top: 0.25rem; }
     .msg.warn { color: var(--danger); font-weight: 600; }
 
@@ -150,7 +156,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
     <div class="card header">
       <div>
           <h1><img style="width: 28px;
-    vertical-align: sub;" src="data:image/svg+xml,%3Csvg%20xmlns%3D'http://www.w3.org/2000/svg'%20viewBox%3D'0%200%2032%2032'%3E%3Crect%20width%3D'32'%20height%3D'32'%20rx%3D'7'%20fill%3D'%23181c20'/%3E%3Crect%20x%3D'7'%20y%3D'7'%20width%3D'18'%20height%3D'18'%20rx%3D'4'%20fill%3D'none'%20stroke%3D'%2300ae42'%20stroke-width%3D'2.5'/%3E%3Ctext%20x%3D'16'%20y%3D'22'%20font-size%3D'15'%20text-anchor%3D'middle'%20fill%3D'%2300ae42'%20font-family%3D'sans-serif'%20font-weight%3D'bold'%3EP%3C/text%3E%3C/svg%3E" />PETaLot</h1>
+    vertical-align: sub;" src="data:image/svg+xml,%3Csvg%20xmlns%3D'http://www.w3.org/2000/svg'%20viewBox%3D'0%200%2032%2032'%3E%3Crect%20width%3D'32'%20height%3D'32'%20rx%3D'7'%20fill%3D'%23181c20'/%3E%3Crect%20x%3D'7'%20y%3D'7'%20width%3D'18'%20height%3D'18'%20rx%3D'4'%20fill%3D'none'%20stroke%3D'%2300ae42'%20stroke-width%3D'2.5'/%3E%3Ctext%20x%3D'16'%20y%3D'22'%20font-size%3D'15'%20text-anchor%3D'middle'%20fill%3D'%2300ae42'%20font-family%3D'sans-serif'%20font-weight%3D'bold'%3EP%3C/text%3E%3C/svg%3E" />PETALOT</h1>
           <a href="https://linktr.ee/function.3d" target="_blank">linktr.ee/function.3d</a>
       </div>
       <div class="header-right">
@@ -265,7 +271,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
       <div class="grid">
         <div class="form-group"><span class="label" data-i18n="st.wifiMode">Wi-Fi mode</span><select id="wifi-mode" class="settings-select" onchange="updateWifiZones()"><option value="ap" data-i18n="st.wifiModeAp">Access point (PETALOT-...)</option><option value="sta" data-i18n="st.wifiModeSta">Home network (client)</option></select></div>
 
-        <div class="form-group" data-zone="sta"><span class="label" data-i18n="st.ssid">SSID</span><input type="text" name="ssid" list="wifi-list" autocomplete="off"><datalist id="wifi-list"></datalist><div class="row-layout"><button type="button" class="btn" id="btn-scan" onclick="scanWifi()" data-i18n="st.wifiScan">Scan networks</button><div class="msg" id="scan-msg"></div></div><small class="help-text" data-i18n="st.ssidHelp">Your home/work Wi-Fi name</small></div>
+        <div class="form-group" data-zone="sta"><span class="label" data-i18n="st.ssid">SSID</span><input type="text" name="ssid" autocomplete="off"><div class="row-layout"><button type="button" class="btn" id="btn-scan" onclick="scanWifi()" data-i18n="st.wifiScan">Scan networks</button><div class="msg" id="scan-msg"></div></div><div id="wifi-list" class="wifi-chips"></div><small class="help-text" data-i18n="st.ssidHelp">Your home/work Wi-Fi name</small></div>
         <div class="form-group" data-zone="sta"><span class="label" data-i18n="st.password">SSID Password</span><div class="pw-wrap"><input type="password" name="password" autocomplete="off"><button type="button" class="pw-toggle" onclick="togglePassword(this)" aria-label="Show password"><svg class="eye-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg><svg class="eye-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg></button></div><small class="help-text" data-i18n="st.passwordHelp">Your Wi-Fi password</small></div>
         <div class="form-group" data-zone="ap"><span class="label" data-i18n="st.apPassword">PETALOT- AP password</span><div class="pw-wrap"><input type="password" name="APPassword" minlength="8" maxlength="63" autocomplete="off"><button type="button" class="pw-toggle" onclick="togglePassword(this)" aria-label="Show password"><svg class="eye-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg><svg class="eye-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg></button></div><small class="help-text" data-i18n="st.apPasswordHelp">Password for the PETALOT- access point (8-63 characters). Leave blank for an open AP. If you forget it the device may become unreachable; recover through your home Wi-Fi or the serial port. This is NOT your home Wi-Fi password.</small></div>
 
@@ -396,6 +402,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.wifiScanning': 'Scanning...',
         'st.wifiScanError': 'Scan failed',
         'st.wifiBusy': 'Stop the machine before scanning',
+        'st.wifiNone': 'No networks found',
         'st.ip': 'IP Address',
         'st.ipHelp': 'DHCP used if blank. Check router for assigned IP if manual IP is not set',
         'st.subnet': 'Subnet',
@@ -495,6 +502,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.wifiScanning': 'Buscando...',
         'st.wifiScanError': 'Error al buscar',
         'st.wifiBusy': 'Para la máquina antes de buscar',
+        'st.wifiNone': 'No se encontraron redes',
         'st.ip': 'Dirección IP',
         'st.ipHelp': 'Usa DHCP si lo dejas vacío. Revisa el router para ver la IP asignada si no has puesto IP manual',
         'st.subnet': 'Máscara de subred',
@@ -594,6 +602,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.wifiScanning': 'Procurando...',
         'st.wifiScanError': 'Falha ao procurar',
         'st.wifiBusy': 'Pare a máquina antes de procurar',
+        'st.wifiNone': 'Nenhuma rede encontrada',
         'st.ip': 'Endereço IP',
         'st.ipHelp': 'Usa DHCP se deixar em branco. Verifique a IP atribuída no roteador se não definir IP manual',
         'st.subnet': 'Máscara de sub-rede',
@@ -693,6 +702,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.wifiScanning': 'Recherche...',
         'st.wifiScanError': 'Échec de la recherche',
         'st.wifiBusy': 'Arrêtez la machine avant de rechercher',
+        'st.wifiNone': 'Aucun réseau trouvé',
         'st.ip': 'Adresse IP',
         'st.ipHelp': "DHCP utilisé si vide. Vérifiez dans le routeur l'IP attribuée si aucune IP manuelle n'est définie",
         'st.subnet': 'Masque de sous-réseau',
@@ -792,6 +802,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.wifiScanning': 'Suche läuft...',
         'st.wifiScanError': 'Suche fehlgeschlagen',
         'st.wifiBusy': 'Maschine vor der Suche stoppen',
+        'st.wifiNone': 'Keine Netzwerke gefunden',
         'st.ip': 'IP-Adresse',
         'st.ipHelp': 'DHCP wird verwendet, wenn leer. Prüfe im Router die zugewiesene IP, wenn keine manuelle IP gesetzt ist',
         'st.subnet': 'Subnetzmaske',
@@ -891,6 +902,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.wifiScanning': 'Ricerca in corso...',
         'st.wifiScanError': 'Ricerca non riuscita',
         'st.wifiBusy': 'Ferma la macchina prima di cercare',
+        'st.wifiNone': 'Nessuna rete trovata',
         'st.ip': 'Indirizzo IP',
         'st.ipHelp': 'DHCP usato se vuoto. Controlla l\'IP assegnata nel router se non è impostata un\'IP manuale',
         'st.subnet': 'Subnet mask',
@@ -990,6 +1002,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.wifiScanning': '搜索中...',
         'st.wifiScanError': '搜索失败',
         'st.wifiBusy': '搜索前请停止机器',
+        'st.wifiNone': '未找到网络',
         'st.ip': 'IP 地址',
         'st.ipHelp': '留空则使用 DHCP。若未设置手动 IP，请在路由器中查看分配的 IP',
         'st.subnet': '子网掩码',
@@ -1089,6 +1102,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.wifiScanning': 'Vyhledávání...',
         'st.wifiScanError': 'Vyhledání selhalo',
         'st.wifiBusy': 'Před vyhledáním zastavte stroj',
+        'st.wifiNone': 'Nenalezeny žádné sítě',
         'st.ip': 'IP adresa',
         'st.ipHelp': 'DHCP, pokud prázdné. Pokud není nastavena ruční IP, zkontrolujte přidělenou IP v routeru',
         'st.subnet': 'Maska sítě',
@@ -1187,6 +1201,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.wifiScanning': 'Сканирование...',
         'st.wifiScanError': 'Ошибка сканирования',
         'st.wifiBusy': 'Остановите машину перед сканированием',
+        'st.wifiNone': 'Сети не найдены',
         'st.ip': 'IP-адрес',
         'st.ipHelp': 'DHCP, если пусто. Если ручной IP не задан, проверьте назначенный IP в роутере',
         'st.subnet': 'Маска подсети',
@@ -1285,6 +1300,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.wifiScanning': 'Taranıyor...',
         'st.wifiScanError': 'Tarama başarısız',
         'st.wifiBusy': 'Taramadan önce makineyi durdurun',
+        'st.wifiNone': 'Ağ bulunamadı',
         'st.ip': 'IP adresi',
         'st.ipHelp': 'Boşsa DHCP kullanılır. Manuel IP ayarlanmadıysa yönlendiricide atanan IP adresini kontrol edin',
         'st.subnet': 'Alt ağ maskesi',
@@ -1383,6 +1399,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.wifiScanning': 'スキャン中...',
         'st.wifiScanError': 'スキャン失敗',
         'st.wifiBusy': 'スキャンする前にマシンを停止してください',
+        'st.wifiNone': 'ネットワークが見つかりません',
         'st.ip': 'IPアドレス',
         'st.ipHelp': '空欄ならDHCP。手動IP未設定の場合はルーターで割り当て済みのIPを確認してください',
         'st.subnet': 'サブネットマスク',
@@ -1481,6 +1498,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.wifiScanning': '검색 중...',
         'st.wifiScanError': '검색 실패',
         'st.wifiBusy': '검색하기 전에 기계를 중지하세요',
+        'st.wifiNone': '네트워크를 찾을 수 없음',
         'st.ip': 'IP 주소',
         'st.ipHelp': '비우면 DHCP를 사용합니다. 수동 IP가 설정되지 않은 경우 라우터에서 할당된 IP를 확인하세요',
         'st.subnet': '서브넷 마스크',
@@ -2031,13 +2049,19 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
 
     function fillWifiList(networks) {
       const list = document.getElementById('wifi-list');
+      const ssidEl = document.getElementsByName('ssid')[0];
       list.innerHTML = '';
       networks.slice().sort((a, b) => b.rssi - a.rssi).forEach(n => {
         if (!n.ssid) return;
-        const o = document.createElement('option');
-        o.value = n.ssid;
-        o.label = n.rssi + ' dBm' + (n.enc ? ' \uD83D\uDD12' : '');
-        list.appendChild(o);
+        const b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'wifi-chip';
+        b.textContent = n.ssid;
+        const r = document.createElement('small');
+        r.textContent = n.rssi + ' dBm' + (n.enc ? ' \uD83D\uDD12' : '');
+        b.appendChild(r);
+        b.onclick = () => { if (ssidEl) { ssidEl.value = n.ssid; ssidEl.dispatchEvent(new Event('input')); } };
+        list.appendChild(b);
       });
     }
 
@@ -2050,6 +2074,8 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
       msgEl.className = 'msg';
       msgEl.textContent = t('st.wifiScanning');
       if (btn) btn.disabled = true;
+      const listEl = document.getElementById('wifi-list');
+      if (listEl) listEl.innerHTML = '';
 
       function poll(n) {
         if (n > 20) return fail();
@@ -2061,7 +2087,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
               if (res.error || !Array.isArray(res)) return fail();
               fillWifiList(res);
               msgEl.className = 'msg';
-              msgEl.textContent = res.length ? '' : t('st.wifiScanError');
+              msgEl.textContent = res.length ? '' : t('st.wifiNone');
               done();
             })
             .catch(fail);
