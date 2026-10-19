@@ -219,7 +219,8 @@ class ConnectActivity : Activity() {
         discovery.stop()
         found.clear()
         discovery.start { urls ->
-            urls.forEach { removed.remove(it) }
+            // Resolved by mDNS, so it answered a moment ago.
+            urls.forEach { removed.remove(it); online[it] = true }
             found.clear()
             found.addAll(urls)
             rebuild()
@@ -233,11 +234,12 @@ class ConnectActivity : Activity() {
             val id = sweepId
             Sweep.find(this, { url ->
                 if (id == sweepId) {
-                    // It answered: the machine is back, so undo a previous
-                    // delete and show it as available again.
+                    // The sweep already got a valid /get from it, so it is
+                    // reachable right now: mark it green without another round
+                    // trip. reloadSaved() re-checks it later.
                     removed.remove(url)
                     swept.add(url)
-                    probe(url)
+                    online[url] = true
                     rebuild()
                 }
             }, {
