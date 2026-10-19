@@ -1,10 +1,8 @@
 package com.function3d.petalot
 
-import android.Manifest
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.net.ConnectivityManager
 import android.net.Network
 import android.net.Uri
@@ -41,14 +39,13 @@ class ConnectActivity : Activity() {
     private lateinit var input: EditText
     private lateinit var discovery: Discovery
 
-    private val saved = mutableListOf<DeviceStore.Device>()
+    private val saved = mutableListOf<String>()
     private val found = mutableListOf<String>()
     private val labels = mutableListOf<CharSequence>()
     private val urls = mutableListOf<String>()
     private val online = HashMap<String, Boolean>() // url -> reachable
     private val probing = HashSet<String>()
     private var apUrl: String? = null
-    private var ssid = ""
 
     // Lazily: getSystemService() is not usable before the activity is attached.
     private val connectivity by lazy { getSystemService(ConnectivityManager::class.java) }
@@ -182,7 +179,6 @@ class ConnectActivity : Activity() {
         root.addView(row)
 
         setContentView(root)
-        ensureLocationPermission()
         Updates.checkQuietly(this)
     }
 
@@ -207,7 +203,7 @@ class ConnectActivity : Activity() {
      * never claims to be searching forever.
      */
     private fun search() {
-        refreshCurrentSsid()
+        refreshApState()
         searching = true
         main.removeCallbacks(stopSearching)
         main.postDelayed(stopSearching, SCAN_MS)
@@ -219,53 +215,27 @@ class ConnectActivity : Activity() {
 
     /**
      * Fires on every default-network change, so switching Wi-Fi (including to a
-     * PETALOT-XXXXXX AP) re-scans and re-checks reachability by itself.
+     * PETALOT AP) re-scans and re-checks reachability by itself.
      */
     private fun refreshNetwork() {
         main.post { search() }
     }
 
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray,
-    ) {
-        if (requestCode == REQ_LOCATION) {
-            refreshCurrentSsid()
-            reloadSaved()
-            return
-        }
-        @Suppress("DEPRECATION")
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-    }
-
-    /** Android only reveals the SSID with the location permission. */
-    private fun ensureLocationPermission() {
-        if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), REQ_LOCATION)
-        }
-    }
-
-    private fun refreshCurrentSsid() {
-        ssid = Wifi.ssid(this)
-        // Two independent signals: the DHCP gateway (no permission needed) and
-        // the SSID name (needs location). Either one means the AP is here.
-        val onAp = ssid.startsWith("PETALOT-", ignoreCase = true) ||
-            Wifi.onPetalotAp(this, AP_URL)
-        apUrl = if (onAp) DeviceStore.normalize(AP_URL) else null
+    private fun refreshApState() {
+        apUrl = if (Wifi.onPetalotAp(this, AP_URL)) DeviceStore.normalize(AP_URL) else null
     }
 
     private fun reloadSaved() {
         val list = DeviceStore.list(this)
         // The last used device is the most likely target; keep it first.
         DeviceStore.last(this)?.let { last ->
-            list.firstOrNull { it.url == last }?.let { list.remove(it); list.add(0, it) }
+            if (list.remove(last)) list.add(0, last)
         }
         saved.clear()
         saved.addAll(list)
 
         autofillAp()
-        saved.forEach { probe(it.url) }
+        saved.forEach { probe(it) }
         apUrl?.let { probe(it) }
         rebuild()
     }
@@ -277,7 +247,7 @@ class ConnectActivity : Activity() {
     private fun autofillAp() {
         if (apUrl == null) return
         val target = DeviceStore.normalize(AP_URL)
-        if (DeviceStore.list(this).any { it.url == target }) return
+        if (DeviceStore.list(this).any { it == target }) return
         if (input.text.isNullOrBlank()) input.setText(AP_URL)
     }
 
@@ -300,12 +270,12 @@ class ConnectActivity : Activity() {
         // Devices found now go first, then saved ones not already listed.
         discovered.forEach {
             urls.add(it)
-            labels.add(row(it, ssid, true))
+            labels.add(row(it, true))
         }
         saved.forEach {
-            if (it.url !in discovered) {
-                urls.add(it.url)
-                labels.add(row(it.url, it.ssid, online[it.url]))
+            if (it !in discovered) {
+                urls.add(it)
+                labels.add(row(it, online[it]))
             }
         }
         adapter.notifyDataSetChanged()
@@ -320,7 +290,7 @@ class ConnectActivity : Activity() {
         }
     }
 
-    private fun row(url: String, deviceSsid: String, reachable: Boolean?): CharSequence {
+    private fun row(url: String, reachable: Boolean?): CharSequence {
         val dot = when (reachable) {
             true -> getColor(R.color.accent)
             false -> getColor(R.color.danger)
@@ -328,9 +298,7 @@ class ConnectActivity : Activity() {
         }
         val text = getColor(if (reachable == false) R.color.muted else R.color.text)
 
-        var s = "●  " + hostPort(url)
-        // The Wi-Fi it was last reached from, so two 192.168.4.1 are told apart.
-        if (deviceSsid.isNotBlank()) s += "   ($deviceSsid)"
+        val s = "●  " + hostPort(url)
 
         val span = SpannableString(s)
         span.setSpan(ForegroundColorSpan(dot), 0, 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
@@ -349,9 +317,7 @@ class ConnectActivity : Activity() {
 
     private fun connect(raw: String) {
         val url = DeviceStore.normalize(raw)
-        // Only the address is remembered here; MainActivity records the Wi-Fi
-        // once the page really loaded, so the label never lies.
-        DeviceStore.remember(this, url, "")
+        DeviceStore.remember(this, url)
         startActivity(
             Intent(this, MainActivity::class.java)
                 .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
@@ -422,7 +388,6 @@ class ConnectActivity : Activity() {
 
     companion object {
         private const val AP_URL = "192.168.4.1"
-        private const val REQ_LOCATION = 2001
         private const val SCAN_MS = 10000L
     }
 }

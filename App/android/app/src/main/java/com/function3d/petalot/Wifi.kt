@@ -3,34 +3,15 @@ package com.function3d.petalot
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
-import android.net.wifi.WifiManager
 import android.os.Build
 
 /**
- * Network helpers. The SSID needs the location permission; the default gateway
- * does not, and it is what tells us the PETALOT AP is the network we are on.
+ * Detects the PETALOT access point without asking for any permission: in AP
+ * mode the firmware's DHCP hands out 192.168.4.1 as the gateway/DNS/DHCP
+ * server, which is readable from the current network's LinkProperties.
  */
 object Wifi {
 
-    private const val UNKNOWN = "<unknown ssid>"
-
-    fun ssid(ctx: Context): String {
-        return try {
-            val wm = ctx.applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
-            @Suppress("DEPRECATION")
-            val raw = wm.connectionInfo?.ssid ?: ""
-            val s = raw.trim('"')
-            if (s.isEmpty() || s == UNKNOWN || s.startsWith("<")) "" else s
-        } catch (_: Exception) {
-            ""
-        }
-    }
-
-    /**
-     * True when the current Wi-Fi routes through [apAddress]. In AP mode the
-     * firmware's DHCP hands out that gateway, so no permission or HTTP request
-     * is needed to know the machine is right there.
-     */
     fun onPetalotAp(ctx: Context, apAddress: String): Boolean {
         return try {
             val cm = ctx.applicationContext

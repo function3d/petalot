@@ -148,7 +148,7 @@ class MainActivity : Activity() {
             // Remember which Wi-Fi actually reached the device, not the one that
             // was current when the user tapped it.
             if (!loadFailed && url.startsWith(deviceUrl)) {
-                DeviceStore.remember(this@MainActivity, deviceUrl, Wifi.ssid(this@MainActivity))
+                DeviceStore.remember(this@MainActivity, deviceUrl)
                 syncWebLanguage()
             }
         }
