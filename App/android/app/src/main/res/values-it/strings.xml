@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="saved_empty">Nessun dispositivo salvato.</string>
+    <string name="scanning">Ricerca di dispositivi sulla tua rete…</string>
+    <string name="search">Cerca</string>
+    <string name="found_count">Sulla tua rete: %1$d</string>
+    <string name="input_hint">IP del tuo dispositivo</string>
+    <string name="enter_address">Inserisci un indirizzo</string>
+    <string name="connect">Connetti</string>
+    <string name="remove">Elimina</string>
+    <string name="remove_title">Dimenticare questo dispositivo?</string>
+    <string name="exit_title">Chiudere l\'app?</string>
+    <string name="exit_ok">Chiudi</string>
+    <string name="cancel">Annulla</string>
+    <string name="load_error">Impossibile raggiungere il dispositivo. Verifica di essere sulla stessa rete Wi-Fi.</string>
+    <string name="device_unreachable">Quel dispositivo non risponde in questo momento</string>
+    <string name="auth_title">%1$s richiede nome utente e password</string>
+    <string name="auth_user">Nome utente</string>
+    <string name="auth_password">Password</string>
+    <string name="update_title">Aggiornamento disponibile</string>
+    <string name="update_message">La versione %1$s è disponibile. Scaricala e installala sopra questa per mantenere i dispositivi salvati.</string>
+    <string name="update_install">Scarica</string>
+</resources>

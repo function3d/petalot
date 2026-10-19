@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="saved_empty">Henüz kayıtlı cihaz yok.</string>
+    <string name="scanning">Ağınızdaki cihazlar aranıyor…</string>
+    <string name="search">Ara</string>
+    <string name="found_count">Ağınızda: %1$d</string>
+    <string name="input_hint">Cihazınızın IP adresi</string>
+    <string name="enter_address">Bir adres girin</string>
+    <string name="connect">Bağlan</string>
+    <string name="remove">Kaldır</string>
+    <string name="remove_title">Bu cihaz unutulsun mu?</string>
+    <string name="exit_title">Uygulama kapatılsın mı?</string>
+    <string name="exit_ok">Kapat</string>
+    <string name="cancel">İptal</string>
+    <string name="load_error">Cihaza ulaşılamadı. Aynı Wi-Fi ağında olduğunuzu kontrol edin.</string>
+    <string name="device_unreachable">Bu cihaz şu anda yanıt vermiyor</string>
+    <string name="auth_title">%1$s kullanıcı adı ve parola istiyor</string>
+    <string name="auth_user">Kullanıcı adı</string>
+    <string name="auth_password">Parola</string>
+    <string name="update_title">Güncelleme var</string>
+    <string name="update_message">%1$s sürümü hazır. Kayıtlı cihazlarınızı korumak için indirip bunun üzerine kurun.</string>
+    <string name="update_install">İndir</string>
+</resources>

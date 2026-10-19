@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="saved_empty">Noch keine Geräte gespeichert.</string>
+    <string name="scanning">Geräte in deinem Netzwerk werden gesucht…</string>
+    <string name="search">Suchen</string>
+    <string name="found_count">In deinem Netzwerk: %1$d</string>
+    <string name="input_hint">IP deines Geräts</string>
+    <string name="enter_address">Adresse eingeben</string>
+    <string name="connect">Verbinden</string>
+    <string name="remove">Entfernen</string>
+    <string name="remove_title">Dieses Gerät vergessen?</string>
+    <string name="exit_title">App schließen?</string>
+    <string name="exit_ok">Schließen</string>
+    <string name="cancel">Abbrechen</string>
+    <string name="load_error">Gerät nicht erreichbar. Prüfe, ob du im selben WLAN bist.</string>
+    <string name="device_unreachable">Dieses Gerät antwortet gerade nicht</string>
+    <string name="auth_title">%1$s verlangt Benutzername und Passwort</string>
+    <string name="auth_user">Benutzername</string>
+    <string name="auth_password">Passwort</string>
+    <string name="update_title">Update verfügbar</string>
+    <string name="update_message">Version %1$s ist verfügbar. Lade sie herunter und installiere sie über diese, um deine gespeicherten Geräte zu behalten.</string>
+    <string name="update_install">Herunterladen</string>
+</resources>

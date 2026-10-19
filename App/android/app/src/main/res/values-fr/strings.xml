@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="saved_empty">Aucun appareil enregistré pour l\'instant.</string>
+    <string name="scanning">Recherche d\'appareils sur votre réseau…</string>
+    <string name="search">Rechercher</string>
+    <string name="found_count">Sur votre réseau : %1$d</string>
+    <string name="input_hint">IP de votre appareil</string>
+    <string name="enter_address">Saisissez une adresse</string>
+    <string name="connect">Connecter</string>
+    <string name="remove">Supprimer</string>
+    <string name="remove_title">Oublier cet appareil ?</string>
+    <string name="exit_title">Fermer l\'application ?</string>
+    <string name="exit_ok">Fermer</string>
+    <string name="cancel">Annuler</string>
+    <string name="load_error">Impossible de joindre l\'appareil. Vérifiez que vous êtes sur le même réseau Wi-Fi.</string>
+    <string name="device_unreachable">Cet appareil ne répond pas pour le moment</string>
+    <string name="auth_title">%1$s demande un nom d\'utilisateur et un mot de passe</string>
+    <string name="auth_user">Nom d\'utilisateur</string>
+    <string name="auth_password">Mot de passe</string>
+    <string name="update_title">Mise à jour disponible</string>
+    <string name="update_message">La version %1$s est disponible. Téléchargez-la et installez-la par-dessus pour conserver vos appareils enregistrés.</string>
+    <string name="update_install">Télécharger</string>
+</resources>

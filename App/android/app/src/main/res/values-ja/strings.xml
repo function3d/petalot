@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="saved_empty">保存されたデバイスはまだありません。</string>
+    <string name="scanning">ネットワーク上のデバイスを検索しています…</string>
+    <string name="search">検索</string>
+    <string name="found_count">ネットワーク上: %1$d</string>
+    <string name="input_hint">デバイスの IP アドレス</string>
+    <string name="enter_address">アドレスを入力</string>
+    <string name="connect">接続</string>
+    <string name="remove">削除</string>
+    <string name="remove_title">このデバイスを削除しますか？</string>
+    <string name="exit_title">アプリを終了しますか？</string>
+    <string name="exit_ok">終了</string>
+    <string name="cancel">キャンセル</string>
+    <string name="load_error">デバイスに接続できませんでした。同じ Wi-Fi ネットワークに接続しているか確認してください。</string>
+    <string name="device_unreachable">このデバイスは現在応答していません</string>
+    <string name="auth_title">%1$s はユーザー名とパスワードが必要です</string>
+    <string name="auth_user">ユーザー名</string>
+    <string name="auth_password">パスワード</string>
+    <string name="update_title">アップデートがあります</string>
+    <string name="update_message">バージョン %1$s が利用可能です。ダウンロードして上書きインストールすると、保存済みのデバイスが保持されます。</string>
+    <string name="update_install">ダウンロード</string>
+</resources>

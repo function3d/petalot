@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="saved_empty">Ainda não há equipamentos guardados.</string>
+    <string name="scanning">A procurar equipamentos na sua rede…</string>
+    <string name="search">Procurar</string>
+    <string name="found_count">Na sua rede: %1$d</string>
+    <string name="input_hint">IP do seu equipamento</string>
+    <string name="enter_address">Introduza um endereço</string>
+    <string name="connect">Ligar</string>
+    <string name="remove">Eliminar</string>
+    <string name="remove_title">Esquecer este equipamento?</string>
+    <string name="exit_title">Fechar a aplicação?</string>
+    <string name="exit_ok">Fechar</string>
+    <string name="cancel">Cancelar</string>
+    <string name="load_error">Não foi possível ligar ao equipamento. Verifique se está na mesma rede Wi-Fi.</string>
+    <string name="device_unreachable">Esse equipamento não está a responder agora</string>
+    <string name="auth_title">%1$s pede utilizador e palavra-passe</string>
+    <string name="auth_user">Utilizador</string>
+    <string name="auth_password">Palavra-passe</string>
+    <string name="update_title">Atualização disponível</string>
+    <string name="update_message">A versão %1$s está disponível. Descarregue-a e instale sobre esta para manter os equipamentos guardados.</string>
+    <string name="update_install">Descarregar</string>
+</resources>

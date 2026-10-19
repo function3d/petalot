@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">PETALOT</string>
+    <string name="connect_title">PETALOT</string>
+    <string name="saved_empty">No saved devices yet.</string>
+    <string name="scanning">Searching for devices on your network…</string>
+    <string name="search">Search</string>
+    <string name="found_count">On your network: %1$d</string>
+    <string name="input_hint">Your device IP</string>
+    <string name="enter_address">Enter an address</string>
+    <string name="connect">Connect</string>
+    <string name="remove">Remove</string>
+    <string name="remove_title">Forget this device?</string>
+    <string name="exit_title">Close the app?</string>
+    <string name="exit_ok">Close</string>
+    <string name="cancel">Cancel</string>
+    <string name="load_error">Could not reach the device. Check that you are on the same Wi-Fi network.</string>
+    <string name="device_unreachable">That device is not responding right now</string>
+    <string name="auth_title">%1$s requires a username and password</string>
+    <string name="auth_user">Username</string>
+    <string name="auth_password">Password</string>
+    <string name="update_title">Update available</string>
+    <string name="update_message">Version %1$s is available. Download it and install it over this one to keep your saved devices.</string>
+    <string name="update_install">Download</string>
+</resources>

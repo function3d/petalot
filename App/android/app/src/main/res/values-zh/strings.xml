@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="saved_empty">尚无已保存的设备。</string>
+    <string name="scanning">正在搜索您网络中的设备…</string>
+    <string name="search">搜索</string>
+    <string name="found_count">网络中的设备：%1$d</string>
+    <string name="input_hint">您的设备 IP</string>
+    <string name="enter_address">输入地址</string>
+    <string name="connect">连接</string>
+    <string name="remove">删除</string>
+    <string name="remove_title">忘记此设备？</string>
+    <string name="exit_title">关闭应用？</string>
+    <string name="exit_ok">关闭</string>
+    <string name="cancel">取消</string>
+    <string name="load_error">无法连接设备。请确认您连接的是同一个 Wi-Fi 网络。</string>
+    <string name="device_unreachable">该设备当前无响应</string>
+    <string name="auth_title">%1$s 需要用户名和密码</string>
+    <string name="auth_user">用户名</string>
+    <string name="auth_password">密码</string>
+    <string name="update_title">有可用更新</string>
+    <string name="update_message">版本 %1$s 已发布。下载并覆盖安装以保留已保存的设备。</string>
+    <string name="update_install">下载</string>
+</resources>

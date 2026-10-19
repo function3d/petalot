@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Launcher icon for API < 26, which cannot use adaptive icons. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="48dp"
+    android:height="48dp"
+    android:viewportWidth="32"
+    android:viewportHeight="32">
+
+    <path
+        android:fillColor="#181c20"
+        android:pathData="M7,0 H25 A7,7 0 0 1 32,7 V25 A7,7 0 0 1 25,32 H7 A7,7 0 0 1 0,25 V7 A7,7 0 0 1 7,0 Z" />
+
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#00ae42"
+        android:strokeWidth="2.5"
+        android:pathData="M11,7 H21 A4,4 0 0 1 25,11 V21 A4,4 0 0 1 21,25 H11 A4,4 0 0 1 7,21 V11 A4,4 0 0 1 11,7 Z" />
+
+    <path
+        android:strokeColor="#00ae42"
+        android:strokeWidth="2.4"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M13,11.2 V22" />
+
+    <path
+        android:strokeColor="#00ae42"
+        android:strokeWidth="2.4"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M13,11.2 H16.2 A3.4,3.4 0 0 1 16.2,18 H13" />
+</vector>

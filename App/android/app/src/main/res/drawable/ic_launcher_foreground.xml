@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Adaptive-icon foreground: the green frame and the P, inside the safe zone. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <group
+        android:scaleX="1.9"
+        android:scaleY="1.9"
+        android:translateX="23.6"
+        android:translateY="23.6">
+
+        <path
+            android:fillColor="#00000000"
+            android:strokeColor="#00ae42"
+            android:strokeWidth="2.5"
+            android:pathData="M11,7 H21 A4,4 0 0 1 25,11 V21 A4,4 0 0 1 21,25 H11 A4,4 0 0 1 7,21 V11 A4,4 0 0 1 11,7 Z" />
+
+        <path
+            android:strokeColor="#00ae42"
+            android:strokeWidth="2.4"
+            android:strokeLineCap="round"
+            android:strokeLineJoin="round"
+            android:pathData="M13,11.2 V22" />
+
+        <path
+            android:strokeColor="#00ae42"
+            android:strokeWidth="2.4"
+            android:strokeLineCap="round"
+            android:strokeLineJoin="round"
+            android:pathData="M13,11.2 H16.2 A3.4,3.4 0 0 1 16.2,18 H13" />
+    </group>
+</vector>

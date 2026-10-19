@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="saved_empty">Sin equipos guardados todavía.</string>
+    <string name="scanning">Buscando equipos en tu red…</string>
+    <string name="search">Buscar</string>
+    <string name="found_count">En tu red: %1$d</string>
+    <string name="input_hint">IP de tu equipo</string>
+    <string name="enter_address">Escribe una dirección</string>
+    <string name="connect">Conectar</string>
+    <string name="remove">Eliminar</string>
+    <string name="remove_title">¿Olvidar este equipo?</string>
+    <string name="exit_title">¿Cerrar la app?</string>
+    <string name="exit_ok">Cerrar</string>
+    <string name="cancel">Cancelar</string>
+    <string name="load_error">No se pudo conectar con el equipo. Comprueba que estás en su misma red Wi-Fi.</string>
+    <string name="device_unreachable">Ese equipo no responde ahora mismo</string>
+    <string name="auth_title">%1$s requiere usuario y contraseña</string>
+    <string name="auth_user">Usuario</string>
+    <string name="auth_password">Contraseña</string>
+    <string name="update_title">Actualización disponible</string>
+    <string name="update_message">La versión %1$s está disponible. Descárgala e instálala sobre esta para conservar tus equipos guardados.</string>
+    <string name="update_install">Descargar</string>
+</resources>

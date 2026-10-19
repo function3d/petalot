@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="saved_empty">Zatím žádná uložená zařízení.</string>
+    <string name="scanning">Hledám zařízení ve vaší síti…</string>
+    <string name="search">Hledat</string>
+    <string name="found_count">Ve vaší síti: %1$d</string>
+    <string name="input_hint">IP vašeho zařízení</string>
+    <string name="enter_address">Zadejte adresu</string>
+    <string name="connect">Připojit</string>
+    <string name="remove">Odstranit</string>
+    <string name="remove_title">Zapomenout toto zařízení?</string>
+    <string name="exit_title">Zavřít aplikaci?</string>
+    <string name="exit_ok">Zavřít</string>
+    <string name="cancel">Zrušit</string>
+    <string name="load_error">Zařízení se nepodařilo spojit. Zkontrolujte, že jste ve stejné Wi-Fi síti.</string>
+    <string name="device_unreachable">Toto zařízení právě neodpovídá</string>
+    <string name="auth_title">%1$s vyžaduje uživatelské jméno a heslo</string>
+    <string name="auth_user">Uživatelské jméno</string>
+    <string name="auth_password">Heslo</string>
+    <string name="update_title">K dispozici je aktualizace</string>
+    <string name="update_message">Verze %1$s je k dispozici. Stáhněte ji a nainstalujte přes tuto, aby zůstala uložená zařízení.</string>
+    <string name="update_install">Stáhnout</string>
+</resources>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="saved_empty">Сохранённых устройств пока нет.</string>
+    <string name="scanning">Поиск устройств в вашей сети…</string>
+    <string name="search">Поиск</string>
+    <string name="found_count">В вашей сети: %1$d</string>
+    <string name="input_hint">IP вашего устройства</string>
+    <string name="enter_address">Введите адрес</string>
+    <string name="connect">Подключить</string>
+    <string name="remove">Удалить</string>
+    <string name="remove_title">Забыть это устройство?</string>
+    <string name="exit_title">Закрыть приложение?</string>
+    <string name="exit_ok">Закрыть</string>
+    <string name="cancel">Отмена</string>
+    <string name="load_error">Не удалось подключиться к устройству. Проверьте, что вы в той же сети Wi-Fi.</string>
+    <string name="device_unreachable">Устройство сейчас не отвечает</string>
+    <string name="auth_title">%1$s требует имя пользователя и пароль</string>
+    <string name="auth_user">Имя пользователя</string>
+    <string name="auth_password">Пароль</string>
+    <string name="update_title">Доступно обновление</string>
+    <string name="update_message">Доступна версия %1$s. Скачайте и установите её поверх текущей, чтобы сохранить устройства.</string>
+    <string name="update_install">Скачать</string>
+</resources>
