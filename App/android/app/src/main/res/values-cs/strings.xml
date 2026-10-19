@@ -2,7 +2,6 @@
 <resources>
     <string name="saved_empty">Zatím žádná uložená zařízení.</string>
     <string name="scanning">Hledám zařízení ve vaší síti…</string>
-    <string name="search">Hledat</string>
     <string name="found_count">Ve vaší síti: %1$d</string>
     <string name="input_hint">IP vašeho zařízení</string>
     <string name="enter_address">Zadejte adresu</string>

@@ -2,7 +2,6 @@
 <resources>
     <string name="saved_empty">Nessun dispositivo salvato.</string>
     <string name="scanning">Ricerca di dispositivi sulla tua rete…</string>
-    <string name="search">Cerca</string>
     <string name="found_count">Sulla tua rete: %1$d</string>
     <string name="input_hint">IP del tuo dispositivo</string>
     <string name="enter_address">Inserisci un indirizzo</string>

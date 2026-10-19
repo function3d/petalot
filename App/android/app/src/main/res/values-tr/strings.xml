@@ -2,7 +2,6 @@
 <resources>
     <string name="saved_empty">Henüz kayıtlı cihaz yok.</string>
     <string name="scanning">Ağınızdaki cihazlar aranıyor…</string>
-    <string name="search">Ara</string>
     <string name="found_count">Ağınızda: %1$d</string>
     <string name="input_hint">Cihazınızın IP adresi</string>
     <string name="enter_address">Bir adres girin</string>

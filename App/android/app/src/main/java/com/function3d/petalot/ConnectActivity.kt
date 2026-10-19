@@ -50,6 +50,15 @@ class ConnectActivity : Activity() {
     private var apUrl: String? = null
     private var sweepId = 0
     private var sweepRunning = false
+    private var tickCount = 0
+    private val tick = object : Runnable {
+        override fun run() {
+            // Keep the dots honest; a full sweep only every few ticks.
+            reloadSaved()
+            if (tickCount++ % SWEEP_EVERY_TICKS == 0) startSweep()
+            main.postDelayed(this, TICK_MS)
+        }
+    }
 
     // Lazily: getSystemService() is not usable before the activity is attached.
     private val connectivity by lazy { getSystemService(ConnectivityManager::class.java) }
@@ -96,6 +105,14 @@ class ConnectActivity : Activity() {
                 gravity = Gravity.CENTER_VERTICAL
             }
         }
+        val version = TextView(this).apply {
+            text = versionName()
+            setTextColor(getColor(R.color.muted))
+            textSize = 12f
+            layoutParams = LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT
+            ).apply { marginStart = dp(8) }
+        }
         val header = LinearLayout(this).apply {
             orientation = LinearLayout.HORIZONTAL
             gravity = Gravity.CENTER_VERTICAL
@@ -103,6 +120,7 @@ class ConnectActivity : Activity() {
             addView(title, LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT
             ).apply { marginStart = dp(8) })
+            addView(version)
         }
 
         status = TextView(this).apply {
@@ -162,22 +180,8 @@ class ConnectActivity : Activity() {
             addView(connectBtn)
         }
 
-        val searchBtn = Button(this).apply {
-            text = getString(R.string.search)
-            setTextColor(getColor(R.color.accent))
-            setBackgroundColor(0)
-            setPadding(dp(8), 0, dp(4), 0)
-            setOnClickListener { search() }
-        }
-        val statusRow = LinearLayout(this).apply {
-            orientation = LinearLayout.HORIZONTAL
-            gravity = Gravity.CENTER_VERTICAL
-            addView(status, LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f))
-            addView(searchBtn)
-        }
-
         root.addView(header)
-        root.addView(statusRow)
+        root.addView(status)
         root.addView(scanBar)
         root.addView(listView)
         root.addView(row)
@@ -193,10 +197,13 @@ class ConnectActivity : Activity() {
         currentNetwork = connectivity.activeNetwork
         connectivity.registerDefaultNetworkCallback(networkCallback)
         search()
+        main.postDelayed(tick, TICK_MS)
     }
 
     override fun onStop() {
         main.removeCallbacks(stopSearching)
+        main.removeCallbacks(tick)
+        tickCount = 0
         searching = false
         sweepId++ // ignore whatever the sweep still reports
         sweepRunning = false
@@ -229,25 +236,28 @@ class ConnectActivity : Activity() {
         // mDNS cannot tell two machines apart (same hostname in the firmware),
         // so the sweep is what actually finds all of them. Results accumulate:
         // a device that stops answering turns red, it does not vanish.
-        if (!sweepRunning) {
-            sweepRunning = true
-            val id = sweepId
-            Sweep.find(this, { url ->
-                if (id == sweepId) {
-                    // The sweep already got a valid /get from it, so it is
-                    // reachable right now: mark it green without another round
-                    // trip. reloadSaved() re-checks it later.
-                    removed.remove(url)
-                    swept.add(url)
-                    online[url] = true
-                    rebuild()
-                }
-            }, {
-                if (id == sweepId) sweepRunning = false
-            })
-        }
+        startSweep()
 
         reloadSaved()
+    }
+
+    private fun startSweep() {
+        if (sweepRunning) return
+        sweepRunning = true
+        val id = sweepId
+        Sweep.find(this, { url ->
+            if (id == sweepId) {
+                // The sweep already got a valid /get from it, so it is
+                // reachable right now: mark it green without another round
+                // trip. reloadSaved() re-checks it later.
+                removed.remove(url)
+                swept.add(url)
+                online[url] = true
+                rebuild()
+            }
+        }, {
+            if (id == sweepId) sweepRunning = false
+        })
     }
 
     /**
@@ -260,6 +270,12 @@ class ConnectActivity : Activity() {
 
     private fun refreshApState() {
         apUrl = if (Wifi.onPetalotAp(this, AP_URL)) DeviceStore.normalize(AP_URL) else null
+    }
+
+    private fun versionName(): String = try {
+        packageManager.getPackageInfo(packageName, 0).versionName ?: ""
+    } catch (_: Exception) {
+        ""
     }
 
     private fun reloadSaved() {
@@ -437,5 +453,7 @@ class ConnectActivity : Activity() {
     companion object {
         private const val AP_URL = "192.168.4.1"
         private const val SCAN_MS = 10000L
+        private const val TICK_MS = 10000L
+        private const val SWEEP_EVERY_TICKS = 3
     }
 }
