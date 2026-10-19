@@ -2,6 +2,7 @@
 <resources>
     <string name="saved_empty">Noch keine Geräte gespeichert.</string>
     <string name="scanning">Geräte in deinem Netzwerk werden gesucht…</string>
+    <string name="search">Suchen</string>
     <string name="found_count">In deinem Netzwerk: %1$d</string>
     <string name="input_hint">IP deines Geräts</string>
     <string name="enter_address">Adresse eingeben</string>

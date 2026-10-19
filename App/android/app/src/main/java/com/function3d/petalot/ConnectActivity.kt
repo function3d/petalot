@@ -50,15 +50,6 @@ class ConnectActivity : Activity() {
     private var apUrl: String? = null
     private var sweepId = 0
     private var sweepRunning = false
-    private var tickCount = 0
-    private val tick = object : Runnable {
-        override fun run() {
-            // Keep the dots honest; a full sweep only every few ticks.
-            reloadSaved()
-            if (tickCount++ % SWEEP_EVERY_TICKS == 0) startSweep()
-            main.postDelayed(this, TICK_MS)
-        }
-    }
 
     // Lazily: getSystemService() is not usable before the activity is attached.
     private val connectivity by lazy { getSystemService(ConnectivityManager::class.java) }
@@ -180,8 +171,22 @@ class ConnectActivity : Activity() {
             addView(connectBtn)
         }
 
+        val searchBtn = Button(this).apply {
+            text = getString(R.string.search)
+            setTextColor(getColor(R.color.accent))
+            setBackgroundColor(0)
+            setPadding(dp(8), 0, dp(4), 0)
+            setOnClickListener { search() }
+        }
+        val statusRow = LinearLayout(this).apply {
+            orientation = LinearLayout.HORIZONTAL
+            gravity = Gravity.CENTER_VERTICAL
+            addView(status, LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f))
+            addView(searchBtn)
+        }
+
         root.addView(header)
-        root.addView(status)
+        root.addView(statusRow)
         root.addView(scanBar)
         root.addView(listView)
         root.addView(row)
@@ -197,13 +202,10 @@ class ConnectActivity : Activity() {
         currentNetwork = connectivity.activeNetwork
         connectivity.registerDefaultNetworkCallback(networkCallback)
         search()
-        main.postDelayed(tick, TICK_MS)
     }
 
     override fun onStop() {
         main.removeCallbacks(stopSearching)
-        main.removeCallbacks(tick)
-        tickCount = 0
         searching = false
         sweepId++ // ignore whatever the sweep still reports
         sweepRunning = false
@@ -453,7 +455,5 @@ class ConnectActivity : Activity() {
     companion object {
         private const val AP_URL = "192.168.4.1"
         private const val SCAN_MS = 10000L
-        private const val TICK_MS = 10000L
-        private const val SWEEP_EVERY_TICKS = 3
     }
 }
