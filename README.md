@@ -28,7 +28,7 @@
 
 Control your PETALOT from your phone: the same interface as the machine's web UI, with settings, statistics and firmware update, plus automatic discovery of the machines on your network.
 
- - [Download the Android app](https://github.com/function3d/petalot/raw/master/App/dist/petalot.apk) (60 KB) — Android 7.0 or newer.
+ - [Download the Android app](https://github.com/function3d/petalot/raw/master/App/dist/petalot.apk) (61 KB) — Android 7.0 or newer.
  - **Not on Google Play**: Android will ask you to allow installing apps from your browser or file manager. The app is signed, and updates keep your saved machines.
  - If a machine is in AP mode, join its `PETALOT-XXXXXX` Wi-Fi and open `192.168.4.1`.
  - The app checks for new versions on its own and offers the download when one is available.
