@@ -21,8 +21,8 @@ android {
         applicationId = "com.function3d.petalot"
         minSdk = 24
         targetSdk = 34
-        versionCode = 10200
-    versionName = "1.2"
+        versionCode = 10300
+    versionName = "1.3"
     }
 
     // Toolchain 17 keeps the build portable; Gradle/IDE run on whatever JDK they like.

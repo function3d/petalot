@@ -1,9 +1,7 @@
 package com.function3d.petalot
 
 import android.content.Context
-import android.net.ConnectivityManager
 import android.net.Network
-import android.net.NetworkCapabilities
 import android.os.Handler
 import android.os.Looper
 import java.net.HttpURLConnection
@@ -34,7 +32,7 @@ object Probe {
 
     private fun tryRequest(ctx: Context, base: String): Boolean {
         val candidates = ArrayList<Network?>(2)
-        wifiNetwork(ctx)?.let { candidates.add(it) }
+        Net.wifiNetwork(ctx)?.let { candidates.add(it) }
         candidates.add(null) // default network as a fallback
 
         for (net in candidates) {
@@ -54,20 +52,5 @@ object Probe {
             }
         }
         return false
-    }
-
-    @Suppress("DEPRECATION")
-    private fun wifiNetwork(ctx: Context): Network? {
-        val cm = ctx.applicationContext
-            .getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        val active = cm.activeNetwork
-        if (active != null &&
-            cm.getNetworkCapabilities(active)?.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) == true
-        ) {
-            return active
-        }
-        return cm.allNetworks.firstOrNull {
-            cm.getNetworkCapabilities(it)?.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) == true
-        }
     }
 }

@@ -11,9 +11,11 @@ import android.os.Looper
  * Finds PETALOT machines on the local network over mDNS.
  *
  * The firmware calls MDNS.addService("http", "tcp", 80) with hostname
- * "petalot", so the service shows up as _http._tcp with "petalot" in its name.
- * Discovery only works in station mode; in AP mode the device is always at
- * 192.168.4.1 (ConnectActivity has a button for that).
+ * "petalot", so every machine shows up as _http._tcp with "petalot" in its
+ * name. Two machines therefore announce the SAME instance name, so results are
+ * collected by address: keying by name would make the second one overwrite the
+ * first. Discovery only works in station mode; in AP mode the device answers at
+ * 192.168.4.1 and ConnectActivity detects it from the network's gateway.
  */
 class Discovery(context: Context) {
 
@@ -25,7 +27,9 @@ class Discovery(context: Context) {
         .apply { setReferenceCounted(false) }
 
     private val main = Handler(Looper.getMainLooper())
-    private val found = LinkedHashMap<String, String>() // service name -> url
+    private val urls = LinkedHashSet<String>()            // one per machine
+    private val urlByName = HashMap<String, String>()     // to handle service lost
+    private val attempts = HashMap<String, Int>()
     private val queue = ArrayDeque<NsdServiceInfo>()
     private var resolving = false
     private var listener: NsdManager.DiscoveryListener? = null
@@ -37,7 +41,9 @@ class Discovery(context: Context) {
     fun start(onChange: (List<String>) -> Unit) {
         if (listener != null) return
         this.onChange = onChange
-        found.clear()
+        urls.clear()
+        urlByName.clear()
+        attempts.clear()
         if (!multicast.isHeld) multicast.acquire()
 
         val l = object : NsdManager.DiscoveryListener {
@@ -51,7 +57,10 @@ class Discovery(context: Context) {
             }
 
             override fun onServiceLost(info: NsdServiceInfo) {
-                if (found.remove(info.serviceName) != null) emit()
+                val url = urlByName.remove(info.serviceName) ?: return
+                // Another machine may still map to the same address.
+                if (urlByName.containsValue(url)) return
+                if (urls.remove(url)) emit()
             }
         }
         listener = l
@@ -76,6 +85,14 @@ class Discovery(context: Context) {
         resolving = true
         nsd.resolveService(info, object : NsdManager.ResolveListener {
             override fun onResolveFailed(serviceInfo: NsdServiceInfo, errorCode: Int) {
+                // Resolution fails routinely; retry a couple of times before
+                // giving up, or the machine never shows up.
+                val key = serviceInfo.serviceName
+                val n = attempts.getOrDefault(key, 0)
+                if (n < 3) {
+                    attempts[key] = n + 1
+                    queue.addLast(serviceInfo)
+                }
                 resolving = false
                 pump()
             }
@@ -86,7 +103,8 @@ class Discovery(context: Context) {
                 if (host != null) {
                     val port = if (serviceInfo.port > 0) serviceInfo.port else 80
                     val url = if (port == 80) "http://$host" else "http://$host:$port"
-                    if (found.put(serviceInfo.serviceName, url) != url) emit()
+                    urlByName[serviceInfo.serviceName] = url
+                    if (urls.add(url)) emit()
                 }
                 pump()
             }
@@ -99,7 +117,7 @@ class Discovery(context: Context) {
     }
 
     private fun emit() {
-        val snapshot = found.values.toList()
+        val snapshot = urls.toList()
         main.post { onChange?.invoke(snapshot) }
     }
 }

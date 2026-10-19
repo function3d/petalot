@@ -41,11 +41,13 @@ class ConnectActivity : Activity() {
 
     private val saved = mutableListOf<String>()
     private val found = mutableListOf<String>()
+    private val swept = LinkedHashSet<String>()
     private val labels = mutableListOf<CharSequence>()
     private val urls = mutableListOf<String>()
     private val online = HashMap<String, Boolean>() // url -> reachable
     private val probing = HashSet<String>()
     private var apUrl: String? = null
+    private var sweepId = 0
 
     // Lazily: getSystemService() is not usable before the activity is attached.
     private val connectivity by lazy { getSystemService(ConnectivityManager::class.java) }
@@ -191,6 +193,7 @@ class ConnectActivity : Activity() {
     override fun onStop() {
         main.removeCallbacks(stopSearching)
         searching = false
+        sweepId++ // ignore whatever the sweep still reports
         runCatching { connectivity.unregisterNetworkCallback(networkCallback) }
         discovery.stop()
         scanBar.visibility = ProgressBar.GONE
@@ -198,9 +201,9 @@ class ConnectActivity : Activity() {
     }
 
     /**
-     * One pass: restart mDNS (its sockets are bound to an interface), re-check
-     * every device and show the scanning bar for a bounded window, so the UI
-     * never claims to be searching forever.
+     * One pass: restart mDNS (its sockets are bound to an interface), sweep the
+     * subnet, re-check every device and show the scanning bar for a bounded
+     * window, so the UI never claims to be searching forever.
      */
     private fun search() {
         refreshApState()
@@ -210,6 +213,18 @@ class ConnectActivity : Activity() {
         discovery.stop()
         found.clear()
         discovery.start { urls -> found.clear(); found.addAll(urls); rebuild() }
+
+        // mDNS cannot tell two machines apart (same hostname in the firmware),
+        // so the sweep is what actually finds all of them.
+        swept.clear()
+        val id = ++sweepId
+        Sweep.find(this, { url ->
+            if (id == sweepId) {
+                swept.add(url)
+                rebuild()
+            }
+        }, {})
+
         reloadSaved()
     }
 
@@ -263,6 +278,7 @@ class ConnectActivity : Activity() {
     private fun rebuild() {
         val discovered = LinkedHashSet<String>()
         discovered.addAll(found)
+        discovered.addAll(swept)
         apUrl?.let { discovered.add(it) }
 
         urls.clear()
