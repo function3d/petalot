@@ -24,6 +24,15 @@
  - [Firmware](https://github.com/function3d/petalot/tree/master/Firmware)
  - [Antes de ligar a eletrónica pela primeira vez](https://github.com/function3d/petalot/blob/5b1d409dda7f66e7040381943212c45b0bf8b62b/before%20you%20switching%20on%20the%20electronics.md)
 
+## App (Android)
+
+Controle o seu PETALOT a partir do telemóvel: a mesma interface da web do equipamento, com definições, estatísticas e atualização de firmware, além de descoberta automática dos equipamentos da sua rede.
+
+ - [Descarregar a app para Android](https://github.com/function3d/petalot/raw/master/App/dist/petalot-1.1.apk) (61 KB) — Android 7.0 ou superior.
+ - **Não está no Google Play**: o Android vai pedir para permitir a instalação de apps a partir do navegador ou do gestor de ficheiros. A app está assinada e as atualizações mantêm os equipamentos guardados.
+ - Se um equipamento estiver em modo AP, ligue-se à Wi-Fi `PETALOT-XXXXXX` e abra `192.168.4.1`.
+ - A app verifica se há versões novas e oferece o download.
+
 ## Cortador de garrafas
 <img alt="Bottle cutter" src="https://function3d.xyz/wp-content/uploads/2026/04/IMG_20260404_165740.webp" />
 

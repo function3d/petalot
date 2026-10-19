@@ -23,7 +23,16 @@
  - [Schematic](https://github.com/function3d/petalot/tree/master/Schematic)
  - [Firmware](https://github.com/function3d/petalot/tree/master/Firmware)
  - [Before switching on the electronics for the first time](https://github.com/function3d/petalot/blob/5b1d409dda7f66e7040381943212c45b0bf8b62b/before%20you%20switching%20on%20the%20electronics.md)
-	 
+
+## App (Android)
+
+Control your PETALOT from your phone: the same interface as the machine's web UI, with settings, statistics and firmware update, plus automatic discovery of the machines on your network.
+
+ - [Download the Android app](https://github.com/function3d/petalot/raw/master/App/dist/petalot-1.1.apk) (61 KB) — Android 7.0 or newer.
+ - **Not on Google Play**: Android will ask you to allow installing apps from your browser or file manager. The app is signed, and updates keep your saved machines.
+ - If a machine is in AP mode, join its `PETALOT-XXXXXX` Wi-Fi and open `192.168.4.1`.
+ - The app checks for new versions on its own and offers the download when one is available.
+
 ## Bottle cutter
 <img alt="Bottle cutter" src="https://function3d.xyz/wp-content/uploads/2026/04/IMG_20260404_165740.webp" />
 

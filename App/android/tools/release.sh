@@ -85,9 +85,19 @@ with open(path, "w") as f:
 print(json.dumps(manifest, indent=2))
 PY
 
+kb=$(( (size + 1023) / 1024 ))
+echo "==> updating README download links"
+for f in "$REPO_DIR/README.md" "$REPO_DIR/README_es.md" "$REPO_DIR/README_pt.md"; do
+  [ -f "$f" ] || continue
+  sed -i -E \
+    -e "s#App/dist/petalot-[0-9]+\.[0-9]+(\.[0-9]+)?\.apk#App/dist/petalot-$version.apk#g" \
+    -e "s#\([0-9]+ KB\) — Android 7\.0#($kb KB) — Android 7.0#g" \
+    "$f"
+done
+
 echo
 echo "Built PETALOT app $version (versionCode $code)."
 echo "Next:"
-echo "  git add App/dist App/android/app/build.gradle.kts"
+echo "  git add App/dist App/android/app/build.gradle.kts README.md README_es.md README_pt.md"
 echo "  git commit -m \"app: v$version\""
 echo "  git push"
