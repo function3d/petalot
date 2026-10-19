@@ -218,7 +218,12 @@ class ConnectActivity : Activity() {
         main.postDelayed(stopSearching, SCAN_MS)
         discovery.stop()
         found.clear()
-        discovery.start { urls -> found.clear(); found.addAll(urls); rebuild() }
+        discovery.start { urls ->
+            urls.forEach { removed.remove(it) }
+            found.clear()
+            found.addAll(urls)
+            rebuild()
+        }
 
         // mDNS cannot tell two machines apart (same hostname in the firmware),
         // so the sweep is what actually finds all of them. Results accumulate:
@@ -227,7 +232,10 @@ class ConnectActivity : Activity() {
             sweepRunning = true
             val id = sweepId
             Sweep.find(this, { url ->
-                if (id == sweepId && url !in removed) {
+                if (id == sweepId) {
+                    // It answered: the machine is back, so undo a previous
+                    // delete and show it as available again.
+                    removed.remove(url)
                     swept.add(url)
                     probe(url)
                     rebuild()
@@ -364,8 +372,8 @@ class ConnectActivity : Activity() {
             .setTitle(R.string.remove_title)
             .setMessage(hostPort(url))
             .setPositiveButton(R.string.remove) { _, _ ->
-                // Drop it everywhere, or the mDNS/sweep result puts it straight
-                // back into the list.
+                // Hide it everywhere so the stale mDNS/sweep result does not put
+                // it straight back. It shows again if it answers later.
                 removed.add(url)
                 DeviceStore.remove(this, url)
                 swept.remove(url)

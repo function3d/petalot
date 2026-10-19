@@ -1,8 +1,8 @@
 {
-  "versionCode": 10700,
-  "versionName": "1.7",
+  "versionCode": 10800,
+  "versionName": "1.8",
   "file": "petalot.apk",
   "url": "https://raw.githubusercontent.com/function3d/petalot/master/App/dist/petalot.apk",
-  "sha256": "09c3f5a8267adee815742bd53e633a10f9dc5616f83ed111d2bf16eb75f854fa",
-  "size": 62150
+  "sha256": "1b0f8ab33fa0a385420674bf632cfceaf4e43f883492bd6cc9cf1f837e1e60c3",
+  "size": 62166
 }
