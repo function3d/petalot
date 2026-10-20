@@ -4,11 +4,11 @@ Precios actualizados: **20/10/2026**. Valores orientativos, pueden variar con el
 
 | Lista | Total |
 |---|---|
-| Máquina PETALOT | 38,10 € |
+| Máquina PETALOT | 42,59 € |
 | Electrónica para PETALOT | 56,94 € |
 | Cortador de botellas | 20,66 € |
 | Herramientas | 42,29 € |
-| **TOTAL (mínimo, sin envío)** | **157,99 €** |
+| **TOTAL (mínimo, sin envío)** | **162,48 €** |
 
 ## Máquina PETALOT
 
@@ -28,6 +28,7 @@ Precios actualizados: **20/10/2026**. Valores orientativos, pueden variar con el
 | 2 | Perno M3 14mm para el soporte del motor | https://s.click.aliexpress.com/e/_c38WdOKJ | 2,61 € |
 | 50cm | Hilo de nailon 1mm | https://s.click.aliexpress.com/e/_c4028B6b | 2,59 € |
 | 32cm | Funda para cables 6mm | https://s.click.aliexpress.com/e/_c4qwLShV | 3,79 € |
+| 1 | Cable de alimentación de 1,2 m, 3 clavijas, con enchufe EU / US / UK / AU. Elige la opción según tu país: 3,49 € – 4,59 €. El precio mostrado es el del enchufe EU. | https://s.click.aliexpress.com/e/_c3hAFKK9 | 4,49 € |
 | 1 | Base de madera para la máquina PETALOT (cortada según estas medidas) <br><img src="https://function3d.xyz/wp-content/uploads/2026/04/cotas2.jpg" alt="Wooden base dimensions" width="380"> |  |  |
 
 *No incluida en el total: la base de madera de la máquina PETALOT (cortada según las medidas de [esta imagen](https://function3d.xyz/wp-content/uploads/2026/04/cotas2.jpg)).*

@@ -4,11 +4,11 @@ Prices updated: **2026-10-20**. Indicative values, they may vary over time — c
 
 | List | Total |
 |---|---|
-| PETALOT machine | 38.10 € |
+| PETALOT machine | 42.59 € |
 | Electronics for PETALOT | 56.94 € |
 | Bottle Cutter | 20.66 € |
 | Tools | 42.29 € |
-| **TOTAL (minimum, no shipping)** | **157.99 €** |
+| **TOTAL (minimum, no shipping)** | **162.48 €** |
 
 ## PETALOT machine
 
@@ -28,6 +28,7 @@ Prices updated: **2026-10-20**. Indicative values, they may vary over time — c
 | 2 | M3 14mm bolt for motor mount | https://s.click.aliexpress.com/e/_c38WdOKJ | 2.61 € |
 | 50cm | Nylon thread 1mm | https://s.click.aliexpress.com/e/_c4028B6b | 2.59 € |
 | 32cm | Cable Sleeve 6mm | https://s.click.aliexpress.com/e/_c4qwLShV | 3.79 € |
+| 1 | Power cable 1.2 m, 3-pin, with EU / US / UK / AU plug. Choose the option according to your country: 3.49 € – 4.59 €. The price shown is the EU plug. | https://s.click.aliexpress.com/e/_c3hAFKK9 | 4.49 € |
 | 1 | Wooden base for the PETALOT machine (cut to these dimensions) <br><img src="https://function3d.xyz/wp-content/uploads/2026/04/cotas2.jpg" alt="Wooden base dimensions" width="380"> |  |  |
 
 *Not included in the total: the wooden base for the PETALOT machine (cut to the dimensions in [this image](https://function3d.xyz/wp-content/uploads/2026/04/cotas2.jpg)).*
