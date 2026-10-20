@@ -5,10 +5,10 @@ Precios actualizados: **20/10/2026**. Valores orientativos, pueden variar con el
 | Lista | Total |
 |---|---|
 | Máquina PETALOT | 38,10 € |
-| Electrónica para PETALOT | 56,87 € |
-| Cortador de botellas | 20,76 € |
-| Herramientas | 43,05 € |
-| **TOTAL (mínimo, sin envío)** | **158,78 €** |
+| Electrónica para PETALOT | 56,94 € |
+| Cortador de botellas | 20,66 € |
+| Herramientas | 42,29 € |
+| **TOTAL (mínimo, sin envío)** | **157,99 €** |
 
 ## Máquina PETALOT
 
@@ -44,20 +44,20 @@ Precios actualizados: **20/10/2026**. Valores orientativos, pueden variar con el
 | 1 | Condensador 16V 100uf | https://s.click.aliexpress.com/e/_optaFrN | 2,32 € |
 | 1 | Tira de pines macho y hembra | https://s.click.aliexpress.com/e/_DcGRnY9 | 3,99 € |
 | 3 | Conector de bloque de terminales 2P | https://s.click.aliexpress.com/e/_DkqRgFn | 0,84 € |
-| 1 | Resistencias de 10K ohmios R2 | https://s.click.aliexpress.com/e/_DeT9AAz | 1,73 € |
-| 1 | Resistencias de 2K ohmios para R1 si la versión de firmware es >=1.4 | https://s.click.aliexpress.com/e/_DeT9AAz | 2,23 € |
+| 1 | Resistencias de 10K ohmios R2 | https://s.click.aliexpress.com/e/_DeT9AAz | 1,71 € |
+| 1 | Resistencias de 2K ohmios para R1 si la versión de firmware es >=1.4 | https://s.click.aliexpress.com/e/_DeT9AAz | 2,20 € |
 | 1 | Fuente de alimentación 12v 5A | https://s.click.aliexpress.com/e/_c2zdHPX3 | 6,19 € |
 | 1 | Mini micro interruptor de final de carrera con palanca de rodillo, para el sensor de tira | https://s.click.aliexpress.com/e/_c3QnPcE9 | 1,96 € |
 | 1 | Motor paso a paso Nema 17, altura >=38mm, eje en forma de D (17HS4401S-Dupont) | https://s.click.aliexpress.com/e/_c39SiyRr | 11,39 € |
-| 1 | Hotend MK8 12V 40W | https://s.click.aliexpress.com/e/_DnlMNy5 | 3,39 € |
+| 1 | Hotend MK8 12V 40W | https://s.click.aliexpress.com/e/_DnlMNy5 | 3,33 € |
 | 30cm | Cable 2P 30AWG (para el sensor de tira de final de carrera, señal digital; yo uso los cables muy finos que saco de un cable de impresora LPT1 viejo) | https://s.click.aliexpress.com/e/_Dlnn1bd | 0,73 € |
 | 25cm | Cable 2P 18AWG (yo uso 25 cm del cable calefactor del hotend) | https://s.click.aliexpress.com/e/_Dlnn1bd | 1,65 € |
 | 1 | Toma de corriente macho 10A 250V de 3 pines IEC320 con interruptor + fusible | https://s.click.aliexpress.com/e/_DmuNpxf | 2,41 € |
 | 9 | Terminales de cable crimpados con funda aislante 20AWG (alimentación de la PCB, IEC320, calefactor) | https://s.click.aliexpress.com/e/_oEJer1l | 1,31 € |
 | 2 | Terminales de cable crimpados con funda aislante 24AWG (micro interruptor) | https://s.click.aliexpress.com/e/_oEJer1l | 1,69 € |
 | 5 | Terminal hembra de 4.8mm | https://s.click.aliexpress.com/e/_c2xFTcyv | 0,96 € |
-| 25mm | Tubo termorretráctil 5mm, para el sensor de tira y el terminal hembra de 4.8mm | https://s.click.aliexpress.com/e/_c3knUgat | 1,29 € |
-| 40mm | Tubo termorretráctil 2mm, para el sensor de tira | https://s.click.aliexpress.com/e/_c3knUgat | 1,28 € |
+| 25mm | Tubo termorretráctil 5mm, para el sensor de tira y el terminal hembra de 4.8mm | https://s.click.aliexpress.com/e/_c3knUgat | 1,38 € |
+| 40mm | Tubo termorretráctil 2mm, para el sensor de tira | https://s.click.aliexpress.com/e/_c3knUgat | 1,37 € |
 
 *No incluida en el total: la PCB (se fabrica en JLCPCB).*
 
@@ -67,7 +67,7 @@ Precios actualizados: **20/10/2026**. Valores orientativos, pueden variar con el
 |---|---|---|---|
 | 2 | Rodamientos 608 RS (prefiero RS en vez de ZZ) | https://s.click.aliexpress.com/e/_DFmmUC5 | 3,79 € |
 | 5 | Tuerca hexagonal M8 | https://s.click.aliexpress.com/e/_DlmzKtL | 2,38 € |
-| 3 | Arandela plana M8x16x1.5 | https://s.click.aliexpress.com/e/_Dk397ED | 1,37 € |
+| 3 | Arandela plana M8x16x1.5 | https://s.click.aliexpress.com/e/_Dk397ED | 1,27 € |
 | 2 | Tuerca autoblocante hexagonal M8 con inserción de nailon | https://s.click.aliexpress.com/e/_c31WJI0D | 3,13 € |
 | 1 | M8x50mm varilla roscada (para el rodamiento superior; yo uso varilla roscada cortada a 48mm) | https://s.click.aliexpress.com/e/_DeTWIUt | 3,39 € |
 | 2 | M8x40mm varilla roscada (para el rodamiento inferior y la guía; yo uso varilla roscada cortada a 42mm y 30mm) | https://s.click.aliexpress.com/e/_DeTWIUt | 3,69 € |
@@ -82,7 +82,7 @@ Precios actualizados: **20/10/2026**. Valores orientativos, pueden variar con el
 |---|---|---|---|
 | 1 | Broca de 1.7mm, para la boquilla Consejo: a veces es útil empezar taladrando con una broca más pequeña (1,5 mm) y terminar con la de 1,7 mm para evitar que el agujero se agrande hasta 2 mm | https://s.click.aliexpress.com/e/_c2xYqLsv | 2,07 € |
 | 1 | Juego de brocas para azulejo, vidrio, hormigón y cerámica, 8mm, 6mm, para el bloque calefactor | https://s.click.aliexpress.com/e/_c3XyeMwN | 5,79 € |
-| 1 | Soldador eléctrico de 80W con pantalla LCD digital y temperatura ajustable | https://s.click.aliexpress.com/e/_opQlTJh | 11,59 € |
+| 1 | Soldador eléctrico de 80W con pantalla LCD digital y temperatura ajustable | https://s.click.aliexpress.com/e/_opQlTJh | 10,83 € |
 | 1 | Hilo de estaño para soldar 1mm | https://s.click.aliexpress.com/e/_c44dnlgz | 5,69 € |
 | 1 | Alicate crimpador, cortacables y pelacables para terminales | https://s.click.aliexpress.com/e/_oodj3Yb | 8,42 € |
 | 1 | Alicate de crimpar para terminales tubulares y fundas | https://s.click.aliexpress.com/e/_oEekGpt | 9,49 € |

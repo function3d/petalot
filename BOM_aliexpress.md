@@ -5,10 +5,10 @@ Prices updated: **2026-10-20**. Indicative values, they may vary over time — c
 | List | Total |
 |---|---|
 | PETALOT machine | 38.10 € |
-| Electronics for PETALOT | 56.87 € |
-| Bottle Cutter | 20.76 € |
-| Tools | 43.05 € |
-| **TOTAL (minimum, no shipping)** | **158.78 €** |
+| Electronics for PETALOT | 56.94 € |
+| Bottle Cutter | 20.66 € |
+| Tools | 42.29 € |
+| **TOTAL (minimum, no shipping)** | **157.99 €** |
 
 ## PETALOT machine
 
@@ -44,20 +44,20 @@ Prices updated: **2026-10-20**. Indicative values, they may vary over time — c
 | 1 | capacitor 16V 100uf | https://s.click.aliexpress.com/e/_optaFrN | 2.32 € |
 | 1 | pin header Male and Female | https://s.click.aliexpress.com/e/_DcGRnY9 | 3.99 € |
 | 3 | Terminal Block Connector 2P | https://s.click.aliexpress.com/e/_DkqRgFn | 0.84 € |
-| 1 | 10K ohms resistors R2 | https://s.click.aliexpress.com/e/_DeT9AAz | 1.73 € |
-| 1 | 2K ohms resistors for R1 if firmware version >=1.4 | https://s.click.aliexpress.com/e/_DeT9AAz | 2.23 € |
+| 1 | 10K ohms resistors R2 | https://s.click.aliexpress.com/e/_DeT9AAz | 1.71 € |
+| 1 | 2K ohms resistors for R1 if firmware version >=1.4 | https://s.click.aliexpress.com/e/_DeT9AAz | 2.20 € |
 | 1 | Power Supply 12v 5A | https://s.click.aliexpress.com/e/_c2zdHPX3 | 6.19 € |
 | 1 | Mini Micro Limit Switch Roller Lever Arm, for strip sensor | https://s.click.aliexpress.com/e/_c3QnPcE9 | 1.96 € |
 | 1 | Nema 17 stepper motor height >=38mm D shaped shaft (17HS4401S-Dupont) | https://s.click.aliexpress.com/e/_c39SiyRr | 11.39 € |
-| 1 | Hotend MK8 12V 40W | https://s.click.aliexpress.com/e/_DnlMNy5 | 3.39 € |
+| 1 | Hotend MK8 12V 40W | https://s.click.aliexpress.com/e/_DnlMNy5 | 3.33 € |
 | 30cm | Wire 2P 30AWG (for limit switch strip sensor, digital signal, I use the very thin wires stripped from an old LPT1 printer cable) | https://s.click.aliexpress.com/e/_Dlnn1bd | 0.73 € |
 | 25cm | Wire 2P 18AWG (I use 25cm from the hotend heater cable) | https://s.click.aliexpress.com/e/_Dlnn1bd | 1.65 € |
 | 1 | 10A 250V Male Power Socket 3 Pin IEC320 switch + Fuse | https://s.click.aliexpress.com/e/_DmuNpxf | 2.41 € |
 | 9 | Terminal Wire Conector Crimp Insulated Ferrule 20AWG (PCB power, IEC320, heater) | https://s.click.aliexpress.com/e/_oEJer1l | 1.31 € |
 | 2 | Terminal Wire Conector Crimp Insulated Ferrule 24AWG (micro switch) | https://s.click.aliexpress.com/e/_oEJer1l | 1.69 € |
 | 5 | 4.8mm Female Terminal | https://s.click.aliexpress.com/e/_c2xFTcyv | 0.96 € |
-| 25mm | Heat Shrink Tube 5mm, for strip sensor and 4.8mm Female Terminal | https://s.click.aliexpress.com/e/_c3knUgat | 1.29 € |
-| 40mm | Heat Shrink Tube 2mm, for strip sensor | https://s.click.aliexpress.com/e/_c3knUgat | 1.28 € |
+| 25mm | Heat Shrink Tube 5mm, for strip sensor and 4.8mm Female Terminal | https://s.click.aliexpress.com/e/_c3knUgat | 1.38 € |
+| 40mm | Heat Shrink Tube 2mm, for strip sensor | https://s.click.aliexpress.com/e/_c3knUgat | 1.37 € |
 
 *Not included in the total: the PCB (fabricated at JLCPCB).*
 
@@ -67,7 +67,7 @@ Prices updated: **2026-10-20**. Indicative values, they may vary over time — c
 |---|---|---|---|
 | 2 | 608 RS bearings (I prefer RS instead of ZZ) | https://s.click.aliexpress.com/e/_DFmmUC5 | 3.79 € |
 | 5 | Hex Nut M8 | https://s.click.aliexpress.com/e/_DlmzKtL | 2.38 € |
-| 3 | Flat Washer M8x16x1.5 | https://s.click.aliexpress.com/e/_Dk397ED | 1.37 € |
+| 3 | Flat Washer M8x16x1.5 | https://s.click.aliexpress.com/e/_Dk397ED | 1.27 € |
 | 2 | M8 Hex Nylon Insert Lock Nut Self-locking Locknut | https://s.click.aliexpress.com/e/_c31WJI0D | 3.13 € |
 | 1 | M8x50mm Threaded Rod (for high bearing, I use rod thereaded cut to 48mm) | https://s.click.aliexpress.com/e/_DeTWIUt | 3.39 € |
 | 2 | M8x40mm Threaded Rod (for low bearing and guide, I use rod thereaded cut to 42mm and 30mm) | https://s.click.aliexpress.com/e/_DeTWIUt | 3.69 € |
@@ -82,7 +82,7 @@ Prices updated: **2026-10-20**. Indicative values, they may vary over time — c
 |---|---|---|---|
 | 1 | 1.7mm drill bit, for the nozzle Tip: It’s sometimes helpful to start by drilling with a smaller bit (1.5 mm) and then finish with the 1.7 mm bit to prevent the hole from expanding to 2 mm | https://s.click.aliexpress.com/e/_c2xYqLsv | 2.07 € |
 | 1 | Tile Drill Bits Set for Glass Concrete Ceramic, 8mm, 6mm, for heater block | https://s.click.aliexpress.com/e/_c3XyeMwN | 5.79 € |
-| 1 | 80W Electric Soldering Iron LCD Digital display Temperature Adjustable | https://s.click.aliexpress.com/e/_opQlTJh | 11.59 € |
+| 1 | 80W Electric Soldering Iron LCD Digital display Temperature Adjustable | https://s.click.aliexpress.com/e/_opQlTJh | 10.83 € |
 | 1 | Solder Wire Tin 1mm | https://s.click.aliexpress.com/e/_c44dnlgz | 5.69 € |
 | 1 | Crimper Cable Cutter Wire Stripper Stripping Crimping Pliers Terminal | https://s.click.aliexpress.com/e/_oodj3Yb | 8.42 € |
 | 1 | Crimping Pliers Ferrule Sleeves Tubular Terminal | https://s.click.aliexpress.com/e/_oEekGpt | 9.49 € |
