@@ -2164,8 +2164,13 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
       const wrap = btn.closest('.pw-wrap');
       const input = wrap.querySelector('input');
       const revealed = wrap.classList.toggle('revealed');
+      const start = input.selectionStart;
+      const end = input.selectionEnd;
       input.type = revealed ? 'text' : 'password';
       btn.setAttribute('aria-label', revealed ? t('st.hidePw') : t('st.showPw'));
+      // The click steals focus into the button; give it back so typing continues.
+      input.focus({ preventScroll: true });
+      try { input.setSelectionRange(start, end); } catch (e) {}
     }
 
     function updateWifiZones() {
