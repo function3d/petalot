@@ -16,6 +16,27 @@ unsigned long tempLastNoFilament;
 unsigned long tempLastStart;
 double temperatureStart;  // temperature when the run started
 
+// Heater watchdog state. Unlike temperatureStart (frozen at start), this
+// tracks progress: heatWatchRef is the best T seen since (re)start and
+// heatWatchTime the last time T rose by HEAT_WATCH_RISE. Raising To rearms
+// the window instead of moving the trip threshold towards the live T.
+double heatWatchRef;
+unsigned long heatWatchTime;
+unsigned long heatWatchBadSince;  // when the far-below-target state began (0 = clear)
+const double HEAT_WATCH_RISE = 2.0;               // progress step that rearms the window
+const double HEAT_WATCH_FAR = 20.0;               // "far below target" gate, as before
+const double HEAT_WATCH_MIN_RISE = 10.0;          // required rise since reference, as before
+const unsigned long HEAT_WATCH_TIMEOUT = 30 * 1000;
+const unsigned long HEAT_WATCH_DEBOUNCE = 5 * 1000;
+
+void heatWatchRearm() {
+  if (status != "working") return;
+  if (!isnan(T)) heatWatchRef = T;
+  heatWatchTime = millis();
+  if (heatWatchTime == 0) heatWatchTime = 1;
+  heatWatchBadSince = 0;
+}
+
 // 3V3 -> NTC -> A0 -> 2KΩ -> GND
 int temptable[8][2] = {
   { 960, 250 },
@@ -98,6 +119,7 @@ void start() {
       T = NAN;
     }
     temperatureStart = T;
+    heatWatchRearm();
     if (tempLastStart == 0) tempLastStart = 1;
     LastStopReason = "";
   }
@@ -129,6 +151,7 @@ void stop() {
     digitalWrite(LED_BUILTIN, HIGH);
   }
   tempLastStart = 0;
+  heatWatchBadSince = 0;
 }
 
 void initHotend() {
@@ -348,10 +371,28 @@ void hotendReadTempTask() {
       stop();
     }
 
-    // Heater failed to reach temperature 30s after start
-    if (tempLastStart > 0 && T < To - 20 && T - 10 < temperatureStart && millis() >= tempLastStart + 30 * 1000) {
-      LastStopReason = "30s no heat: thermistor/heater issue";
-      stop();
+    // Heater watchdog: stop only if T makes no progress for HEAT_WATCH_TIMEOUT
+    // while far below target, sustained for HEAT_WATCH_DEBOUNCE. Progress
+    // (+HEAT_WATCH_RISE) and any To increase rearm the window, and samples
+    // near the target keep it disarmed, so normal ripple or a slow climb
+    // after raising To cannot stop the machine on a single 250 ms sample.
+    if (status == "working" && !isnan(T)) {
+      unsigned long now = millis();
+      if (T > heatWatchRef + HEAT_WATCH_RISE) {
+        heatWatchRef = T;
+        heatWatchTime = now;
+      }
+      if (T < To - HEAT_WATCH_FAR && (now - heatWatchTime) >= HEAT_WATCH_TIMEOUT &&
+          T < heatWatchRef + HEAT_WATCH_MIN_RISE) {
+        if (heatWatchBadSince == 0) heatWatchBadSince = now;
+        if ((now - heatWatchBadSince) >= HEAT_WATCH_DEBOUNCE) {
+          LastStopReason = "30s no heat: thermistor/heater issue (T=" + String(T, 0) +
+                           " To=" + String(To, 0) + " ref=" + String(heatWatchRef, 0) + ")";
+          stop();
+        }
+      } else {
+        heatWatchBadSince = 0;
+      }
     }
   }
 }

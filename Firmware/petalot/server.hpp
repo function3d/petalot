@@ -177,8 +177,12 @@ void set(AsyncWebServerRequest *request) {
   String ToChange = request->arg("To");
   if (ToChange != "") {
     if (ToChange.toInt() + To <= maxT && ToChange.toInt() + To >= minT) {
-      To += ToChange.toInt();
+      int dTo = ToChange.toInt();
+      To += dTo;
       saveConfiguration(false);
+      // A higher target needs time: rearm the heater watchdog from the live
+      // T instead of letting the old reference plus the moved threshold trip.
+      if (dTo > 0) heatWatchRearm();
     }
     tele(request);
     return;
