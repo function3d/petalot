@@ -419,7 +419,16 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         't.disconnected': 'disconnected',
 
         't.stopped': 'Stopped',
-        't.checkThermistor': 'Check thermistor',
+        't.checkThermistor': 'Temperature sensor fault: check the thermistor',
+        'stop.user': 'Stopped by user',
+        'stop.runout': 'Filament run out',
+        'stop.nosensor': 'No filament detected for {min} min',
+        'stop.maxtime': 'Maximum run time of {min} min reached',
+        'stop.thermistor': 'Temperature sensor fault: check the thermistor',
+        'stop.noheat': 'Heater fault: temperature not rising (now {T} °C, target {To} °C)',
+        'stop.noheatShort': 'Heater fault: temperature not rising',
+        'st.showPw': 'Show password',
+        'st.hidePw': 'Hide password',
         't.speedWarn': 'Speeds >25 cm/s may cause print failures. Test before batch production',
         't.detected': 'detected',
         't.notDetected': 'no detected',
@@ -519,7 +528,16 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         't.disconnected': 'desconectado',
 
         't.stopped': 'Parado',
-        't.checkThermistor': 'Comprueba el termistor',
+        't.checkThermistor': 'Fallo del sensor de temperatura: revisa el termistor',
+        'stop.user': 'Detenido por el usuario',
+        'stop.runout': 'Filamento agotado',
+        'stop.nosensor': 'Sin filamento detectado durante {min} min',
+        'stop.maxtime': 'Tiempo máximo de {min} min alcanzado',
+        'stop.thermistor': 'Fallo del sensor de temperatura: revisa el termistor',
+        'stop.noheat': 'Fallo del calentador: la temperatura no sube (ahora {T} °C, objetivo {To} °C)',
+        'stop.noheatShort': 'Fallo del calentador: la temperatura no sube',
+        'st.showPw': 'Mostrar contraseña',
+        'st.hidePw': 'Ocultar contraseña',
         't.speedWarn': 'Velocidades >25 cm/s pueden causar fallos de impresión. Prueba antes de producción',
         't.detected': 'detectado',
         't.notDetected': 'no detectado',
@@ -619,7 +637,16 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         't.disconnected': 'desconectado',
 
         't.stopped': 'Parado',
-        't.checkThermistor': 'Verifique o termistor',
+        't.checkThermistor': 'Falha do sensor de temperatura: verifique o termistor',
+        'stop.user': 'Parado pelo utilizador',
+        'stop.runout': 'Filamento esgotado',
+        'stop.nosensor': 'Sem filamento detetado durante {min} min',
+        'stop.maxtime': 'Tempo máximo de {min} min atingido',
+        'stop.thermistor': 'Falha do sensor de temperatura: verifique o termistor',
+        'stop.noheat': 'Falha do aquecedor: a temperatura não sobe (atual {T} °C, alvo {To} °C)',
+        'stop.noheatShort': 'Falha do aquecedor: a temperatura não sobe',
+        'st.showPw': 'Mostrar senha',
+        'st.hidePw': 'Ocultar senha',
         't.speedWarn': 'Velocidades >25 cm/s podem causar falhas de impressão. Teste antes da produção',
         't.detected': 'detectado',
         't.notDetected': 'não detectado',
@@ -719,7 +746,16 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         't.disconnected': 'déconnecté',
 
         't.stopped': 'Arrêté',
-        't.checkThermistor': 'Vérifiez la thermistance',
+        't.checkThermistor': 'Défaut du capteur de température : vérifiez la thermistance',
+        'stop.user': "Arrêtée par l'utilisateur",
+        'stop.runout': 'Filament épuisé',
+        'stop.nosensor': 'Aucun filament détecté pendant {min} min',
+        'stop.maxtime': 'Durée maximale de {min} min atteinte',
+        'stop.thermistor': 'Défaut du capteur de température : vérifiez la thermistance',
+        'stop.noheat': "Défaut du chauffage : la température ne monte pas (actuelle {T} °C, cible {To} °C)",
+        'stop.noheatShort': "Défaut du chauffage : la température ne monte pas",
+        'st.showPw': 'Afficher le mot de passe',
+        'st.hidePw': 'Masquer le mot de passe',
         't.speedWarn': 'Des vitesses >25 cm/s peuvent causer des défauts. Testez avant la production',
         't.detected': 'détecté',
         't.notDetected': 'non détecté',
@@ -819,7 +855,16 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         't.disconnected': 'getrennt',
 
         't.stopped': 'Gestoppt',
-        't.checkThermistor': 'Thermistor prüfen',
+        't.checkThermistor': 'Temperatursensor-Fehler: Thermistor prüfen',
+        'stop.user': 'Vom Benutzer gestoppt',
+        'stop.runout': 'Filament aufgebraucht',
+        'stop.nosensor': 'Kein Filament erkannt seit {min} Min.',
+        'stop.maxtime': 'Maximale Laufzeit von {min} Min. erreicht',
+        'stop.thermistor': 'Temperatursensor-Fehler: Thermistor prüfen',
+        'stop.noheat': 'Heizungsfehler: Temperatur steigt nicht (aktuell {T} °C, Ziel {To} °C)',
+        'stop.noheatShort': 'Heizungsfehler: Temperatur steigt nicht',
+        'st.showPw': 'Passwort anzeigen',
+        'st.hidePw': 'Passwort verbergen',
         't.speedWarn': 'Geschwindigkeiten >25 cm/s können Druckfehler verursachen. Vor der Produktion testen',
         't.detected': 'erkannt',
         't.notDetected': 'nicht erkannt',
@@ -919,7 +964,16 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         't.disconnected': 'disconnesso',
 
         't.stopped': 'Fermata',
-        't.checkThermistor': 'Controlla il termistore',
+        't.checkThermistor': 'Guasto al sensore di temperatura: controlla il termistore',
+        'stop.user': "Fermata dall'utente",
+        'stop.runout': 'Filamento esaurito',
+        'stop.nosensor': 'Nessun filamento rilevato da {min} min',
+        'stop.maxtime': 'Tempo massimo di {min} min raggiunto',
+        'stop.thermistor': 'Guasto al sensore di temperatura: controlla il termistore',
+        'stop.noheat': "Guasto al riscaldatore: la temperatura non sale (ora {T} °C, obiettivo {To} °C)",
+        'stop.noheatShort': "Guasto al riscaldatore: la temperatura non sale",
+        'st.showPw': 'Mostra password',
+        'st.hidePw': 'Nascondi password',
         't.speedWarn': 'Velocità >25 cm/s possono causare difetti. Test prima della produzione',
         't.detected': 'rilevato',
         't.notDetected': 'non rilevato',
@@ -1019,7 +1073,16 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         't.disconnected': '已断开',
 
         't.stopped': '已停止',
-        't.checkThermistor': '检查热敏电阻',
+        't.checkThermistor': '温度传感器故障：请检查热敏电阻',
+        'stop.user': '已由用户停止',
+        'stop.runout': '耗材已用完',
+        'stop.nosensor': '已 {min} 分钟未检测到耗材',
+        'stop.maxtime': '已达到最长运行时间：{min} 分钟',
+        'stop.thermistor': '温度传感器故障：请检查热敏电阻',
+        'stop.noheat': '加热器故障：温度未上升（当前 {T} °C，目标 {To} °C）',
+        'stop.noheatShort': '加热器故障：温度未上升',
+        'st.showPw': '显示密码',
+        'st.hidePw': '隐藏密码',
         't.speedWarn': '超过 25 cm/s 的速度可能导致打印失败。量产前请测试',
         't.detected': '已检测',
         't.notDetected': '未检测到',
@@ -1118,7 +1181,16 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         't.connected': 'připojeno',
         't.disconnected': 'odpojeno',
         't.stopped': 'Zastaveno',
-        't.checkThermistor': 'Zkontrolujte termistor',
+        't.checkThermistor': 'Porucha teplotního čidla: zkontrolujte termistor',
+        'stop.user': 'Zastaveno uživatelem',
+        'stop.runout': 'Došel filament',
+        'stop.nosensor': 'Filament nedetekován po dobu {min} min',
+        'stop.maxtime': 'Dosažen maximální čas běhu: {min} min',
+        'stop.thermistor': 'Porucha teplotního čidla: zkontrolujte termistor',
+        'stop.noheat': 'Porucha ohřevu: teplota nestoupá (nyní {T} °C, cíl {To} °C)',
+        'stop.noheatShort': 'Porucha ohřevu: teplota nestoupá',
+        'st.showPw': 'Zobrazit heslo',
+        'st.hidePw': 'Skrýt heslo',
         't.speedWarn': 'Rychlosti >25 cm/s mohou způsobit tiskové vady. Otestujte před sériovou výrobou',
         't.detected': 'detekováno',
         't.notDetected': 'nedetekováno',
@@ -1217,7 +1289,16 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         't.connected': 'подключено',
         't.disconnected': 'отключено',
         't.stopped': 'Остановлено',
-        't.checkThermistor': 'Проверьте термистор',
+        't.checkThermistor': 'Неисправность датчика температуры: проверьте термистор',
+        'stop.user': 'Остановлено пользователем',
+        'stop.runout': 'Филамент закончился',
+        'stop.nosensor': 'Филамент не обнаружен в течение {min} мин',
+        'stop.maxtime': 'Достигнуто максимальное время работы: {min} мин',
+        'stop.thermistor': 'Неисправность датчика температуры: проверьте термистор',
+        'stop.noheat': 'Неисправность нагревателя: температура не растёт (сейчас {T} °C, цель {To} °C)',
+        'stop.noheatShort': 'Неисправность нагревателя: температура не растёт',
+        'st.showPw': 'Показать пароль',
+        'st.hidePw': 'Скрыть пароль',
         't.speedWarn': 'Скорости >25 см/с могут вызывать дефекты печати. Протестируйте перед серийным производством',
         't.detected': 'обнаружен',
         't.notDetected': 'не обнаружен',
@@ -1316,7 +1397,16 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         't.connected': 'bağlı',
         't.disconnected': 'bağlantı kesildi',
         't.stopped': 'Durduruldu',
-        't.checkThermistor': 'Termistörü kontrol edin',
+        't.checkThermistor': 'Sıcaklık sensörü arızası: termistörü kontrol edin',
+        'stop.user': 'Kullanıcı tarafından durduruldu',
+        'stop.runout': 'Filament bitti',
+        'stop.nosensor': '{min} dakikadır filament algılanamadı',
+        'stop.maxtime': 'Maksimum çalışma süresi doldu: {min} dk',
+        'stop.thermistor': 'Sıcaklık sensörü arızası: termistörü kontrol edin',
+        'stop.noheat': 'Isıtıcı arızası: sıcaklık yükselmiyor (şu an {T} °C, hedef {To} °C)',
+        'stop.noheatShort': 'Isıtıcı arızası: sıcaklık yükselmiyor',
+        'st.showPw': 'Şifreyi göster',
+        'st.hidePw': 'Şifreyi gizle',
         't.speedWarn': '>25 cm/s hızlar baskı hatalarına neden olabilir. Seri üretimden önce test edin',
         't.detected': 'algılandı',
         't.notDetected': 'algılanmadı',
@@ -1415,7 +1505,16 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         't.connected': '接続済み',
         't.disconnected': '切断中',
         't.stopped': '停止中',
-        't.checkThermistor': 'サーミスタを確認してください',
+        't.checkThermistor': '温度センサー異常：サーミスタを確認してください',
+        'stop.user': 'ユーザーにより停止しました',
+        'stop.runout': 'フィラメントがなくなりました',
+        'stop.nosensor': '{min} 分間フィラメントを検出できません',
+        'stop.maxtime': '最大動作時間（{min} 分）に達しました',
+        'stop.thermistor': '温度センサー異常：サーミスタを確認してください',
+        'stop.noheat': 'ヒーター異常：温度が上昇しません（現在 {T} °C、目標 {To} °C）',
+        'stop.noheatShort': 'ヒーター異常：温度が上昇しません',
+        'st.showPw': 'パスワードを表示',
+        'st.hidePw': 'パスワードを非表示',
         't.speedWarn': '速度が25cm/sを超えると印刷不良になる可能性があります。量産前にテストしてください',
         't.detected': '検出',
         't.notDetected': '未検出',
@@ -1514,7 +1613,16 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         't.connected': '연결됨',
         't.disconnected': '연결 끊김',
         't.stopped': '정지됨',
-        't.checkThermistor': '서미스터를 확인하세요',
+        't.checkThermistor': '온도 센서 고장: 서미스터를 확인하세요',
+        'stop.user': '사용자에 의해 정지됨',
+        'stop.runout': '필라멘트가 소진됨',
+        'stop.nosensor': '{min}분 동안 필라멘트가 감지되지 않음',
+        'stop.maxtime': '최대 작동 시간({min}분) 도달',
+        'stop.thermistor': '온도 센서 고장: 서미스터를 확인하세요',
+        'stop.noheat': '히터 고장: 온도가 상승하지 않음(현재 {T} °C, 목표 {To} °C)',
+        'stop.noheatShort': '히터 고장: 온도가 상승하지 않음',
+        'st.showPw': '비밀번호 표시',
+        'st.hidePw': '비밀번호 숨기기',
         't.speedWarn': '25cm/s를 초과하는 속도는 인쇄 불량을 유발할 수 있습니다. 양산 전에 테스트하세요',
         't.detected': '감지됨',
         't.notDetected': '감지 안 됨',
@@ -1566,6 +1674,10 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
       document.documentElement.lang = lang;
       document.querySelectorAll('[data-i18n]').forEach(el => { el.textContent = t(el.dataset.i18n, { ap: apSsid }); });
       document.querySelectorAll('[data-i18n-html]').forEach(el => { el.innerHTML = t(el.dataset.i18nHtml, { ap: apSsid }); });
+      document.querySelectorAll('.pw-toggle').forEach(b => {
+        const revealed = b.closest('.pw-wrap').classList.contains('revealed');
+        b.setAttribute('aria-label', revealed ? t('st.hidePw') : t('st.showPw'));
+      });
       const sel = document.getElementById('lang-select');
       if (sel.value !== lang) sel.value = lang;
       setConnText();
@@ -1577,6 +1689,23 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
       el.textContent = connOnline ? t('t.connected') : t('t.disconnected');
       el.classList.toggle('conn-up', connOnline);
       el.classList.toggle('conn-down', !connOnline);
+    }
+
+    // Firmware stop reasons arrive in English; render them in the UI language.
+    // Unknown future reasons fall through untranslated so nothing is hidden.
+    function tStopReason(s) {
+      if (!s) return '';
+      if (s === 'Stop by user') return t('stop.user');
+      if (s === 'Run out') return t('stop.runout');
+      let m = /^No sensor detection for (\d+) min\./.exec(s);
+      if (m) return t('stop.nosensor', { min: m[1] });
+      m = /^Max time reached: (\d+) min\./.exec(s);
+      if (m) return t('stop.maxtime', { min: m[1] });
+      if (s.indexOf('Anomalous temperature reading') === 0) return t('stop.thermistor');
+      m = /^30s no heat:.*\(T=([\d.\-]+) To=([\d.\-]+)/.exec(s);
+      if (m) return t('stop.noheat', { T: m[1], To: m[2] });
+      if (s.indexOf('30s no heat') === 0) return t('stop.noheatShort');
+      return s;
     }
 
     function setLang(l) {
@@ -1623,7 +1752,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
 
           document.getElementById('val-status').innerText = data.status ? t('t.running') : t('t.stopped');
           document.getElementById('ctrl-status').checked = data.status;
-          document.getElementById('warn-status').innerText = (!data.status && data.LastStopReason) ? data.LastStopReason : '';
+          document.getElementById('warn-status').innerText = (!data.status && data.LastStopReason) ? tStopReason(data.LastStopReason) : '';
 
           document.getElementById('val-temp').innerText = Math.round(data.T);
           document.getElementById('title-temp').innerText = `${t('gs.temp')} (${data.To})`;
@@ -2036,7 +2165,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
       const input = wrap.querySelector('input');
       const revealed = wrap.classList.toggle('revealed');
       input.type = revealed ? 'text' : 'password';
-      btn.setAttribute('aria-label', revealed ? 'Hide password' : 'Show password');
+      btn.setAttribute('aria-label', revealed ? t('st.hidePw') : t('st.showPw'));
     }
 
     function updateWifiZones() {
