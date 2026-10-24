@@ -28,6 +28,14 @@ unsigned long apRetryLast = 0;
 const unsigned long AP_RETRY_INTERVAL = 5 * 60 * 1000;
 const unsigned long AP_RETRY_TIMEOUT = 15 * 1000;
 
+// Boot is patient: a weak radio often needs several association attempts,
+// so re-issue WiFi.begin() every STA_BEGIN_INTERVAL and only fall back to
+// the AP after STA_BOOT_TIMEOUT. Once associated, the SDK auto-reconnects
+// short drops in seconds without leaving STA mode.
+const unsigned long STA_BOOT_TIMEOUT = 3 * 60 * 1000;
+const unsigned long STA_BEGIN_INTERVAL = 15 * 1000;
+unsigned long staBeginLast = 0;
+
 // SSID the access point will use: AP_PREFIX + DeviceName, or the MAC tail when
 // no name is set. Exposed to the web UI through /get so it shows the real name.
 String apSsidName() {
@@ -84,15 +92,19 @@ void wifiTask() {
         wifiReady = true;
         return;
       }
-      if (WiFi.status() == WL_CONNECT_FAILED) {
+      if (millis() >= tempStartWifiTask + STA_BOOT_TIMEOUT) {
         AP();
         wifiReady = true;
         return;
       }
-      if (millis() >= tempStartWifiTask + 10000) {
-        AP();
-        wifiReady = true;
-        return;
+      // Still within the boot window: keep trying. Re-issue begin every
+      // interval (a new attempt often succeeds where the first one stalls),
+      // sooner if the stack already gave up with a failure status.
+      if (millis() - staBeginLast >= STA_BEGIN_INTERVAL ||
+          (WiFi.status() == WL_CONNECT_FAILED && millis() - staBeginLast >= 3000)) {
+        staBeginLast = millis();
+        WiFi.disconnect();
+        WiFi.begin(ssid, password);
       }
       Serial.print(".");
       tempLastWifiTask = millis();
