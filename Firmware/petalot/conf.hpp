@@ -29,7 +29,7 @@ int minV = 5;
 int workV = 25;
 String LocalIP;
 String Gateway;
-int Stopdelay = 12;
+int Stopdelay = 14;
 int Maxtime = 120;
 int NoFilamentTime = 6;
 bool UseDisplay = 0;
@@ -171,7 +171,7 @@ void resetConfiguration() {
   Kd = 15.0;
   ControlMode = 0;
   TOffset = 0;
-  Stopdelay = 12;
+  Stopdelay = 14;
   Maxtime = 120;
   NoFilamentTime = 6;
   UseDisplay = 0;
@@ -289,7 +289,7 @@ void loadConfiguration(bool reset = false) {
     TOffset = 0;
     doc["TOffset"] = TOffset;
   }
-  Stopdelay = doc["Stopdelay"] | 12;
+  Stopdelay = doc["Stopdelay"] | 14;
   Maxtime = doc["Maxtime"] | 120;
   NoFilamentTime = doc["NoFilamentTime"] | 6;
   if (doc.containsKey("UseDisplay"))
