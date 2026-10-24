@@ -18,6 +18,16 @@ unsigned long tempLastWifiTask;
 unsigned long tempStartWifiTask;
 bool wifiReady = false;
 
+// Fallback AP is not a dead end: with a home SSID configured, retry joining
+// it every AP_RETRY_INTERVAL (only when nobody is using the AP, so an active
+// configuration session is never kicked). The retry is non-blocking: the
+// heater loop keeps running while the association is in flight.
+bool apRetrying = false;
+unsigned long apRetryStart = 0;
+unsigned long apRetryLast = 0;
+const unsigned long AP_RETRY_INTERVAL = 5 * 60 * 1000;
+const unsigned long AP_RETRY_TIMEOUT = 15 * 1000;
+
 // SSID the access point will use: AP_PREFIX + DeviceName, or the MAC tail when
 // no name is set. Exposed to the web UI through /get so it shows the real name.
 String apSsidName() {
@@ -90,6 +100,43 @@ void wifiTask() {
   }
   if (wifiReady && !apmode) {
     MDNS.update();
+    return;
+  }
+
+  if (wifiReady && apmode && !apRetrying && strlen(ssid) > 0 &&
+      millis() - apRetryLast >= AP_RETRY_INTERVAL &&
+      WiFi.softAPgetStationNum() == 0 && !Update.isRunning()) {
+    // Nobody on the fallback AP: drop it momentarily and try the home network.
+    apRetrying = true;
+    apRetryStart = millis();
+    WiFi.mode(WIFI_STA);
+    WiFi.begin(ssid, password);
+    return;
+  }
+
+  if (wifiReady && apmode && apRetrying) {
+    if (WiFi.status() == WL_CONNECTED) {
+      apRetrying = false;
+      apRetryLast = millis();
+      apmode = false;
+      tempLastWifiTask = millis();
+      Serial.println();
+      Serial.println(WiFi.localIP());
+      if (!MDNS.begin("petalot")) {
+        Serial.println("Error mDNS");
+      } else {
+        Serial.println("mDNS: http://petalot.local");
+      }
+      MDNS.addService("http", "tcp", 80);
+      return;
+    }
+    if (millis() - apRetryStart >= AP_RETRY_TIMEOUT) {
+      // Still no home network: back to the fallback AP.
+      apRetrying = false;
+      apRetryLast = millis();
+      AP();
+    }
+    return;
   }
 }
 
