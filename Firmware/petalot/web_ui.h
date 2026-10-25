@@ -403,6 +403,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.wifiScanError': 'Scan failed',
         'st.wifiBusy': 'Stop the machine before scanning',
         'st.wifiNone': 'No networks found',
+        'st.wifiSsidNeeded': 'Enter a network name (SSID) for Home network mode, or switch to Access point mode',
         'st.ip': 'IP Address',
         'st.ipHelp': 'DHCP used if blank. Check router for assigned IP if manual IP is not set',
         'st.subnet': 'Subnet',
@@ -512,6 +513,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.wifiScanError': 'Error al buscar',
         'st.wifiBusy': 'Para la máquina antes de buscar',
         'st.wifiNone': 'No se encontraron redes',
+        'st.wifiSsidNeeded': 'Escribe el nombre de la red (SSID) para el modo Red de casa, o cambia a Punto de acceso',
         'st.ip': 'Dirección IP',
         'st.ipHelp': 'Usa DHCP si lo dejas vacío. Revisa el router para ver la IP asignada si no has puesto IP manual',
         'st.subnet': 'Máscara de subred',
@@ -621,6 +623,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.wifiScanError': 'Falha ao procurar',
         'st.wifiBusy': 'Pare a máquina antes de procurar',
         'st.wifiNone': 'Nenhuma rede encontrada',
+        'st.wifiSsidNeeded': 'Introduza o nome da rede (SSID) para o modo Rede de casa, ou mude para Ponto de acesso',
         'st.ip': 'Endereço IP',
         'st.ipHelp': 'Usa DHCP se deixar em branco. Verifique a IP atribuída no roteador se não definir IP manual',
         'st.subnet': 'Máscara de sub-rede',
@@ -730,6 +733,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.wifiScanError': 'Échec de la recherche',
         'st.wifiBusy': 'Arrêtez la machine avant de rechercher',
         'st.wifiNone': 'Aucun réseau trouvé',
+        'st.wifiSsidNeeded': "Saisissez le nom du réseau (SSID) pour le mode Réseau domestique, ou basculez sur Point d'accès",
         'st.ip': 'Adresse IP',
         'st.ipHelp': "DHCP utilisé si vide. Vérifiez dans le routeur l'IP attribuée si aucune IP manuelle n'est définie",
         'st.subnet': 'Masque de sous-réseau',
@@ -839,6 +843,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.wifiScanError': 'Suche fehlgeschlagen',
         'st.wifiBusy': 'Maschine vor der Suche stoppen',
         'st.wifiNone': 'Keine Netzwerke gefunden',
+        'st.wifiSsidNeeded': 'Gib den Netzwerknamen (SSID) für den Modus Heimnetzwerk ein, oder wechsle zum Zugangspunkt',
         'st.ip': 'IP-Adresse',
         'st.ipHelp': 'DHCP wird verwendet, wenn leer. Prüfe im Router die zugewiesene IP, wenn keine manuelle IP gesetzt ist',
         'st.subnet': 'Subnetzmaske',
@@ -948,6 +953,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.wifiScanError': 'Ricerca non riuscita',
         'st.wifiBusy': 'Ferma la macchina prima di cercare',
         'st.wifiNone': 'Nessuna rete trovata',
+        'st.wifiSsidNeeded': "Inserisci il nome della rete (SSID) per la modalità Rete di casa, oppure passa a Punto di accesso",
         'st.ip': 'Indirizzo IP',
         'st.ipHelp': 'DHCP usato se vuoto. Controlla l\'IP assegnata nel router se non è impostata un\'IP manuale',
         'st.subnet': 'Subnet mask',
@@ -1057,6 +1063,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.wifiScanError': '搜索失败',
         'st.wifiBusy': '搜索前请停止机器',
         'st.wifiNone': '未找到网络',
+        'st.wifiSsidNeeded': '请为家庭网络模式输入网络名称（SSID），或切换到接入点模式',
         'st.ip': 'IP 地址',
         'st.ipHelp': '留空则使用 DHCP。若未设置手动 IP，请在路由器中查看分配的 IP',
         'st.subnet': '子网掩码',
@@ -1166,6 +1173,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.wifiScanError': 'Vyhledání selhalo',
         'st.wifiBusy': 'Před vyhledáním zastavte stroj',
         'st.wifiNone': 'Nenalezeny žádné sítě',
+        'st.wifiSsidNeeded': 'Zadejte název sítě (SSID) pro režim Domácí síť, nebo přepněte na Přístupový bod',
         'st.ip': 'IP adresa',
         'st.ipHelp': 'DHCP, pokud prázdné. Pokud není nastavena ruční IP, zkontrolujte přidělenou IP v routeru',
         'st.subnet': 'Maska sítě',
@@ -1274,6 +1282,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.wifiScanError': 'Ошибка сканирования',
         'st.wifiBusy': 'Остановите машину перед сканированием',
         'st.wifiNone': 'Сети не найдены',
+        'st.wifiSsidNeeded': 'Введите имя сети (SSID) для режима «Домашняя сеть» или переключитесь на «Точка доступа»',
         'st.ip': 'IP-адрес',
         'st.ipHelp': 'DHCP, если пусто. Если ручной IP не задан, проверьте назначенный IP в роутере',
         'st.subnet': 'Маска подсети',
@@ -1382,6 +1391,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.wifiScanError': 'Tarama başarısız',
         'st.wifiBusy': 'Taramadan önce makineyi durdurun',
         'st.wifiNone': 'Ağ bulunamadı',
+        'st.wifiSsidNeeded': 'Ev ağı modu için ağ adını (SSID) girin veya Erişim noktasına geçin',
         'st.ip': 'IP adresi',
         'st.ipHelp': 'Boşsa DHCP kullanılır. Manuel IP ayarlanmadıysa yönlendiricide atanan IP adresini kontrol edin',
         'st.subnet': 'Alt ağ maskesi',
@@ -1490,6 +1500,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.wifiScanError': 'スキャン失敗',
         'st.wifiBusy': 'スキャンする前にマシンを停止してください',
         'st.wifiNone': 'ネットワークが見つかりません',
+        'st.wifiSsidNeeded': '自宅ネットワークモードではネットワーク名（SSID）を入力するか、アクセスポイントに切り替えてください',
         'st.ip': 'IPアドレス',
         'st.ipHelp': '空欄ならDHCP。手動IP未設定の場合はルーターで割り当て済みのIPを確認してください',
         'st.subnet': 'サブネットマスク',
@@ -1598,6 +1609,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.wifiScanError': '검색 실패',
         'st.wifiBusy': '검색하기 전에 기계를 중지하세요',
         'st.wifiNone': '네트워크를 찾을 수 없음',
+        'st.wifiSsidNeeded': '홈 네트워크 모드에서는 네트워크 이름(SSID)을 입력하거나 액세스 포인트로 전환하세요',
         'st.ip': 'IP 주소',
         'st.ipHelp': '비우면 DHCP를 사용합니다. 수동 IP가 설정되지 않은 경우 라우터에서 할당된 IP를 확인하세요',
         'st.subnet': '서브넷 마스크',
@@ -1913,6 +1925,17 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
     }
 
     function saveSettings(reboot) {
+      // Home network mode without an SSID would silently boot into the AP:
+      // refuse before asking for confirmation.
+      const modeSel = document.getElementById('wifi-mode');
+      const ssidEl = document.getElementsByName('ssid')[0];
+      const scanMsg = document.getElementById('scan-msg');
+      if (modeSel && modeSel.value === 'sta' && ssidEl && ssidEl.value.trim() === '') {
+        if (scanMsg) { scanMsg.className = 'msg warn'; scanMsg.textContent = t('st.wifiSsidNeeded'); }
+        ssidEl.focus();
+        return;
+      }
+      if (scanMsg && scanMsg.className.indexOf('warn') !== -1) { scanMsg.className = 'msg'; scanMsg.textContent = ''; }
       openModal(t('t.confirmSave'), () => doSaveSettings(reboot));
     }
 
@@ -2182,6 +2205,8 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
       document.querySelectorAll('#tab-network [data-zone]').forEach(el => {
         el.style.display = (el.dataset.zone === mode) ? '' : 'none';
       });
+      const scanMsg = document.getElementById('scan-msg');
+      if (scanMsg) { scanMsg.className = 'msg'; scanMsg.textContent = ''; }
     }
 
     function fillWifiList(networks) {
