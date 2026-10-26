@@ -71,14 +71,21 @@ void drawUI() {
   display.print((VERSION % 1000) / 100);
 
   bool working = (status == "working");
-  display.setCursor(86, 0);
+
+  // Inverted state pill on the right (contrasts in normal and inverted mode).
+  display.fillRect(76, 0, 52, 10, SSD1306_WHITE);
+  display.setTextColor(SSD1306_BLACK);
+  display.setCursor(86, 1);
   display.print(working ? "RUNNING" : "STOPPED");
 
   // Blinking dot left of the state while working (drawUI runs ~1 Hz).
   static bool dotOn = false;
   if (working) dotOn = !dotOn;
   else dotOn = false;
-  if (dotOn) display.fillCircle(80, 3, 2, SSD1306_WHITE);
+  if (dotOn) display.fillCircle(81, 5, 2, SSD1306_BLACK);
+  display.setTextColor(SSD1306_WHITE);
+
+  display.drawFastHLine(0, 10, SCREEN_WIDTH, SSD1306_WHITE);
 
   // --- TEMPERATURES ---
   display.setCursor(0, 12);
@@ -96,10 +103,14 @@ void drawUI() {
   display.write(248); // degree glyph
   display.print("C");
 
-  display.setCursor(68, 24);
+  // Target small, vertically centred with the big actual value.
+  display.setTextSize(1);
+  display.setCursor(68, 28);
   display.print(To, 0);
   display.write(248);
   display.print("C");
+
+  display.drawFastHLine(0, 40, SCREEN_WIDTH, SSD1306_WHITE);
 
   // --- SPEED + RUN TIMER ---
   display.setTextSize(1);
