@@ -33,7 +33,6 @@ int Stopdelay = 14;
 int Maxtime = 120;
 int NoFilamentTime = 6;
 bool UseDisplay = 0;
-bool InvertDisplay = 0;
 String Subnet;
 char ssid[64];
 char password[64];
@@ -136,7 +135,6 @@ void saveConfiguration(bool reset = true) {
   doc["Maxtime"] = Maxtime;
   doc["NoFilamentTime"] = NoFilamentTime;
   doc["UseDisplay"] = UseDisplay;
-  doc["InvertDisplay"] = InvertDisplay;
   doc["StartOnPower"] = StartOnPower;
   doc["MotorOnTo"] = MotorOnTo;
   if (pcbVer > 0) doc["pcbVer"] = pcbVer;
@@ -177,7 +175,6 @@ void resetConfiguration() {
   Maxtime = 120;
   NoFilamentTime = 6;
   UseDisplay = 0;
-  InvertDisplay = 0;
   StartOnPower = 1;
   MotorOnTo = 0;
 }
@@ -301,12 +298,6 @@ void loadConfiguration(bool reset = false) {
     UseDisplay = 0;
     doc["UseDisplay"] = UseDisplay;
   }
-  if (doc.containsKey("InvertDisplay"))
-    InvertDisplay = doc["InvertDisplay"];
-  else {
-    InvertDisplay = 0;
-    doc["InvertDisplay"] = InvertDisplay;
-  }
   if (doc.containsKey("StartOnPower"))
     StartOnPower = doc["StartOnPower"];
   else {
@@ -380,7 +371,6 @@ void readConfigurationSerial() {
       Serial.println("Maxtime: Max Time (min)");
       Serial.println("NoFilamentTime: Minutes to stop if no filament is detected");
       Serial.println("UseDisplay: Use OLED display");
-      Serial.println("InvertDisplay: Invert OLED (light background, dark text)");
       Serial.println("StartOnPower: Start up at power on");
       Serial.println("MotorOnTo: Motor starting at target temperature");
       Serial.println("ssid: SSID");

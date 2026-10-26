@@ -37,7 +37,7 @@ void initDisplay() {
     displayInitialized = false;
     return;
   }
-  display.invertDisplay(InvertDisplay);
+  display.invertDisplay(false);
   displayInitialized = true;
   display.clearDisplay();
   display.display();
@@ -49,9 +49,9 @@ String toHHMMSS(unsigned long seconds) {
   int sec = seconds % 60;
 
   String result = "";
-  result += String(hours) + "h";
-  result += String(min) + "m";
-  result += String(sec) + "s";
+  result += String(hours) + ":";
+  result += String(min) + ":";
+  result += String(sec) + "";
 
   return result;
 }
@@ -73,7 +73,7 @@ void drawUI() {
   bool working = (status == "working");
 
   // Inverted state pill on the right (contrasts in normal and inverted mode).
-  display.fillRect(76, 0, 52, 10, SSD1306_WHITE);
+  display.fillRect(84, 0, 52, 9, SSD1306_WHITE);
   display.setTextColor(SSD1306_BLACK);
   display.setCursor(86, 1);
   display.print(working ? "RUNNING" : "STOPPED");
@@ -82,47 +82,75 @@ void drawUI() {
   static bool dotOn = false;
   if (working) dotOn = !dotOn;
   else dotOn = false;
-  if (dotOn) display.fillCircle(81, 5, 2, SSD1306_BLACK);
+  if (dotOn) display.fillCircle(78, 4, 2, SSD1306_WHITE);
   display.setTextColor(SSD1306_WHITE);
 
-  display.drawFastHLine(0, 10, SCREEN_WIDTH, SSD1306_WHITE);
+  display.drawFastHLine(0, 12, SCREEN_WIDTH, SSD1306_WHITE);
 
   // --- TEMPERATURES ---
-  display.setCursor(0, 12);
-  display.print("TEMP ACTUAL");
-  display.setCursor(68, 12);
-  display.print("TARGET:");
+  display.setCursor(0, 18);
+  display.print("TEMP");
+  display.setCursor(84, 18);
+  display.print("TARGET");
 
   display.setTextSize(2);
-  display.setCursor(0, 24);
+  display.setCursor(0, 32);
   if (isnan(T)) {
     display.print("--");
   } else {
     display.print(T, 0);
   }
-  display.write(248); // degree glyph
+  display.write(247); // degree glyph
   display.print("C");
 
   // Target small, vertically centred with the big actual value.
+  display.fillRect(83, 31, 31, 9, SSD1306_WHITE);
+  display.setTextColor(SSD1306_BLACK);
   display.setTextSize(1);
-  display.setCursor(68, 28);
+  display.setCursor(84, 32);
   display.print(To, 0);
-  display.write(248);
+  display.write(247);
   display.print("C");
 
-  display.drawFastHLine(0, 40, SCREEN_WIDTH, SSD1306_WHITE);
+  display.drawFastHLine(0, 52, SCREEN_WIDTH, SSD1306_WHITE);
 
   // --- SPEED + RUN TIMER ---
   display.setTextSize(1);
-  display.setCursor(0, 48);
-  display.print("VEL: ");
+  display.setCursor(0, 56);
+  display.setTextColor(SSD1306_WHITE);
+  display.print("PACE:");
+  display.fillRect(29, 55, 50, 9, SSD1306_WHITE);
+  display.setTextColor(SSD1306_BLACK);
   display.print(Vo, 0);
-  display.print(" cm/min");
-
-  if (working && (F || !Fenable)) {
-    String timer = toHHMMSS(Ts);
-    display.setCursor(128 - timer.length() * 6, 56);
-    display.print(timer);
+  display.print("cm/min");
+  
+  display.setTextColor(SSD1306_WHITE);
+  if (Ts > 1) {
+    long seconds = Ts;
+    int hours = seconds / 3600;
+    int min = (seconds % 3600) / 60;
+    int sec = seconds % 60;
+    display.setCursor(128 - 7*6+2, 57);
+    display.print(hours>9?String(hours):"0"+String(hours));
+    display.setCursor(128 - 7*4 - 2, 57);
+    display.print(":");
+    display.setCursor(128 - 7*4 + 2, 57);
+    display.print(min>9?String(min):"0"+String(min));
+    display.setCursor(128 - 7*2 - 2, 57);
+    display.print(":");
+    display.setCursor(128 - 7*2 + 2, 57);
+    display.print(sec>9?String(sec):"0"+String(sec));
+  } else {
+    display.setCursor(128 - 7*6+2, 57);
+    display.print("--");
+    display.setCursor(128 - 7*4 - 2, 57);
+    display.print(":");
+    display.setCursor(128 - 7*4 + 2, 57);
+    display.print("--");
+    display.setCursor(128 - 7*2 - 2, 57);
+    display.print(":");
+    display.setCursor(128 - 7*2 + 2, 57);
+    display.print("--");
   }
 
   display.display();
