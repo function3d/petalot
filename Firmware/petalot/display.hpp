@@ -16,6 +16,14 @@ unsigned long btnTempPressTime = 0;
 bool btnSpeedLastState = HIGH;
 unsigned long btnSpeedPressTime = 0;
 
+// Menu button state (BTN3 cycles the selected zone)
+bool btnMenuLastState = HIGH;
+unsigned long btnMenuPressTime = 0;
+
+// Selected LCD zone: 0 = RUNNING/STOPPED, 1 = target temp, 2 = speed.
+// BTN1 acts as + (start on zone 0), BTN2 as - (stop on zone 0).
+int menuSel = 0;
+
 const unsigned long LONG_PRESS_TIME = 500; // ms to consider a long press
 
 unsigned long lastUpdate = 0;
@@ -71,10 +79,12 @@ void drawUI() {
   display.print((VERSION % 1000) / 100);
 
   bool working = (status == "working");
+  bool selState = (menuSel == 0);
 
   // Inverted state pill on the right (contrasts in normal and inverted mode).
-  display.fillRect(84, 0, 52, 9, SSD1306_WHITE);
-  display.setTextColor(SSD1306_BLACK);
+  // Selected menu zone shows normal polarity instead.
+  if (!selState) display.fillRect(84, 0, 52, 9, SSD1306_WHITE);
+  display.setTextColor(selState ? SSD1306_WHITE : SSD1306_BLACK);
   display.setCursor(86, 1);
   display.print(working ? "RUNNING" : "STOPPED");
 
@@ -82,7 +92,7 @@ void drawUI() {
   static bool dotOn = false;
   if (working) dotOn = !dotOn;
   else dotOn = false;
-  if (dotOn) display.fillCircle(78, 4, 2, SSD1306_WHITE);
+  if (dotOn) display.fillCircle(78, 4, 2, selState ? SSD1306_WHITE : SSD1306_BLACK);
   display.setTextColor(SSD1306_WHITE);
 
   display.drawFastHLine(0, 12, SCREEN_WIDTH, SSD1306_WHITE);
@@ -90,8 +100,8 @@ void drawUI() {
   // --- TEMPERATURES ---
   display.setCursor(0, 18);
   display.print("TEMP");
-  display.setCursor(84, 18);
-  display.print("TARGET");
+  display.setCursor(66, 18);
+  display.print("SPEED");
 
   display.setTextSize(2);
   display.setCursor(0, 32);
@@ -100,30 +110,36 @@ void drawUI() {
   } else {
     display.print(T, 0);
   }
+  display.setTextSize(1);
   display.write(247); // degree glyph
   display.print("C");
 
-  // Target small, vertically centred with the big actual value.
-  display.fillRect(83, 31, 31, 9, SSD1306_WHITE);
-  display.setTextColor(SSD1306_BLACK);
+  // Target small next tu "TEMP" (inverted pill, normal polarity when selected).
+  bool selTarget = (menuSel == 1);
+  if (!selTarget) display.fillRect(26, 18, 31, 9, SSD1306_WHITE);
+  display.setTextColor(selTarget ? SSD1306_WHITE : SSD1306_BLACK);
   display.setTextSize(1);
-  display.setCursor(84, 32);
+  display.setCursor(27, 19);
   display.print(To, 0);
   display.write(247);
   display.print("C");
 
+    // --- SPEED --- (inverted pill, normal polarity when selected)
+  bool selSpeed = (menuSel == 2);
+  if (!selSpeed) display.fillRect(65, 31, 24, 16, SSD1306_WHITE);
+  display.setTextSize(1);
+  display.setCursor(66, 32);
+  display.setTextColor(selSpeed ? SSD1306_WHITE : SSD1306_BLACK);
+  display.setTextSize(2);
+  if (Vo < 10)
+    display.print(" ");
+  display.print(Vo, 0);
+  display.setTextColor(SSD1306_WHITE);
+  display.setTextSize(1);
+  display.print("cm/min");
   display.drawFastHLine(0, 52, SCREEN_WIDTH, SSD1306_WHITE);
 
-  // --- SPEED + RUN TIMER ---
-  display.setTextSize(1);
-  display.setCursor(0, 56);
-  display.setTextColor(SSD1306_WHITE);
-  display.print("PACE:");
-  display.fillRect(29, 55, 50, 9, SSD1306_WHITE);
-  display.setTextColor(SSD1306_BLACK);
-  display.print(Vo, 0);
-  display.print("cm/min");
-  
+  // --- RUN TIMER ---
   display.setTextColor(SSD1306_WHITE);
   if (Ts > 1) {
     long seconds = Ts;
@@ -153,56 +169,93 @@ void drawUI() {
     display.print("--");
   }
 
+  // --- RUN LENGHT ---
+  display.setTextColor(SSD1306_WHITE);
+  display.setCursor(0, 57);
+  if (Fs > 0) {
+    display.print(round(Fs) / 100);
+  } else {
+    display.print("--");
+  }
+  display.print("m");
+
   display.display();
 }
 
 #if PCB > 1501
+// Apply a +/- step (BTN1 = +, BTN2 = -) to the selected menu zone.
+// Long press steps 20 instead of 5.
+void menuAction(int dir, bool longPress) {
+  int step = longPress ? 20 : 5;
+  if (menuSel == 0) {
+    if (dir > 0) start();
+    else stop();
+  } else if (menuSel == 1) {
+    To += dir * step;
+    if (To > maxT) To = maxT;
+    if (To < minT) To = minT;
+  } else {
+    Vo += dir * step;
+    if (Vo > maxV) Vo = maxV;
+    if (Vo < minV) Vo = minV;
+  }
+  drawUI();
+}
+
 void checkButtons() {
+  static bool btnInit = false;
+  if (!btnInit) {
+    // RX floats when USB is unplugged, so it needs its own pull-up.
+    pinMode(PIN_BTN1, INPUT_PULLUP);
+    pinMode(PIN_BTN2, INPUT_PULLUP);
+    pinMode(PIN_BTN3, INPUT_PULLUP);
+    btnInit = true;
+  }
   unsigned long currentMillis = millis();
 
-  // --- TEMPERATURE BUTTON ---
-  bool btnTempState = digitalRead(PIN_BTN1);
+  // --- + BUTTON (BTN1) ---
+  bool btnPlusState = digitalRead(PIN_BTN1);
 
   // Falling edge: button pressed
-  if (btnTempState == LOW && btnTempLastState == HIGH) {
+  if (btnPlusState == LOW && btnTempLastState == HIGH) {
     btnTempPressTime = currentMillis;
   }
   // Rising edge: button released
-  else if (btnTempState == HIGH && btnTempLastState == LOW) {
+  else if (btnPlusState == HIGH && btnTempLastState == LOW) {
     unsigned long pressDuration = currentMillis - btnTempPressTime;
 
     if (pressDuration > 50) { // debounce
-      if (pressDuration < LONG_PRESS_TIME) {
-        To += 5; // short press: increase temperature
-        if (To > maxT) To = maxT;
-      } else {
-        To -= 5; // long press: decrease temperature
-        if (To < minT) To = minT;
-      }
+      menuAction(+1, pressDuration >= LONG_PRESS_TIME);
     }
   }
-  btnTempLastState = btnTempState;
+  btnTempLastState = btnPlusState;
 
-  // --- SPEED BUTTON ---
-  bool btnSpeedState = digitalRead(PIN_BTN2);
+  // --- - BUTTON (BTN2) ---
+  bool btnMinusState = digitalRead(PIN_BTN2);
 
-  if (btnSpeedState == LOW && btnSpeedLastState == HIGH) {
+  if (btnMinusState == LOW && btnSpeedLastState == HIGH) {
     btnSpeedPressTime = currentMillis;
-  } else if (btnSpeedState == HIGH && btnSpeedLastState == LOW) {
+  } else if (btnMinusState == HIGH && btnSpeedLastState == LOW) {
     unsigned long pressDuration = currentMillis - btnSpeedPressTime;
 
     if (pressDuration > 50) { // debounce
-      if (pressDuration < LONG_PRESS_TIME) {
-        Vo += 5; // short press: increase speed
-        if (Vo > maxV) Vo = maxV;
-      } else {
-        Vo -= 5; // long press: decrease speed
-        if (Vo < minV) Vo = minV;
-      }
+      menuAction(-1, pressDuration >= LONG_PRESS_TIME);
     }
-    drawUI();
   }
-  btnSpeedLastState = btnSpeedState;
+  btnSpeedLastState = btnMinusState;
+
+  // --- MENU BUTTON (BTN3): cycle the selected zone ---
+  bool btnMenuState = digitalRead(PIN_BTN3);
+
+  if (btnMenuState == LOW && btnMenuLastState == HIGH) {
+    btnMenuPressTime = currentMillis;
+  } else if (btnMenuState == HIGH && btnMenuLastState == LOW) {
+    if (currentMillis - btnMenuPressTime > 50) { // debounce
+      menuSel = (menuSel + 1) % 3;
+      drawUI();
+    }
+  }
+  btnMenuLastState = btnMenuState;
 }
 #endif
 

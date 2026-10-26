@@ -34,6 +34,7 @@
   #define PIN_SDA         D3   // 1405 PIN_DIR
   #define PIN_BTN1        D6   // 1501 PIN_DIR
   #define PIN_BTN2        D5
+  #define PIN_BTN3        RX   // GPIO3, shared with USB serial: button to GND, release it to flash
   #define PIN_MSI3        D8
   
 // TODO
