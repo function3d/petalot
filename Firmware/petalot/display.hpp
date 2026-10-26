@@ -48,6 +48,7 @@ void initDisplay() {
     displayInitialized = false;
     return;
   }
+  display.invertDisplay(InvertDisplay);
   displayInitialized = true;
   display.clearDisplay();
   display.display();

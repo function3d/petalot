@@ -229,7 +229,8 @@ void set(AsyncWebServerRequest *request) {
   if (request->hasArg("StartOnPower")) StartOnPower = (request->arg("StartOnPower") == "true");
   if (request->hasArg("MotorOnTo")) MotorOnTo = (request->arg("MotorOnTo") == "true");
   if (request->hasArg("UseDisplay")) UseDisplay = (request->arg("UseDisplay") == "true");
-  if (request->hasArg("UseDisplay")) displayInitialized = false;
+  if (request->hasArg("InvertDisplay")) InvertDisplay = (request->arg("InvertDisplay") == "true");
+  if (request->hasArg("UseDisplay") || request->hasArg("InvertDisplay")) displayInitialized = false;
 
   if (request->hasArg("DeviceName")) DeviceName = sanitizeDeviceName(request->arg("DeviceName"));
   if (request->hasArg("APPassword")) {
