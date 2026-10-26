@@ -21,7 +21,7 @@ bool btnMenuLastState = HIGH;
 unsigned long btnMenuPressTime = 0;
 
 // Selected LCD zone: 0 = RUNNING/STOPPED, 1 = target temp, 2 = speed.
-// BTN1 acts as + (start on zone 0), BTN2 as - (stop on zone 0).
+// BTN1/BTN2 act as +/- on zones 1-2, and toggle start/stop on zone 0.
 int menuSel = 0;
 
 const unsigned long LONG_PRESS_TIME = 500; // ms to consider a long press
@@ -81,10 +81,9 @@ void drawUI() {
   bool working = (status == "working");
   bool selState = (menuSel == 0);
 
-  // Inverted state pill on the right (contrasts in normal and inverted mode).
-  // Selected menu zone shows normal polarity instead.
-  if (!selState) display.fillRect(84, 0, 52, 9, SSD1306_WHITE);
-  display.setTextColor(selState ? SSD1306_WHITE : SSD1306_BLACK);
+  // Inverted pill marks the selected menu zone.
+  if (selState) display.fillRect(84, 0, 52, 9, SSD1306_WHITE);
+  display.setTextColor(selState ? SSD1306_BLACK : SSD1306_WHITE);
   display.setCursor(86, 1);
   display.print(working ? "RUNNING" : "STOPPED");
 
@@ -92,7 +91,7 @@ void drawUI() {
   static bool dotOn = false;
   if (working) dotOn = !dotOn;
   else dotOn = false;
-  if (dotOn) display.fillCircle(78, 4, 2, selState ? SSD1306_WHITE : SSD1306_BLACK);
+  if (dotOn) display.fillCircle(78, 4, 2, selState ? SSD1306_BLACK : SSD1306_WHITE);
   display.setTextColor(SSD1306_WHITE);
 
   display.drawFastHLine(0, 12, SCREEN_WIDTH, SSD1306_WHITE);
@@ -114,22 +113,22 @@ void drawUI() {
   display.write(247); // degree glyph
   display.print("C");
 
-  // Target small next tu "TEMP" (inverted pill, normal polarity when selected).
+  // Target small next tu "TEMP" (inverted pill when selected).
   bool selTarget = (menuSel == 1);
-  if (!selTarget) display.fillRect(26, 18, 31, 9, SSD1306_WHITE);
-  display.setTextColor(selTarget ? SSD1306_WHITE : SSD1306_BLACK);
+  if (selTarget) display.fillRect(26, 18, 31, 9, SSD1306_WHITE);
+  display.setTextColor(selTarget ? SSD1306_BLACK : SSD1306_WHITE);
   display.setTextSize(1);
   display.setCursor(27, 19);
   display.print(To, 0);
   display.write(247);
   display.print("C");
 
-    // --- SPEED --- (inverted pill, normal polarity when selected)
+    // --- SPEED --- (inverted pill when selected)
   bool selSpeed = (menuSel == 2);
-  if (!selSpeed) display.fillRect(65, 31, 24, 16, SSD1306_WHITE);
+  if (selSpeed) display.fillRect(65, 31, 24, 16, SSD1306_WHITE);
   display.setTextSize(1);
   display.setCursor(66, 32);
-  display.setTextColor(selSpeed ? SSD1306_WHITE : SSD1306_BLACK);
+  display.setTextColor(selSpeed ? SSD1306_BLACK : SSD1306_WHITE);
   display.setTextSize(2);
   if (Vo < 10)
     display.print(" ");
@@ -188,8 +187,9 @@ void drawUI() {
 void menuAction(int dir, bool longPress) {
   int step = longPress ? 20 : 5;
   if (menuSel == 0) {
-    if (dir > 0) start();
-    else stop();
+    // Either button toggles: start when stopped, stop when working.
+    if (status == "working") stop();
+    else start();
   } else if (menuSel == 1) {
     To += dir * step;
     if (To > maxT) To = maxT;
