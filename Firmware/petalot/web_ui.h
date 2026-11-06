@@ -431,6 +431,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.showPw': 'Show password',
         'st.hidePw': 'Hide password',
         't.speedWarn': 'Speeds >25 cm/s may cause print failures. Test before batch production',
+        't.tempWarn': 'Above 230 °C PET crystallizes: it loses transparency and strength, curls and may snap. Use at your own risk.',
         't.detected': 'detected',
         't.notDetected': 'no detected',
         't.sensorDisabled': 'Sensor disabled',
@@ -541,6 +542,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.showPw': 'Mostrar contraseña',
         'st.hidePw': 'Ocultar contraseña',
         't.speedWarn': 'Velocidades >25 cm/s pueden causar fallos de impresión. Prueba antes de producción',
+        't.tempWarn': 'Por encima de 230 °C el filamento se cristaliza: pierde transparencia y propiedades, se arruga y puede romperse. Úselo bajo su responsabilidad.',
         't.detected': 'detectado',
         't.notDetected': 'no detectado',
         't.sensorDisabled': 'Sensor desactivado',
@@ -651,6 +653,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.showPw': 'Mostrar senha',
         'st.hidePw': 'Ocultar senha',
         't.speedWarn': 'Velocidades >25 cm/s podem causar falhas de impressão. Teste antes da produção',
+        't.tempWarn': 'Acima de 230 °C o filamento cristaliza: perde transparência e propriedades, ondula e pode partir. Use por sua conta e risco.',
         't.detected': 'detectado',
         't.notDetected': 'não detectado',
         't.sensorDisabled': 'Sensor desativado',
@@ -761,6 +764,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.showPw': 'Afficher le mot de passe',
         'st.hidePw': 'Masquer le mot de passe',
         't.speedWarn': 'Des vitesses >25 cm/s peuvent causer des défauts. Testez avant la production',
+        't.tempWarn': 'Au-delà de 230 °C le filament cristallise : il perd sa transparence et ses propriétés, il gondole et peut casser. À vos risques.',
         't.detected': 'détecté',
         't.notDetected': 'non détecté',
         't.sensorDisabled': 'Capteur désactivé',
@@ -871,6 +875,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.showPw': 'Passwort anzeigen',
         'st.hidePw': 'Passwort verbergen',
         't.speedWarn': 'Geschwindigkeiten >25 cm/s können Druckfehler verursachen. Vor der Produktion testen',
+        't.tempWarn': 'Über 230 °C kristallisiert das Filament: Es verliert Transparenz und Eigenschaften, wellt sich und kann brechen. Verwendung auf eigenes Risiko.',
         't.detected': 'erkannt',
         't.notDetected': 'nicht erkannt',
         't.sensorDisabled': 'Sensor deaktiviert',
@@ -981,6 +986,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.showPw': 'Mostra password',
         'st.hidePw': 'Nascondi password',
         't.speedWarn': 'Velocità >25 cm/s possono causare difetti. Test prima della produzione',
+        't.tempWarn': 'Oltre i 230 °C il filamento cristallizza: perde trasparenza e proprietà, si arriccia e può rompersi. Usare a proprio rischio.',
         't.detected': 'rilevato',
         't.notDetected': 'non rilevato',
         't.sensorDisabled': 'Sensore disattivato',
@@ -1091,6 +1097,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.showPw': '显示密码',
         'st.hidePw': '隐藏密码',
         't.speedWarn': '超过 25 cm/s 的速度可能导致打印失败。量产前请测试',
+        't.tempWarn': '超过 230 °C，PET 会结晶：失去透明度和性能，卷曲并可能断裂，风险自负。',
         't.detected': '已检测',
         't.notDetected': '未检测到',
         't.sensorDisabled': '传感器已禁用',
@@ -1200,6 +1207,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.showPw': 'Zobrazit heslo',
         'st.hidePw': 'Skrýt heslo',
         't.speedWarn': 'Rychlosti >25 cm/s mohou způsobit tiskové vady. Otestujte před sériovou výrobou',
+        't.tempWarn': 'Nad 230 °C filament krystalizuje: ztrácí průhlednost a vlastnosti, kroutí se a může prasknout. Použití na vlastní riziko.',
         't.detected': 'detekováno',
         't.notDetected': 'nedetekováno',
         't.sensorDisabled': 'Čidlo zakázáno',
@@ -1309,6 +1317,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.showPw': 'Показать пароль',
         'st.hidePw': 'Скрыть пароль',
         't.speedWarn': 'Скорости >25 см/с могут вызывать дефекты печати. Протестируйте перед серийным производством',
+        't.tempWarn': 'Выше 230 °C ПЭТ кристаллизуется: теряет прозрачность и свойства, скручивается и может лопнуть. Используйте на свой риск.',
         't.detected': 'обнаружен',
         't.notDetected': 'не обнаружен',
         't.sensorDisabled': 'Датчик отключен',
@@ -1418,6 +1427,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.showPw': 'Şifreyi göster',
         'st.hidePw': 'Şifreyi gizle',
         't.speedWarn': '>25 cm/s hızlar baskı hatalarına neden olabilir. Seri üretimden önce test edin',
+        't.tempWarn': '230 °C üzerinde filament kristalleşir: şeffaflığını ve özelliklerini kaybeder, kıvrılır ve kopabilir. Sorumluluk size aittir.',
         't.detected': 'algılandı',
         't.notDetected': 'algılanmadı',
         't.sensorDisabled': 'Sensör devre dışı',
@@ -1527,6 +1537,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.showPw': 'パスワードを表示',
         'st.hidePw': 'パスワードを非表示',
         't.speedWarn': '速度が25cm/sを超えると印刷不良になる可能性があります。量産前にテストしてください',
+        't.tempWarn': '230Cを超えるとフィラメントは結晶化し、透明性と物性を失い、うねって折れることがあります。自己責任で使用してください。',
         't.detected': '検出',
         't.notDetected': '未検出',
         't.sensorDisabled': 'センサー無効',
@@ -1636,6 +1647,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.showPw': '비밀번호 표시',
         'st.hidePw': '비밀번호 숨기기',
         't.speedWarn': '25cm/s를 초과하는 속도는 인쇄 불량을 유발할 수 있습니다. 양산 전에 테스트하세요',
+        't.tempWarn': '230C를 초과하면 필라멘트가 결정화되어 투명도와 물성을 잃고, 말리거나 끊어질 수 있습니다. 본인 책임 하에 사용하십시오.',
         't.detected': '감지됨',
         't.notDetected': '감지 안 됨',
         't.sensorDisabled': '센서 비활성',
@@ -1768,7 +1780,10 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
 
           document.getElementById('val-temp').innerText = Math.round(data.T);
           document.getElementById('title-temp').innerText = `${t('gs.temp')} (${data.To})`;
-          document.getElementById('warn-temp').innerText = (data.T === null) ? t('t.checkThermistor') : '';
+          const tempWarns = [];
+          if (data.T === null) tempWarns.push(t('t.checkThermistor'));
+          if (data.To > 230) tempWarns.push(t('t.tempWarn'));
+          document.getElementById('warn-temp').innerText = tempWarns.join(' ');
           document.getElementById('val-output').innerText = (data.Output !== undefined && data.Output !== '') ? '(' + data.Output + ')' : '';
 
           document.getElementById('val-speed').innerText = data.Vo;
