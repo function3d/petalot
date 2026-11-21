@@ -216,6 +216,9 @@ void set(AsyncWebServerRequest *request) {
   }
 
   // Bulk update of settings form fields
+  if (request->hasArg("GearRatio")) GearRatio = request->arg("GearRatio").toDouble();
+  if (request->hasArg("DriveCmPerRev")) DriveCmPerRev = request->arg("DriveCmPerRev").toDouble();
+  sanitizeDriveCalibration();
   if (request->hasArg("Gate")) Gate = request->arg("Gate").toInt();
   if (request->hasArg("TOffset")) TOffset = request->arg("TOffset").toInt();
   if (request->hasArg("HYS")) HYS = request->arg("HYS").toDouble();
@@ -251,6 +254,7 @@ void set(AsyncWebServerRequest *request) {
   } else {
     saveConfiguration(false);
     loadConfiguration();
+    stepper.applyCalibration();
   }
   get(request);
 }

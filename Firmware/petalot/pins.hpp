@@ -22,7 +22,7 @@
   #define PIN_SCL D4
   #define PIN_SDA D3
 
-#elif defined(ESP8266) && PCB >= 1502
+#elif defined(ESP8266) && PCB >= 1502  // 1502 and 1503 share the same pin map
 
   #define PIN_EN          D1
   #define PIN_STEP        D2

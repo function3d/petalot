@@ -11,9 +11,12 @@ const uint16_t STEPS_PER_REVOLUTION = 200;
 const uint8_t MICROSTEPPING = 16;
 const uint16_t REAL_STEPS_PER_REV = STEPS_PER_REVOLUTION * MICROSTEPPING; // 3200
 
-// Extruder calibration: 46 stepper revolutions = 29cm of filament extruded
-const float STEPPER_REVS_PER_CM = 46.0f / 29.0f;
-const float STEPS_PER_CM = REAL_STEPS_PER_REV * STEPPER_REVS_PER_CM;
+// Gearbox calibration lives in conf.hpp: GearRatio (motor revolutions per
+// output revolution) and DriveCmPerRev (filament cm per output revolution).
+// Defaults are 46/29 on older boards and 50/29 on PCB 1503.
+inline float stepperRevsPerCm() {
+  return (float)(GearRatio / DriveCmPerRev);
+}
 
 // ============================================================================
 // STEPPER CONTROLLER CLASS
@@ -42,8 +45,8 @@ public:
 
   void init() {
     pinMode(PIN_EN, OUTPUT);
-#if PCB == 1502
-    // Configure microstepping (MSI pins) for the 1.5.2 PCB
+#if PCB >= 1502
+    // Configure microstepping (MSI pins) for the 1.5.2 PCB and later
     pinMode(PIN_MSI3, OUTPUT);
     digitalWrite(PIN_MSI3, HIGH);
 #endif
@@ -52,13 +55,23 @@ public:
     accelStepper.setEnablePin(PIN_EN);
     accelStepper.setPinsInverted(false, false, true); // Enable is active LOW
     accelStepper.setAcceleration(10000);
-    accelStepper.setMaxSpeed(rpmToHz(60));
+    applyCalibration();
+  }
+
+  // Recompute the speed ceiling after GearRatio/DriveCmPerRev change. The
+  // AccelStepper speed setter clamps to this ceiling, so it must leave room
+  // for maxV at the current gearbox ratio.
+  void applyCalibration() {
+    float maxRpm = (float)maxV * stepperRevsPerCm() * 1.15f;
+    if (maxRpm < 60.0f) maxRpm = 60.0f;
+    accelStepper.setMaxSpeed(rpmToHz((uint16_t)(maxRpm + 0.5f)));
+    targetRPM = 0;
   }
 
   void setSpeed(float cmPerMin) {
     if (cmPerMin <= 0) return;
 
-    uint16_t newRPM = (uint16_t)(cmPerMin * STEPPER_REVS_PER_CM);
+    uint16_t newRPM = (uint16_t)(cmPerMin * stepperRevsPerCm());
     if (newRPM != targetRPM && newRPM > 0) {
       targetRPM = newRPM;
       applySpeed();

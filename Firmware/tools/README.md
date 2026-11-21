@@ -78,7 +78,7 @@ python3 Firmware/tools/gen_latest_json.py <VERSION>
 
 ## release.sh — build and publish a release
 
-Builds the three PCB flavours (1405 / 1501 / 1502), writes the versioned
+Builds the four PCB flavours (1405 / 1501 / 1502 / 1503), writes the versioned
 binaries `petalot.<hw>-v<fw>.bin`, deletes the previous versioned builds,
 regenerates `latest.json` and updates the file names in `Firmware/README.md`.
 

@@ -18,7 +18,7 @@
 <img alt="Petalot" src="https://function3d.xyz/wp-content/uploads/2026/04/IMG_20260404_165417.webp" />
 
  - [Compre já montada](https://function3d.xyz/shop/)
- - **ATUALIZAÇÃO**: o firmware que você precisa depende da versão da sua PCB — v1.4.5 (DIY) e v1.5.1/v1.5.2 (comercial). Ver o [README do firmware](Firmware/README.md).
+ - **ATUALIZAÇÃO**: o firmware que você precisa depende da versão da sua PCB — v1.4.5 (DIY) e v1.5.1/v1.5.2/v1.5.3 (comercial). Ver o [README do firmware](Firmware/README.md).
  - [Gerber](https://github.com/function3d/petalot/raw/master/Schematic/Gerber_v1.1_2023-01-02.zip) para fabricar a PCB, basta enviar este arquivo zip para [jlcpcb.com](https://jlcpcb.com/?from=FUNC) e encomendar a sua PCB.
  - [Esquema](https://github.com/function3d/petalot/tree/master/Schematic)
  - [Firmware](https://github.com/function3d/petalot/tree/master/Firmware)

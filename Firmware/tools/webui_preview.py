@@ -83,6 +83,8 @@ class MockState:
             "Gate": 2, "MaxGate": 30, "HYS": 1.0, "RAMP": 5.0, "HOLD": 40,
             "Kp": 12.0, "Ki": 0.5, "Kd": 30.0, "ControlMode": 0,
             "TOffset": 0, "Stopdelay": 5, "Maxtime": 0, "NoFilamentTime": 30,
+            "GearRatio": 50.0 if self.pcb >= 1503 else 46.0,
+            "DriveCmPerRev": 29.0,
             "UseDisplay": True, "StartOnPower": False, "MotorOnTo": False,
             "pcbVer": self.pcb, "version": self.version,
             "minT": 0, "maxT": 250, "minV": 1, "maxV": 30,
@@ -144,7 +146,8 @@ class MockState:
                     self.conf[k] = int(float(v))
                 except ValueError:
                     pass
-            elif k in ("HYS", "RAMP", "HOLD", "Kp", "Ki", "Kd"):
+            elif k in ("HYS", "RAMP", "HOLD", "Kp", "Ki", "Kd",
+                       "GearRatio", "DriveCmPerRev"):
                 try:
                     self.conf[k] = float(v)
                 except ValueError:

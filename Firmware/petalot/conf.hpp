@@ -41,6 +41,31 @@ String APPassword = "";
 String LastStopReason = "";
 int pcbVer = 0; // Registered PCB version (locked at first boot)
 
+// Mechanical calibration. The gearbox ratio is motor revolutions per output
+// revolution; DriveCmPerRev is how much filament one output revolution pushes.
+// PCB 1503 (v1.5.3) ships with a 1:50 gearbox, older boards use 1:46. Both
+// values stay configurable so a gearbox retrofit needs no new board revision.
+#if PCB >= 1503
+  #define GEAR_RATIO_DEFAULT 50.0
+#else
+  #define GEAR_RATIO_DEFAULT 46.0
+#endif
+#define DRIVE_CM_PER_REV_DEFAULT 29.0
+#define GEAR_RATIO_MIN 10.0
+#define GEAR_RATIO_MAX 100.0
+#define DRIVE_CM_PER_REV_MIN 5.0
+#define DRIVE_CM_PER_REV_MAX 100.0
+
+double GearRatio = GEAR_RATIO_DEFAULT;
+double DriveCmPerRev = DRIVE_CM_PER_REV_DEFAULT;
+
+void sanitizeDriveCalibration() {
+  if (GearRatio < GEAR_RATIO_MIN) GearRatio = GEAR_RATIO_MIN;
+  if (GearRatio > GEAR_RATIO_MAX) GearRatio = GEAR_RATIO_MAX;
+  if (DriveCmPerRev < DRIVE_CM_PER_REV_MIN) DriveCmPerRev = DRIVE_CM_PER_REV_MIN;
+  if (DriveCmPerRev > DRIVE_CM_PER_REV_MAX) DriveCmPerRev = DRIVE_CM_PER_REV_MAX;
+}
+
 // Device name: shown in the UI header and appended to AP_PREFIX to build the
 // Wi-Fi AP SSID. An SSID is 32 chars max, so the name is capped at 24.
 #define AP_PREFIX "PETALOT-"
@@ -113,6 +138,8 @@ void saveConfiguration(bool reset = true) {
   }
   doc["To"] = To;
   doc["Vo"] = Vo;
+  doc["GearRatio"] = GearRatio;
+  doc["DriveCmPerRev"] = DriveCmPerRev;
   doc["Fenable"] = Fenable;
   doc["ssid"] = ssid;
   doc["password"] = password;
@@ -157,6 +184,8 @@ void resetConfiguration() {
   APPassword = "";
   To = workT;
   Vo = workV;
+  GearRatio = GEAR_RATIO_DEFAULT;
+  DriveCmPerRev = DRIVE_CM_PER_REV_DEFAULT;
   Fenable = true;
   LocalIP = "";
   Subnet = "";
@@ -215,6 +244,11 @@ void loadConfiguration(bool reset = false) {
 
   To = doc["To"] | workT;
   Vo = doc["Vo"] | workV;
+  GearRatio = doc["GearRatio"] | GEAR_RATIO_DEFAULT;
+  DriveCmPerRev = doc["DriveCmPerRev"] | DRIVE_CM_PER_REV_DEFAULT;
+  sanitizeDriveCalibration();
+  doc["GearRatio"] = GearRatio;
+  doc["DriveCmPerRev"] = DriveCmPerRev;
   Fenable = doc["Fenable"];
   LocalIP = doc["LocalIP"] | "";
   Subnet = doc["Subnet"] | "";
@@ -320,6 +354,8 @@ void factoryReset(bool stats = false) {
   analogWrite(PIN_HEATER, 0);
   int TOffset_old = TOffset;
   int workT_old = workT;
+  double GearRatio_old = GearRatio;
+  double DriveCmPerRev_old = DriveCmPerRev;
   double HYS_old = HYS;
   double RAMP_old = RAMP;
   double HOLD_old = HOLD;
@@ -330,6 +366,8 @@ void factoryReset(bool stats = false) {
   resetConfiguration();
   TOffset = TOffset_old;
   workT = workT_old;
+  GearRatio = GearRatio_old;
+  DriveCmPerRev = DriveCmPerRev_old;
   HYS = HYS_old;
   RAMP = RAMP_old;
   HOLD = HOLD_old;
@@ -356,6 +394,8 @@ void readConfigurationSerial() {
       Serial.println();
       Serial.println("To: Temperature");
       Serial.println("Vo: Speed");
+      Serial.println("GearRatio: Motor revolutions per output revolution (46 standard, 50 new gearbox)");
+      Serial.println("DriveCmPerRev: Filament centimetres per output revolution (default 29)");
       Serial.println("Fenable: Filament enabled");
       Serial.println("Gate: Target approach gate drive percentage relative to MaxGate");
       Serial.println("MaxGate: Maximum MOSFET gate drive limit (0-255)");

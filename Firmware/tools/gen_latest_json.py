@@ -2,7 +2,7 @@
 """Regenerate latest.json for the PETALOT online update.
 
 The device fetches latest.json from the GitHub raw build folder, picks the
-entry matching its PCB revision (1405 / 1501 / 1502), and compares the
+entry matching its PCB revision (1405 / 1501 / 1502 / 1503), and compares the
 firmware version with its own `VERSION`.
 
 Build each firmware by setting `PCB` to the matching revision and `VERSION`
@@ -25,6 +25,7 @@ BOARDS = {
     "1405": "1.4.5",
     "1501": "1.5.1",
     "1502": "1.5.2",
+    "1503": "1.5.3",
 }
 
 DEFAULT_DIR = os.path.abspath(
