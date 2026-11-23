@@ -16,6 +16,8 @@ unsigned long tempLastNoFilament;
 unsigned long tempLastStart;
 double temperatureStart;  // temperature when the run started
 
+void stripWatchReset();   // implemented below with the strip-watch instrumentation
+
 // Heater watchdog state. Unlike temperatureStart (frozen at start), this
 // tracks progress: heatWatchRef is the best T seen since (re)start and
 // heatWatchTime the last time T rose by HEAT_WATCH_RISE. Raising To rearms
@@ -119,6 +121,7 @@ void start() {
       T = NAN;
     }
     temperatureStart = T;
+    stripWatchReset();
     heatWatchRearm();
     if (tempLastStart == 0) tempLastStart = 1;
     LastStopReason = "";
@@ -279,6 +282,219 @@ double control() {
   return controlBangBang();
 }
 
+// ============================================================================
+// STRIP WATCH — strip-break detection from heater duty
+// ============================================================================
+// The heater power needed to hold To depends on how much heat the strip takes
+// away, so a strip that stops moving makes the PID settle at a lower duty.
+// Two exponential averages track that duty: fast (15 s) follows load changes,
+// slow (120 s) holds the machine baseline. When fast falls well below slow
+// and stays there, the strip is treated as broken: the machine stops and the
+// reason is shown in the UI. Field measurements: drop 11 pts at Vo35, 7 at
+// Vo25, 7 at Vo15, 2 at Vo5 (noise), hence StripMinVo defaults to 15.
+double stripDuty = NAN;      // normalised duty of the last sample (%)
+double stripFast = NAN;      // 15 s average, follows load changes
+double stripSlow = NAN;      // 120 s average, machine baseline
+double stripNoise = 0;       // dispersion of fast/slow while stable
+bool stripGatesOk = false;   // gates passed on the last sample
+bool stripArmed = false;     // baseline settled, ratio is trustworthy
+bool stripTripped = false;   // a strip break has stopped the machine
+bool stripLog = false;       // serial CSV logging, toggled with "strip"
+int stripVoRef = -1;         // Vo used when the baseline was built
+unsigned long stripStableSince = 0;
+unsigned long stripBadSince = 0;   // start of a transient gate failure
+unsigned long stripDropSince = 0;  // start of the sustained duty drop
+unsigned long stripDropBadSince = 0;  // start of a brief sub-threshold gap
+unsigned long stripLastLog = 0;
+
+const double STRIP_TAU_FAST = 15.0;
+const double STRIP_TAU_SLOW = 120.0;
+const double STRIP_SAMPLE_S = 0.25;  // hotendReadTempTask period
+const double STRIP_ALPHA_FAST = STRIP_SAMPLE_S / (STRIP_TAU_FAST + STRIP_SAMPLE_S);
+const double STRIP_ALPHA_SLOW = STRIP_SAMPLE_S / (STRIP_TAU_SLOW + STRIP_SAMPLE_S);
+const double STRIP_BAND = 5.0;                // °C around To to call it "in regulation"
+const double STRIP_MIN_DROP = 3.0;            // points, floor for the drop threshold
+const double STRIP_DROP_FRAC = 0.08;          // 8 % of slow, relative threshold
+const unsigned long STRIP_BAD_REBASE_MS = 3UL * 60 * 1000;  // long gate loss
+const unsigned long STRIP_DROP_GAP_MS = 5000;  // brief dips do not reset the hold
+
+unsigned long stripSettleMs() { return (unsigned long)StripSettleS * 1000UL; }
+unsigned long stripArmMs() { return (unsigned long)StripArmS * 1000UL; }
+
+// Only samples taken in steady regulation are meaningful: the machine must be
+// running with the motor on, the temperature on target and the heater neither
+// fully off nor saturated. Anything else is a transient, not a load change.
+bool stripGatesPass() {
+  if (!StripWatch) return false;
+  if (status != "working") return false;
+  if (!stepper.motorEnabled) return false;
+  if (isnan(T)) return false;
+  if (fabs(T - To) > STRIP_BAND) return false;
+  double maxOut = (double)MaxGate * Gate / 100.0;
+  if (maxOut <= 2.0) return false;
+  if (Output <= 1.0 || Output >= maxOut - 1.0) return false;
+  if (tempLastStart == 0 || millis() - tempLastStart < stripSettleMs()) return false;
+  if (Vo < StripMinVo) return false;
+  return true;
+}
+
+void stripWatchReset() {
+  stripDuty = NAN;
+  stripFast = NAN;
+  stripSlow = NAN;
+  stripNoise = 0;
+  stripGatesOk = false;
+  stripArmed = false;
+  stripTripped = false;
+  stripStableSince = 0;
+  stripBadSince = 0;
+  stripDropSince = 0;
+  stripDropBadSince = 0;
+  stripLastLog = 0;
+}
+
+double stripRatio() {
+  return (!isnan(stripFast) && stripSlow > 0.5) ? stripFast / stripSlow : 0.0;
+}
+
+double stripDropThreshold() {
+  return max(STRIP_MIN_DROP, STRIP_DROP_FRAC * stripSlow);
+}
+
+double stripDropAgeSec() {
+  return (stripDropSince && !stripTripped) ? (millis() - stripDropSince) / 1000.0 : 0.0;
+}
+
+void stripPrintLine() {
+  Serial.print("strip,");
+  Serial.print(millis() / 1000);
+  Serial.print(",");
+  Serial.print(stripDuty, 1);
+  Serial.print(",");
+  Serial.print(stripFast, 1);
+  Serial.print(",");
+  Serial.print(stripSlow, 1);
+  Serial.print(",");
+  Serial.print(stripRatio(), 3);
+  Serial.print(",");
+  Serial.print(stripNoise, 3);
+  Serial.print(",");
+  Serial.print(T, 1);
+  Serial.print(",");
+  Serial.print(To, 1);
+  Serial.print(",");
+  Serial.print(Vo);
+  Serial.print(",");
+  Serial.print(stripArmed ? 1 : 0);
+  Serial.print(",");
+  Serial.print(stripDropAgeSec(), 1);
+  Serial.print(",");
+  Serial.println(stripTripped ? 1 : 0);
+}
+
+void stripCommand(const String &arg) {
+  String a = arg;
+  a.trim();
+  a.toLowerCase();
+  if (a == "on") {
+    stripLog = true;
+  } else if (a == "off") {
+    stripLog = false;
+  } else {
+    stripLog = !stripLog;
+  }
+  Serial.print("strip log ");
+  Serial.println(stripLog ? "on" : "off");
+  Serial.println("strip,sec,duty,fast,slow,ratio,noise,T,To,Vo,armed,dropSec,tripped");
+  stripPrintLine();
+}
+
+void stripWatchSample() {
+  double maxOut = (double)MaxGate * Gate / 100.0;
+  stripDuty = (maxOut > 0) ? 100.0 * Output / maxOut : 0.0;
+
+  // A speed change redefines the load, so the old baseline is worthless.
+  if (Vo != stripVoRef) {
+    stripVoRef = Vo;
+    stripWatchReset();
+  }
+
+  unsigned long now = millis();
+  stripGatesOk = stripGatesPass();
+
+  if (!stripGatesOk) {
+    // A short transient (the T bump after a strip stop, a sensor glitch) must
+    // not re-baseline the slow average, or the drop we are looking for would
+    // be erased. Freeze both averages and keep the armed state while it lasts.
+    // Only a long loss of regulation rebuilds the baseline from scratch.
+    if (stripBadSince == 0) stripBadSince = now;
+    if (now - stripBadSince >= STRIP_BAD_REBASE_MS) {
+      if (!isnan(stripSlow)) {
+        stripSlow += STRIP_ALPHA_SLOW * (stripDuty - stripSlow);
+        stripFast = stripSlow;
+      }
+      stripStableSince = 0;
+      stripArmed = false;
+      stripDropSince = 0;
+      stripDropBadSince = 0;
+    }
+  } else {
+    stripBadSince = 0;
+    if (stripStableSince == 0) stripStableSince = now;
+
+    if (isnan(stripFast)) {
+      stripFast = stripSlow = stripDuty;
+    } else {
+      stripFast += STRIP_ALPHA_FAST * (stripDuty - stripFast);
+      stripSlow += STRIP_ALPHA_SLOW * (stripDuty - stripSlow);
+    }
+
+    bool wasArmed = stripArmed;
+    stripArmed = (now - stripStableSince >= stripArmMs());
+
+    // At arm time fast is the settled duty and slow may still be climbing from
+    // the first heat-up sample. Snap the baseline so a strip stop does not have
+    // to wait for the two averages to meet before the drop becomes visible.
+    if (!wasArmed && stripArmed && !isnan(stripFast)) {
+      stripSlow = stripFast;
+      stripNoise = 0;
+    }
+
+    if (stripArmed && stripSlow > 5.0) {
+      stripNoise += 0.02 * (fabs(stripRatio() - 1.0) - stripNoise);
+    }
+  }
+
+  // Detection also runs while gates are momentarily false: a strip break can
+  // itself push T briefly out of band, and that must not hide the event.
+  if (StripWatch && stripArmed && status == "working" && stepper.motorEnabled &&
+      Vo >= StripMinVo && !isnan(stripFast) && !isnan(stripSlow) && stripSlow > 5.0) {
+    if (stripSlow - stripFast > stripDropThreshold()) {
+      stripDropBadSince = 0;
+      if (stripDropSince == 0) stripDropSince = now;
+      else if (now - stripDropSince >= (unsigned long)StripHoldS * 1000UL) {
+        stripTripped = true;
+        LastStopReason = "Strip broken: heater load dropped";
+        stop();
+      }
+    } else if (stripDropSince) {
+      if (stripDropBadSince == 0) stripDropBadSince = now;
+      else if (now - stripDropBadSince >= STRIP_DROP_GAP_MS) {
+        stripDropSince = 0;
+        stripDropBadSince = 0;
+      }
+    }
+  } else {
+    stripDropSince = 0;
+    stripDropBadSince = 0;
+  }
+
+  if (stripLog && millis() >= stripLastLog + 5000) {
+    stripLastLog = millis();
+    stripPrintLine();
+  }
+}
+
 void hotendReadTempTask() {
   if (millis() >= tempLastSample + 250) {
     // 2-sample moving average using integer math (no FPU on ESP8266).
@@ -294,6 +510,7 @@ void hotendReadTempTask() {
 
     Output = control();
     analogWrite(PIN_HEATER, Output);
+    stripWatchSample();
 
     if (status == "working") {
       if (T > minT) {

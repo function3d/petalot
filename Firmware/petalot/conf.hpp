@@ -59,6 +59,32 @@ int pcbVer = 0; // Registered PCB version (locked at first boot)
 double GearRatio = GEAR_RATIO_DEFAULT;
 double DriveCmPerRev = DRIVE_CM_PER_REV_DEFAULT;
 
+// Strip-break detection. The heater duty needed to hold To drops when the PET
+// strip stops moving. StripWatch enables the stop; StripMinVo skips speeds
+// where the load change is too small to measure; StripHoldS is how long the
+// drop must persist before the machine stops.
+#define STRIP_WATCH_DEFAULT true
+#define STRIP_MIN_VO_DEFAULT 15
+#define STRIP_HOLD_S_DEFAULT 20
+#define STRIP_SETTLE_S_DEFAULT 60
+#define STRIP_ARM_S_DEFAULT 60
+bool StripWatch = STRIP_WATCH_DEFAULT;
+int StripMinVo = STRIP_MIN_VO_DEFAULT;
+int StripHoldS = STRIP_HOLD_S_DEFAULT;
+int StripSettleS = STRIP_SETTLE_S_DEFAULT;
+int StripArmS = STRIP_ARM_S_DEFAULT;
+
+void sanitizeStripWatch() {
+  if (StripMinVo < minV) StripMinVo = minV;
+  if (StripMinVo > maxV) StripMinVo = maxV;
+  if (StripHoldS < 10) StripHoldS = 10;
+  if (StripHoldS > 120) StripHoldS = 120;
+  if (StripSettleS < 0) StripSettleS = 0;
+  if (StripSettleS > 600) StripSettleS = 600;
+  if (StripArmS < 10) StripArmS = 10;
+  if (StripArmS > 600) StripArmS = 600;
+}
+
 void sanitizeDriveCalibration() {
   if (GearRatio < GEAR_RATIO_MIN) GearRatio = GEAR_RATIO_MIN;
   if (GearRatio > GEAR_RATIO_MAX) GearRatio = GEAR_RATIO_MAX;
@@ -140,6 +166,11 @@ void saveConfiguration(bool reset = true) {
   doc["Vo"] = Vo;
   doc["GearRatio"] = GearRatio;
   doc["DriveCmPerRev"] = DriveCmPerRev;
+  doc["StripWatch"] = StripWatch;
+  doc["StripMinVo"] = StripMinVo;
+  doc["StripHoldS"] = StripHoldS;
+  doc["StripSettleS"] = StripSettleS;
+  doc["StripArmS"] = StripArmS;
   doc["Fenable"] = Fenable;
   doc["ssid"] = ssid;
   doc["password"] = password;
@@ -165,6 +196,9 @@ void saveConfiguration(bool reset = true) {
   doc["StartOnPower"] = StartOnPower;
   doc["MotorOnTo"] = MotorOnTo;
   if (pcbVer > 0) doc["pcbVer"] = pcbVer;
+  // PCB baked into the running binary. pcbVer stays the registered hardware;
+  // this one is what /updatecheck actually enforces and what the UI should show.
+  doc["fwPcb"] = PCB;
   if (serializeJson(doc, file) == 0) {
     msg = "Failed to write to file";
   }
@@ -186,6 +220,11 @@ void resetConfiguration() {
   Vo = workV;
   GearRatio = GEAR_RATIO_DEFAULT;
   DriveCmPerRev = DRIVE_CM_PER_REV_DEFAULT;
+  StripWatch = STRIP_WATCH_DEFAULT;
+  StripMinVo = STRIP_MIN_VO_DEFAULT;
+  StripHoldS = STRIP_HOLD_S_DEFAULT;
+  StripSettleS = STRIP_SETTLE_S_DEFAULT;
+  StripArmS = STRIP_ARM_S_DEFAULT;
   Fenable = true;
   LocalIP = "";
   Subnet = "";
@@ -249,6 +288,19 @@ void loadConfiguration(bool reset = false) {
   sanitizeDriveCalibration();
   doc["GearRatio"] = GearRatio;
   doc["DriveCmPerRev"] = DriveCmPerRev;
+
+  StripWatch = doc["StripWatch"] | STRIP_WATCH_DEFAULT;
+  StripMinVo = doc["StripMinVo"] | STRIP_MIN_VO_DEFAULT;
+  StripHoldS = doc["StripHoldS"] | STRIP_HOLD_S_DEFAULT;
+  StripSettleS = doc["StripSettleS"] | STRIP_SETTLE_S_DEFAULT;
+  StripArmS = doc["StripArmS"] | STRIP_ARM_S_DEFAULT;
+  sanitizeStripWatch();
+  doc["StripWatch"] = StripWatch;
+  doc["StripMinVo"] = StripMinVo;
+  doc["StripHoldS"] = StripHoldS;
+  doc["StripSettleS"] = StripSettleS;
+  doc["StripArmS"] = StripArmS;
+
   Fenable = doc["Fenable"];
   LocalIP = doc["LocalIP"] | "";
   Subnet = doc["Subnet"] | "";
@@ -356,6 +408,11 @@ void factoryReset(bool stats = false) {
   int workT_old = workT;
   double GearRatio_old = GearRatio;
   double DriveCmPerRev_old = DriveCmPerRev;
+  bool StripWatch_old = StripWatch;
+  int StripMinVo_old = StripMinVo;
+  int StripHoldS_old = StripHoldS;
+  int StripSettleS_old = StripSettleS;
+  int StripArmS_old = StripArmS;
   double HYS_old = HYS;
   double RAMP_old = RAMP;
   double HOLD_old = HOLD;
@@ -368,6 +425,11 @@ void factoryReset(bool stats = false) {
   workT = workT_old;
   GearRatio = GearRatio_old;
   DriveCmPerRev = DriveCmPerRev_old;
+  StripWatch = StripWatch_old;
+  StripMinVo = StripMinVo_old;
+  StripHoldS = StripHoldS_old;
+  StripSettleS = StripSettleS_old;
+  StripArmS = StripArmS_old;
   HYS = HYS_old;
   RAMP = RAMP_old;
   HOLD = HOLD_old;
@@ -381,6 +443,9 @@ void factoryReset(bool stats = false) {
     ESP.restart();
   }
 }
+
+// Implemented in hotend.hpp, which is included after this file.
+void stripCommand(const String &arg);
 
 void readConfigurationSerial() {
   if (Serial.available() > 0) {
@@ -396,6 +461,11 @@ void readConfigurationSerial() {
       Serial.println("Vo: Speed");
       Serial.println("GearRatio: Motor revolutions per output revolution (46 standard, 50 new gearbox)");
       Serial.println("DriveCmPerRev: Filament centimetres per output revolution (default 29)");
+      Serial.println("StripWatch: Stop when heater duty drops (1 on, 0 off)");
+      Serial.println("StripMinVo: Minimum speed for strip-break detection (default 15)");
+      Serial.println("StripHoldS: Seconds the duty drop must last before stopping (default 20)");
+      Serial.println("StripSettleS: Seconds after start before strip watch can arm (default 60)");
+      Serial.println("StripArmS: Seconds of stable gates before strip watch arms (default 60)");
       Serial.println("Fenable: Filament enabled");
       Serial.println("Gate: Target approach gate drive percentage relative to MaxGate");
       Serial.println("MaxGate: Maximum MOSFET gate drive limit (0-255)");
@@ -432,8 +502,13 @@ void readConfigurationSerial() {
       return;
     }
 
+    if (line.startsWith("strip")) {
+      stripCommand(line.substring(5));
+      return;
+    }
+
     if (!line.startsWith("{")) {
-      Serial.println("Unknown command. Type 'conf' to dump config, 'reset' to clear it, or send a JSON config");
+      Serial.println("Unknown command. Type 'conf', 'reset', 'strip [on|off]', or send a JSON config");
       return;
     }
 

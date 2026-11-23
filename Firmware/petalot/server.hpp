@@ -249,6 +249,15 @@ void set(AsyncWebServerRequest *request) {
   if (request->hasArg("Maxtime")) Maxtime = request->arg("Maxtime").toInt();
   if (request->hasArg("NoFilamentTime")) NoFilamentTime = request->arg("NoFilamentTime").toInt();
 
+  // Strip-watch. StripWatch comes from the settings checkbox; the tuning
+  // values stay available through /set for calibration without a reflash.
+  if (request->hasArg("StripWatch")) StripWatch = (request->arg("StripWatch") == "true" || request->arg("StripWatch") == "1");
+  if (request->hasArg("StripMinVo")) StripMinVo = request->arg("StripMinVo").toInt();
+  if (request->hasArg("StripHoldS")) StripHoldS = request->arg("StripHoldS").toInt();
+  if (request->hasArg("StripSettleS")) StripSettleS = request->arg("StripSettleS").toInt();
+  if (request->hasArg("StripArmS")) StripArmS = request->arg("StripArmS").toInt();
+  sanitizeStripWatch();
+
   if (request->arg("reboot") == "1") {
     saveConfiguration(true);
   } else {

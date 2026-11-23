@@ -261,10 +261,11 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         <div class="form-group"><div class="row-layout"><span class="label" data-i18n="st.motorOnTo">Motor starting at target temp</span><label class="switch"><input type="checkbox" name="MotorOnTo"><span class="slider"></span></label></div><small class="help-text" data-i18n="st.motorOnToHelp">If enabled, the motor will only run once the target temperature is reached</small></div>
         <div class="form-group"><span class="label" data-i18n="st.stopDelay">Stop Delay (sec)</span><input type="number" name="Stopdelay"><small class="help-text" data-i18n="st.stopDelayHelp">Seconds to finish processing after strip end passes the sensor</small></div>
         <div class="form-group"><span class="label" data-i18n="st.maxTime">Max Time (min)</span><input type="number" name="Maxtime"><small class="help-text" data-i18n="st.maxTimeHelp">Maximum machine run time</small></div>
+        <div class="form-group"><div class="row-layout"><span class="label" data-i18n="st.stripWatch">Detect broken strip</span><label class="switch"><input type="checkbox" name="StripWatch"><span class="slider"></span></label></div><small class="help-text" data-i18n="st.stripWatchHelp">Stops the machine about 35 s after the strip breaks. On by default</small></div>
         <div class="form-group"><span class="label" data-i18n="st.sensorTimeout">Sensor timeout (min)</span><input type="number" name="NoFilamentTime"><small class="help-text" data-i18n="st.sensorTimeoutHelp">Minutes to run without sensor activity. If disabled, only Max Time applies</small></div>
         <div id="setting-oled" class="form-group"><div class="row-layout"><span class="label" data-i18n="st.display">Use OLED Display</span><label class="switch"><input type="checkbox" name="UseDisplay"><span class="slider"></span></label></div><small id="setting-oled-help" class="help-text" data-i18n="st.displayHelp">Turn on the display if your machine has one. The screen needs a full power off/on to start; a software reboot is not enough</small></div>
         <div class="form-group"><span class="label" data-i18n="st.toffset">Temperature Offset</span><input type="number" name="TOffset"><small class="help-text" data-i18n="st.toffsetHelp">Adjust the temperature if you notice it's off</small></div>
-        <div class="form-group"><span class="label" data-i18n="st.gearRatio">Gear ratio</span><input type="number" name="GearRatio" min="10" max="100" step="0.1"><small class="help-text" data-i18n="st.gearRatioHelp">Motor revolutions per output revolution. 46 on standard machines, 50 with the new gearbox. A wrong value changes the real extrusion speed.</small></div>
+        <div class="form-group"><span class="label" data-i18n="st.gearRatio">Gear ratio</span><input type="number" name="GearRatio" min="10" max="100" step="0.1"><small class="help-text" data-i18n="st.gearRatioHelp">Motor revolutions per output revolution</small></div>
         <div class="form-group"><span class="label" data-i18n="st.driveCmPerRev">Filament per output turn (cm)</span><input type="number" name="DriveCmPerRev" min="5" max="100" step="0.1"><small class="help-text" data-i18n="st.driveCmPerRevHelp">Centimetres of filament pushed per output revolution. Keep 29 unless you change the drive pulley.</small></div>
 
       </div>
@@ -386,7 +387,9 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.toffset': 'Temperature Offset',
         'st.toffsetHelp': "Adjust the temperature if you notice it's off",
         'st.gearRatio': 'Gear ratio',
-        'st.gearRatioHelp': 'Motor revolutions per output revolution. 46 on standard machines, 50 with the new gearbox. A wrong value changes the real extrusion speed.',
+        'st.gearRatioHelp': 'Motor revolutions per output revolution',
+        'st.stripWatch': 'Detect broken strip',
+        'st.stripWatchHelp': 'Stops the machine about 35 s after the strip breaks. On by default',
         'st.driveCmPerRev': 'Filament per output turn (cm)',
         'st.driveCmPerRevHelp': 'Centimetres of filament pushed per output revolution. Keep 29 unless you change the drive pulley.',
         'st.stopDelay': 'Stop Delay (sec)',
@@ -434,6 +437,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'stop.thermistor': 'Temperature sensor fault: check the thermistor',
         'stop.noheat': 'Heater fault: temperature not rising (now {T} °C, target {To} °C)',
         'stop.noheatShort': 'Heater fault: temperature not rising',
+        'stop.strip': 'Strip broken: heater load dropped',
         'st.showPw': 'Show password',
         'st.hidePw': 'Hide password',
         't.speedWarn': 'Speeds >25 cm/s may cause print failures. Test before batch production',
@@ -501,7 +505,9 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.toffset': 'Desplazamiento de temperatura',
         'st.toffsetHelp': 'Ajusta la temperatura si notas que no cuadra',
         'st.gearRatio': 'Relación de engranajes',
-        'st.gearRatioHelp': 'Revoluciones del motor por revolución de salida. 46 en máquinas estándar, 50 con el engranaje nuevo. Un valor incorrecto cambia la velocidad real de extrusión.',
+        'st.gearRatioHelp': 'Motor revolutions per output revolution',
+        'st.stripWatch': 'Detectar tira rota',
+        'st.stripWatchHelp': 'Para la máquina unos 35 s después de que se rompa la tira. Activado por defecto',
         'st.driveCmPerRev': 'Filamento por vuelta de salida (cm)',
         'st.driveCmPerRevHelp': 'Centímetros de filamento por revolución de salida. Deja 29 salvo que cambies la polea.',
         'st.stopDelay': 'Retardo de parada (s)',
@@ -549,6 +555,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'stop.thermistor': 'Fallo del sensor de temperatura: revisa el termistor',
         'stop.noheat': 'Fallo del calentador: la temperatura no sube (ahora {T} °C, objetivo {To} °C)',
         'stop.noheatShort': 'Fallo del calentador: la temperatura no sube',
+        'stop.strip': 'Tira rota: ha bajado la carga del calentador',
         'st.showPw': 'Mostrar contraseña',
         'st.hidePw': 'Ocultar contraseña',
         't.speedWarn': 'Velocidades >25 cm/s pueden causar fallos de impresión. Prueba antes de producción',
@@ -616,7 +623,9 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.toffset': 'Deslocamento de temperatura',
         'st.toffsetHelp': 'Ajuste a temperatura se notar que está errada',
         'st.gearRatio': 'Relação de engrenagens',
-        'st.gearRatioHelp': 'Revoluções do motor por revolução de saída. 46 nas máquinas padrão, 50 com a engrenagem nova. Um valor errado altera a velocidade real de extrusão.',
+        'st.gearRatioHelp': 'Motor revolutions per output revolution',
+        'st.stripWatch': 'Detectar fita rompida',
+        'st.stripWatchHelp': 'Para a máquina cerca de 35 s depois de a fita romper. Ativado por predefinição',
         'st.driveCmPerRev': 'Filamento por volta de saída (cm)',
         'st.driveCmPerRevHelp': 'Centímetros de filamento por revolução de saída. Mantenha 29 a menos que troque a polia.',
         'st.stopDelay': 'Atraso de parada (s)',
@@ -664,6 +673,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'stop.thermistor': 'Falha do sensor de temperatura: verifique o termistor',
         'stop.noheat': 'Falha do aquecedor: a temperatura não sobe (atual {T} °C, alvo {To} °C)',
         'stop.noheatShort': 'Falha do aquecedor: a temperatura não sobe',
+        'stop.strip': 'Fita partida: carga do aquecedor diminuiu',
         'st.showPw': 'Mostrar senha',
         'st.hidePw': 'Ocultar senha',
         't.speedWarn': 'Velocidades >25 cm/s podem causar falhas de impressão. Teste antes da produção',
@@ -731,7 +741,9 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.toffset': 'Décalage de température',
         'st.toffsetHelp': "Ajustez la température si elle semble fausse",
         'st.gearRatio': "Rapport d'engrenage",
-        'st.gearRatioHelp': "Révolutions moteur par révolution de sortie. 46 sur les machines standard, 50 avec le nouvel engrenage. Une valeur incorrecte modifie la vitesse réelle d'extrusion.",
+        'st.gearRatioHelp': 'Motor revolutions per output revolution',
+        'st.stripWatch': 'Détecter la bande rompue',
+        'st.stripWatchHelp': 'Arrête la machine environ 35 s après la rupture de la bande. Activé par défaut',
         'st.driveCmPerRev': 'Filament par tour de sortie (cm)',
         'st.driveCmPerRevHelp': "Centimètres de filament par révolution de sortie. Gardez 29 sauf si vous changez la poulie.",
         'st.stopDelay': "Délai d'arrêt (s)",
@@ -779,6 +791,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'stop.thermistor': 'Défaut du capteur de température : vérifiez la thermistance',
         'stop.noheat': "Défaut du chauffage : la température ne monte pas (actuelle {T} °C, cible {To} °C)",
         'stop.noheatShort': "Défaut du chauffage : la température ne monte pas",
+        'stop.strip': 'Bandeau cassé : charge du chauffage réduite',
         'st.showPw': 'Afficher le mot de passe',
         'st.hidePw': 'Masquer le mot de passe',
         't.speedWarn': 'Des vitesses >25 cm/s peuvent causer des défauts. Testez avant la production',
@@ -846,7 +859,9 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.toffset': 'Temperaturoffset',
         'st.toffsetHelp': 'Temperatur anpassen, falls sie abweicht',
         'st.gearRatio': 'Getriebeübersetzung',
-        'st.gearRatioHelp': 'Motorumdrehungen pro Ausgangsumdrehung. 46 bei Standardmaschinen, 50 mit dem neuen Getriebe. Ein falscher Wert ändert die tatsächliche Extrusionsgeschwindigkeit.',
+        'st.gearRatioHelp': 'Motor revolutions per output revolution',
+        'st.stripWatch': 'Folienriss erkennen',
+        'st.stripWatchHelp': 'Stoppt die Maschine etwa 35 s nach Folienriss. Standardmäßig aktiviert',
         'st.driveCmPerRev': 'Filament pro Ausgangsumdrehung (cm)',
         'st.driveCmPerRevHelp': 'Zentimeter Filament pro Ausgangsumdrehung. 29 beibehalten, außer die Antriebsrolle wird geändert.',
         'st.stopDelay': 'Stoppverzögerung (s)',
@@ -894,6 +909,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'stop.thermistor': 'Temperatursensor-Fehler: Thermistor prüfen',
         'stop.noheat': 'Heizungsfehler: Temperatur steigt nicht (aktuell {T} °C, Ziel {To} °C)',
         'stop.noheatShort': 'Heizungsfehler: Temperatur steigt nicht',
+        'stop.strip': 'Band gerissen: Heizlast abgefallen',
         'st.showPw': 'Passwort anzeigen',
         'st.hidePw': 'Passwort verbergen',
         't.speedWarn': 'Geschwindigkeiten >25 cm/s können Druckfehler verursachen. Vor der Produktion testen',
@@ -961,7 +977,9 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.toffset': 'Offset temperatura',
         'st.toffsetHelp': 'Regola la temperatura se noti uno scostamento',
         'st.gearRatio': 'Rapporto ingranaggi',
-        'st.gearRatioHelp': 'Giri motore per giro di uscita. 46 sulle macchine standard, 50 con il nuovo ingranaggio. Un valore errato cambia la velocità reale di estrusione.',
+        'st.gearRatioHelp': 'Motor revolutions per output revolution',
+        'st.stripWatch': 'Rileva nastro rotto',
+        'st.stripWatchHelp': 'Ferma la macchina circa 35 s dopo la rottura del nastro. Attivo per impostazione predefinita',
         'st.driveCmPerRev': 'Filamento per giro di uscita (cm)',
         'st.driveCmPerRevHelp': 'Centimetri di filamento per giro di uscita. Mantieni 29 se non cambi la puleggia.',
         'st.stopDelay': 'Ritardo di arresto (s)',
@@ -1009,6 +1027,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'stop.thermistor': 'Guasto al sensore di temperatura: controlla il termistore',
         'stop.noheat': "Guasto al riscaldatore: la temperatura non sale (ora {T} °C, obiettivo {To} °C)",
         'stop.noheatShort': "Guasto al riscaldatore: la temperatura non sale",
+        'stop.strip': 'Nastro rotto: carico del riscaldatore diminuito',
         'st.showPw': 'Mostra password',
         'st.hidePw': 'Nascondi password',
         't.speedWarn': 'Velocità >25 cm/s possono causare difetti. Test prima della produzione',
@@ -1076,7 +1095,9 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.toffset': '温度偏移',
         'st.toffsetHelp': '如果温度偏差，请调整此值',
         'st.gearRatio': '齿轮比',
-        'st.gearRatioHelp': '每输出一圈的电机转数。标准机器为 46，新齿轮箱为 50。数值错误会改变实际挤出速度。',
+        'st.gearRatioHelp': 'Motor revolutions per output revolution',
+        'st.stripWatch': '检测断裂的带材',
+        'st.stripWatchHelp': '带材断裂后约 35 秒停机。默认开启',
         'st.driveCmPerRev': '每输出一圈的耗材长度（厘米）',
         'st.driveCmPerRevHelp': '每输出一圈送出的耗材厘米数。除非更换驱动轮，否则保持 29。',
         'st.stopDelay': '停止延迟（秒）',
@@ -1124,6 +1145,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'stop.thermistor': '温度传感器故障：请检查热敏电阻',
         'stop.noheat': '加热器故障：温度未上升（当前 {T} °C，目标 {To} °C）',
         'stop.noheatShort': '加热器故障：温度未上升',
+        'stop.strip': '耗材带断裂：加热负载下降',
         'st.showPw': '显示密码',
         'st.hidePw': '隐藏密码',
         't.speedWarn': '超过 25 cm/s 的速度可能导致打印失败。量产前请测试',
@@ -1191,7 +1213,9 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.toffset': 'Korekce teploty',
         'st.toffsetHelp': 'Upravte teplotu, pokud přesně nesedí',
         'st.gearRatio': 'Převodový poměr',
-        'st.gearRatioHelp': 'Otáčky motoru na jednu otáčku výstupu. 46 u standardních strojů, 50 s novým převodem. Nesprávná hodnota změní skutečnou rychlost extruze.',
+        'st.gearRatioHelp': 'Motor revolutions per output revolution',
+        'st.stripWatch': 'Detekce přetržené pásky',
+        'st.stripWatchHelp': 'Zastaví stroj asi 35 s po přetržení pásky. Ve výchozím nastavení zapnuto',
         'st.driveCmPerRev': 'Filament na otáčku výstupu (cm)',
         'st.driveCmPerRevHelp': 'Centimetry filamentu na jednu otáčku výstupu. Ponechte 29, pokud nezměníte hnací řemenici.',
         'st.stopDelay': 'Zpoždění zastavení (s)',
@@ -1238,6 +1262,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'stop.thermistor': 'Porucha teplotního čidla: zkontrolujte termistor',
         'stop.noheat': 'Porucha ohřevu: teplota nestoupá (nyní {T} °C, cíl {To} °C)',
         'stop.noheatShort': 'Porucha ohřevu: teplota nestoupá',
+        'stop.strip': 'Pás přerván: zátěž topení klesla',
         'st.showPw': 'Zobrazit heslo',
         'st.hidePw': 'Skrýt heslo',
         't.speedWarn': 'Rychlosti >25 cm/s mohou způsobit tiskové vady. Otestujte před sériovou výrobou',
@@ -1305,7 +1330,9 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.toffset': 'Коррекция температуры',
         'st.toffsetHelp': 'Отрегулируйте температуру, если она не точная',
         'st.gearRatio': 'Передаточное число',
-        'st.gearRatioHelp': 'Обороты двигателя на один оборот выхода. 46 на стандартных машинах, 50 с новым редуктором. Неверное значение изменит реальную скорость экструзии.',
+        'st.gearRatioHelp': 'Motor revolutions per output revolution',
+        'st.stripWatch': 'Обрыв ленты',
+        'st.stripWatchHelp': 'Останавливает машину через ~35 с после обрыва ленты. Включено по умолчанию',
         'st.driveCmPerRev': 'Филамент на оборот выхода (см)',
         'st.driveCmPerRevHelp': 'Сантиметры филамента на один оборот выхода. Оставьте 29, если не меняете приводной ролик.',
         'st.stopDelay': 'Задержка остановки (с)',
@@ -1352,6 +1379,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'stop.thermistor': 'Неисправность датчика температуры: проверьте термистор',
         'stop.noheat': 'Неисправность нагревателя: температура не растёт (сейчас {T} °C, цель {To} °C)',
         'stop.noheatShort': 'Неисправность нагревателя: температура не растёт',
+        'stop.strip': 'Лента оборвалась: нагрузка нагревателя упала',
         'st.showPw': 'Показать пароль',
         'st.hidePw': 'Скрыть пароль',
         't.speedWarn': 'Скорости >25 см/с могут вызывать дефекты печати. Протестируйте перед серийным производством',
@@ -1419,7 +1447,9 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.toffset': 'Sıcaklık ofseti',
         'st.toffsetHelp': 'Sıcaklık tam gelmiyorsa ayarlayın',
         'st.gearRatio': 'Dişli oranı',
-        'st.gearRatioHelp': 'Çıkış devri başına motor devri. Standart makinelerde 46, yeni dişli kutusunda 50. Yanlış değer gerçek ekstrüzyon hızını değiştirir.',
+        'st.gearRatioHelp': 'Motor revolutions per output revolution',
+        'st.stripWatch': 'Kopan şerit algılama',
+        'st.stripWatchHelp': 'Şerit koptuktan yaklaşık 35 sn sonra makineyi durdurur. Varsayılan olarak açık',
         'st.driveCmPerRev': 'Çıkış devri başına filaman (cm)',
         'st.driveCmPerRevHelp': 'Çıkış devri başına itilen filaman santimetresi. Tahrik kasnağını değiştirmediğiniz sürece 29 bırakın.',
         'st.stopDelay': 'Durdurma gecikmesi (sn)',
@@ -1466,6 +1496,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'stop.thermistor': 'Sıcaklık sensörü arızası: termistörü kontrol edin',
         'stop.noheat': 'Isıtıcı arızası: sıcaklık yükselmiyor (şu an {T} °C, hedef {To} °C)',
         'stop.noheatShort': 'Isıtıcı arızası: sıcaklık yükselmiyor',
+        'stop.strip': 'Şerit kırıldı: ısıtıcı yükü düştü',
         'st.showPw': 'Şifreyi göster',
         'st.hidePw': 'Şifreyi gizle',
         't.speedWarn': '>25 cm/s hızlar baskı hatalarına neden olabilir. Seri üretimden önce test edin',
@@ -1533,7 +1564,9 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.toffset': '温度オフセット',
         'st.toffsetHelp': '温度がずれている場合に調整します',
         'st.gearRatio': 'ギア比',
-        'st.gearRatioHelp': '出力1回転あたりのモーター回転数。標準機は46、新しいギアボックスは50。値が違うと実際の押出速度が変わります。',
+        'st.gearRatioHelp': 'Motor revolutions per output revolution',
+        'st.stripWatch': '破断したテープを検出',
+        'st.stripWatchHelp': 'テープが切れて約35秒後に停止します。既定で有効',
         'st.driveCmPerRev': '出力1回転あたりのフィラメント長（cm）',
         'st.driveCmPerRevHelp': '出力1回転あたりに送り出されるフィラメントのセンチ数。駆動プーリーを変えない限り29のままにしてください。',
         'st.stopDelay': '停止遅延（秒）',
@@ -1580,6 +1613,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'stop.thermistor': '温度センサー異常：サーミスタを確認してください',
         'stop.noheat': 'ヒーター異常：温度が上昇しません（現在 {T} °C、目標 {To} °C）',
         'stop.noheatShort': 'ヒーター異常：温度が上昇しません',
+        'stop.strip': 'ストリップが破断：ヒーター負荷が低下',
         'st.showPw': 'パスワードを表示',
         'st.hidePw': 'パスワードを非表示',
         't.speedWarn': '速度が25cm/sを超えると印刷不良になる可能性があります。量産前にテストしてください',
@@ -1647,7 +1681,9 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'st.toffset': '온도 오프셋',
         'st.toffsetHelp': '온도가 맞지 않으면 조정합니다',
         'st.gearRatio': '기어 비율',
-        'st.gearRatioHelp': '출력 1회전당 모터 회전수. 표준 기계는 46, 새 기어박스는 50. 값이 틀리면 실제 압출 속도가 달라집니다.',
+        'st.gearRatioHelp': 'Motor revolutions per output revolution',
+        'st.stripWatch': '끊어진 스트립 감지',
+        'st.stripWatchHelp': '스트립이 끊어진 뒤 약 35초 후 정지합니다. 기본값은 켜짐',
         'st.driveCmPerRev': '출력 1회전당 필라멘트 길이(cm)',
         'st.driveCmPerRevHelp': '출력 1회전당 밀어내는 필라멘트 센티미터. 구동 풀리를 바꾸지 않는 한 29로 두세요.',
         'st.stopDelay': '정지 지연（초）',
@@ -1694,6 +1730,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
         'stop.thermistor': '온도 센서 고장: 서미스터를 확인하세요',
         'stop.noheat': '히터 고장: 온도가 상승하지 않음(현재 {T} °C, 목표 {To} °C)',
         'stop.noheatShort': '히터 고장: 온도가 상승하지 않음',
+        'stop.strip': '스트립 파단: 히터 부하 감소',
         'st.showPw': '비밀번호 표시',
         'st.hidePw': '비밀번호 숨기기',
         't.speedWarn': '25cm/s를 초과하는 속도는 인쇄 불량을 유발할 수 있습니다. 양산 전에 테스트하세요',
@@ -1779,6 +1816,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
       m = /^30s no heat:.*\(T=([\d.\-]+) To=([\d.\-]+)/.exec(s);
       if (m) return t('stop.noheat', { T: m[1], To: m[2] });
       if (s.indexOf('30s no heat') === 0) return t('stop.noheatShort');
+      if (s.indexOf('Strip broken') === 0) return t('stop.strip');
       return s;
     }
 
@@ -1924,7 +1962,8 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
             let semanticVersion = parseInt(versionParts[0] + versionParts[1] + versionParts[2]);
 
             const fwVer = versionParts.slice(0, 3).join('.');
-            const hwVer = data.pcbVer ? formatVersion(data.pcbVer) : '';
+            const shownPcb = data.fwPcb || data.pcbVer;
+            const hwVer = shownPcb ? formatVersion(shownPcb) : '';
             document.getElementById('version').innerText = hwVer ? `v${fwVer} (PCB ${hwVer})` : `v${fwVer}`;
 
             if (semanticVersion > 152) {
@@ -1939,9 +1978,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
           document.getElementById('msg-temp').innerText = t('msg.minmax', {min: data.minT, max: data.maxT});
           document.getElementById('msg-speed').innerText = t('msg.minmax', {min: data.minV, max: data.maxV});
 
-          if (data.pcbVer) {
-            updatePcbVer = data.pcbVer;
-          }
+          updatePcbVer = data.fwPcb || data.pcbVer || '';
 
           const form = document.getElementById('settings-form');
 

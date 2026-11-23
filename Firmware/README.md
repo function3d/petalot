@@ -12,10 +12,10 @@ installed.
 
 | PCB version | Firmware file | Availability |
 | --- | --- | --- |
-| **v1.4.5** | [`petalot.1.4.5-v1.6.8.bin`](petalot/build/esp8266.esp8266.d1_mini_clone/petalot.1.4.5-v1.6.8.bin) | **DIY** — the only board released publicly. |
-| **v1.5.1** | [`petalot.1.5.1-v1.6.8.bin`](petalot/build/esp8266.esp8266.d1_mini_clone/petalot.1.5.1-v1.6.8.bin) | **Commercial**. |
-| **v1.5.2** | [`petalot.1.5.2-v1.6.8.bin`](petalot/build/esp8266.esp8266.d1_mini_clone/petalot.1.5.2-v1.6.8.bin) | **Commercial**. |
-| **v1.5.3** | [`petalot.1.5.3-v1.6.8.bin`](petalot/build/esp8266.esp8266.d1_mini_clone/petalot.1.5.3-v1.6.8.bin) | **Commercial** (current, 1:50 gearbox). |
+| **v1.4.5** | [`petalot.1.4.5-v1.6.9.bin`](petalot/build/esp8266.esp8266.d1_mini_clone/petalot.1.4.5-v1.6.9.bin) | **DIY** — the only board released publicly. |
+| **v1.5.1** | [`petalot.1.5.1-v1.6.9.bin`](petalot/build/esp8266.esp8266.d1_mini_clone/petalot.1.5.1-v1.6.9.bin) | **Commercial**. |
+| **v1.5.2** | [`petalot.1.5.2-v1.6.9.bin`](petalot/build/esp8266.esp8266.d1_mini_clone/petalot.1.5.2-v1.6.9.bin) | **Commercial**. |
+| **v1.5.3** | [`petalot.1.5.3-v1.6.9.bin`](petalot/build/esp8266.esp8266.d1_mini_clone/petalot.1.5.3-v1.6.9.bin) | **Commercial** (current, 1:50 gearbox). |
 
 - If you built your own PETALOT from the public files, your PCB is the **v1.4.5**.
 - Versions **v1.5.1**, **v1.5.2** and **v1.5.3** are only fitted on commercially
@@ -85,8 +85,8 @@ Use this if the device is not on your home Wi-Fi (for example, right out of the
 box, when you connect directly to its "PETALOT-XXXXXX" network).
 
 1. Download the `.bin` for your hardware from this repository
-   (`petalot.1.4.5-v1.6.8.bin`, `petalot.1.5.1-v1.6.8.bin`,
-   `petalot.1.5.2-v1.6.8.bin` or `petalot.1.5.3-v1.6.8.bin`).
+   (`petalot.1.4.5-v1.6.9.bin`, `petalot.1.5.1-v1.6.9.bin`,
+   `petalot.1.5.2-v1.6.9.bin` or `petalot.1.5.3-v1.6.9.bin`).
 2. Open the web UI and go to **Settings → Advanced → Firmware Update**, pick the
    file and click **Update**. (Or browse to `http://<device-ip>/update` — the
    built-in update page available on **every** firmware version.)
