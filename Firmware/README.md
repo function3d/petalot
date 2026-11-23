@@ -114,22 +114,5 @@ The gearbox defaults live in `Firmware/petalot/conf.hpp`.
 See [`INSTALL_LIBRARIES.md`](petalot/INSTALL_LIBRARIES.md) for the
 required libraries and board setup.
 
-### Previewing the web UI without flashing
-
-[`tools/webui_preview.py`](tools/webui_preview.py) serves `web_ui.h` in your
-browser (mock data, or proxied to a real device) so you can edit the UI and
-press F5 — no build or flash. See [`tools/README.md`](tools/README.md).
-
-### Publishing an online update
-
-1. Build the four firmwares (one per `PCB`) with the new `VERSION`.
-2. Regenerate the manifest:
-
-   ```
-   python3 Firmware/tools/gen_latest_json.py <VERSION>
-   ```
-
-   This writes `latest.json` next to the `.bin` files, with the version, file
-   name and size for every PCB.
-3. Commit and push the four `.bin` files and `latest.json` to the repository
-   (the online update reads them from `master`).
+Development tools (UI preview, release build, update manifest) are documented
+in [`tools/README.md`](tools/README.md).
