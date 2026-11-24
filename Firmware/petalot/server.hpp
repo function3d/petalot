@@ -198,6 +198,18 @@ void set(AsyncWebServerRequest *request) {
     return;
   }
 
+  // Called by the web UI just before an OTA update. Capture the current run
+  // state; if status is also in the request, let the normal handler stop it.
+  if (request->hasArg("otaResume")) {
+    OtaResumeState = (status == "working") ? 1 : 2;
+    OtaResumeElapsedMs = (status == "working" && tempLastStart > 0) ? (millis() - tempLastStart) : 0;
+    saveConfiguration(false);
+    if (!request->hasArg("status")) {
+      tele(request);
+      return;
+    }
+  }
+
   String statusChange = request->arg("status");
   if (statusChange != "") {
     if (statusChange.toFloat() || statusChange == "1" || statusChange == "true") start();

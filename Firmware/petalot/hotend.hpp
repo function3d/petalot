@@ -155,6 +155,7 @@ void stop() {
   }
   tempLastStart = 0;
   heatWatchBadSince = 0;
+  resumeWaitTemp = false;
 }
 
 void initHotend() {
@@ -163,7 +164,26 @@ void initHotend() {
     pinMode(LED_BUILTIN, OUTPUT);
   }
   pinMode(PIN_FILAMENT, INPUT);
-  if (StartOnPower) start();
+
+  // Only an OTA reboot carries a resume state. Restore the previous run, keep
+  // the motor off until the heater reaches target, and consume the flag so a
+  // later power cycle uses StartOnPower as usual.
+  if (OtaResumeState == 1) {
+    start();
+    if (tempLastStart > 0) {
+      // millis() starts at zero on boot; never let a long run underflow into
+      // an immediate Maxtime trip.
+      tempLastStart = (OtaResumeElapsedMs <= millis()) ? (millis() - OtaResumeElapsedMs) : 1;
+    }
+    resumeWaitTemp = true;
+  } else if (OtaResumeState == 2) {
+    // Machine was stopped before the update: stay stopped.
+  } else if (StartOnPower) {
+    start();
+  }
+  OtaResumeState = 0;
+  OtaResumeElapsedMs = 0;
+  saveConfiguration(false);
 
   if (To > maxT) To = workT;
 

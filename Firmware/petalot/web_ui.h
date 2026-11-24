@@ -2116,7 +2116,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
       fetch('/updatecheck', { method: 'POST', body: fd })
         .then(r => {
           if (r.ok) {
-            fetch('/set?status=0');
+            fetch('/set?otaResume=1&status=0');
             doRealUpdate(file, msgEl);
           } else {
             msgEl.className = 'msg warn';
@@ -2256,7 +2256,7 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
           }
           const fd2 = new FormData();
           fd2.append('firmware', file);
-          fetch('/set?status=0');
+          fetch('/set?otaResume=1&status=0');
           return fetch('/update?name=firmware', { method: 'POST', body: fd2 })
             .then(res => res.text())
             .then(txt => {

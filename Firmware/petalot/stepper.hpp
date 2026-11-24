@@ -98,11 +98,14 @@ public:
   }
 
   void task() {
-    // Temperature safety: if MotorOnTo is set, wait until T >= To - 3°C
-    if (MotorOnTo && T < To - 3.0f) {
+    // MotorOnTo waits for temperature. An OTA resume waits too, even when
+    // MotorOnTo is off: the heater cools during the update and PET strip must
+    // not be driven cold.
+    if ((MotorOnTo || resumeWaitTemp) && (isnan(T) || T < To - 3.0f)) {
       disable();
       return;
     }
+    if (resumeWaitTemp && !isnan(T) && T >= To - 3.0f) resumeWaitTemp = false;
 
     // Sync motor state with the global status
     if (status == "working" && !motorEnabled) {

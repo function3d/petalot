@@ -5,6 +5,12 @@
 
 String msg;
 String status;
+// Set by the web UI just before an OTA update, consumed on the next boot.
+// 0 = normal boot, 1 = was working, 2 = was stopped. Never survives a normal
+// boot, so a later power cycle falls back to StartOnPower as usual.
+int OtaResumeState = 0;
+unsigned long OtaResumeElapsedMs = 0;
+bool resumeWaitTemp = false;
 double To;
 int Vo = 0;
 bool Fenable = true;  //filament sensor enabled
@@ -195,6 +201,8 @@ void saveConfiguration(bool reset = true) {
   doc["UseDisplay"] = UseDisplay;
   doc["StartOnPower"] = StartOnPower;
   doc["MotorOnTo"] = MotorOnTo;
+  doc["OtaResumeState"] = OtaResumeState;
+  doc["OtaResumeElapsedMs"] = OtaResumeElapsedMs;
   if (pcbVer > 0) doc["pcbVer"] = pcbVer;
   // PCB baked into the running binary. pcbVer stays the registered hardware;
   // this one is what /updatecheck actually enforces and what the UI should show.
@@ -245,6 +253,9 @@ void resetConfiguration() {
   UseDisplay = 0;
   StartOnPower = 1;
   MotorOnTo = 0;
+  OtaResumeState = 0;
+  OtaResumeElapsedMs = 0;
+  resumeWaitTemp = false;
 }
 
 void loadConfiguration(bool reset = false) {
@@ -396,6 +407,10 @@ void loadConfiguration(bool reset = false) {
     MotorOnTo = 0;
     doc["MotorOnTo"] = MotorOnTo;
   }
+  OtaResumeState = doc["OtaResumeState"] | 0;
+  if (OtaResumeState < 0 || OtaResumeState > 2) OtaResumeState = 0;
+  OtaResumeElapsedMs = doc["OtaResumeElapsedMs"] | 0;
+  resumeWaitTemp = false;
   if (doc.containsKey("pcbVer"))
     pcbVer = doc["pcbVer"];
   else
