@@ -198,11 +198,19 @@ void set(AsyncWebServerRequest *request) {
     return;
   }
 
-  // Called by the web UI just before an OTA update. Capture the current run
-  // state; if status is also in the request, let the normal handler stop it.
+  // Called by the web UI just before an OTA update. otaResume=1 captures the
+  // current run state; otaResume=0 cancels it if the update fails and never
+  // reboots. If status is also in the request, let the normal handler stop it.
   if (request->hasArg("otaResume")) {
-    OtaResumeState = (status == "working") ? 1 : 2;
-    OtaResumeElapsedMs = (status == "working" && tempLastStart > 0) ? (millis() - tempLastStart) : 0;
+    if (request->arg("otaResume") == "1") {
+      OtaResumeState = (status == "working") ? 1 : 2;
+      OtaResumeElapsedMs = (status == "working" && tempLastStart > 0) ? (millis() - tempLastStart) : 0;
+      statsDirty = true;
+      saveStats();
+    } else {
+      OtaResumeState = 0;
+      OtaResumeElapsedMs = 0;
+    }
     saveConfiguration(false);
     if (!request->hasArg("status")) {
       tele(request);

@@ -176,6 +176,7 @@ void initHotend() {
       tempLastStart = (OtaResumeElapsedMs <= millis()) ? (millis() - OtaResumeElapsedMs) : 1;
     }
     resumeWaitTemp = true;
+    OtaResumed = true;
   } else if (OtaResumeState == 2) {
     // Machine was stopped before the update: stay stopped.
   } else if (StartOnPower) {

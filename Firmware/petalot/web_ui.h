@@ -2116,7 +2116,6 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
       fetch('/updatecheck', { method: 'POST', body: fd })
         .then(r => {
           if (r.ok) {
-            fetch('/set?otaResume=1&status=0');
             doRealUpdate(file, msgEl);
           } else {
             msgEl.className = 'msg warn';
@@ -2129,17 +2128,22 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
     function doRealUpdate(file, msgEl) {
       const fd = new FormData();
       fd.append('firmware', file);
-      fetch('/update?name=firmware', { method: 'POST', body: fd })
+      fetch('/set?otaResume=1&status=0')
+        .then(() => fetch('/update?name=firmware', { method: 'POST', body: fd }))
         .then(r => r.text())
         .then(txt => {
           if (txt.indexOf('Success') !== -1 || txt.indexOf('Reboot') !== -1) {
             waitForReboot();
           } else {
+            fetch('/set?otaResume=0');
             msgEl.className = 'msg warn';
             msgEl.textContent = (txt.trim() !== '') ? t('msg.updateError') + ' ' + txt : t('msg.updateError');
           }
         })
-        .catch(() => waitForReboot());
+        .catch(() => {
+          fetch('/set?otaResume=0');
+          waitForReboot();
+        });
     }
 
     function waitForReboot(attempts = 20) {
@@ -2256,19 +2260,23 @@ static const char INDEX_HTML[] PROGMEM = R"rawliteral(
           }
           const fd2 = new FormData();
           fd2.append('firmware', file);
-          fetch('/set?otaResume=1&status=0');
-          return fetch('/update?name=firmware', { method: 'POST', body: fd2 })
+          return fetch('/set?otaResume=1&status=0')
+            .then(() => fetch('/update?name=firmware', { method: 'POST', body: fd2 }))
             .then(res => res.text())
             .then(txt => {
               if (txt.indexOf('Success') !== -1 || txt.indexOf('Reboot') !== -1) {
                 waitForReboot(60);
               } else {
+                fetch('/set?otaResume=0');
                 msgEl.className = 'msg warn';
                 msgEl.textContent = (txt.trim() !== '') ? t('msg.updateError') + ' ' + txt : t('msg.updateError');
               }
             });
         })
-        .catch(() => waitForReboot(60));
+        .catch(() => {
+          fetch('/set?otaResume=0');
+          waitForReboot(60);
+        });
     }
 
     const inputSSID = document.getElementsByName('ssid')[0];

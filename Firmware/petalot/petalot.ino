@@ -54,7 +54,7 @@ unsigned long tempLastStatsSave;
 #include "server.hpp"
 #include "ota.hpp"
 
-StaticJsonDocument<128> stats;
+StaticJsonDocument<192> stats;
 
 void setup() {
   Serial.begin(115200);
@@ -79,6 +79,10 @@ void setup() {
   } else {
     Ft = stats["Ft"] ? stats["Ft"].as<double>() : 0.0;
     Tt = stats["Tt"] ? stats["Tt"].as<double>() : 0.0;
+    // Session counters reset on a normal power cycle. An OTA resume continues
+    // the same job, so keep the filament and time already accumulated.
+    Fs = (OtaResumed && stats["Fs"]) ? stats["Fs"].as<double>() : 0.0;
+    Ts = (OtaResumed && stats["Ts"]) ? stats["Ts"].as<double>() : 0.0;
     Bt = stats["Bt"] ? stats["Bt"].as<int>() : 0;
     maxFs = stats["maxFs"] ? stats["maxFs"].as<int>() : 0;
     lastFs = stats["lastFs"] ? stats["lastFs"].as<int>() : 0;
@@ -125,6 +129,8 @@ void saveStats() {
   }
   stats["Ft"] = Ft;
   stats["Tt"] = Tt;
+  stats["Fs"] = Fs;
+  stats["Ts"] = Ts;
   stats["Bt"] = Bt;
   stats["maxFs"] = maxFs;
   stats["lastFs"] = lastFs;

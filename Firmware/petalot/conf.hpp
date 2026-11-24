@@ -11,6 +11,7 @@ String status;
 int OtaResumeState = 0;
 unsigned long OtaResumeElapsedMs = 0;
 bool resumeWaitTemp = false;
+bool OtaResumed = false;  // runtime only: true when this boot consumed a resume
 double To;
 int Vo = 0;
 bool Fenable = true;  //filament sensor enabled
