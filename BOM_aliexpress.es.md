@@ -1,14 +1,14 @@
-Precios actualizados: **20/10/2026**. Valores orientativos, pueden variar con el tiempo — consulta el precio actual en AliExpress.
+Precios actualizados: **27/11/2026**. Valores orientativos, pueden variar con el tiempo — consulta el precio actual en AliExpress.
 
 ## Totales
 
 | Lista | Total |
 |---|---|
 | Máquina PETALOT | 42,59 € |
-| Electrónica para PETALOT | 56,94 € |
+| Electrónica para PETALOT | 47,99 € |
 | Cortador de botellas | 20,66 € |
 | Herramientas | 42,29 € |
-| **TOTAL (mínimo, sin envío)** | **162,48 €** |
+| **TOTAL (mínimo, sin envío)** | **153,53 €** |
 
 ## Máquina PETALOT
 
@@ -37,7 +37,30 @@ Precios actualizados: **20/10/2026**. Valores orientativos, pueden variar con el
 
 | Cant. | Componente | Enlace | Precio |
 |---|---|---|---|
-| 1 | PCB, gerber para fabricar la PCB; solo tienes que subir este archivo zip a jlcpcb.com y pedir tu PCB. O compra una PCB ya fabricada. | https://jlcpcb.com/?from=FUNC · https://function3d.xyz/product/pcb-for-petalot |  |
+| 1 | PCB v1.5.3, ensamblada por JLCPCB (recomendada). Sube el gerber, el BOM y el CPL a JLCPCB y pide PCB Assembly. Todas las piezas van soldadas menos el DC-DC, el A4988 y el Wemos, que son módulos enchufables. Para abaratar un poco, pídela sin los cinco headers hembra de 8 pines con este BOM y este CPL, y reutiliza los headers que traen los módulos. Notas de montaje. O compra una PCB ya fabricada. | https://jlcpcb.com/?from=FUNC · https://function3d.xyz/product/pcb-for-petalot |  |
+| 1 | Wemos D1 MINI V4.0 (cualquier otra versión de WeMos que comparta los pines de salida debería servir) | https://s.click.aliexpress.com/e/_DCS2eTP | 3,39 € |
+| 1 | DC-DC 5V de salida fija (no hay que ajustarlo). Elige la opción de una sola unidad si está disponible; el precio mostrado es de un pack de 10. | https://www.aliexpress.com/item/1005009774585983.html | 6,89 € |
+| 1 | Driver de motor paso a paso A4988 + disipador (es bastante fácil quemarlo, sobre todo si eres principiante; mejor 2 unidades) | https://s.click.aliexpress.com/e/_c32zgNiZ | 1,54 € |
+| 1 | Fuente de alimentación ultra slim 100W, 12V o 24V. Elige el mismo voltaje que el hotend. 12V suele ser más económica. | https://www.aliexpress.com/item/1005012950592227.html | 7,99 € |
+| 1 | Mini micro interruptor de final de carrera con palanca de rodillo, para el sensor de tira | https://s.click.aliexpress.com/e/_c3QnPcE9 | 1,96 € |
+| 1 | Motor paso a paso Nema 17, altura >=38mm, eje en forma de D (17HS4401S-Dupont) | https://s.click.aliexpress.com/e/_c39SiyRr | 11,39 € |
+| 1 | Hotend MK8 12V 50W (también disponible en 24V 40W). Debe coincidir con el voltaje de la fuente. | https://s.click.aliexpress.com/e/_DnlMNy5 | 3,33 € |
+| 30cm | Cable 2P 30AWG (para el sensor de tira de final de carrera, señal digital; yo uso los cables muy finos que saco de un cable de impresora LPT1 viejo) | https://s.click.aliexpress.com/e/_Dlnn1bd | 0,73 € |
+| 25cm | Cable 2P 18AWG (yo uso 25 cm del cable calefactor del hotend) | https://s.click.aliexpress.com/e/_Dlnn1bd | 1,65 € |
+| 1 | Toma de corriente macho 10A 250V de 3 pines IEC320 con interruptor + fusible | https://s.click.aliexpress.com/e/_DmuNpxf | 2,41 € |
+| 9 | Terminales de cable crimpados con funda aislante 20AWG (alimentación de la PCB, IEC320, calefactor) | https://s.click.aliexpress.com/e/_oEJer1l | 1,31 € |
+| 2 | Terminales de cable crimpados con funda aislante 24AWG (micro interruptor) | https://s.click.aliexpress.com/e/_oEJer1l | 1,69 € |
+| 5 | Terminal hembra de 4.8mm | https://s.click.aliexpress.com/e/_c2xFTcyv | 0,96 € |
+| 25mm | Tubo termorretráctil 5mm, para el sensor de tira y el terminal hembra de 4.8mm | https://s.click.aliexpress.com/e/_c3knUgat | 1,38 € |
+| 40mm | Tubo termorretráctil 2mm, para el sensor de tira | https://s.click.aliexpress.com/e/_c3knUgat | 1,37 € |
+
+*No incluidas en el total: la PCB y su montaje en JLCPCB. El DC-DC, el A4988 y el Wemos son módulos enchufables y no deben soldarse.*
+
+## Electrónica para PETALOT — PCB v1.1 DIY antigua
+
+| Cant. | Componente | Enlace | Precio |
+|---|---|---|---|
+| 1 | PCB v1.1, placa desnuda (gerber). Opción DIY antigua, no recomendada: tienes que soldar tú mismo las resistencias, condensadores, MOSFET, headers y terminales de tornillo. Úsala solo si ya tienes los componentes antiguos o quieres montar la placa antigua exactamente. |  |  |
 | 1 | Wemos D1 MINI V4.0 (cualquier otra versión de WeMos que comparta los pines de salida debería servir) | https://s.click.aliexpress.com/e/_DCS2eTP | 3,39 € |
 | 1 | Mini DC-DC 12-24V a 5V 3A Step Down | https://s.click.aliexpress.com/e/_c3yZLI5b | 3,39 € |
 | 1 | Driver de motor paso a paso A4988 + disipador (es bastante fácil quemarlo, sobre todo si eres principiante; mejor 2 unidades) | https://s.click.aliexpress.com/e/_c32zgNiZ | 1,54 € |
@@ -60,7 +83,7 @@ Precios actualizados: **20/10/2026**. Valores orientativos, pueden variar con el
 | 25mm | Tubo termorretráctil 5mm, para el sensor de tira y el terminal hembra de 4.8mm | https://s.click.aliexpress.com/e/_c3knUgat | 1,38 € |
 | 40mm | Tubo termorretráctil 2mm, para el sensor de tira | https://s.click.aliexpress.com/e/_c3knUgat | 1,37 € |
 
-*No incluida en el total: la PCB (se fabrica en JLCPCB).*
+*Opción DIY antigua, no recomendada. Esta lista es independiente y no está incluida en el total de arriba. Necesita la PCB v1.1 antigua y componentes soldados a mano.*
 
 ## Cortador de botellas
 

@@ -19,10 +19,11 @@
 
  - [Buy it ready-made](https://function3d.xyz/shop/)
  - **UPDATE**: the firmware you need depends on your PCB version — v1.4.5 (DIY) and v1.5.1/v1.5.2/v1.5.3 (commercial). See the [Firmware README](Firmware/README.md).
- - [Gerber](https://github.com/function3d/petalot/raw/master/Schematic/Gerber_v1.1_2023-01-02.zip) for PCB fabrication, just upload this zip file to [jlcpcb.com](https://jlcpcb.com/?from=FUNC) and order your PCB.
+ - **Recommended PCB**: [v1.5.3, assembled by JLCPCB](https://github.com/function3d/petalot/raw/master/Schematic/Gerber_v1.5.3_2026-11-27.zip). Upload the gerber, [BOM](https://github.com/function3d/petalot/raw/master/Schematic/assembly/BOM_JLCPCB_v1.5.3_full.csv) and [CPL](https://github.com/function3d/petalot/raw/master/Schematic/assembly/CPL_JLCPCB_v1.5.3_full.csv) to [jlcpcb.com](https://jlcpcb.com/?from=FUNC) and order PCB Assembly. Everything is soldered except the DC-DC, A4988 and Wemos, which are plug-in modules. See the [assembly notes](Schematic/assembly/README.md).
+ - **Legacy DIY PCB**: [v1.1 gerber](https://github.com/function3d/petalot/raw/master/Schematic/Gerber_v1.1_2023-01-02.zip). It needs all components soldered by hand. It remains available, but it is not recommended for new builds.
  - [Schematic](https://github.com/function3d/petalot/tree/master/Schematic)
  - [Firmware](https://github.com/function3d/petalot/tree/master/Firmware)
- - [Before switching on the electronics for the first time](https://github.com/function3d/petalot/blob/5b1d409dda7f66e7040381943212c45b0bf8b62b/before%20you%20switching%20on%20the%20electronics.md)
+ - [Before switching on the electronics for the first time](https://github.com/function3d/petalot/blob/master/before%20you%20switching%20on%20the%20electronics.md)
 
 ## App (Android)
 

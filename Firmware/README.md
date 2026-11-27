@@ -20,19 +20,22 @@ installed.
 - If you built your own PETALOT from the public files, your PCB is the **v1.4.5**.
 - Versions **v1.5.1**, **v1.5.2** and **v1.5.3** are only fitted on commercially
   sold machines.
-- **v1.5.3** uses the same PCB and pin mapping as **v1.5.2**; only the gearbox
-  ratio changes. Both values remain adjustable in Settings for retrofits.
+- **v1.5.3** uses the same pin map as **v1.5.2**; only the gearbox ratio
+  changes. The v1.5.3 gerber is an assembled board revision: all parts are
+  soldered except the DC-DC, A4988 and Wemos, which plug into headers. Both gear
+  ratio and filament-per-turn remain adjustable in Settings for retrofits.
 
 > Do not flash a firmware that does not match your hardware revision.
 
 ## Identify your PCB
 
-| v1.4.5 (DIY) | v1.5.1 | v1.5.2 |
+| v1.4.5 (DIY) | v1.5.1 | v1.5.2 / v1.5.3 |
 | --- | --- | --- |
 | ![PCB v1.4.5](PCB_v1.4.5.jpeg) | ![PCB v1.5.1](PCB_v1.5.1.jpeg) | ![PCB v1.5.2](PCB_v1.5.2.jpeg) |
 
-**v1.5.3** uses the same PCB as **v1.5.2**; it is identified by the 1:50
-gearbox, not by a different board.
+**v1.5.3** uses the same pin map as **v1.5.2**. The board revision in the public
+files is assembled by JLCPCB; it is identified by the 1:50 gearbox, not by a
+different pinout.
 
 ## Gear ratio calibration
 

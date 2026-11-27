@@ -1,14 +1,14 @@
-Prices updated: **2026-10-20**. Indicative values, they may vary over time — check AliExpress for the current price.
+Prices updated: **2026-11-27**. Indicative values, they may vary over time — check AliExpress for the current price.
 
 ## Totals
 
 | List | Total |
 |---|---|
 | PETALOT machine | 42.59 € |
-| Electronics for PETALOT | 56.94 € |
+| Electronics for PETALOT | 47.99 € |
 | Bottle Cutter | 20.66 € |
 | Tools | 42.29 € |
-| **TOTAL (minimum, no shipping)** | **162.48 €** |
+| **TOTAL (minimum, no shipping)** | **153.53 €** |
 
 ## PETALOT machine
 
@@ -37,7 +37,30 @@ Prices updated: **2026-10-20**. Indicative values, they may vary over time — c
 
 | Qty | Component | Link | Price |
 |---|---|---|---|
-| 1 | PCB, gerber for PCB fabrication, just upload this zip file to jlcpcb.com and order your PCB. Or buy a ready-made PCB. | https://jlcpcb.com/?from=FUNC · https://function3d.xyz/product/pcb-for-petalot |  |
+| 1 | PCB v1.5.3, assembled by JLCPCB (recommended). Upload the gerber, BOM and CPL to JLCPCB and order PCB Assembly. All parts are soldered except the DC-DC, A4988 and Wemos, which are plug-in modules. To save a little, order it without the five 8-pin female headers using this BOM and CPL, and reuse the headers supplied with the modules. Assembly notes. Or buy a ready-made PCB. | https://jlcpcb.com/?from=FUNC · https://function3d.xyz/product/pcb-for-petalot |  |
+| 1 | Wemos D1 MINI V4.0 (any other version of WeMos that shares the output pins should work) | https://s.click.aliexpress.com/e/_DCS2eTP | 3.39 € |
+| 1 | DC-DC 5V fixed output (no adjustment needed). Choose the single-unit option if available; the price shown is for a 10-pack. | https://www.aliexpress.com/item/1005009774585983.html | 6.89 € |
+| 1 | A4988 stepper motor driver+heat sink (It is quite easy to burn it, especially if you are a beginner, better 2 units) | https://s.click.aliexpress.com/e/_c32zgNiZ | 1.54 € |
+| 1 | Ultra-slim power supply 100W, 12V or 24V. Choose the same voltage as the hotend. 12V is usually cheaper. | https://www.aliexpress.com/item/1005012950592227.html | 7.99 € |
+| 1 | Mini Micro Limit Switch Roller Lever Arm, for strip sensor | https://s.click.aliexpress.com/e/_c3QnPcE9 | 1.96 € |
+| 1 | Nema 17 stepper motor height >=38mm D shaped shaft (17HS4401S-Dupont) | https://s.click.aliexpress.com/e/_c39SiyRr | 11.39 € |
+| 1 | Hotend MK8 12V 50W (also available in 24V 40W). It must match the power supply voltage. | https://s.click.aliexpress.com/e/_DnlMNy5 | 3.33 € |
+| 30cm | Wire 2P 30AWG (for limit switch strip sensor, digital signal, I use the very thin wires stripped from an old LPT1 printer cable) | https://s.click.aliexpress.com/e/_Dlnn1bd | 0.73 € |
+| 25cm | Wire 2P 18AWG (I use 25cm from the hotend heater cable) | https://s.click.aliexpress.com/e/_Dlnn1bd | 1.65 € |
+| 1 | 10A 250V Male Power Socket 3 Pin IEC320 switch + Fuse | https://s.click.aliexpress.com/e/_DmuNpxf | 2.41 € |
+| 9 | Terminal Wire Conector Crimp Insulated Ferrule 20AWG (PCB power, IEC320, heater) | https://s.click.aliexpress.com/e/_oEJer1l | 1.31 € |
+| 2 | Terminal Wire Conector Crimp Insulated Ferrule 24AWG (micro switch) | https://s.click.aliexpress.com/e/_oEJer1l | 1.69 € |
+| 5 | 4.8mm Female Terminal | https://s.click.aliexpress.com/e/_c2xFTcyv | 0.96 € |
+| 25mm | Heat Shrink Tube 5mm, for strip sensor and 4.8mm Female Terminal | https://s.click.aliexpress.com/e/_c3knUgat | 1.38 € |
+| 40mm | Heat Shrink Tube 2mm, for strip sensor | https://s.click.aliexpress.com/e/_c3knUgat | 1.37 € |
+
+*Not included in the total: the PCB and its JLCPCB assembly. The DC-DC, A4988 and Wemos are plug-in modules and must not be soldered.*
+
+## Electronics for PETALOT — legacy DIY PCB v1.1
+
+| Qty | Component | Link | Price |
+|---|---|---|---|
+| 1 | PCB v1.1, bare board (gerber). Legacy DIY option, not recommended: you must solder the resistors, capacitors, MOSFET, headers and screw terminals yourself. Use it only if you already have the old components or want to build the old board exactly. |  |  |
 | 1 | Wemos D1 MINI V4.0 (any other version of WeMos that shares the output pins should work) | https://s.click.aliexpress.com/e/_DCS2eTP | 3.39 € |
 | 1 | Mini DC-DC 12-24V To 5V 3A Step Down | https://s.click.aliexpress.com/e/_c3yZLI5b | 3.39 € |
 | 1 | A4988 stepper motor driver+heat sink (It is quite easy to burn it, especially if you are a beginner, better 2 units) | https://s.click.aliexpress.com/e/_c32zgNiZ | 1.54 € |
@@ -60,7 +83,7 @@ Prices updated: **2026-10-20**. Indicative values, they may vary over time — c
 | 25mm | Heat Shrink Tube 5mm, for strip sensor and 4.8mm Female Terminal | https://s.click.aliexpress.com/e/_c3knUgat | 1.38 € |
 | 40mm | Heat Shrink Tube 2mm, for strip sensor | https://s.click.aliexpress.com/e/_c3knUgat | 1.37 € |
 
-*Not included in the total: the PCB (fabricated at JLCPCB).*
+*Legacy DIY option, not recommended. This list is separate and is not included in the total above. It needs the old PCB v1.1 and hand-soldered components.*
 
 ## Bottle Cutter
 

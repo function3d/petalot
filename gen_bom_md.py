@@ -7,9 +7,11 @@ import csv, re, math, os, datetime
 HERE = os.path.dirname(os.path.abspath(__file__))
 
 FILES = ['parts-list-petalot.csv','parts-list-electronics.csv','parts-list-cutter.csv','parts-list-tools.csv']
+LEGACY = 'parts-list-electronics-legacy.csv'
 HEAD = {
  'parts-list-petalot.csv':   ('PETALOT machine',       'Máquina PETALOT'),
  'parts-list-electronics.csv':('Electronics for PETALOT','Electrónica para PETALOT'),
+ 'parts-list-electronics-legacy.csv':('Electronics for PETALOT — legacy DIY PCB v1.1','Electrónica para PETALOT — PCB v1.1 DIY antigua'),
  'parts-list-cutter.csv':    ('Bottle Cutter',          'Cortador de botellas'),
  'parts-list-tools.csv':     ('Tools',                  'Herramientas'),
 }
@@ -18,12 +20,13 @@ COLS = [['Qty','Component','Link','Price'],
 TOT_HEAD = ['Totals','Totales']
 TOT_COLS = [['List','Total'],['Lista','Total']]
 TOTAL_LBL = ['TOTAL (minimum, no shipping)','TOTAL (mínimo, sin envío)']
-TOT_NOTE = None
 NOTES = {
  'parts-list-petalot.csv': ['*Not included in the total: the wooden base for the PETALOT machine (cut to the dimensions in [this image](https://function3d.xyz/wp-content/uploads/2026/04/cotas2.jpg)).*',
                             '*No incluida en el total: la base de madera de la máquina PETALOT (cortada según las medidas de [esta imagen](https://function3d.xyz/wp-content/uploads/2026/04/cotas2.jpg)).*'],
- 'parts-list-electronics.csv': ['*Not included in the total: the PCB (fabricated at JLCPCB).*',
-                                '*No incluida en el total: la PCB (se fabrica en JLCPCB).*'],
+ 'parts-list-electronics.csv': ['*Not included in the total: the PCB and its JLCPCB assembly. The DC-DC, A4988 and Wemos are plug-in modules and must not be soldered.*',
+                                '*No incluidas en el total: la PCB y su montaje en JLCPCB. El DC-DC, el A4988 y el Wemos son módulos enchufables y no deben soldarse.*'],
+ 'parts-list-electronics-legacy.csv': ['*Legacy DIY option, not recommended. This list is separate and is not included in the total above. It needs the old PCB v1.1 and hand-soldered components.*',
+                                       '*Opción DIY antigua, no recomendada. Esta lista es independiente y no está incluida en el total de arriba. Necesita la PCB v1.1 antigua y componentes soldados a mano.*'],
  'parts-list-cutter.csv': ['*Not included in the total: the 48cm M6 threaded rod for the Bottle Cutter.*',
                            '*No incluida en el total: la varilla roscada 48cm M6 del cortador.*'],
 }
@@ -53,6 +56,29 @@ def line_total(qn, price, lot):
     if price is None: return None
     return (math.ceil(qn/lot)*price) if (isinstance(lot,int) and lot>0) else (price*qn)
 
+def section(f, lang, rows):
+    comma = (lang==1)
+    L=[]
+    L.append(f"## {HEAD[f][lang]}"); L.append("")
+    L.append("| "+" | ".join(COLS[lang])+" |")
+    L.append("|"+"---|"*len(COLS[lang]))
+    for i,row in enumerate(rows):
+        p,l = price_lot(row)
+        link = row[3]
+        if f=='parts-list-electronics.csv' and i==0:
+            link = 'https://jlcpcb.com/?from=FUNC · ' + PCB_PRODUCT
+        desc = strip(row[2])
+        if 'Wooden base' in row[2] or 'Base de madera' in row[2]:
+            desc += ' <br><img src="' + WOOD_IMG + '" alt="Wooden base dimensions" width="380">'
+        lt = line_total(qty_num(row[0]), p, l)
+        precio = '' if lt is None else eur(lt,comma)
+        L.append("| {q} | {d} | {l} | {p} |".format(
+            q=esc(str(row[0])),d=esc(desc),l=esc(link),p=precio))
+    L.append("")
+    if f in NOTES:
+        L.append(NOTES[f][lang]); L.append("")
+    return L
+
 def build(lang, csvname):
     comma = (lang==1)
     totals={}; grand=0.0; cache={}
@@ -75,26 +101,11 @@ def build(lang, csvname):
     L.append("| "+" | ".join(TOT_COLS[lang])+" |"); L.append("|---|---|")
     for f in FILES: L.append(f"| {HEAD[f][lang]} | {eur(totals[f],comma)} |")
     L.append(f"| **{TOTAL_LBL[lang]}** | **{eur(grand,comma)}** |"); L.append("")
+    leg=[r for r in csv.reader(open(os.path.join(HERE,csvname(LEGACY)),newline='',encoding='utf-8')) if r][1:]
     for f in FILES:
-        rows=cache[f]
-        L.append(f"## {HEAD[f][lang]}"); L.append("")
-        L.append("| "+" | ".join(COLS[lang])+" |")
-        L.append("|"+"---|"*len(COLS[lang]))
-        for i,row in enumerate(rows):
-            p,l = price_lot(row)
-            link = row[3]
-            if f=='parts-list-electronics.csv' and i==0:
-                link = 'https://jlcpcb.com/?from=FUNC · ' + PCB_PRODUCT
-            desc = strip(row[2])
-            if 'Wooden base' in row[2] or 'Base de madera' in row[2]:
-                desc += ' <br><img src="' + WOOD_IMG + '" alt="Wooden base dimensions" width="380">'
-            lt = line_total(qty_num(row[0]), p, l)
-            precio = '' if lt is None else eur(lt,comma)
-            L.append("| {q} | {d} | {l} | {p} |".format(
-                q=esc(str(row[0])),d=esc(desc),l=esc(link),p=precio))
-        L.append("")
-        if f in NOTES:
-            L.append(NOTES[f][lang]); L.append("")
+        L.extend(section(f, lang, cache[f]))
+        if f == 'parts-list-electronics.csv':
+            L.extend(section(LEGACY, lang, leg))
     return "\n".join(L)+"\n"
 
 def en_name(f): return f
