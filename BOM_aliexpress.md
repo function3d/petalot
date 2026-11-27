@@ -48,7 +48,7 @@ Prices updated: **2026-11-27**. Indicative values, they may vary over time — c
 | 1 | 10A 250V Male Power Socket 3 Pin IEC320 switch + Fuse | https://s.click.aliexpress.com/e/_DmuNpxf | 2.41 € |
 | 9 | Terminal Wire Conector Crimp Insulated Ferrule 20AWG (PCB power, IEC320, heater) | https://s.click.aliexpress.com/e/_oEJer1l | 1.31 € |
 | 2 | Terminal Wire Conector Crimp Insulated Ferrule 24AWG (micro switch) | https://s.click.aliexpress.com/e/_oEJer1l | 1.69 € |
-| 5 | 4.8mm Female Terminal | https://s.click.aliexpress.com/e/_c2xFTcyv | 0.96 € |
+| 7 | 4.8mm Female Terminal (for the 10A 250V Male Power Socket 3 Pin IEC320) | https://s.click.aliexpress.com/e/_c2xFTcyv | 0.96 € |
 | 25mm | Heat Shrink Tube 5mm, for strip sensor and 4.8mm Female Terminal | https://s.click.aliexpress.com/e/_c3knUgat | 1.38 € |
 | 40mm | Heat Shrink Tube 2mm, for strip sensor | https://s.click.aliexpress.com/e/_c3knUgat | 1.37 € |
 
@@ -77,7 +77,7 @@ Prices updated: **2026-11-27**. Indicative values, they may vary over time — c
 | 1 | 10A 250V Male Power Socket 3 Pin IEC320 switch + Fuse | https://s.click.aliexpress.com/e/_DmuNpxf | 2.41 € |
 | 9 | Terminal Wire Conector Crimp Insulated Ferrule 20AWG (PCB power, IEC320, heater) | https://s.click.aliexpress.com/e/_oEJer1l | 1.31 € |
 | 2 | Terminal Wire Conector Crimp Insulated Ferrule 24AWG (micro switch) | https://s.click.aliexpress.com/e/_oEJer1l | 1.69 € |
-| 5 | 4.8mm Female Terminal | https://s.click.aliexpress.com/e/_c2xFTcyv | 0.96 € |
+| 7 | 4.8mm Female Terminal (for the 10A 250V Male Power Socket 3 Pin IEC320) | https://s.click.aliexpress.com/e/_c2xFTcyv | 0.96 € |
 | 25mm | Heat Shrink Tube 5mm, for strip sensor and 4.8mm Female Terminal | https://s.click.aliexpress.com/e/_c3knUgat | 1.38 € |
 | 40mm | Heat Shrink Tube 2mm, for strip sensor | https://s.click.aliexpress.com/e/_c3knUgat | 1.37 € |
 

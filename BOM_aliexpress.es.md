@@ -48,7 +48,7 @@ Precios actualizados: **27/11/2026**. Valores orientativos, pueden variar con el
 | 1 | Toma de corriente macho 10A 250V de 3 pines IEC320 con interruptor + fusible | https://s.click.aliexpress.com/e/_DmuNpxf | 2,41 € |
 | 9 | Terminales de cable crimpados con funda aislante 20AWG (alimentación de la PCB, IEC320, calefactor) | https://s.click.aliexpress.com/e/_oEJer1l | 1,31 € |
 | 2 | Terminales de cable crimpados con funda aislante 24AWG (micro interruptor) | https://s.click.aliexpress.com/e/_oEJer1l | 1,69 € |
-| 5 | Terminal hembra de 4.8mm | https://s.click.aliexpress.com/e/_c2xFTcyv | 0,96 € |
+| 7 | Terminal hembra de 4.8mm (para la toma de corriente macho 10A 250V de 3 pines IEC320) | https://s.click.aliexpress.com/e/_c2xFTcyv | 0,96 € |
 | 25mm | Tubo termorretráctil 5mm, para el sensor de tira y el terminal hembra de 4.8mm | https://s.click.aliexpress.com/e/_c3knUgat | 1,38 € |
 | 40mm | Tubo termorretráctil 2mm, para el sensor de tira | https://s.click.aliexpress.com/e/_c3knUgat | 1,37 € |
 
@@ -77,7 +77,7 @@ Precios actualizados: **27/11/2026**. Valores orientativos, pueden variar con el
 | 1 | Toma de corriente macho 10A 250V de 3 pines IEC320 con interruptor + fusible | https://s.click.aliexpress.com/e/_DmuNpxf | 2,41 € |
 | 9 | Terminales de cable crimpados con funda aislante 20AWG (alimentación de la PCB, IEC320, calefactor) | https://s.click.aliexpress.com/e/_oEJer1l | 1,31 € |
 | 2 | Terminales de cable crimpados con funda aislante 24AWG (micro interruptor) | https://s.click.aliexpress.com/e/_oEJer1l | 1,69 € |
-| 5 | Terminal hembra de 4.8mm | https://s.click.aliexpress.com/e/_c2xFTcyv | 0,96 € |
+| 7 | Terminal hembra de 4.8mm (para la toma de corriente macho 10A 250V de 3 pines IEC320) | https://s.click.aliexpress.com/e/_c2xFTcyv | 0,96 € |
 | 25mm | Tubo termorretráctil 5mm, para el sensor de tira y el terminal hembra de 4.8mm | https://s.click.aliexpress.com/e/_c3knUgat | 1,38 € |
 | 40mm | Tubo termorretráctil 2mm, para el sensor de tira | https://s.click.aliexpress.com/e/_c3knUgat | 1,37 € |
 
