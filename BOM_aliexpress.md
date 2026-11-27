@@ -4,20 +4,18 @@ Prices updated: **2026-11-27**. Indicative values, they may vary over time — c
 
 | List | Total |
 |---|---|
-| PETALOT machine | 42.59 € |
+| PETALOT machine | 39.49 € |
 | Electronics for PETALOT | 47.99 € |
 | Bottle Cutter | 20.66 € |
 | Tools | 42.29 € |
-| **TOTAL (minimum, no shipping)** | **153.53 €** |
+| **TOTAL (minimum, no shipping)** | **150.43 €** |
 
 ## PETALOT machine
 
 | Qty | Component | Link | Price |
 |---|---|---|---|
-| 18 | Screw M2.3 x 20mm (union between Large Gear and Pulley) | https://s.click.aliexpress.com/e/_c3eyUDcN | 1.79 € |
-| 2 | Screw M2 x 12mm (fix PCB to wood base) | https://s.click.aliexpress.com/e/_c3eyUDcN | 1.31 € |
 | 3 | Screw M4 x 35mm (central wooden block and Angle Bracket) | https://s.click.aliexpress.com/e/_onWNJ8P | 3.01 € |
-| 14 | Screw M3 x 20mm (to screw the different parts to the wood base) | https://s.click.aliexpress.com/e/_onWNJ8P | 2.08 € |
+| 26 | Screw M3 x 20mm (wood base and new pulley: 6 screws per side) | https://s.click.aliexpress.com/e/_onWNJ8P | 2.08 € |
 | 1 | V6 Stainless steel nozzle 0.4 mm | https://s.click.aliexpress.com/e/_c3ejwXiT | 0.27 € |
 | 4 | Bearing 8x22x7 mm 608RS | https://s.click.aliexpress.com/e/_DFmmUC5 | 3.79 € |
 | 1 | 90 Degree Angle Bracket 20x20mm | https://s.click.aliexpress.com/e/_c4VSPnbL | 2.74 € |
@@ -60,7 +58,7 @@ Prices updated: **2026-11-27**. Indicative values, they may vary over time — c
 
 | Qty | Component | Link | Price |
 |---|---|---|---|
-| 1 | PCB v1.1, bare board (gerber). Legacy DIY option, not recommended: you must solder the resistors, capacitors, MOSFET, headers and screw terminals yourself. Use it only if you already have the old components or want to build the old board exactly. |  |  |
+| 1 | PCB v1.1, bare board (gerber). Legacy DIY option: you must solder the resistors, capacitors, MOSFET, headers and screw terminals yourself. Use it only if you already have the old components or want to build the old board exactly. |  |  |
 | 1 | Wemos D1 MINI V4.0 (any other version of WeMos that shares the output pins should work) | https://s.click.aliexpress.com/e/_DCS2eTP | 3.39 € |
 | 1 | Mini DC-DC 12-24V To 5V 3A Step Down | https://s.click.aliexpress.com/e/_c3yZLI5b | 3.39 € |
 | 1 | A4988 stepper motor driver+heat sink (It is quite easy to burn it, especially if you are a beginner, better 2 units) | https://s.click.aliexpress.com/e/_c32zgNiZ | 1.54 € |
@@ -83,7 +81,7 @@ Prices updated: **2026-11-27**. Indicative values, they may vary over time — c
 | 25mm | Heat Shrink Tube 5mm, for strip sensor and 4.8mm Female Terminal | https://s.click.aliexpress.com/e/_c3knUgat | 1.38 € |
 | 40mm | Heat Shrink Tube 2mm, for strip sensor | https://s.click.aliexpress.com/e/_c3knUgat | 1.37 € |
 
-*Legacy DIY option, not recommended. This list is separate and is not included in the total above. It needs the old PCB v1.1 and hand-soldered components.*
+*Legacy DIY option. This list is separate and is not included in the total above. It needs the old PCB v1.1 and hand-soldered components.*
 
 ## Bottle Cutter
 

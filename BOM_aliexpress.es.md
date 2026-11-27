@@ -4,20 +4,18 @@ Precios actualizados: **27/11/2026**. Valores orientativos, pueden variar con el
 
 | Lista | Total |
 |---|---|
-| Máquina PETALOT | 42,59 € |
+| Máquina PETALOT | 39,49 € |
 | Electrónica para PETALOT | 47,99 € |
 | Cortador de botellas | 20,66 € |
 | Herramientas | 42,29 € |
-| **TOTAL (mínimo, sin envío)** | **153,53 €** |
+| **TOTAL (mínimo, sin envío)** | **150,43 €** |
 
 ## Máquina PETALOT
 
 | Cant. | Componente | Enlace | Precio |
 |---|---|---|---|
-| 18 | Tornillo M2.3 x 20mm (unión entre el engranaje grande y la polea) | https://s.click.aliexpress.com/e/_c3eyUDcN | 1,79 € |
-| 2 | Tornillo M2 x 12mm (fija la PCB a la base de madera) | https://s.click.aliexpress.com/e/_c3eyUDcN | 1,31 € |
 | 3 | Tornillo M4 x 35mm (bloque central de madera y escuadra) | https://s.click.aliexpress.com/e/_onWNJ8P | 3,01 € |
-| 14 | Tornillo M3 x 20mm (para atornillar las distintas partes a la base de madera) | https://s.click.aliexpress.com/e/_onWNJ8P | 2,08 € |
+| 26 | Tornillo M3 x 20mm (base de madera y polea nueva: 6 tornillos por lado) | https://s.click.aliexpress.com/e/_onWNJ8P | 2,08 € |
 | 1 | Boquilla V6 de acero inoxidable 0.4 mm | https://s.click.aliexpress.com/e/_c3ejwXiT | 0,27 € |
 | 4 | Rodamiento 8x22x7 mm 608RS | https://s.click.aliexpress.com/e/_DFmmUC5 | 3,79 € |
 | 1 | Escuadra en ángulo de 90 grados 20x20mm | https://s.click.aliexpress.com/e/_c4VSPnbL | 2,74 € |
@@ -60,7 +58,7 @@ Precios actualizados: **27/11/2026**. Valores orientativos, pueden variar con el
 
 | Cant. | Componente | Enlace | Precio |
 |---|---|---|---|
-| 1 | PCB v1.1, placa desnuda (gerber). Opción DIY antigua, no recomendada: tienes que soldar tú mismo las resistencias, condensadores, MOSFET, headers y terminales de tornillo. Úsala solo si ya tienes los componentes antiguos o quieres montar la placa antigua exactamente. |  |  |
+| 1 | PCB v1.1, placa desnuda (gerber). Opción DIY antigua: tienes que soldar tú mismo las resistencias, condensadores, MOSFET, headers y terminales de tornillo. Úsala solo si ya tienes los componentes antiguos o quieres montar la placa antigua exactamente. |  |  |
 | 1 | Wemos D1 MINI V4.0 (cualquier otra versión de WeMos que comparta los pines de salida debería servir) | https://s.click.aliexpress.com/e/_DCS2eTP | 3,39 € |
 | 1 | Mini DC-DC 12-24V a 5V 3A Step Down | https://s.click.aliexpress.com/e/_c3yZLI5b | 3,39 € |
 | 1 | Driver de motor paso a paso A4988 + disipador (es bastante fácil quemarlo, sobre todo si eres principiante; mejor 2 unidades) | https://s.click.aliexpress.com/e/_c32zgNiZ | 1,54 € |
@@ -83,7 +81,7 @@ Precios actualizados: **27/11/2026**. Valores orientativos, pueden variar con el
 | 25mm | Tubo termorretráctil 5mm, para el sensor de tira y el terminal hembra de 4.8mm | https://s.click.aliexpress.com/e/_c3knUgat | 1,38 € |
 | 40mm | Tubo termorretráctil 2mm, para el sensor de tira | https://s.click.aliexpress.com/e/_c3knUgat | 1,37 € |
 
-*Opción DIY antigua, no recomendada. Esta lista es independiente y no está incluida en el total de arriba. Necesita la PCB v1.1 antigua y componentes soldados a mano.*
+*Opción DIY antigua. Esta lista es independiente y no está incluida en el total de arriba. Necesita la PCB v1.1 antigua y componentes soldados a mano.*
 
 ## Cortador de botellas
 
