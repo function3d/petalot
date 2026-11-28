@@ -58,7 +58,7 @@ Prices updated: **2026-11-27**. Indicative values, they may vary over time — c
 
 | Qty | Component | Link | Price |
 |---|---|---|---|
-| 1 | PCB v1.1, bare board (gerber). Legacy DIY option: you must solder the resistors, capacitors, MOSFET, headers and screw terminals yourself. Use it only if you already have the old components or want to build the old board exactly. |  |  |
+| 1 | PCB v1.1, bare board (gerber). Legacy DIY option: you must solder the resistors, capacitors, MOSFET, headers and screw terminals yourself. Use it only if you already have the old components or want to build the old board exactly. The remaining external parts are listed in the electronics BOM above. With PCB v1.1, use 12 V only for the power supply and the hotend. |  |  |
 | 1 | Wemos D1 MINI V4.0 (any other version of WeMos that shares the output pins should work) | https://s.click.aliexpress.com/e/_DCS2eTP | 3.39 € |
 | 1 | Mini DC-DC 12-24V To 5V 3A Step Down | https://s.click.aliexpress.com/e/_c3yZLI5b | 3.39 € |
 | 1 | A4988 stepper motor driver+heat sink (It is quite easy to burn it, especially if you are a beginner, better 2 units) | https://s.click.aliexpress.com/e/_c32zgNiZ | 1.54 € |
@@ -68,20 +68,8 @@ Prices updated: **2026-11-27**. Indicative values, they may vary over time — c
 | 3 | Terminal Block Connector 2P | https://s.click.aliexpress.com/e/_DkqRgFn | 0.84 € |
 | 1 | 10K ohms resistors R2 | https://s.click.aliexpress.com/e/_DeT9AAz | 1.71 € |
 | 1 | 2K ohms resistors for R1 if firmware version >=1.4 | https://s.click.aliexpress.com/e/_DeT9AAz | 2.20 € |
-| 1 | Power Supply 12v 5A | https://s.click.aliexpress.com/e/_c2zdHPX3 | 6.19 € |
-| 1 | Mini Micro Limit Switch Roller Lever Arm, for strip sensor | https://s.click.aliexpress.com/e/_c3QnPcE9 | 1.96 € |
-| 1 | Nema 17 stepper motor height >=38mm D shaped shaft (17HS4401S-Dupont) | https://s.click.aliexpress.com/e/_c39SiyRr | 11.39 € |
-| 1 | Hotend MK8 12V 40W | https://s.click.aliexpress.com/e/_DnlMNy5 | 3.33 € |
-| 30cm | Wire 2P 30AWG (for limit switch strip sensor, digital signal, I use the very thin wires stripped from an old LPT1 printer cable) | https://s.click.aliexpress.com/e/_Dlnn1bd | 0.73 € |
-| 25cm | Wire 2P 18AWG (I use 25cm from the hotend heater cable) | https://s.click.aliexpress.com/e/_Dlnn1bd | 1.65 € |
-| 1 | 10A 250V Male Power Socket 3 Pin IEC320 switch + Fuse | https://s.click.aliexpress.com/e/_DmuNpxf | 2.41 € |
-| 9 | Terminal Wire Conector Crimp Insulated Ferrule 20AWG (PCB power, IEC320, heater) | https://s.click.aliexpress.com/e/_oEJer1l | 1.31 € |
-| 2 | Terminal Wire Conector Crimp Insulated Ferrule 24AWG (micro switch) | https://s.click.aliexpress.com/e/_oEJer1l | 1.69 € |
-| 7 | 4.8mm Female Terminal (for the 10A 250V Male Power Socket 3 Pin IEC320) | https://s.click.aliexpress.com/e/_c2xFTcyv | 0.96 € |
-| 25mm | Heat Shrink Tube 5mm, for strip sensor and 4.8mm Female Terminal | https://s.click.aliexpress.com/e/_c3knUgat | 1.38 € |
-| 40mm | Heat Shrink Tube 2mm, for strip sensor | https://s.click.aliexpress.com/e/_c3knUgat | 1.37 € |
 
-*Legacy DIY option. This list is separate and is not included in the total above. It needs the old PCB v1.1 and hand-soldered components.*
+*Legacy DIY option. Only the old PCB v1.1 and its hand-soldered parts are listed here. Use the electronics BOM above for the other external parts. With PCB v1.1, use 12 V only for the power supply and the hotend. This list is not included in the total above.*
 
 ## Bottle Cutter
 

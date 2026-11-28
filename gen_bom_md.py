@@ -25,8 +25,8 @@ NOTES = {
                             '*No incluida en el total: la base de madera de la máquina PETALOT (cortada según las medidas de [esta imagen](https://function3d.xyz/wp-content/uploads/2026/04/cotas2.jpg)).*'],
  'parts-list-electronics.csv': ['*Not included in the total: the PCB and its JLCPCB assembly. The DC-DC, A4988 and Wemos are plug-in modules and must not be soldered.*',
                                 '*No incluidas en el total: la PCB y su montaje en JLCPCB. El DC-DC, el A4988 y el Wemos son módulos enchufables y no deben soldarse.*'],
- 'parts-list-electronics-legacy.csv': ['*Legacy DIY option. This list is separate and is not included in the total above. It needs the old PCB v1.1 and hand-soldered components.*',
-                                       '*Opción DIY antigua. Esta lista es independiente y no está incluida en el total de arriba. Necesita la PCB v1.1 antigua y componentes soldados a mano.*'],
+ 'parts-list-electronics-legacy.csv': ['*Legacy DIY option. Only the old PCB v1.1 and its hand-soldered parts are listed here. Use the electronics BOM above for the other external parts. With PCB v1.1, use 12 V only for the power supply and the hotend. This list is not included in the total above.*',
+                                       '*Opción DIY antigua. Aquí solo se listan la PCB v1.1 antigua y sus componentes soldados a mano. Usa el BOM de electrónica de arriba para el resto de piezas externas. Con la PCB v1.1, usa solo 12 V en la fuente de alimentación y en el hotend. Esta lista no está incluida en el total de arriba.*'],
  'parts-list-cutter.csv': ['*Not included in the total: the 48cm M6 threaded rod for the Bottle Cutter.*',
                            '*No incluida en el total: la varilla roscada 48cm M6 del cortador.*'],
 }

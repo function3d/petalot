@@ -58,7 +58,7 @@ Precios actualizados: **27/11/2026**. Valores orientativos, pueden variar con el
 
 | Cant. | Componente | Enlace | Precio |
 |---|---|---|---|
-| 1 | PCB v1.1, placa desnuda (gerber). Opción DIY antigua: tienes que soldar tú mismo las resistencias, condensadores, MOSFET, headers y terminales de tornillo. Úsala solo si ya tienes los componentes antiguos o quieres montar la placa antigua exactamente. |  |  |
+| 1 | PCB v1.1, placa desnuda (gerber). Opción DIY antigua: tienes que soldar tú mismo las resistencias, condensadores, MOSFET, headers y terminales de tornillo. Úsala solo si ya tienes los componentes antiguos o quieres montar la placa antigua exactamente. El resto de piezas externas están en el BOM de electrónica de arriba. Con la PCB v1.1, usa solo 12 V en la fuente de alimentación y en el hotend. |  |  |
 | 1 | Wemos D1 MINI V4.0 (cualquier otra versión de WeMos que comparta los pines de salida debería servir) | https://s.click.aliexpress.com/e/_DCS2eTP | 3,39 € |
 | 1 | Mini DC-DC 12-24V a 5V 3A Step Down | https://s.click.aliexpress.com/e/_c3yZLI5b | 3,39 € |
 | 1 | Driver de motor paso a paso A4988 + disipador (es bastante fácil quemarlo, sobre todo si eres principiante; mejor 2 unidades) | https://s.click.aliexpress.com/e/_c32zgNiZ | 1,54 € |
@@ -68,20 +68,8 @@ Precios actualizados: **27/11/2026**. Valores orientativos, pueden variar con el
 | 3 | Conector de bloque de terminales 2P | https://s.click.aliexpress.com/e/_DkqRgFn | 0,84 € |
 | 1 | Resistencias de 10K ohmios R2 | https://s.click.aliexpress.com/e/_DeT9AAz | 1,71 € |
 | 1 | Resistencias de 2K ohmios para R1 si la versión de firmware es >=1.4 | https://s.click.aliexpress.com/e/_DeT9AAz | 2,20 € |
-| 1 | Fuente de alimentación 12v 5A | https://s.click.aliexpress.com/e/_c2zdHPX3 | 6,19 € |
-| 1 | Mini micro interruptor de final de carrera con palanca de rodillo, para el sensor de tira | https://s.click.aliexpress.com/e/_c3QnPcE9 | 1,96 € |
-| 1 | Motor paso a paso Nema 17, altura >=38mm, eje en forma de D (17HS4401S-Dupont) | https://s.click.aliexpress.com/e/_c39SiyRr | 11,39 € |
-| 1 | Hotend MK8 12V 40W | https://s.click.aliexpress.com/e/_DnlMNy5 | 3,33 € |
-| 30cm | Cable 2P 30AWG (para el sensor de tira de final de carrera, señal digital; yo uso los cables muy finos que saco de un cable de impresora LPT1 viejo) | https://s.click.aliexpress.com/e/_Dlnn1bd | 0,73 € |
-| 25cm | Cable 2P 18AWG (yo uso 25 cm del cable calefactor del hotend) | https://s.click.aliexpress.com/e/_Dlnn1bd | 1,65 € |
-| 1 | Toma de corriente macho 10A 250V de 3 pines IEC320 con interruptor + fusible | https://s.click.aliexpress.com/e/_DmuNpxf | 2,41 € |
-| 9 | Terminales de cable crimpados con funda aislante 20AWG (alimentación de la PCB, IEC320, calefactor) | https://s.click.aliexpress.com/e/_oEJer1l | 1,31 € |
-| 2 | Terminales de cable crimpados con funda aislante 24AWG (micro interruptor) | https://s.click.aliexpress.com/e/_oEJer1l | 1,69 € |
-| 7 | Terminal hembra de 4.8mm (para la toma de corriente macho 10A 250V de 3 pines IEC320) | https://s.click.aliexpress.com/e/_c2xFTcyv | 0,96 € |
-| 25mm | Tubo termorretráctil 5mm, para el sensor de tira y el terminal hembra de 4.8mm | https://s.click.aliexpress.com/e/_c3knUgat | 1,38 € |
-| 40mm | Tubo termorretráctil 2mm, para el sensor de tira | https://s.click.aliexpress.com/e/_c3knUgat | 1,37 € |
 
-*Opción DIY antigua. Esta lista es independiente y no está incluida en el total de arriba. Necesita la PCB v1.1 antigua y componentes soldados a mano.*
+*Opción DIY antigua. Aquí solo se listan la PCB v1.1 antigua y sus componentes soldados a mano. Usa el BOM de electrónica de arriba para el resto de piezas externas. Con la PCB v1.1, usa solo 12 V en la fuente de alimentación y en el hotend. Esta lista no está incluida en el total de arriba.*
 
 ## Cortador de botellas
 
